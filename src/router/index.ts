@@ -68,95 +68,116 @@ const routes = [
   // ]
   // },
   {
-    path: "/productFile",
-    name: "productFile",
-    redirect: "/productFile/index",
+    path: "/addTasks",
+    name: "addTasks",
+    redirect: "/addTask/index",
     component: Layout,
     meta: {
       icon: "prime:book",
       title: "首页",
-      rank: 0
+      rank: 21
     },
     children: [
       {
-        path: "/productFile/index",
-        name: "productFile",
-        component: () => import("@/views/productFile/index.vue"),
+        path: "/addTask/index",
+        name: "addTask",
+        component: () => import("@/views/addTask/index.vue"),
         meta: {
-          title: "产品档案",
+          title: "添加任务",
           showParent: false
         }
       }
     ]
   },
   {
-    path: "/quota",
-    name: "quota",
-    redirect: "/quota/index",
-    component: Layout,
-    meta: {
-      icon: "akar-icons:coin",
-      title: "报价管理",
-      rank: 0
-    },
-    children: [
-      {
-        path: "/quota/index",
-        name: "quota",
-        component: () => import("@/views/quota/index.vue"),
-        meta: {
-          title: "报价管理",
-          showParent: false
-        }
-      }
-    ]
-  },
-  {
-    path: "/supplier",
-    name: "supplier",
-    redirect: "/supplier/index",
+    path: "/my",
+    name: "my",
+    redirect: "/my/index",
     component: Layout,
     meta: {
       icon: "flowbite:address-book-outline",
-      title: "供应商管理",
-      rank: 0
+      title: "",
+      rank: 20
     },
     children: [
       {
-        path: "/supplier/index",
-        name: "supplier",
-        component: () => import("@/views/supplier/index.vue"),
+        path: "/my/index",
+        name: "my",
+        component: () => import("@/views/my/index.vue"),
         meta: {
-          title: "供应商管理",
-          showParent: false,
-          icon: "flowbite:address-book-outline"
-        }
-      }
-    ]
-  },
-  {
-    path: "/yearSum",
-    name: "yearSum",
-    redirect: "/yearSum/index",
-    component: Layout,
-    meta: {
-      icon: "prime:book",
-      title: "年度采购汇总",
-      rank: 0
-    },
-    children: [
-      {
-        path: "/yearSum/index",
-        name: "yearSum",
-        component: () => import("@/views/yearSum/index.vue"),
-        meta: {
-          title: "年度采购汇总",
-          showParent: false,
-          icon: "prime:book"
+          title: "我的",
+          showParent: false
         }
       }
     ]
   }
+  // {
+  //   path: "/gante",
+  //   name: "gante",
+  //   redirect: "/gante/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "prime:book",
+  //     title: "",
+  //     rank: 0
+  //   },
+  //   children: [
+  //     {
+  //       path: "/gante/index",
+  //       name: "gante",
+  //       component: () => import("@/views/gante/index.vue"),
+  //       meta: {
+  //         title: "工时分配及汇总",
+  //         showParent: false
+  //       }
+  //     }
+  //   ]
+  // }
+  // {
+  //   path: "/quota",
+  //   name: "quota",
+  //   redirect: "/quota/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "akar-icons:coin",
+  //     title: "报价管理",
+  //     rank: 0
+  //   },
+  //   children: [
+  //     {
+  //       path: "/quota/index",
+  //       name: "quota",
+  //       component: () => import("@/views/quota/index.vue"),
+  //       meta: {
+  //         title: "报价管理",
+  //         showParent: false
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/supplier",
+  //   name: "supplier",
+  //   redirect: "/supplier/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "flowbite:address-book-outline",
+  //     title: "供应商管理",
+  //     rank: 0
+  //   },
+  //   children: [
+  //     {
+  //       path: "/supplier/index",
+  //       name: "supplier",
+  //       component: () => import("@/views/supplier/index.vue"),
+  //       meta: {
+  //         title: "供应商管理",
+  //         showParent: false,
+  //         icon: "flowbite:address-book-outline"
+  //       }
+  //     }
+  //   ]
+  // }
 ];
 
 Object.keys(modules).forEach(key => {

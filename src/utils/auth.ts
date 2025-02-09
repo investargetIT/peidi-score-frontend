@@ -145,9 +145,3 @@ export const hasPerms = (value: string | Array<string>): boolean => {
     : isIncludeAllChildren(value, permissions);
   return isAuths ? true : false;
 };
-
-// 获取用户localStorage的dataSource字段信息
-export function getUserDataSource() {
-  const dataSource = storageLocal().getItem("dataSource")?.dataSource || null;
-  return dataSource;
-}

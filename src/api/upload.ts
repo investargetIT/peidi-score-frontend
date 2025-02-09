@@ -37,7 +37,6 @@ export type RefreshTokenResult = {
 export const baseUrlApi = (url: string) => {
   return `https://srm.peidigroup.cn${url}`;
 };
-
 const commonUrlApi = (url: string) => `${"https://user.peidigroup.cn"}${url}`;
 
 /** 登录 */
@@ -65,6 +64,15 @@ export const getUserInfo = code => {
   return http.request(
     "get",
     `https://omsapi.peidigroup.cn/ding/userInfo?code=${code}`,
+    {}
+  );
+};
+
+// 拿到部门信息
+export const getDeptInfo = code => {
+  return http.request(
+    "get",
+    `https://user.peidigroup.cn/ding/department?deptId=${code}`,
     {}
   );
 };
@@ -133,5 +141,3 @@ export const getPagePd = params => {
     params
   });
 };
-
-// 获取业务单元

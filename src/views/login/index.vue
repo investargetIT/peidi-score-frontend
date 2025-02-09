@@ -13,16 +13,16 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 import { initDingH5RemoteDebug } from "dingtalk-h5-remote-debug";
-import { getUserInfo, register, getUserDataSourceApi } from "../../api/user";
-import registerCom from "./register.vue";
+import { getUserInfo, register } from "../../api/user";
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
 import * as dd from "dingtalk-jsapi";
+import { useRoute } from "vue-router";
+const route = useRoute();
 
 const DINGTALK_CORP_ID = "dingfc722e531a4125b735c2f4657eb6378f";
-// const DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD = "Aa123456";
 const DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD = "Aa123456";
 defineOptions({
   name: "Login"
@@ -39,6 +39,8 @@ dataThemeChange(overallStyle.value);
 const { title } = useNav();
 initDingH5RemoteDebug();
 const ruleForm = reactive({
+  // username: "taijp@peidibrand.com",
+  // password: "Aa123456"
   username: "",
   password: ""
 });
@@ -54,21 +56,21 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         })
         .then(res => {
           if (res.success) {
-            localStorage.setItem("token", res.data);
-            getUserDataSourceApi({
-              token: res.data
-            }).then(res => {
-              if (res.success) {
-                localStorage.setItem("dataSource", JSON.stringify(res.data));
-                // message("登录成功" + res.data.dataSource, { type: "success" });
-              }
-              // 获取后端路由
+            // 获取后端路由
+            if (route.query.tabName == "worker") {
+              return initRouter().then(() => {
+                router.push({
+                  path: "/my/index",
+                  query: { tabName: "worker" }
+                });
+              });
+            } else {
               return initRouter().then(() => {
                 router.push(getTopMenu(true).path).then(() => {
                   message("登录成功", { type: "success" });
                 });
               });
-            });
+            }
           } else {
             message("登录失败", { type: "error" });
           }
@@ -92,6 +94,8 @@ const ddLogin = () => {
           if (res.success) {
             const { data: ddUserInfo } = res;
             console.log("ddUserInfo", ddUserInfo);
+            // alert(JSON.stringify(ddUserInfo));
+            localStorage.setItem("ddUserInfo", JSON.stringify(ddUserInfo));
             const { org_email, name } = ddUserInfo;
             if (org_email) {
               console.log("ddEmail", org_email);
@@ -103,8 +107,7 @@ const ddLogin = () => {
                 email: org_email,
                 emailCode: "",
                 password: DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD,
-                username: name,
-                dataSource: 1
+                username: name
               });
             } else {
               message("获取钉钉用户企业邮箱失败：" + JSON.stringify(res), {
@@ -123,11 +126,6 @@ const ddLogin = () => {
                 res.msg === "EMAIL_ACCOUNT_ALREADY_EXIST")
             ) {
               // 注册成功，调用登录接口
-
-              // return request(process.env.USER_AUTH_BASE_URL + '/user/login/password', {
-              //   method: 'POST',
-              //   data: `username=${ddUserEmail}&password=${process.env.DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD}`,
-              // });
               onLogin(ruleFormRef.value);
             } else {
               message("用户注册失败：" + JSON.stringify(res), {
@@ -166,30 +164,12 @@ function onkeypress({ code }: KeyboardEvent) {
 }
 
 onMounted(() => {
-  checkSourceParam();
   window.document.addEventListener("keypress", onkeypress);
 });
 
 onBeforeUnmount(() => {
   window.document.removeEventListener("keypress", onkeypress);
 });
-
-const showRegisterLink = ref(false);
-const showRegisterDialog = ref(false);
-
-function checkSourceParam() {
-  const urlParams = new URLSearchParams(window.location.search);
-  console.log("urlParams", urlParams);
-
-  if (urlParams.has("source")) {
-    showRegisterLink.value = true;
-  }
-}
-function openRegisterDialog() {
-  console.log("dddd");
-
-  showRegisterDialog.value = true;
-}
 </script>
 
 <template>
@@ -253,6 +233,7 @@ function openRegisterDialog() {
                 />
               </el-form-item>
             </Motion>
+
             <Motion :delay="250">
               <el-button
                 class="w-full mt-4"
@@ -264,19 +245,11 @@ function openRegisterDialog() {
                 登录
               </el-button>
             </Motion>
-            <a
-              href="#"
-              @click.prevent="openRegisterDialog"
-              class="text-xs text-gray-500 float-left mt-2"
-              style="text-decoration: underline"
-              >注册账号</a
-            >
           </el-form>
         </div>
       </div>
     </div>
   </div>
-  <registerCom v-model:showRegisterDialog="showRegisterDialog" />
 </template>
 
 <style scoped>

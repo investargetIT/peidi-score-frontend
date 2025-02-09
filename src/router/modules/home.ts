@@ -14,10 +14,10 @@ export default {
   children: [
     {
       path: "/index",
-      name: "category",
+      name: "task",
       component: () => import("@/views/classify/index.vue"),
       meta: {
-        title: "商品分类管理",
+        title: "任务列表",
         showParent: false
       }
     }

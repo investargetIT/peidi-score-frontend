@@ -12,10 +12,7 @@ export const useAppStore = defineStore({
   id: "pure-app",
   state: (): appType => ({
     sidebar: {
-      opened:
-        storageLocal().getItem<StorageConfigs>(
-          `${responsiveStorageNameSpace()}layout`
-        )?.sidebarStatus ?? getConfig().SidebarStatus,
+      opened: false,
       withoutAnimation: false,
       isClickCollapse: false
     },
