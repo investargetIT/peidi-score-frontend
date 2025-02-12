@@ -17,7 +17,7 @@ export default {
       name: "task",
       component: () => import("@/views/classify/index.vue"),
       meta: {
-        title: "任务列表",
+        title: "产品维护列表",
         showParent: false
       }
     }

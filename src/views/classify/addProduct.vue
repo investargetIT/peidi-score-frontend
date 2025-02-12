@@ -1,6 +1,6 @@
 <template>
-  <el-dialog v-model="visible" title="新增产品">
-    <el-form :model="newProduct">
+  <el-dialog v-model="visible" :title="isEdit ? '更新产品' : '新增产品'">
+    <el-form v-if="newProduct.onSiteEvaluation" :model="newProduct">
       <!-- 工厂名称选择 -->
       <el-form-item label="工厂名称">
         <el-select
@@ -255,7 +255,7 @@
           action="https://api.peidigroup.cn/prm/traceability-flow/upload-oss"
           :limit="1"
           type="primary"
-          :on-success="handleProductPictureUploadSuccess"
+          v-model:file-list="newProduct.productPicture"
           :headers="{
             Authorization: formatToken(getToken().accessToken)
           }"
@@ -269,9 +269,8 @@
           class="upload-demo"
           action="https://api.peidigroup.cn/prm/traceability-flow/upload-oss"
           :limit="1"
-          v-model="newProduct.productDetails"
+          v-model:file-list="newProduct.productDetails"
           type="primary"
-          :on-success="handleProductDetailsUploadSuccess"
           :headers="{
             Authorization: formatToken(getToken().accessToken)
           }"
@@ -288,14 +287,30 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { ElMessage } from "element-plus";
 import factories from "./const";
-import { newTask } from "@/api/pmApi.ts";
+import { newTask, updateProduct } from "@/api/pmApi.ts";
 import { getToken, formatToken } from "@/utils/auth";
+import { de } from "element-plus/es/locale/index.mjs";
 
 // import { getTaskUnassigned } from "@/api/task";
 const visible = defineModel("visible");
+
+// 接受props的isEdit，默认是false
+const { isEdit, details } = defineProps({
+  isEdit: {
+    type: Boolean,
+    default: false
+  },
+  details: {
+    type: Object,
+    default: () => ({})
+  }
+});
+
+const emits = defineEmits(["refresh"]);
+
 const selectedFactory = ref("");
 const selectedFactoryInfo = ref(null);
 const handleProductPictureUploadSuccess = (res, file) => {
@@ -393,11 +408,31 @@ const emptyValue = {
   // 配料信息
   ingredientInformation: "",
   // 产品图片(oss)
-  productPicture: "",
+  productPicture: [],
   // 产品详情(oss)
-  productDetails: ""
+  productDetails: []
 };
 const newProduct = ref(emptyValue);
+
+if (isEdit) {
+  newProduct.value = details;
+  console.log("details:", details);
+}
+
+// 监听details的变化,如果是编辑状态，将details赋值给newProduct
+watch(
+  () => details,
+  () => {
+    console.log("details change:", details);
+    if (isEdit) {
+      newProduct.value = details;
+    }
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+);
 
 // 重制产品信息
 const resetNewProduct = () => {
@@ -487,23 +522,43 @@ const saveProduct = () => {
     shelfLife: newProduct.value.shelfLife,
     storageEnvironment: newProduct.value.storageEnvironment,
     ingredientInformation: newProduct.value.ingredientInformation,
-    productPicture: newProduct.value.productPicture,
-    productDetails: newProduct.value.productDetails
+    productPicture: JSON.stringify(newProduct.value.productPicture),
+    productDetails: JSON.stringify(newProduct.value.productDetails)
   };
   console.log("postData:", postData);
-  newTask({
-    ...postData
-  })
-    .then(res => {
-      console.log("res:", res);
-      ElMessage.success("产品保存成功");
-      visible.value = false;
-      resetNewProduct();
+  if (isEdit) {
+    updateProduct({
+      ...postData,
+      id: newProduct.value.id
     })
-    .catch(err => {
-      console.error("err:", err);
-      ElMessage.error("产品保存失败");
-    });
+      .then(res => {
+        console.log("res:", res);
+        ElMessage.success("产品更新成功");
+        emits("refresh");
+        resetNewProduct();
+        visible.value = false;
+      })
+      .catch(err => {
+        console.error("err:", err);
+        ElMessage.error("产品更新失败");
+      });
+    return;
+  } else {
+    newTask({
+      ...postData
+    })
+      .then(res => {
+        console.log("res:", res);
+        ElMessage.success("产品保存成功");
+        emits("refresh");
+        resetNewProduct();
+        visible.value = false;
+      })
+      .catch(err => {
+        console.error("err:", err);
+        ElMessage.error("产品保存失败");
+      });
+  }
 };
 </script>
 

@@ -59,6 +59,55 @@ export const newTask = data => {
   });
 };
 
+// 获取产品列表
+export const getProductList = params => {
+  return http.request("get", baseUrlApi("/traceability-flow/page"), {
+    params
+  });
+};
+
+// 删除产品
+export const deleteProduct = data => {
+  return http.request("post", baseUrlApi("/traceability-flow/delete"), {
+    data
+  });
+};
+
+// 更新产品
+export const updateProduct = data => {
+  return http.request("post", baseUrlApi("/traceability-flow/update"), {
+    data
+  });
+};
+
+// 新增中检测信息
+export const newMiddleCheck = data => {
+  return http.request("post", baseUrlApi("/traceability-Info/new"), {
+    data
+  });
+};
+
+// 更新中检测信息
+export const updateMiddleCheck = data => {
+  return http.request("post", baseUrlApi("/traceability-Info/update"), {
+    data
+  });
+};
+
+// 获取中检测信息
+export const getMiddleCheck = params => {
+  return http.request("get", baseUrlApi("/traceability-Info/page"), {
+    params
+  });
+};
+
+// 删除中检测信息
+export const deleteMiddleCheck = data => {
+  return http.request("post", baseUrlApi("/traceability-Info/delete"), {
+    data
+  });
+};
+
 // 获取是否有待分配的任务
 export const getTaskUnassigned = params => {
   return http.request("get", baseUrlApi("/task-manage/hasExamine"), {

@@ -67,50 +67,50 @@ const routes = [
   //   }
   // ]
   // },
-  {
-    path: "/addTasks",
-    name: "addTasks",
-    redirect: "/addTask/index",
-    component: Layout,
-    meta: {
-      icon: "prime:book",
-      title: "首页",
-      rank: 21
-    },
-    children: [
-      {
-        path: "/addTask/index",
-        name: "addTask",
-        component: () => import("@/views/addTask/index.vue"),
-        meta: {
-          title: "添加任务",
-          showParent: false
-        }
-      }
-    ]
-  },
-  {
-    path: "/my",
-    name: "my",
-    redirect: "/my/index",
-    component: Layout,
-    meta: {
-      icon: "flowbite:address-book-outline",
-      title: "",
-      rank: 20
-    },
-    children: [
-      {
-        path: "/my/index",
-        name: "my",
-        component: () => import("@/views/my/index.vue"),
-        meta: {
-          title: "我的",
-          showParent: false
-        }
-      }
-    ]
-  }
+  // {
+  //   path: "/addTasks",
+  //   name: "addTasks",
+  //   redirect: "/addTask/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "prime:book",
+  //     title: "首页",
+  //     rank: 21
+  //   },
+  //   children: [
+  //     {
+  //       path: "/addTask/index",
+  //       name: "addTask",
+  //       component: () => import("@/views/addTask/index.vue"),
+  //       meta: {
+  //         title: "添加任务",
+  //         showParent: false
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/my",
+  //   name: "my",
+  //   redirect: "/my/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "flowbite:address-book-outline",
+  //     title: "",
+  //     rank: 20
+  //   },
+  //   children: [
+  //     {
+  //       path: "/my/index",
+  //       name: "my",
+  //       component: () => import("@/views/my/index.vue"),
+  //       meta: {
+  //         title: "我的",
+  //         showParent: false
+  //       }
+  //     }
+  //   ]
+  // }
   // {
   //   path: "/gante",
   //   name: "gante",
