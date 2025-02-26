@@ -62,7 +62,7 @@ export const reverseMapping = postData => {
       entryPage: postData.infoEntryPage,
       onSiteEvaluation: {
         add: postData.fieldEvaluationAdd,
-        batchNumber: JSON.parse(postData.batchNo),
+        batchNumber: JSON.parse(postData.batchNo) || {},
         selectedProduct: postData.selectedProducts,
         factoryName: postData.factoryName,
         address: postData.detailedAddress,
@@ -127,8 +127,12 @@ export const reverseMapping = postData => {
       shelfLife: postData.shelfLife,
       storageEnvironment: postData.storageEnvironment,
       ingredientInformation: postData.ingredientInformation,
-      productPicture: JSON.parse(postData.productPicture),
-      productDetails: JSON.parse(postData.productDetails),
+      productPicture: postData.productPicture
+        ? JSON.parse(postData.productPicture)
+        : [],
+      productDetails: postData.productDetails
+        ? JSON.parse(postData.productDetails)
+        : [],
       factoryPicture: postData.factoryPicture
         ? JSON.parse(postData.factoryPicture)
         : [],
@@ -263,7 +267,7 @@ export const reverseMappingRecord = nowData => {
   return nowData;
 };
 
-export const downloadFileFun = file => {
+export const downloadFileFun1 = file => {
   const name = file.name;
   axios({
     method: "get",
@@ -296,5 +300,50 @@ export const downloadFileFun = file => {
     })
     .catch(error => {
       console.error("下载文件失败:", error);
+    });
+};
+
+export const downloadFileFun = file => {
+  const name = file.name;
+  axios({
+    method: "get",
+    url: "https://api.peidigroup.cn/prm/common/download", // 替换为你的下载接口
+    params: {
+      objectName: "prm/traceability-Flow/" + name
+    },
+    responseType: "arraybuffer", // 确保服务器返回的是 Blob 数据
+    headers: {
+      Authorization: formatToken(getToken().accessToken)
+    }
+  })
+    .then(res => {
+      console.log("res", res);
+      // 获取文件扩展名
+      const extension = name.split(".").pop().toLowerCase();
+      // 根据扩展名设置 MIME 类型
+      let mimeType = "";
+      switch (extension) {
+        case "jpg":
+        case "jpeg":
+          mimeType = "image/jpeg";
+          break;
+        case "png":
+          mimeType = "image/png";
+          break;
+        case "gif":
+          mimeType = "image/gif";
+          break;
+        default:
+          mimeType = "application/octet-stream";
+      }
+      // 创建一个 Blob 对象
+      const blob = new Blob([res.data], { type: mimeType });
+      // 创建一个 URL 对象
+      const url = URL.createObjectURL(blob);
+      // 在新窗口中打开 URL
+      window.open(url);
+    })
+    .catch(error => {
+      console.error("预览文件失败:", error);
     });
 };

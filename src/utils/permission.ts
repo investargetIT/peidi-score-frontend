@@ -1,4 +1,4 @@
-import { getAdminUserEnum } from "../api/pmApi";
+// import { getAdminUserEnum } from "../api/pmApi";
 // 相关权限的判断
 const isInArr = (val, arr) => {
   const item = arr.find(item => item.userId == val);
@@ -18,7 +18,7 @@ export const isSuperAdmin = async () => {
       ddUserInfo = JSON.parse(ddUserInfo);
     }
     let superAdmin: any = [];
-    const res = await getAdminUserEnum();
+    // const res = await getAdminUserEnum();
     superAdmin = res;
     let flag = false;
     console.log("superAdmin", superAdmin[0].id, ddUserInfo?.userid);
