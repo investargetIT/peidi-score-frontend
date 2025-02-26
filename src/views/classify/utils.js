@@ -1,4 +1,8 @@
 import { id } from "element-plus/es/locale/index.mjs";
+import path from "path";
+import axios from "axios";
+import { downloadFile } from "@/api/pmApi.ts";
+import { getToken, formatToken } from "@/utils/auth";
 
 export function removeDuplicates(arr) {
   const seen = new Object();
@@ -51,9 +55,9 @@ export const reverseMapping = postData => {
       productNo: postData.productNo,
       productName: postData.productName,
       login: {
-        website: JSON.parse(postData.loginInfo).website,
-        username: JSON.parse(postData.loginInfo).username,
-        password: JSON.parse(postData.loginInfo).password
+        website: JSON.parse(postData.loginInfo)?.website || "",
+        username: JSON.parse(postData.loginInfo)?.username || "",
+        password: JSON.parse(postData.loginInfo)?.password || ""
       },
       entryPage: postData.infoEntryPage,
       onSiteEvaluation: {
@@ -100,7 +104,7 @@ export const reverseMapping = postData => {
         traceabilityType: postData.traceabilityType,
         identificationType: postData.identificationType,
         identificationFunction: postData.identificationFunction,
-        verificationMethod: postData.verificationMethod,
+        verificationMode: postData.verificationMode,
         save: postData.traceabilityIdentificationSave
       },
       cciStatement: {
@@ -124,7 +128,13 @@ export const reverseMapping = postData => {
       storageEnvironment: postData.storageEnvironment,
       ingredientInformation: postData.ingredientInformation,
       productPicture: JSON.parse(postData.productPicture),
-      productDetails: JSON.parse(postData.productDetails)
+      productDetails: JSON.parse(postData.productDetails),
+      factoryPicture: postData.factoryPicture
+        ? JSON.parse(postData.factoryPicture)
+        : [],
+      productionProcessDrawing: postData.productionProcessDrawing
+        ? JSON.parse(postData.productionProcessDrawing)
+        : []
     }
   };
   console.log("newProduct", newProduct);
@@ -176,8 +186,7 @@ export const mapping = newProduct => {
       newProduct.traceabilityIdentification.identificationType,
     identificationFunction:
       newProduct.traceabilityIdentification.identificationFunction,
-    verificationMethod:
-      newProduct.traceabilityIdentification.verificationMethod,
+    verificationMode: newProduct.traceabilityIdentification.verificationMode,
     traceabilityIdentificationSave: newProduct.traceabilityIdentification.save,
     inspectionDeclarationAdd: newProduct.cciStatement.entry,
     inspectionTraceabilityType: newProduct.cciStatement.traceabilityType,
@@ -197,7 +206,95 @@ export const mapping = newProduct => {
     ingredientInformation: newProduct.ingredientInformation,
     productPicture: JSON.stringify(newProduct.productPicture),
     productDetails: JSON.stringify(newProduct.productDetails),
-    id: newProduct.id
+    id: newProduct.id || null,
+    factoryPicture: JSON.stringify(newProduct.factoryPicture),
+    productionProcessDrawing: JSON.stringify(
+      newProduct.productionProcessDrawing
+    )
   };
   return postData;
+};
+
+export const mappingRecord = newRecord => {
+  let nowData = JSON.parse(JSON.stringify(newRecord));
+  console.log("newRecord", newRecord);
+
+  nowData.factoryInspectionReports.map(item => {
+    item.path = item.name;
+    console.log("item", item);
+  });
+  nowData.finalInspectionReports.map(item => {
+    item.path = item.name;
+    console.log("item", item);
+  });
+  nowData.ingredientList.map(item => {
+    item.quarantineCertificateRecords.map(item1 => {
+      item1.path = item1.name;
+    });
+    item.tripartiteInspectionRecords.map(item1 => {
+      item1.path = item1.name;
+    });
+  });
+  console.log("nowData", nowData);
+  return nowData;
+};
+
+export const reverseMappingRecord = nowData => {
+  nowData.map(item => {
+    item.factoryInspectionReports.map(item1 => {
+      item1.name = item1.path;
+      item1.type = "success";
+    });
+    item.finalInspectionReports.map(item1 => {
+      item1.name = item1.path;
+      item1.type = "success";
+    });
+    item.ingredientList.map(item1 => {
+      item1.quarantineCertificateRecords.map(item2 => {
+        item2.name = item2.path;
+        item2.type = "success";
+      });
+      item1.tripartiteInspectionRecords.map(item2 => {
+        item2.name = item2.path;
+        item2.type = "success";
+      });
+    });
+  });
+  return nowData;
+};
+
+export const downloadFileFun = file => {
+  const name = file.name;
+  axios({
+    method: "get",
+    url: "https://api.peidigroup.cn/prm/common/download", // 替换为你的下载接口
+    params: {
+      objectName: "prm/traceability-Flow/" + name
+    },
+    responseType: "arraybuffer", // 确保服务器返回的是 Blob 数据
+    headers: {
+      Authorization: formatToken(getToken().accessToken)
+    }
+  })
+    .then(res => {
+      console.log("res", res);
+      // 创建一个 Blob 对象
+      const blob = new Blob([res.data], { type: "application/octet-stream" });
+      // 创建一个 URL 对象
+      const url = URL.createObjectURL(blob);
+      // 创建一个链接元素
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      // 触发下载
+      document.body.appendChild(a);
+      a.click();
+      // 移除链接元素
+      document.body.removeChild(a);
+      // 释放 URL 对象
+      URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+      console.error("下载文件失败:", error);
+    });
 };

@@ -114,3 +114,10 @@ export const getTaskUnassigned = params => {
     params
   });
 };
+
+// 下载文件
+export const downloadFile = params => {
+  return http.request("get", baseUrlApi("prm/common/download", false), {
+    params
+  });
+};

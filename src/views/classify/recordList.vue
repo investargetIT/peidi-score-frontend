@@ -14,9 +14,10 @@
             <div class="relative">
               <p><strong>产品编号:</strong> {{ record.productNo }}</p>
               <p><strong>产品名称:</strong> {{ record.productName }}</p>
-              <p><strong>生产日期:</strong> {{ record.productionDate }}</p>
-              <p><strong>最小溯源码:</strong> {{ record.traceCodeMin }}</p>
-              <p><strong>最大溯源码:</strong> {{ record.traceCodeMax }}</p>
+              <p>
+                <strong>生产日期:</strong>
+                {{ dayjs(record.productionDate).format("YYYY-MM-DD") }}
+              </p>
               <el-button
                 type="danger"
                 class="absolute right-0 top-0"
@@ -35,11 +36,11 @@
       </span>
     </el-dialog>
     <!-- 新增记录弹窗 -->
+
     <AddRecord
       v-if="showAddRecord"
       v-model:visible="showAddRecord"
       @close="closeAddRecord"
-      @add-record="addRecord"
       :selectedRecord="selectedRecord"
       :details="details"
       :isEdit="isEdit"
@@ -52,6 +53,8 @@ import { ref } from "vue";
 import AddRecord from "./AddRecord.vue";
 import { getMiddleCheck, deleteMiddleCheck } from "@/api/pmApi.ts";
 import { ElMessage } from "element-plus";
+import dayjs from "dayjs";
+import { reverseMappingRecord } from "./utils";
 const { details } = defineProps({
   details: {
     type: Object,
@@ -91,6 +94,7 @@ const openAddRecord = () => {
 };
 
 const closeAddRecord = () => {
+  console.log("closeAddRecord");
   showAddRecord.value = false;
   getData();
 };
@@ -114,15 +118,15 @@ const getData = () => {
     searchStr: JSON.stringify(searchParams)
   }).then(res => {
     console.log("中间检查记录:", res);
-    recordList.value = res.data.records;
-    recordList.value = [
-      ...recordList.value,
-      ...recordList.value,
-      ...recordList.value,
-      ...recordList.value,
-      ...recordList.value,
-      ...recordList.value
-    ];
+    recordList.value = reverseMappingRecord(res.data.records);
+    // recordList.value = [
+    //   ...recordList.value,
+    //   ...recordList.value,
+    //   ...recordList.value,
+    //   ...recordList.value,
+    //   ...recordList.value,
+    //   ...recordList.value
+    // ];
   });
 };
 

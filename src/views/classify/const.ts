@@ -1,7 +1,5 @@
 const factories = [
   {
-    productNo: "CK241100",
-    productName: "MeatyWay 鸭胸肉干",
     login: {
       website: "https://trace.cciccloud.com/trace-web/#!/login",
       username: "caicf@peidibrand.com",
@@ -46,7 +44,9 @@ const factories = [
         "点击左侧的 '产品生产'默认显示未录入批次，点击右侧的 '录入' 进入录入页面",
       productionProcess: "点击 '+', 上传 '江苏康贝肉制品生产工艺' 照片",
       productionDate: "选择生产日期",
-      productionBatchNumber: "输入产品批次号"
+      productionBatchNumber: "输入产品批次号",
+      productionTechnology: "",
+      technologyDescription: ""
     },
     finishedProductControl: {
       entry:
@@ -69,7 +69,7 @@ const factories = [
       identificationType: "防伪防转移一物一码标识",
       identificationFunction:
         "涂层+金属线防伪 一次性易碎防转移 唯一身份识别+随机码验证",
-      verificationMethod:
+      verificationMode:
         "扫描溯源二维码，点击底部“防伪查询”，输入银色涂层下方的4位数随机码查询验证",
       save: "点击下方“保存”"
     },
@@ -102,8 +102,6 @@ const factories = [
     product_details: ""
   },
   {
-    productNo: "CK24",
-    productName: "爵宴鲭鱼干",
     login: {
       website: "https://trace.cciccloud.com/trace-web/#!/login",
       username: "caicf@peidibrand.com",
@@ -149,8 +147,8 @@ const factories = [
       productionProcess: "点击 '+', 上传 '温州佩蒂鱼干生产工艺' 照片",
       productionDate: "选择生产日期",
       productionBatchNumber: "输入产品批号，同上方 '批次编号'",
-      productionTechnology: "鲭鱼解冻-清洗（去内脏等）-烘干-包装",
-      technologyDescription: "低温烘干",
+      productionTechnology: "",
+      technologyDescription: "",
       save: "点击下方 '保存'"
     },
     finishedProductControl: {
@@ -167,13 +165,32 @@ const factories = [
       hotline: "400-836-1508",
       save: "点击下方 '保存'"
     },
-    traceabilityMark: {
+    traceabilityIdentification: {
       entry:
-        "点击左侧的 '售后服务'默认显示未录入批次，点击右侧的 '录入' 进入录入界面",
+        "点击左侧“售后服务”；默认显示未录入批次，点击右侧“录入”，进入录入界面。",
       traceabilityType: "合规申明溯源",
-      markType: "防伪防转移一物一码标识",
-      markFunction: "涂层+金属线防伪 一次性易碎防转移 唯一身份识别+随机码验证",
-      verificationMethod: "通过扫描二维码或输入防伪码进行验证"
+      identificationType: "防伪防转移一物一码标识",
+      identificationFunction:
+        "涂层+金属线防伪 一次性易碎防转移 唯一身份识别+随机码验证",
+      verificationMode:
+        "扫描溯源二维码，点击底部“防伪查询”，输入银色涂层下方的4位数随机码查询验证",
+      save: "点击下方“保存”"
+    },
+    cciStatement: {
+      entry:
+        "点击左侧“中检声明”；默认显示未录入批次，点击右侧“录入”，进入录入界面。",
+      traceabilityType: "产品合规申明溯源",
+      consumerService:
+        "宠物食品/产品追溯热线：0571-56551738或13567137494(微信同号)，QQ社群号：663988914",
+      authenticityStatement:
+        "本产品溯源信息链接包含的资料、信息等，均由中检溯源及其客户企业共同提供。但中检溯源仅对由自身（含中检各分支机构）直接采集的信息和出具的报告、证书负责。中检溯源开展检验、检测、认证、验证等活动所获得的企业和产品信息，均在申请企业保证诚信的前提下现场或线上采集，与此相关的报告以及证书为我方据实出具，但并不能免除生产方、贸易双方、承运人等所应承担的义务和法律责任，任何有意或无意的虚假行为所造成的后果由当事方自行承担负责。",
+      infringementStatement:
+        "所有资料、信息及其他内容涉及中检溯源及其客户企业的知识产权和相关权益，未经许可，不得随意下载，转载和用于未经授权的其他途径，中检溯源及其客户企业有权诉诸法律维护自身合法权益",
+      save: "点击下方“保存”"
+    },
+    traceabilityBatchCoding: {
+      entry:
+        "点击最左侧列表：追溯信息管理＞追溯批次赋码；选择对应批次编号，点击其右侧“维护”；进入追溯批次赋码界面，点击右侧“编辑”；在“单品追溯码”后填写追溯码，一个填写框只能写一个码，追溯码前五位的“0”不能去除，需要完整填入；输入所有溯源码序号后，点击右下角“保存”。"
     },
     production_enterprise: "",
     product_brand: "",
