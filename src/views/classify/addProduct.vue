@@ -376,7 +376,7 @@
           <el-tag
             type="primary"
             @click="setProductionProcess('冻干工艺')"
-            style=" margin-left: 10px;cursor: pointer"
+            style="margin-left: 10px; cursor: pointer"
           >
             冻干工艺
           </el-tag>
@@ -647,11 +647,6 @@ const emptyValue = {
 };
 const newProduct = ref(emptyValue);
 
-if (isEdit) {
-  newProduct.value = details;
-  console.log("details:", details);
-}
-
 // 监听details的变化,如果是编辑状态，将details赋值给newProduct
 watch(
   () => details,
@@ -704,6 +699,12 @@ const fillFactoryInfo = () => {
     deepMerge(newProduct.value, selectedFactoryInfo.value);
   }
 };
+
+if (isEdit) {
+  newProduct.value = details;
+  fillFactoryInfo();
+  console.log("details:", details);
+}
 const saveProduct = () => {
   productForm.value.validate(valid => {
     if (valid) {

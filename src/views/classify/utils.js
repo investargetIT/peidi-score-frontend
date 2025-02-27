@@ -304,20 +304,20 @@ export const downloadFileFun1 = file => {
 };
 
 export const downloadFileFun = file => {
-  const name = file.name;
+  const name = file.name; // 获取文件名
   axios({
     method: "get",
-    url: "https://api.peidigroup.cn/prm/common/download", // 替换为你的下载接口
+    url: "https://api.peidigroup.cn/prm/common/download", // 下载接口的URL
     params: {
-      objectName: "prm/traceability-Flow/" + name
+      objectName: "prm/traceability-Flow/" + name // 设置请求参数，指定要下载的文件
     },
-    responseType: "arraybuffer", // 确保服务器返回的是 Blob 数据
+    responseType: "arraybuffer", // 确保服务器返回的是二进制数据
     headers: {
-      Authorization: formatToken(getToken().accessToken)
+      Authorization: formatToken(getToken().accessToken) // 设置请求头，包含授权信息
     }
   })
     .then(res => {
-      console.log("res", res);
+      console.log("res", res); // 打印响应结果
       // 获取文件扩展名
       const extension = name.split(".").pop().toLowerCase();
       // 根据扩展名设置 MIME 类型
@@ -334,16 +334,25 @@ export const downloadFileFun = file => {
           mimeType = "image/gif";
           break;
         default:
-          mimeType = "application/octet-stream";
+          mimeType = "application/octet-stream"; // 默认类型
       }
       // 创建一个 Blob 对象
       const blob = new Blob([res.data], { type: mimeType });
       // 创建一个 URL 对象
       const url = URL.createObjectURL(blob);
-      // 在新窗口中打开 URL
-      window.open(url);
+      // 创建一个链接元素
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name; // 设置下载文件名
+      // 触发下载
+      document.body.appendChild(a);
+      a.click();
+      // 移除链接元素
+      document.body.removeChild(a);
+      // 释放 URL 对象
+      URL.revokeObjectURL(url);
     })
     .catch(error => {
-      console.error("预览文件失败:", error);
+      console.error("下载文件失败:", error); // 打印错误信息
     });
 };

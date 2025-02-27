@@ -259,7 +259,6 @@ import { is } from "@pureadmin/utils";
 const emit = defineEmits(["close"]);
 const rules = {
   batchNo: [{ required: true, message: "批号不能为空", trigger: "blur" }],
-  orderId: [{ required: true, message: "订单号不能为空", trigger: "blur" }],
   productionDate: [
     { required: true, message: "生产日期不能为空", trigger: "change" }
   ],
@@ -353,10 +352,10 @@ const handleExceed = () => {
 const validateDates = () => {
   for (const ingredient of form.value.ingredientList) {
     if (
-      new Date(ingredient.tripartiteInspectionDate).getTime() >
+      new Date(ingredient.tripartiteInspectionDate).getTime() <
       new Date(ingredient.quarantineCertificateDate).getTime()
     ) {
-      ElMessage.error("三方检验日期不能晚于检疫证日期");
+      ElMessage.error("三方检验日期不能早于检疫证日期");
       return false;
     }
   }
