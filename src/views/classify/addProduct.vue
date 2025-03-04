@@ -384,7 +384,7 @@
       </el-form-item>
       <!-- 新增核心卖点 -->
       <el-form-item prop="sellingPoint" label="核心卖点">
-        <el-input v-model="newProduct.sellingPoint"></el-input>
+        <el-input type="textarea" v-model="newProduct.sellingPoint"></el-input>
       </el-form-item>
       <!-- 新增核心卖点附件 -->
       <el-form-item prop="sellingPointFile" label="核心卖点附件">
