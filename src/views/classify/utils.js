@@ -138,6 +138,10 @@ export const reverseMapping = postData => {
         : [],
       productionProcessDrawing: postData.productionProcessDrawing
         ? JSON.parse(postData.productionProcessDrawing)
+        : [],
+      sellingPoint: postData.sellingPoint,
+      sellingPointFile: postData.sellingPointFile
+        ? JSON.parse(postData.sellingPointFile)
         : []
     }
   };
@@ -214,14 +218,15 @@ export const mapping = newProduct => {
     factoryPicture: JSON.stringify(newProduct.factoryPicture),
     productionProcessDrawing: JSON.stringify(
       newProduct.productionProcessDrawing
-    )
+    ),
+    sellingPoint: newProduct.sellingPoint,
+    sellingPointFile: JSON.stringify(newProduct.sellingPointFile)
   };
   return postData;
 };
 
 export const mappingRecord = newRecord => {
   let nowData = JSON.parse(JSON.stringify(newRecord));
-  console.log("newRecord", newRecord);
 
   nowData.factoryInspectionReports.map(item => {
     item.path = item.name;

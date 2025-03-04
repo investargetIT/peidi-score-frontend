@@ -382,6 +382,34 @@
           </el-tag>
         </div>
       </el-form-item>
+      <!-- 新增核心卖点 -->
+      <el-form-item prop="sellingPoint" label="核心卖点">
+        <el-input v-model="newProduct.sellingPoint"></el-input>
+      </el-form-item>
+      <!-- 新增核心卖点附件 -->
+      <el-form-item prop="sellingPointFile" label="核心卖点附件">
+        <el-upload
+          ref="upload"
+          class="upload-demo"
+          action="https://api.peidigroup.cn/prm/traceability-flow/upload-oss"
+          :limit="5"
+          v-model:file-list="newProduct.sellingPointFile"
+          type="primary"
+          :headers="{
+            Authorization: formatToken(getToken().accessToken)
+          }"
+          :on-exceed="handleExceed"
+          :before-upload="beforeUpload"
+          :on-preview="downloadFileFun"
+        >
+          <el-button>选择文件</el-button>
+          <template #tip>
+            <div class="el-upload__tip">
+              上传文件支持jpg、png、jpeg、gif格式,大小不超过2M，且最多上传5张。
+            </div>
+          </template>
+        </el-upload>
+      </el-form-item>
       <el-form-item prop="productPicture" label="产品图片">
         <el-upload
           ref="upload"
@@ -547,7 +575,8 @@ const rules = {
   ],
   productionProcessDrawing: [
     { required: true, message: "请上传生产工艺图", trigger: "change" }
-  ]
+  ],
+  sellingPoint: [{ required: true, message: "请输入核心卖点", trigger: "blur" }]
 };
 
 // 是否展示默认信息
@@ -643,7 +672,11 @@ const emptyValue = {
   // 产品图片
   productPicture: [],
   // 产品详情
-  productDetails: []
+  productDetails: [],
+  // 新增核心卖点
+  sellingPoint: "",
+  // 新增核心卖点附件
+  sellingPointFile: []
 };
 const newProduct = ref(emptyValue);
 
