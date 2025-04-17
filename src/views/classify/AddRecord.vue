@@ -288,10 +288,10 @@ const rules = {
     }
   ],
   finalInspectionReports: [
-    { required: true, message: "终检单不能为空", trigger: "change" }
+    { required: false, message: "终检单不能为空", trigger: "change" }
   ],
   factoryInspectionReports: [
-    { required: true, message: "出厂检验报告不能为空", trigger: "change" }
+    { required: false, message: "出厂检验报告不能为空", trigger: "change" }
   ]
 };
 

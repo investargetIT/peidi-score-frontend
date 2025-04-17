@@ -57,6 +57,7 @@ import dayjs from "dayjs";
 import { reverseMappingRecord } from "./utils";
 const { details } = defineProps({
   details: {
+    // 产品维护列表，选中行数据
     type: Object,
     required: true
   }
