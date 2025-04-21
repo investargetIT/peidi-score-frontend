@@ -43,6 +43,7 @@
       v-if="recordDialogVisible"
       v-model:visible="recordDialogVisible"
       :details="selectedDetails"
+      :statusList="props.statusList"
     ></recordList>
   </div>
 </template>
@@ -56,6 +57,7 @@ import { reverseMapping, mapping } from "./utils";
 import { debounce, storageLocal } from "@pureadmin/utils";
 import addProduct from "./addProduct.vue";
 import recordList from "./recordList.vue";
+import { status } from "nprogress";
 const tableData = ref([]);
 const pagination = ref({
   pageNo: 1,
@@ -70,6 +72,10 @@ const props = defineProps({
   taskStatus: {
     type: String,
     default: ""
+  },
+  statusList: {
+    type: Array,
+    default: () => []
   }
 });
 

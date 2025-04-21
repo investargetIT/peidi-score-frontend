@@ -23,6 +23,19 @@
             @change="setBatchNoAndUniqueCode"
           />
         </el-form-item>
+        <el-form-item label="记录状态" prop="status">
+          <el-select
+            style="width: 240px"
+            v-model="form.status"
+            placeholder="选择任务状态"
+          >
+            <el-option
+              v-for="item in statusList"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="新增追溯码组">
           <el-button
             type="primary"
@@ -308,6 +321,10 @@ const { details, isEdit, selectedRecord } = defineProps({
   isEdit: {
     type: Boolean,
     required: true
+  },
+  statusList: {
+    type: Array,
+    default: () => []
   }
 });
 
@@ -316,6 +333,7 @@ console.log("details1234", details);
 const form = ref({
   batchNo: details.productNo,
   dataDeliveryDate: "",
+  status: "",
   flowId: details.id,
   orderId: "",
   productionDate: "",

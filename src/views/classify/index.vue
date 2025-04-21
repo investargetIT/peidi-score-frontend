@@ -7,7 +7,7 @@
         <el-select
           style="width: 240px"
           v-model="taskStatus"
-          placeholder="选择任务状态"
+          placeholder="请选择状态"
         >
           <el-option
             v-for="item in statusList"
@@ -21,7 +21,11 @@
       >
     </div>
     <!-- 产品列表 -->
-    <productList ref="listRef" :taskStatus="taskStatus" />
+    <productList
+      ref="listRef"
+      :taskStatus="taskStatus"
+      :statusList="statusList"
+    />
     <!-- 新增产品弹窗 -->
     <addProduct
       v-if="showModal"

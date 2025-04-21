@@ -44,6 +44,7 @@
       :selectedRecord="selectedRecord"
       :details="details"
       :isEdit="isEdit"
+      :statusList="statusList"
     />
   </div>
 </template>
@@ -55,11 +56,15 @@ import { getMiddleCheck, deleteMiddleCheck } from "@/api/pmApi.ts";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
 import { reverseMappingRecord } from "./utils";
-const { details } = defineProps({
+const { details, statusList } = defineProps({
   details: {
     // 产品维护列表，选中行数据
     type: Object,
     required: true
+  },
+  statusList: {
+    type: Array,
+    default: () => []
   }
 });
 
