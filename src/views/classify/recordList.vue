@@ -2,6 +2,28 @@
   <div>
     <!-- 溯源记录弹窗 -->
     <el-dialog v-model="visible" title="溯源记录">
+      <div class="container">
+        <el-select
+          style="width: 240px"
+          v-model="searchInfo.status"
+          placeholder="请选择状态"
+          clearable
+        >
+          <el-option
+            v-for="item in statusList"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+        <el-date-picker
+          clearable
+          v-model="searchInfo.productionDate"
+          type="date"
+          format="YYYY-MM-DD"
+          value-format="YYYY-MM-DD"
+          placeholder="请选择日期"
+        />
+      </div>
       <div class="h-[70vh] overflow-auto">
         <!-- 使用卡片展示 recordList 的内容 -->
         <div
@@ -18,6 +40,7 @@
                 <strong>生产日期:</strong>
                 {{ dayjs(record.productionDate).format("YYYY-MM-DD") }}
               </p>
+              <p><strong>产品状态:</strong> {{ record.statusName }}</p>
               <el-button
                 type="danger"
                 class="absolute right-0 top-0"
@@ -50,12 +73,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import AddRecord from "./AddRecord.vue";
 import { getMiddleCheck, deleteMiddleCheck } from "@/api/pmApi.ts";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
+import { debounce, storageLocal } from "@pureadmin/utils";
 import { reverseMappingRecord } from "./utils";
+
+const searchInfo = ref({
+  status: "",
+  productionDate: ""
+});
 const { details, statusList } = defineProps({
   details: {
     // 产品维护列表，选中行数据
@@ -73,6 +102,16 @@ const showAddRecord = ref(false);
 const recordList = ref([]);
 const isEdit = ref(false);
 const selectedRecord = ref({});
+
+watch(
+  [searchInfo],
+  () => {
+    debounce(() => {
+      getData();
+    }, 500)();
+  },
+  { deep: true }
+);
 
 const deleteRecord = record => {
   // 这里可以处理删除记录的逻辑
@@ -113,26 +152,28 @@ const addRecord = newRecord => {
 
 const getData = () => {
   const flowId = details.id;
-  const searchParams = {
+  const searchArr = [];
+  searchArr.push({
     searchName: "flowId",
     searchType: "equals",
     searchValue: flowId
-  };
+  });
+  Object.keys(searchInfo.value).forEach(key => {
+    const searchParams = {};
+    if (searchInfo.value[key]) {
+      searchParams.searchName = key;
+      searchParams.searchType = "equals";
+      searchParams.searchValue = searchInfo.value[key];
+      searchArr.push(searchParams);
+    }
+  });
   getMiddleCheck({
     pageNo: 1,
     pageSize: 100,
-    searchStr: JSON.stringify(searchParams)
+    searchStr: JSON.stringify(searchArr)
   }).then(res => {
     console.log("中间检查记录:", res);
     recordList.value = reverseMappingRecord(res.data.records);
-    // recordList.value = [
-    //   ...recordList.value,
-    //   ...recordList.value,
-    //   ...recordList.value,
-    //   ...recordList.value,
-    //   ...recordList.value,
-    //   ...recordList.value
-    // ];
   });
 };
 
@@ -154,5 +195,12 @@ getData();
   cursor: pointer;
   box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
   transform: translateY(-5px);
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 20px;
 }
 </style>
