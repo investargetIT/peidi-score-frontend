@@ -2,13 +2,26 @@
   <div>
     <!-- 新增产品按钮 -->
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold">产品维护列表</h2>
-      <el-button type="primary" color="#161718" @click="showModal = true"
+      <div class="container">
+        <h2 class="text-2xl font-bold">产品维护列表</h2>
+        <el-select
+          style="width: 240px"
+          v-model="taskStatus"
+          placeholder="选择任务状态"
+        >
+          <el-option
+            v-for="item in statusList"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+      <el-button type="primary" color="#161718" @click="handleAddProduct"
         >新增产品</el-button
       >
     </div>
     <!-- 产品列表 -->
-    <productList ref="listRef" />
+    <productList ref="listRef" :taskStatus="taskStatus" />
     <!-- 新增产品弹窗 -->
     <addProduct
       v-if="showModal"
@@ -22,20 +35,40 @@
 
 <script setup>
 import { ref } from "vue";
+import { fetchStatusList } from "@/api/pmApi.ts";
 import { ElMessage } from "element-plus";
 import factories from "./const";
 import addProduct from "./addProduct.vue";
 import productList from "./productList.vue";
-console.log("factories:", factories);
 const showModal = ref(false);
+const taskStatus = ref("");
+const statusList = ref([]);
+const listRef = ref(null);
+
+const handleAddProduct = () => {
+  showModal.value = true;
+  taskStatus.value = "";
+};
+
+const getStatusList = () => {
+  fetchStatusList().then(res => {
+    if (res.code === 200) {
+      statusList.value = res.data?.map(item => {
+        return {
+          label: item.value,
+          value: String(item.id)
+        };
+      });
+    }
+  });
+};
+getStatusList();
 const saveProduct = () => {
   // 保存产品逻辑
   console.log("保存产品:", newProduct.value);
   ElMessage.success("产品保存成功");
   showModal.value = false;
 };
-
-const listRef = ref(null);
 
 const refreshList = () => {
   listRef.value.fetchProductList();
@@ -45,5 +78,13 @@ const refreshList = () => {
 <style scoped>
 .dialog-footer {
   text-align: right;
+}
+
+.container {
+  display: flex;
+
+  .el-select {
+    margin-left: 10px;
+  }
 }
 </style>

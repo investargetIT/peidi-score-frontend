@@ -47,11 +47,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { ElMessage } from "element-plus";
 import { getProductList, deleteProduct } from "@/api/pmApi.ts";
 import UpdateDialog from "./UpdateDialog.vue";
 import { reverseMapping, mapping } from "./utils";
+import { debounce, storageLocal } from "@pureadmin/utils";
 import addProduct from "./addProduct.vue";
 import recordList from "./recordList.vue";
 const tableData = ref([]);
@@ -64,11 +65,47 @@ const dialogVisible = ref(false);
 const recordDialogVisible = ref(false);
 const selectedDetails = ref({});
 
+const props = defineProps({
+  taskStatus: {
+    type: String,
+    default: ""
+  }
+});
+
+interface IQueryParams {
+  pageNo: number;
+  pageSize: number;
+  searchStr?: string;
+}
+
+const debouncedFetch = debounce(() => {
+  fetchProductList();
+}, 500);
+
+watch(
+  () => props.taskStatus,
+  newVal => {
+    console.log("taskStatus changed:", newVal);
+    debouncedFetch();
+  },
+  { immediate: true }
+);
+
 const fetchProductList = () => {
-  getProductList({
+  const searchStr: any = [];
+  const commonInfo: IQueryParams = {
     pageNo: pagination.value.pageNo,
     pageSize: pagination.value.pageSize
-  }).then(res => {
+  };
+  if (props.taskStatus) {
+    searchStr.push({
+      searchName: "status",
+      searchType: "equals",
+      searchValue: props.taskStatus
+    });
+    commonInfo.searchStr = JSON.stringify(searchStr);
+  }
+  getProductList(commonInfo).then(res => {
     // 为每个产品添加默认状态
     const products = res.data.records.map(product => ({
       ...product,

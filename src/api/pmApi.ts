@@ -121,3 +121,11 @@ export const downloadFile = params => {
     params
   });
 };
+
+export const fetchStatusList = () => {
+  return http.request("get", baseUrlApi("/prm/common/enum", false), {
+    params: {
+      type: "status"
+    }
+  });
+};
