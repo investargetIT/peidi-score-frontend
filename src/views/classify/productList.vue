@@ -14,6 +14,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="productName" label="产品名称"></el-table-column>
+      <el-table-column prop="statusName" label="状态"></el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
           <el-button @click="showDetails(scope.row)">详情</el-button>
