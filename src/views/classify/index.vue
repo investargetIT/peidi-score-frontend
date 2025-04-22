@@ -8,6 +8,7 @@
           style="width: 240px"
           v-model="taskStatus"
           placeholder="请选择状态"
+          clearable
         >
           <el-option
             v-for="item in statusList"
@@ -60,7 +61,7 @@ const getStatusList = () => {
       statusList.value = res.data?.map(item => {
         return {
           label: item.value,
-          value: String(item.id)
+          value: item.id
         };
       });
     }

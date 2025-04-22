@@ -123,7 +123,7 @@ export const downloadFile = params => {
 };
 
 export const fetchStatusList = () => {
-  return http.request("get", baseUrlApi("/prm/common/enum", false), {
+  return http.request("get", baseUrlApi("prm/common/enum", false), {
     params: {
       type: "status"
     }
