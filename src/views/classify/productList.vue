@@ -57,6 +57,7 @@
       v-model:visible="recordDialogVisible"
       :details="selectedDetails"
       :statusList="props.statusList"
+      @refresh="fetchProductList"
     ></recordList>
   </div>
 </template>

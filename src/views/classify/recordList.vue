@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 溯源记录弹窗 -->
-    <el-dialog v-model="visible" title="溯源记录">
+    <el-dialog v-model="visible" title="溯源记录" @close="handleClose">
       <div class="container">
         <el-select
           style="width: 240px"
@@ -101,6 +101,7 @@ import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
 import { debounce, storageLocal } from "@pureadmin/utils";
 import { reverseMappingRecord } from "./utils";
+const emits = defineEmits(["refresh"]);
 
 const searchInfo = ref({
   status: "",
@@ -138,6 +139,11 @@ watch(
   },
   { deep: true }
 );
+
+const handleClose = () => {
+  visible.value = false;
+  emits("refresh");
+};
 
 const deleteRecord = record => {
   // 这里可以处理删除记录的逻辑
