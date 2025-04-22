@@ -169,7 +169,7 @@
                   list-type="text"
                   :on-exceed="handleExceed"
                   :before-upload="beforeUpload"
-                  :on-preview="downloadFileFun"
+                  :on-preview="handlePreview"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
                   <template #tip>

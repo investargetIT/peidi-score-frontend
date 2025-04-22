@@ -400,7 +400,7 @@
           }"
           :on-exceed="handleExceed"
           :before-upload="beforeUpload"
-          :on-preview="downloadFileFun"
+          :on-preview="handlePreview"
         >
           <el-button>选择文件</el-button>
           <template #tip>
@@ -423,7 +423,7 @@
           }"
           :on-exceed="handleExceed"
           :before-upload="beforeUpload"
-          :on-preview="downloadFileFun"
+          :on-preview="handlePreview"
         >
           <el-button>选择文件</el-button>
           <template #tip>
@@ -446,7 +446,7 @@
           }"
           :on-exceed="handleExceed"
           :before-upload="beforeUpload"
-          :on-preview="downloadFileFun"
+          :on-preview="handlePreview"
         >
           <el-button>选择文件</el-button>
           <template #tip>
@@ -469,7 +469,7 @@
           }"
           :on-exceed="handleExceed"
           :before-upload="beforeUpload"
-          :on-preview="downloadFileFun"
+          :on-preview="handlePreview"
         >
           <el-button>选择文件</el-button>
           <template #tip>
@@ -492,7 +492,7 @@
           }"
           :on-exceed="handleExceed"
           :before-upload="beforeUpload"
-          :on-preview="downloadFileFun"
+          :on-preview="handlePreview"
         >
           <el-button>选择文件</el-button>
           <template #tip>
@@ -508,13 +508,16 @@
       <el-button type="primary" @click="saveProduct">保存</el-button>
     </span>
   </el-dialog>
+  <el-dialog v-model="dialogVisible">
+    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+  </el-dialog>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
 import { ElMessage } from "element-plus";
 import factories from "./const";
-import { newTask, updateProduct } from "@/api/pmApi.ts";
+import { newTask, updateProduct, getFileDownLoadPath } from "@/api/pmApi.ts";
 import { getToken, formatToken } from "@/utils/auth";
 import { mapping, downloadFileFun } from "./utils";
 // import { getTaskUnassigned } from "@/api/task";
@@ -535,7 +538,8 @@ const { isEdit, details } = defineProps({
 const emits = defineEmits(["refresh"]);
 
 const isFlod = ref(false);
-
+const dialogImageUrl = ref("");
+const dialogVisible = ref(false);
 const selectedFactory = ref("");
 const selectedFactoryInfo = ref(null);
 const handleProductPictureUploadSuccess = (res, file) => {
@@ -808,6 +812,24 @@ const beforeUpload = file => {
 
 const handleExceed = () => {
   ElMessage.warning("超过文件数量限制");
+};
+
+const handlePreview = file => {
+  getFileDownLoadPath({
+    objectName: "prm/traceability-Flow/" + file.name
+  })
+    .then(res => {
+      const { code, msg, data } = res;
+      if (code === 200) {
+        dialogImageUrl.value = res.data;
+        dialogVisible.value = true;
+      } else {
+        message("图片预览失败--" + msg, { type: "error" });
+      }
+    })
+    .catch(err => {
+      message("图片预览失败", { type: "error" });
+    });
 };
 </script>
 
