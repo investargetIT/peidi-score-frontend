@@ -42,7 +42,10 @@
               </p>
               <p>
                 <strong>产品状态:</strong>
-                <el-tag class="mx-1" type="primary">
+                <el-tag
+                  class="mx-1"
+                  :type="record.status === 22 ? 'success' : 'info'"
+                >
                   {{ record.statusName }}
                 </el-tag>
               </p>

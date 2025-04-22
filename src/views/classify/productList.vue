@@ -21,7 +21,7 @@
               v-for="(status, index) in getStatusTags(scope.row.statusName)"
               :key="index"
               class="mx-1"
-              type="primary"
+              :type="status === '审核通过' ? 'success' : 'info'"
             >
               {{ status }}
             </el-tag>
