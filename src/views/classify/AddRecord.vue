@@ -146,7 +146,7 @@
                   list-type="text"
                   :on-exceed="handleExceed"
                   :before-upload="beforeUpload"
-                  :on-preview="downloadFileFun"
+                  :on-preview="handlePreview"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
                   <template #tip>
@@ -209,7 +209,7 @@
             list-type="text"
             :on-exceed="handleExceed"
             :before-upload="beforeUpload"
-            :on-preview="downloadFileFun"
+            :on-preview="handlePreview"
           >
             <el-button size="small" type="primary">点击上传</el-button>
             <template #tip>
@@ -230,7 +230,7 @@
             list-type="text"
             :on-exceed="handleExceed"
             :before-upload="beforeUpload"
-            :on-preview="downloadFileFun"
+            :on-preview="handlePreview"
           >
             <el-button size="small" type="primary">点击上传</el-button>
             <template #tip>
@@ -249,11 +249,18 @@
       >
     </div>
   </el-dialog>
+  <el-dialog v-model="dialogVisible">
+    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+  </el-dialog>
 </template>
 
 <script setup>
 import { ref, computed, defineEmits } from "vue";
-import { newMiddleCheck, updateMiddleCheck } from "@/api/pmApi.ts";
+import {
+  newMiddleCheck,
+  updateMiddleCheck,
+  getFileDownLoadPath
+} from "@/api/pmApi.ts";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
 import { mappingRecord, downloadFileFun } from "./utils";
@@ -329,7 +336,8 @@ const { details, isEdit, selectedRecord } = defineProps({
 });
 
 console.log("details1234", details);
-
+const dialogImageUrl = ref("");
+const dialogVisible = ref(false);
 const form = ref({
   batchNo: details.productNo,
   dataDeliveryDate: "",
@@ -503,6 +511,24 @@ const addTraceCodeGroup = () => {
   if (form.value.traceCodeList.length < 5) {
     form.value.traceCodeList.push({ traceCodeMin: 0, traceCodeMax: 0 });
   }
+};
+
+const handlePreview = file => {
+  getFileDownLoadPath({
+    objectName: "prm/traceability-Flow/" + file.name
+  })
+    .then(res => {
+      const { code, msg, data } = res;
+      if (code === 200) {
+        dialogImageUrl.value = res.data;
+        dialogVisible.value = true;
+      } else {
+        message("图片预览失败--" + msg, { type: "error" });
+      }
+    })
+    .catch(err => {
+      message("图片预览失败", { type: "error" });
+    });
 };
 
 const beforeUpload = file => {

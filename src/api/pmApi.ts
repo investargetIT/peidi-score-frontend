@@ -129,3 +129,9 @@ export const fetchStatusList = () => {
     }
   });
 };
+
+export const getFileDownLoadPath = params => {
+  return http.request("get", baseUrlApi("/common/download-url"), {
+    params
+  });
+};
