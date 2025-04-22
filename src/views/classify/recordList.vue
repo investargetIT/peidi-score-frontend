@@ -40,7 +40,12 @@
                 <strong>生产日期:</strong>
                 {{ dayjs(record.productionDate).format("YYYY-MM-DD") }}
               </p>
-              <p><strong>产品状态:</strong> {{ record.statusName }}</p>
+              <p>
+                <strong>产品状态:</strong>
+                <el-tag class="mx-1" type="primary">
+                  {{ record.statusName }}
+                </el-tag>
+              </p>
               <el-button
                 type="danger"
                 class="absolute right-0 top-0"

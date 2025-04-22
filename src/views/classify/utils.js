@@ -54,6 +54,7 @@ export const reverseMapping = postData => {
       id: postData.id,
       productNo: postData.productNo,
       productName: postData.productName,
+      statusName: postData.statusName,
       login: {
         website: JSON.parse(postData.loginInfo)?.website || "",
         username: JSON.parse(postData.loginInfo)?.username || "",

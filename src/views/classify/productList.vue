@@ -14,7 +14,20 @@
         </template>
       </el-table-column>
       <el-table-column prop="productName" label="产品名称"></el-table-column>
-      <el-table-column prop="statusName" label="状态"></el-table-column>
+      <el-table-column prop="statusName" label="状态">
+        <template #default="scope">
+          <div class="flex gap-2">
+            <el-tag
+              v-for="(status, index) in getStatusTags(scope.row.statusName)"
+              :key="index"
+              class="mx-1"
+              type="primary"
+            >
+              {{ status }}
+            </el-tag>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
           <el-button @click="showDetails(scope.row)">详情</el-button>
@@ -49,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
 import { getProductList, deleteProduct } from "@/api/pmApi.ts";
 import UpdateDialog from "./UpdateDialog.vue";
@@ -67,6 +80,13 @@ const pagination = ref({
 const dialogVisible = ref(false);
 const recordDialogVisible = ref(false);
 const selectedDetails = ref({});
+// 在 computed 部分添加状态转换函数
+const getStatusTags = computed(() => {
+  return (statusName: string) => {
+    if (!statusName) return [];
+    return statusName.split(",").map(item => item.trim());
+  };
+});
 
 const props = defineProps({
   taskStatus: {
@@ -106,7 +126,7 @@ const fetchProductList = () => {
   if (props.taskStatus) {
     searchStr.push({
       searchName: "status",
-      searchType: "equals",
+      searchType: "like",
       searchValue: props.taskStatus
     });
     commonInfo.searchStr = JSON.stringify(searchStr);
@@ -114,8 +134,7 @@ const fetchProductList = () => {
   getProductList(commonInfo).then(res => {
     // 为每个产品添加默认状态
     const products = res.data.records.map(product => ({
-      ...product,
-      status: "活跃"
+      ...product
     }));
     tableData.value = products.map(product => reverseMapping(product));
     pagination.value.total = res.data.total;
