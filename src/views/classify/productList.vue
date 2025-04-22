@@ -17,14 +17,22 @@
       <el-table-column prop="statusName" label="状态">
         <template #default="scope">
           <div class="flex gap-2">
-            <el-tag
+            <el-popover
               v-for="(status, index) in getStatusTags(scope.row.statusName)"
               :key="index"
-              class="mx-1"
-              :type="status === '审核通过' ? 'success' : 'info'"
+              placement="top"
+              trigger="hover"
+              :content="`记录数：${status?.number}`"
             >
-              {{ status }}
-            </el-tag>
+              <template #reference>
+                <el-tag
+                  class="mx-1"
+                  :type="status?.text === '审核通过' ? 'success' : 'info'"
+                >
+                  {{ status?.text }}
+                </el-tag>
+              </template>
+            </el-popover>
           </div>
         </template>
       </el-table-column>
@@ -85,7 +93,16 @@ const selectedDetails = ref({});
 const getStatusTags = computed(() => {
   return (statusName: string) => {
     if (!statusName) return [];
-    return statusName.split(",").map(item => item.trim());
+    return statusName
+      .split(",")
+      .map(item => item.trim())
+      .map(item => {
+        const [_, text, number] = item.match(/^([\p{Script=Han}]+)\((\d+)\)$/u);
+        return {
+          text,
+          number
+        };
+      });
   };
 });
 
