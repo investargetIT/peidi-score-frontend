@@ -54,6 +54,19 @@
           暂无记录
         </div>
       </div>
+      <el-pagination
+        @current-change="handlePageChange"
+        :current-page="pagination.pageNo"
+        :page-size="pagination.pageSize"
+        layout="total, prev, pager, next"
+        :total="pagination.total"
+        style="
+          justify-content: center;
+          width: 100%;
+          margin-top: 20px;
+          text-align: center;
+        "
+      ></el-pagination>
       <span slot="footer" class="dialog-footer">
         <el-button @click="openAddRecord">新增记录</el-button>
       </span>
@@ -102,6 +115,11 @@ const showAddRecord = ref(false);
 const recordList = ref([]);
 const isEdit = ref(false);
 const selectedRecord = ref({});
+const pagination = ref({
+  pageNo: 1,
+  pageSize: 10,
+  total: 0
+});
 
 watch(
   [searchInfo],
@@ -168,13 +186,19 @@ const getData = () => {
     }
   });
   getMiddleCheck({
-    pageNo: 1,
-    pageSize: 100,
+    pageNo: pagination.value.pageNo,
+    pageSize: pagination.value.pageSize,
     searchStr: JSON.stringify(searchArr)
   }).then(res => {
     console.log("中间检查记录:", res);
     recordList.value = reverseMappingRecord(res.data.records);
+    pagination.value.total = res.data.total;
   });
+};
+
+const handlePageChange = pageNo => {
+  pagination.value.pageNo = pageNo;
+  getData();
 };
 
 getData();
