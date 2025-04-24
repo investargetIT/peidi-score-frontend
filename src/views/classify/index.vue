@@ -6,7 +6,7 @@
         <h2 class="text-2xl font-bold">产品维护列表</h2>
         <el-select
           style="width: 240px"
-          v-model="taskStatus"
+          v-model="searchInfo.status"
           placeholder="请选择状态"
           clearable
         >
@@ -16,6 +16,18 @@
             :value="item.value"
           />
         </el-select>
+        <el-input
+          v-model="searchInfo.productNo"
+          style="width: 240px"
+          placeholder="请输入产品编号"
+          clearable
+        />
+        <el-input
+          v-model="searchInfo.productName"
+          style="width: 240px"
+          placeholder="请输入产品名称"
+          clearable
+        />
       </div>
       <el-button type="primary" color="#161718" @click="handleAddProduct"
         >新增产品</el-button
@@ -24,7 +36,7 @@
     <!-- 产品列表 -->
     <productList
       ref="listRef"
-      :taskStatus="taskStatus"
+      :searchInfo="searchInfo"
       :statusList="statusList"
     />
     <!-- 新增产品弹窗 -->
@@ -46,13 +58,21 @@ import factories from "./const";
 import addProduct from "./addProduct.vue";
 import productList from "./productList.vue";
 const showModal = ref(false);
-const taskStatus = ref("");
 const statusList = ref([]);
 const listRef = ref(null);
+const searchInfo = ref({
+  status: "",
+  productNo: "",
+  productName: ""
+});
 
 const handleAddProduct = () => {
   showModal.value = true;
-  taskStatus.value = "";
+  searchInfo.value = {
+    status: "",
+    productNo: "",
+    productName: ""
+  };
 };
 
 const getStatusList = () => {
@@ -87,6 +107,7 @@ const refreshList = () => {
 
 .container {
   display: flex;
+  gap: 20px;
 
   .el-select {
     margin-left: 10px;

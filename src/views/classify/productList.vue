@@ -107,9 +107,13 @@ const getStatusTags = computed(() => {
 });
 
 const props = defineProps({
-  taskStatus: {
-    type: String,
-    default: ""
+  searchInfo: {
+    type: Object,
+    default: () => ({
+      sStatus: "",
+      productNo: "",
+      productName: ""
+    })
   },
   statusList: {
     type: Array,
@@ -128,11 +132,11 @@ const debouncedFetch = debounce(() => {
 }, 500);
 
 watch(
-  () => props.taskStatus,
+  () => props.searchInfo,
   newVal => {
     debouncedFetch();
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 );
 
 const fetchProductList = () => {
@@ -141,14 +145,17 @@ const fetchProductList = () => {
     pageNo: pagination.value.pageNo,
     pageSize: pagination.value.pageSize
   };
-  if (props.taskStatus) {
-    searchStr.push({
-      searchName: "status",
-      searchType: "like",
-      searchValue: props.taskStatus
-    });
-    commonInfo.searchStr = JSON.stringify(searchStr);
-  }
+  const searchArr = [] as any;
+  Object.keys(props.searchInfo)?.forEach(key => {
+    const searchParams = {} as any;
+    if (props.searchInfo[key]) {
+      searchParams.searchName = key;
+      searchParams.searchType = "like";
+      searchParams.searchValue = props.searchInfo[key];
+      searchArr.push(searchParams);
+    }
+  });
+  commonInfo.searchStr = JSON.stringify(searchArr);
   getProductList(commonInfo).then(res => {
     // 为每个产品添加默认状态
     const products = res.data.records.map(product => ({

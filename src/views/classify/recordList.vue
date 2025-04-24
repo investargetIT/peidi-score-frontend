@@ -21,7 +21,7 @@
           type="date"
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
-          placeholder="请选择日期"
+          placeholder="请选择生产日期"
         />
       </div>
       <div class="h-[70vh] overflow-auto">
@@ -173,6 +173,10 @@ const openAddRecord = () => {
 const closeAddRecord = () => {
   console.log("closeAddRecord");
   showAddRecord.value = false;
+  searchInfo.value = {
+    status: "",
+    productionDate: ""
+  };
   getData();
 };
 

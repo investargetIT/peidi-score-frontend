@@ -345,7 +345,7 @@ const form = ref({
   flowId: details.id,
   orderId: "",
   productionDate: "",
-  traceCodeList: [{ traceCodeMin: 0, traceCodeMax: 0 }],
+  traceCodeList: [],
   uniqueCode: details.productNo,
   ingredientList: [
     {
