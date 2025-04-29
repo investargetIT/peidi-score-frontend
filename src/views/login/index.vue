@@ -21,6 +21,8 @@ import User from "@iconify-icons/ri/user-3-fill";
 import * as dd from "dingtalk-jsapi";
 import { useRoute } from "vue-router";
 import { getUserDataSourceApi } from "@/api/user";
+import { updateUserInfo } from "@/api/pmApi";
+import { storageLocal } from "@pureadmin/utils";
 const route = useRoute();
 
 const DINGTALK_CORP_ID = "dingfc722e531a4125b735c2f4657eb6378f";
@@ -57,6 +59,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         })
         .then(res => {
           if (res.success) {
+            // 先获取用户数据源信息
             getUserDataSourceApi({ token: res.data }).then(userRes => {
               console.log("res", userRes);
               if (userRes.success) {
@@ -65,23 +68,25 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                   "dataSource",
                   JSON.stringify({ ...data, userEmail: ruleForm.username })
                 );
+                // 获取后端路由并跳转
+                if (route.query.tabName == "worker") {
+                  return initRouter().then(() => {
+                    router.push({
+                      path: "/my/index",
+                      query: { tabName: "worker" }
+                    });
+                  });
+                } else {
+                  return initRouter().then(() => {
+                    router.push(getTopMenu(true).path).then(() => {
+                      message("登录成功", { type: "success" });
+                    });
+                  });
+                }
+              } else {
+                message("获取用户数据失败", { type: "error" });
               }
             });
-            // 获取后端路由
-            if (route.query.tabName == "worker") {
-              return initRouter().then(() => {
-                router.push({
-                  path: "/my/index",
-                  query: { tabName: "worker" }
-                });
-              });
-            } else {
-              return initRouter().then(() => {
-                router.push(getTopMenu(true).path).then(() => {
-                  message("登录成功", { type: "success" });
-                });
-              });
-            }
           } else {
             message("登录失败", { type: "error" });
           }
@@ -149,6 +154,16 @@ const ddLogin = () => {
           if (res) {
             if (res.success) {
               localStorage.setItem("token", res.data);
+              // 初始化用户配置
+              updateUserInfo({
+                userId: storageLocal()?.getItem("dataSource")?.id,
+                fullName: storageLocal()?.getItem("ddUserInfo")?.name,
+                email: storageLocal()?.getItem("ddUserInfo")?.org_email
+              }).then(res => {
+                if (res?.success) {
+                  localStorage.setItem("userInfo", JSON.stringify(res?.data));
+                }
+              });
               // 登录成功，跳转到指定页面
               const urlParams = new URL(window.location.href).searchParams;
               window.location.href = urlParams.get("redirect") || "/";
