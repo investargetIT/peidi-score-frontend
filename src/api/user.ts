@@ -135,3 +135,10 @@ export const getPagePd = params => {
 };
 
 // 获取业务单元
+
+// 获取用户dataSource字段
+export const getUserDataSourceApi = params => {
+  return http.request("get", `https://user.peidigroup.cn/user/user-check`, {
+    params
+  });
+};

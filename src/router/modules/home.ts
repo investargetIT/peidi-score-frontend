@@ -15,9 +15,9 @@ export default {
     {
       path: "/index",
       name: "task",
-      component: () => import("@/views/classify/index.vue"),
+      component: () => import("@/views/dashboard/index.vue"),
       meta: {
-        title: "产品维护列表",
+        title: "Dashboard",
         showParent: false
       }
     }

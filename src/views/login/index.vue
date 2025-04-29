@@ -20,6 +20,7 @@ import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
 import * as dd from "dingtalk-jsapi";
 import { useRoute } from "vue-router";
+import { getUserDataSourceApi } from "@/api/user";
 const route = useRoute();
 
 const DINGTALK_CORP_ID = "dingfc722e531a4125b735c2f4657eb6378f";
@@ -56,6 +57,16 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         })
         .then(res => {
           if (res.success) {
+            getUserDataSourceApi({ token: res.data }).then(userRes => {
+              console.log("res", userRes);
+              if (userRes.success) {
+                const { data } = userRes;
+                localStorage.setItem(
+                  "dataSource",
+                  JSON.stringify({ ...data, userEmail: ruleForm.username })
+                );
+              }
+            });
             // 获取后端路由
             if (route.query.tabName == "worker") {
               return initRouter().then(() => {

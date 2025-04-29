@@ -23,6 +23,7 @@ export interface DataInfo<T> {
 
 export const userKey = "user-info";
 export const TokenKey = "authorized-token";
+export const dataSourceKey = "dataSource";
 /**
  * 通过`multiple-tabs`是否在`cookie`中，判断用户是否已经登录系统，
  * 从而支持多标签页打开已经登录的系统后无需再登录。
@@ -126,6 +127,7 @@ export function removeToken() {
   Cookies.remove(TokenKey);
   Cookies.remove(multipleTabsKey);
   storageLocal().removeItem(userKey);
+  storageLocal().removeItem(dataSourceKey);
 }
 
 /** 格式化token（jwt格式） */

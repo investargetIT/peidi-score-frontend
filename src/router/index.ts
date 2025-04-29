@@ -49,24 +49,29 @@ const Layout = () => import("@/layout/index.vue");
 
 /** 原始静态路由（未做任何处理） */
 const routes = [
-  // {
-  // path: "/classify",
-  // name: "category",
-  // component: () => import("@/views/classify/index.vue"),
-  // meta: {
-  //   title: "商品分类管理",
-  // },
-  //   children: [
-  //   {
-  //     path: "/fighting/index",
-  //     name: "Fighting",
-  //     component: () => import("@/views/fighting/index.vue"),
-  //     meta: {
-  //       title: "加油"
-  //     }
-  //   }
-  // ]
-  // },
+  {
+    path: "/classify",
+    name: "classify",
+    redirect: "/classify/index",
+    component: Layout,
+    meta: {
+      icon: "prime:box",
+      title: "Dashboard",
+      rank: 0
+    },
+    children: [
+      {
+        path: "/classify/index",
+        name: "classify",
+        component: () => import("@/views/classify/index.vue"),
+        meta: {
+          title: "产品维护列表",
+          showParent: false,
+          icon: "prime:box"
+        }
+      }
+    ]
+  }
   // {
   //   path: "/addTasks",
   //   name: "addTasks",
