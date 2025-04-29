@@ -3,19 +3,7 @@
     <!-- 新增产品按钮 -->
     <div class="flex justify-between items-center">
       <div class="container">
-        <h2 class="text-2xl font-bold">积分历史</h2>
-        <el-select
-          style="width: 240px"
-          v-model="searchInfo.status"
-          placeholder="请选择状态"
-          clearable
-        >
-          <el-option
-            v-for="item in statusList"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
+        <h2 class="text-2xl font-bold">积分排行榜</h2>
       </div>
     </div>
     <!-- 产品列表 -->

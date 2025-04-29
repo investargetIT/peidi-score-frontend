@@ -94,6 +94,29 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "/score",
+    name: "score",
+    redirect: "/scoreRank/index",
+    component: Layout,
+    meta: {
+      icon: "prime:box",
+      title: "积分排行榜",
+      rank: 0
+    },
+    children: [
+      {
+        path: "/scoreRank/index",
+        name: "score",
+        component: () => import("@/views/scoreRank/index.vue"),
+        meta: {
+          title: "积分排行榜",
+          showParent: false,
+          icon: "prime:box"
+        }
+      }
+    ]
   }
   // {
   //   path: "/addTasks",
