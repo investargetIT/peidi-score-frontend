@@ -11,7 +11,7 @@ import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 import { emitter } from "@/utils/mitt.ts";
 import { storageLocal } from "@pureadmin/utils";
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import { getToken, formatToken } from "@/utils/auth";
 import { ElMessage } from "element-plus";
 import {
@@ -19,7 +19,7 @@ import {
   updateMiddleCheck,
   getFileDownLoadPath
 } from "@/api/pmApi.ts";
-import { getUserInfoData } from "@/api/pmApi";
+import { getUserInfoData, updateUserInfo } from "@/api/pmApi";
 import dayjs from "dayjs";
 
 const {
@@ -35,17 +35,11 @@ const {
 } = useNav();
 
 console.log("====用户信息获取==");
-const {
-  username: curUserName,
-  userEmail,
-  id: userId
-} = storageLocal()?.getItem("dataSource") || {};
+const { id } = storageLocal()?.getItem("dataSource") || {};
 
 const { hired_date, name, email } = storageLocal()?.getItem("ddUserInfo") || {};
 
 console.log("====用户信息获取==", storageLocal()?.getItem("ddUserInfo"));
-
-const curUserData = storageLocal()?.getItem("dataSource");
 
 emitter.on("logout", () => {
   logout();
@@ -59,6 +53,7 @@ const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 const formRef = ref(null);
 const curUserInfo = ref({});
+const curUserAvatar = ref("");
 const modify = () => {
   showModifyDialog.value = true;
   fetchCurUserInfo();
@@ -97,15 +92,45 @@ const handlePreview = file => {
     });
 };
 const handleUpdate = () => {
-  showModifyDialog.value = false;
+  formRef.value.validate(valid => {
+    if (valid) {
+      console.log("form表单数据==", form);
+      updateUserInfo({
+        userId: id,
+        avatarUrl: JSON.stringify(form.avatarUrlList)
+      }).then(res => {
+        if (res?.code === 200) {
+          showModifyDialog.value = false;
+          ElMessage.success("修改成功");
+          showModifyDialog.value = false;
+          fetchCurUserInfo();
+        }
+      });
+    }
+  });
 };
 
 const fetchCurUserInfo = () => {
   getUserInfoData({
-    userId: userId
+    userId: id
   }).then(res => {
     if (res?.code === 200) {
       curUserInfo.value = res.data;
+      const avatarList = res?.data?.avatarUrl
+        ? JSON.parse(curUserInfo.value.avatarUrl)
+        : [];
+      form.avatarUrlList = avatarList;
+
+      // 获取头像预览地址
+      if (avatarList.length > 0) {
+        getFileDownLoadPath({
+          objectName: "ui/user/" + avatarList[0].name
+        }).then(previewRes => {
+          if (previewRes?.code === 200) {
+            curUserAvatar.value = previewRes.data;
+          }
+        });
+      }
     }
   });
 };
@@ -137,10 +162,10 @@ const fetchCurUserInfo = () => {
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
-          <img :src="userAvatar" :style="avatarsStyle" />
-          <div v-if="curUserName" class="userContainer">
-            <p class="dark:text-white">{{ curUserName }}</p>
-            <p class="dark:text-white">{{ userEmail }}</p>
+          <img :src="curUserAvatar || userAvatar" :style="avatarsStyle" />
+          <div v-if="name" class="userContainer">
+            <p class="dark:text-white">{{ name }}</p>
+            <p class="dark:text-white">{{ email }}</p>
           </div>
         </span>
         <template #dropdown>
@@ -167,7 +192,7 @@ const fetchCurUserInfo = () => {
               :headers="{
                 Authorization: formatToken(getToken().accessToken)
               }"
-              action="https://api.peidigroup.cn/ui/user/upload-oss"
+              action="https://api.peidigroup.cn/ui/user/upload"
               :limit="1"
               list-type="text"
               :on-exceed="handleExceed"
@@ -188,7 +213,7 @@ const fetchCurUserInfo = () => {
           <el-form-item label="邮箱">
             <span>{{ email }}</span>
           </el-form-item>
-          <el-form-item label="注册时间">
+          <el-form-item label="入职时间">
             <span>{{
               hired_date ? dayjs(hired_date).format("YYYY-MM-DD") : "-"
             }}</span>
