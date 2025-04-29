@@ -10,6 +10,7 @@ import LaySidebarTopCollapse from "../lay-sidebar/components/SidebarTopCollapse.
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 import { emitter } from "@/utils/mitt.ts";
+import { storageLocal } from "@pureadmin/utils";
 
 const {
   layout,
@@ -22,6 +23,10 @@ const {
   avatarsStyle,
   toggleSideBar
 } = useNav();
+const { username: curUserName, userEmail } =
+  storageLocal().getItem("dataSource");
+console.log("====nav信息==");
+console.log(username);
 emitter.on("logout", () => {
   logout();
 });
@@ -54,7 +59,10 @@ emitter.on("logout", () => {
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
           <img :src="userAvatar" :style="avatarsStyle" />
-          <p v-if="username" class="dark:text-white">{{ username }}</p>
+          <div v-if="curUserName" class="userContainer">
+            <p class="dark:text-white">{{ curUserName }}</p>
+            <p class="dark:text-white">{{ userEmail }}</p>
+          </div>
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
@@ -82,7 +90,7 @@ emitter.on("logout", () => {
 <style lang="scss" scoped>
 .navbar {
   width: 100%;
-  height: 48px;
+  height: 50px;
   overflow: hidden;
 
   .hamburger-container {
@@ -114,8 +122,8 @@ emitter.on("logout", () => {
       }
 
       img {
-        width: 22px;
-        height: 22px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
       }
     }
@@ -124,6 +132,19 @@ emitter.on("logout", () => {
   .breadcrumb-container {
     float: left;
     margin-left: 16px;
+  }
+
+  .userContainer {
+    margin-left: 10px;
+
+    p {
+      margin-bottom: 2px;
+      font-size: 14px;
+
+      &:last-child {
+        color: #909399;
+      }
+    }
   }
 }
 
