@@ -71,6 +71,29 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "/history",
+    name: "history",
+    redirect: "/history/index",
+    component: Layout,
+    meta: {
+      icon: "prime:box",
+      title: "积分历史",
+      rank: 0
+    },
+    children: [
+      {
+        path: "/history/index",
+        name: "history",
+        component: () => import("@/views/history/index.vue"),
+        meta: {
+          title: "积分历史",
+          showParent: false,
+          icon: "prime:box"
+        }
+      }
+    ]
   }
   // {
   //   path: "/addTasks",
