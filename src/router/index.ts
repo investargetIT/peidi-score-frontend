@@ -117,118 +117,30 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "/monitor",
+    name: "monitor",
+    redirect: "/monitor/index",
+    component: Layout,
+    meta: {
+      icon: "prime:box",
+      title: "管理员仪表板",
+      rank: 0
+    },
+    children: [
+      {
+        path: "/monitor/index",
+        name: "monitor",
+        component: () => import("@/views/monitor/index.vue"),
+        meta: {
+          title: "管理员仪表板",
+          showParent: false,
+          icon: "prime:box"
+        }
+      }
+    ]
   }
-  // {
-  //   path: "/addTasks",
-  //   name: "addTasks",
-  //   redirect: "/addTask/index",
-  //   component: Layout,
-  //   meta: {
-  //     icon: "prime:book",
-  //     title: "首页",
-  //     rank: 21
-  //   },
-  //   children: [
-  //     {
-  //       path: "/addTask/index",
-  //       name: "addTask",
-  //       component: () => import("@/views/addTask/index.vue"),
-  //       meta: {
-  //         title: "添加任务",
-  //         showParent: false
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: "/my",
-  //   name: "my",
-  //   redirect: "/my/index",
-  //   component: Layout,
-  //   meta: {
-  //     icon: "flowbite:address-book-outline",
-  //     title: "",
-  //     rank: 20
-  //   },
-  //   children: [
-  //     {
-  //       path: "/my/index",
-  //       name: "my",
-  //       component: () => import("@/views/my/index.vue"),
-  //       meta: {
-  //         title: "我的",
-  //         showParent: false
-  //       }
-  //     }
-  //   ]
-  // }
-  // {
-  //   path: "/gante",
-  //   name: "gante",
-  //   redirect: "/gante/index",
-  //   component: Layout,
-  //   meta: {
-  //     icon: "prime:book",
-  //     title: "",
-  //     rank: 0
-  //   },
-  //   children: [
-  //     {
-  //       path: "/gante/index",
-  //       name: "gante",
-  //       component: () => import("@/views/gante/index.vue"),
-  //       meta: {
-  //         title: "工时分配及汇总",
-  //         showParent: false
-  //       }
-  //     }
-  //   ]
-  // }
-  // {
-  //   path: "/quota",
-  //   name: "quota",
-  //   redirect: "/quota/index",
-  //   component: Layout,
-  //   meta: {
-  //     icon: "akar-icons:coin",
-  //     title: "报价管理",
-  //     rank: 0
-  //   },
-  //   children: [
-  //     {
-  //       path: "/quota/index",
-  //       name: "quota",
-  //       component: () => import("@/views/quota/index.vue"),
-  //       meta: {
-  //         title: "报价管理",
-  //         showParent: false
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: "/supplier",
-  //   name: "supplier",
-  //   redirect: "/supplier/index",
-  //   component: Layout,
-  //   meta: {
-  //     icon: "flowbite:address-book-outline",
-  //     title: "供应商管理",
-  //     rank: 0
-  //   },
-  //   children: [
-  //     {
-  //       path: "/supplier/index",
-  //       name: "supplier",
-  //       component: () => import("@/views/supplier/index.vue"),
-  //       meta: {
-  //         title: "供应商管理",
-  //         showParent: false,
-  //         icon: "flowbite:address-book-outline"
-  //       }
-  //     }
-  //   ]
-  // }
 ];
 
 Object.keys(modules).forEach(key => {
