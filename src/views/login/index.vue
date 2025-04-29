@@ -161,7 +161,13 @@ const ddLogin = () => {
                 email: storageLocal()?.getItem("ddUserInfo")?.org_email
               }).then(res => {
                 if (res?.success) {
-                  localStorage.setItem("userInfo", JSON.stringify(res?.data));
+                  localStorage.setItem(
+                    "userInfo",
+                    JSON.stringify({
+                      ...res?.data,
+                      hireDate: storageLocal()?.getItem("ddUserInfo")?.hiredate
+                    })
+                  );
                 }
               });
               // 登录成功，跳转到指定页面

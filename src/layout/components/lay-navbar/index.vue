@@ -20,6 +20,8 @@ import {
   getFileDownLoadPath
 } from "@/api/pmApi.ts";
 import { getUserInfoData } from "@/api/pmApi";
+import dayjs from "dayjs";
+
 const {
   layout,
   device,
@@ -31,25 +33,26 @@ const {
   avatarsStyle,
   toggleSideBar
 } = useNav();
+
 console.log("====用户信息获取==");
-console.log(storageLocal().getItem("dataSource"));
-console.log(localStorage.getItem("dataSource"));
 const {
   username: curUserName,
   userEmail,
   id: userId
 } = storageLocal()?.getItem("dataSource") || {};
+
+const { hired_date, name, email } = storageLocal()?.getItem("ddUserInfo") || {};
+
+console.log("====用户信息获取==", storageLocal()?.getItem("ddUserInfo"));
+
+const curUserData = storageLocal()?.getItem("dataSource");
+
 emitter.on("logout", () => {
   logout();
 });
 const showModifyDialog = ref(false); // 是否展示修改资料弹窗
 const form = reactive({
-  avatarUrlList: [],
-  fullName: "",
-  email: "",
-  createdAt: "",
-  lifeTimePoints: "",
-  redeemablePoints: ""
+  avatarUrlList: []
 });
 const formLabelWidth = "140px";
 const dialogImageUrl = ref("");
@@ -180,29 +183,21 @@ const fetchCurUserInfo = () => {
             </el-upload>
           </el-form-item>
           <el-form-item label="姓名">
-            <el-input
-              v-model="form.fullName"
-              autocomplete="off"
-              style="width: 240px"
-              placeholder="请输入姓名"
-            />
+            <span>{{ name }}</span>
           </el-form-item>
           <el-form-item label="邮箱">
-            <el-input
-              v-model="form.email"
-              autocomplete="off"
-              style="width: 240px"
-              placeholder="请输入邮箱"
-            />
+            <span>{{ email }}</span>
           </el-form-item>
           <el-form-item label="注册时间">
-            <span>{form.createdAt}</span>
+            <span>{{
+              hired_date ? dayjs(hired_date).format("YYYY-MM-DD") : "-"
+            }}</span>
           </el-form-item>
           <el-form-item label="长期积分">
-            <span>{form.lifeTimePoints}</span>
+            <span>{{ curUserInfo?.lifeTimePoints ?? "" }}</span>
           </el-form-item>
           <el-form-item label="可兑换积分">
-            <span>{form.redeemablePoints}</span>
+            <span>{{ curUserInfo?.redeemablePoints ?? "" }}</span>
           </el-form-item>
         </el-form>
         <template #footer>
