@@ -55,7 +55,7 @@ const routes = [
     redirect: "/classify/index",
     component: Layout,
     meta: {
-      icon: "prime:box",
+      icon: "ep:box",
       title: "Dashboard",
       rank: 0
     },
@@ -67,7 +67,7 @@ const routes = [
         meta: {
           title: "产品维护列表",
           showParent: false,
-          icon: "prime:box"
+          icon: "ep:box"
         }
       }
     ]
@@ -78,7 +78,7 @@ const routes = [
     redirect: "/history/index",
     component: Layout,
     meta: {
-      icon: "prime:box",
+      icon: "ep:document",
       title: "积分历史",
       rank: 0
     },
@@ -90,7 +90,7 @@ const routes = [
         meta: {
           title: "积分历史",
           showParent: false,
-          icon: "prime:box"
+          icon: "ep:document"
         }
       }
     ]
@@ -101,7 +101,7 @@ const routes = [
     redirect: "/scoreRank/index",
     component: Layout,
     meta: {
-      icon: "prime:box",
+      icon: "ep:trophy",
       title: "积分排行榜",
       rank: 0
     },
@@ -113,7 +113,7 @@ const routes = [
         meta: {
           title: "积分排行榜",
           showParent: false,
-          icon: "prime:box"
+          icon: "ep:trophy"
         }
       }
     ]
@@ -124,7 +124,7 @@ const routes = [
     redirect: "/monitor/index",
     component: Layout,
     meta: {
-      icon: "prime:box",
+      icon: "ep:setting",
       title: "管理员仪表板",
       rank: 0
     },
@@ -136,7 +136,7 @@ const routes = [
         meta: {
           title: "管理员仪表板",
           showParent: false,
-          icon: "prime:box"
+          icon: "ep:setting"
         }
       }
     ]
