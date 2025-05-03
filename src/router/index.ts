@@ -50,29 +50,6 @@ const Layout = () => import("@/layout/index.vue");
 /** 原始静态路由（未做任何处理） */
 const routes = [
   {
-    path: "/classify",
-    name: "classify",
-    redirect: "/classify/index",
-    component: Layout,
-    meta: {
-      icon: "ep:box",
-      title: "Dashboard",
-      rank: 0
-    },
-    children: [
-      {
-        path: "/classify/index",
-        name: "classify",
-        component: () => import("@/views/classify/index.vue"),
-        meta: {
-          title: "产品维护列表",
-          showParent: false,
-          icon: "ep:box"
-        }
-      }
-    ]
-  },
-  {
     path: "/history",
     name: "history",
     redirect: "/history/index",
