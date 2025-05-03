@@ -43,6 +43,7 @@
       type="primary"
       :disabled="!employee || !reason"
       style="width: 100%"
+      color="#161718"
       >调整积分</el-button
     >
   </el-card>
