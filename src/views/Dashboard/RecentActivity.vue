@@ -1,7 +1,7 @@
 <template>
   <el-card class="recent-activity">
     <div class="activity-title">
-      <el-icon style=" margin-right: 8px;vertical-align: middle"
+      <el-icon style="margin-right: 8px; vertical-align: middle"
         ><Clock
       /></el-icon>
       最近活动
@@ -28,8 +28,7 @@
     </div>
     <div class="activity-pagination">
       <el-pagination
-        background
-        layout="prev, pager, next"
+        layout="total,prev, pager, next"
         :page-size="pageSize"
         :total="activities.length"
         v-model:current-page="currentPage"
@@ -122,7 +121,8 @@ const pagedActivities = computed(() => {
 
 .activity-pagination {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
+  justify-content: start;
+  margin-top: 24px;
+  margin-bottom: 8px;
 }
 </style>

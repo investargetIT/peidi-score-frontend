@@ -24,52 +24,7 @@
       <el-tab-pane label="兑换历史" name="exchange">
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'exchange'" key="exchange">
-            <el-card class="exchange-history-card">
-              <div class="exchange-title">兑换历史</div>
-              <el-table
-                :data="exchangeList"
-                class="exchange-table no-border-table"
-                header-row-class-name="exchange-header"
-              >
-                <template #empty>
-                  <div
-                    style="
-                      padding: 40px 0;
-                      font-size: 18px;
-                      color: #888;
-                      text-align: center;
-                    "
-                  >
-                    请先选择一名员工以查看其兑换历史
-                  </div>
-                </template>
-                <el-table-column prop="date" label="兑换日期" width="180" />
-                <el-table-column label="物品名称" min-width="220">
-                  <template #default="scope">
-                    <div class="item-cell">
-                      <el-avatar
-                        :size="48"
-                        :src="scope.row.img"
-                        style="margin-right: 16px"
-                      />
-                      <span>{{ scope.row.name }}</span>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="points" label="积分花费" width="120" />
-                <el-table-column prop="status" label="状态" width="120">
-                  <template #default="scope">
-                    <el-tag
-                      v-if="scope.row.status === '已完成'"
-                      type="success"
-                      effect="dark"
-                      >已完成</el-tag
-                    >
-                    <el-tag v-else type="info" effect="dark">已发货</el-tag>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-card>
+            <ExchangeHistory :exchangeList="exchangeList" />
           </div>
         </transition>
       </el-tab-pane>
@@ -134,6 +89,7 @@
 import { ref, computed } from "vue";
 import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
+import ExchangeHistory from "./ExchangeHistory.vue";
 import avatarImg from "@/assets/login/avatar.svg";
 
 const activeTab = ref("manage");
@@ -272,23 +228,40 @@ const scoreHistoryList = [
 
 .main-content {
   display: flex;
-  flex: 1;
   gap: 32px;
+  align-items: stretch;
   min-height: 0;
   margin-top: 24px;
 }
 
 .employee-list {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
   max-width: 400px;
-  height: 100%;
   font-size: 15px;
 }
 
+.employee-list .el-card,
 .manage-score {
-  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 0 #e5e6eb;
+}
+
+.employee-items {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.manage-score {
   min-width: 0;
-  height: 100%;
+  min-height: 400px;
   font-size: 15px;
 }
 
