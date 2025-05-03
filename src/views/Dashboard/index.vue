@@ -1,40 +1,53 @@
 <template>
   <div>
-    <!-- 新增产品按钮 -->
-    <div class="flex justify-between items-center">
-      <div class="container">
-        <h2 class="text-2xl font-bold">Dashboard</h2>
-      </div>
+    <DashboardHeader :username="userInfo.name" :avatar="userInfo.avatar" />
+    <div class="score-cards">
+      <ScoreCard title="可兑换积分" :score="2500" type="可兑换积分" />
+      <ScoreCard title="长期积分" :score="2500" type="长期积分" />
     </div>
-    <el-descriptions title="User Info" column="3">
-      <el-descriptions-item label="Username">kooriookami</el-descriptions-item>
-      <el-descriptions-item label="Telephone">18100000000</el-descriptions-item>
-      <el-descriptions-item label="Place">Suzhou</el-descriptions-item>
-      <el-descriptions-item label="Remarks">
-        <el-tag size="small">School</el-tag>
-      </el-descriptions-item>
-      <el-descriptions-item label="Address">
-        No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
-      </el-descriptions-item>
-    </el-descriptions>
+    <RecentActivity :activities="activities" />
   </div>
 </template>
 
 <script setup>
+import DashboardHeader from "./DashboardHeader.vue";
+import ScoreCard from "./ScoreCard.vue";
+import RecentActivity from "./RecentActivity.vue";
+import avatar from "@/assets/login/avatar.svg";
 import { ref } from "vue";
+
+const userInfo = ref({
+  name: "John Doe",
+  avatar
+});
+
+const activities = [
+  { name: "Purchase reward", time: "大约 2 年前", score: 500, type: "可兑换" },
+  { name: "Loyalty bonus", time: "大约 2 年前", score: 500, type: "长期" },
+  { name: "Referral bonus", time: "将近 2 年前", score: 750, type: "可兑换" },
+  { name: "Anniversary bonus", time: "将近 2 年前", score: 750, type: "长期" },
+  {
+    name: "Points redemption",
+    time: "将近 2 年前",
+    score: -1000,
+    type: "可兑换"
+  }
+];
 </script>
 
 <style scoped>
-.dialog-footer {
-  text-align: right;
+.score-cards {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 32px;
 }
 
-.container {
-  display: flex;
-  gap: 20px;
+.score-card {
+  flex: 1;
+  min-width: 0;
+}
 
-  .el-select {
-    margin-left: 10px;
-  }
+.recent-activity {
+  width: 100%;
 }
 </style>
