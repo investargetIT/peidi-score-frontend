@@ -5,5 +5,6 @@ export default {
   date: "Date",
   description: "Description",
   type: "Type",
-  points: "Points"
+  points: "Points",
+  pointplaceholder: "Please select a status"
 };

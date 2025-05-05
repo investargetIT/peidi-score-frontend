@@ -7,7 +7,7 @@
         <el-select
           style="width: 240px"
           v-model="searchInfo.status"
-          placeholder="请选择状态"
+          :placeholder="$t('pointplaceholder')"
           clearable
         >
           <el-option
