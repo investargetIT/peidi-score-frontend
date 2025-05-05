@@ -167,10 +167,10 @@ function changeLang(lang: string) {
       <!-- 语言切换 -->
       <el-dropdown @command="changeLang" class="lang-switch">
         <span class="el-dropdown-link">
-          <el-icon style=" margin-right: 4px;vertical-align: middle">
+          <el-icon style="margin-right: 4px; vertical-align: middle">
             <i class="el-icon-translate"></i>
           </el-icon>
-          {{ locale === "en" ? "English" : "中文" }}
+          {{ locale === "en" ? "EN" : "中文" }}
         </span>
         <template #dropdown>
           <el-dropdown-menu>
@@ -178,7 +178,7 @@ function changeLang(lang: string) {
               >中文</el-dropdown-item
             >
             <el-dropdown-item :command="'en'" :disabled="locale === 'en'"
-              >English</el-dropdown-item
+              >EN</el-dropdown-item
             >
           </el-dropdown-menu>
         </template>

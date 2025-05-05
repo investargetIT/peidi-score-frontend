@@ -12,6 +12,10 @@ export default {
   description: "描述",
   type: "类型",
   points: "积分",
-  pointplaceholder: "请选择状态"
+  pointplaceholder: "请选择状态",
+  pointsrank: "积分排行榜",
+  rank: "排名",
+  user: "用户",
+  totalpoints: "总积分"
   // ...其他中文翻译
 };
