@@ -8,7 +8,7 @@ export default {
   component: Layout,
   meta: {
     icon: "prime:box",
-    title: "首页",
+    title: "menu.dashboard",
     rank: 0
   },
   children: [
@@ -17,7 +17,7 @@ export default {
       name: "task",
       component: () => import("@/views/dashboard/index.vue"),
       meta: {
-        title: "Dashboard",
+        title: "menu.dashboard",
         showParent: false
       }
     }

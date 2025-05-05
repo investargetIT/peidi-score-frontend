@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { emitter } from "@/utils/mitt";
 import { useNav } from "@/layout/hooks/useNav";
+import { useI18n } from "vue-i18n";
 import LaySearch from "../lay-search/index.vue";
 import LayNotice from "../lay-notice/index.vue";
 import { responsiveStorageNameSpace } from "@/config";
@@ -32,6 +33,8 @@ const {
   avatarsStyle
 } = useNav();
 
+const { t } = useI18n();
+
 const defaultActive = computed(() =>
   !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
 );
@@ -54,7 +57,7 @@ onMounted(() => {
   >
     <div v-if="showLogo" class="horizontal-header-left" @click="backTopMenu">
       <img :src="getLogo()" alt="logo" />
-      <span>{{ title }}</span>
+      <span>{{ t(title) }}</span>
     </div>
     <el-menu
       ref="menuRef"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { isAllEmpty } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
+import { useI18n } from "vue-i18n";
 import LaySearch from "../lay-search/index.vue";
 import LayNotice from "../lay-notice/index.vue";
 import { ref, toRaw, watch, onMounted, nextTick } from "vue";
@@ -27,6 +28,8 @@ const {
   getDivStyle,
   avatarsStyle
 } = useNav();
+
+const { t } = useI18n();
 
 function getDefaultActive(routePath) {
   const wholeMenus = usePermissionStoreHook().wholeMenus;
@@ -83,7 +86,7 @@ watch(
           </div>
           <div :style="getDivStyle">
             <span class="select-none">
-              {{ route.meta.title }}
+              {{ t(route.meta.title) }}
             </span>
             <LaySidebarExtraIcon :extraIcon="route.meta.extraIcon" />
           </div>

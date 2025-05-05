@@ -56,7 +56,7 @@ const routes = [
     component: Layout,
     meta: {
       icon: "ep:document",
-      title: "积分历史",
+      title: "menu.pointshistory",
       rank: 0
     },
     children: [
@@ -65,7 +65,7 @@ const routes = [
         name: "history",
         component: () => import("@/views/history/index.vue"),
         meta: {
-          title: "积分历史",
+          title: "menu.pointshistory",
           showParent: false,
           icon: "ep:document"
         }
@@ -79,7 +79,7 @@ const routes = [
     component: Layout,
     meta: {
       icon: "ep:trophy",
-      title: "积分排行榜",
+      title: "menu.pointsrank",
       rank: 0
     },
     children: [
@@ -88,7 +88,7 @@ const routes = [
         name: "score",
         component: () => import("@/views/scoreRank/index.vue"),
         meta: {
-          title: "积分排行榜",
+          title: "menu.pointsrank",
           showParent: false,
           icon: "ep:trophy"
         }
@@ -102,7 +102,7 @@ const routes = [
     component: Layout,
     meta: {
       icon: "ep:setting",
-      title: "管理员仪表板",
+      title: "menu.adminboard",
       rank: 0
     },
     children: [
@@ -111,7 +111,7 @@ const routes = [
         name: "monitor",
         component: () => import("@/views/monitor/index.vue"),
         meta: {
-          title: "管理员仪表板",
+          title: "menu.adminboard",
           showParent: false,
           icon: "ep:setting"
         }

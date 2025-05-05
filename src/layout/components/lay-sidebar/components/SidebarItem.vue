@@ -4,6 +4,7 @@ import { getConfig } from "@/config";
 import { menuType } from "@/layout/types";
 import { ReText } from "@/components/ReText";
 import { useNav } from "@/layout/hooks/useNav";
+import { useI18n } from "vue-i18n";
 import SidebarLinkItem from "./SidebarLinkItem.vue";
 import SidebarExtraIcon from "./SidebarExtraIcon.vue";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
@@ -23,6 +24,7 @@ import ArrowRight from "@iconify-icons/ep/arrow-right-bold";
 
 const attrs = useAttrs();
 const { layout, isCollapse, tooltipEffect, getDivStyle } = useNav();
+const { t } = useI18n();
 
 const props = defineProps({
   item: {
@@ -147,7 +149,7 @@ function resolvePath(routePath) {
         truncated
         class="!w-full !pl-4 !text-inherit"
       >
-        {{ onlyOneChild.meta.title }}
+        {{ t(onlyOneChild.meta.title) }}
       </el-text>
 
       <template #title>
@@ -160,7 +162,7 @@ function resolvePath(routePath) {
             class="!w-full !text-inherit"
             style="font-weight: 800"
           >
-            {{ onlyOneChild.meta.title }}
+            {{ t(onlyOneChild.meta.title) }}
           </ReText>
           <SidebarExtraIcon :extraIcon="onlyOneChild.meta.extraIcon" />
         </div>
@@ -207,7 +209,7 @@ function resolvePath(routePath) {
             item.parentId === null
         }"
       >
-        {{ item.meta.title }}
+        {{ t(item.meta.title) }}
       </ReText>
       <SidebarExtraIcon v-if="!isCollapse" :extraIcon="item.meta.extraIcon" />
     </template>
