@@ -14,6 +14,7 @@ import { useGlobal, isAllEmpty } from "@pureadmin/utils";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import ExitFullscreen from "@iconify-icons/ri/fullscreen-exit-fill";
 import Fullscreen from "@iconify-icons/ri/fullscreen-fill";
+import { useI18n } from "vue-i18n";
 
 const errorInfo =
   "The current routing configuration is incorrect, please check the configuration";
@@ -24,6 +25,7 @@ export function useNav() {
   const routers = useRouter().options.routes;
   const { isFullscreen, toggle } = useFullscreen();
   const { wholeMenus } = storeToRefs(usePermissionStoreHook());
+  const { t } = useI18n();
   /** 平台`layout`中所有`el-tooltip`的`effect`配置，默认`light` */
   const tooltipEffect = getConfig()?.TooltipEffect ?? "light";
 
@@ -69,12 +71,12 @@ export function useNav() {
   });
 
   const title = computed(() => {
-    return $config.Title;
+    return t("system.title");
   });
 
   /** 动态title */
   function changeTitle(meta: routeMetaType) {
-    const Title = getConfig().Title;
+    const Title = t("system.title");
     if (Title) document.title = `${meta.title} | ${Title}`;
     else document.title = meta.title;
   }

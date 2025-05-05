@@ -7,6 +7,9 @@ export default {
     adminboard: "管理员仪表板",
     dashboard: "仪表盘"
   },
+  system: {
+    title: "积分管理系统"
+  },
   pointshistory: "积分历史",
   date: "日期",
   description: "描述",

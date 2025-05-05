@@ -3,9 +3,12 @@ export default {
   lang: "Language",
   menu: {
     pointshistory: "History",
-    pointsrank: "Leaderboard",
+    pointsrank: "Redeem",
     adminboard: "Admin",
     dashboard: "Dashboard"
+  },
+  system: {
+    title: "Points Management System"
   },
   pointshistory: "Points History",
   date: "Date",

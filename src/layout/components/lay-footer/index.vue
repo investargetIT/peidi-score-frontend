@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { getConfig } from "@/config";
+import { useI18n } from "vue-i18n";
 
-const TITLE = getConfig("Title");
+const { t } = useI18n();
 </script>
 
 <template>
@@ -14,7 +14,7 @@ const TITLE = getConfig("Title");
       href="https://github.com/pure-admin"
       target="_blank"
     >
-      &nbsp;{{ TITLE }}
+      &nbsp;{{ t("system.title") }}
     </a>
   </footer>
 </template>
