@@ -3,7 +3,7 @@
     <!-- 新增产品按钮 -->
     <div class="flex justify-between items-center">
       <div class="container">
-        <h2 class="text-2xl font-bold">积分历史</h2>
+        <h2 class="text-2xl font-bold">{{ $t("pointshistory") }}</h2>
         <el-select
           style="width: 240px"
           v-model="searchInfo.status"

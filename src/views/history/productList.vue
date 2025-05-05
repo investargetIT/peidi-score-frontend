@@ -1,7 +1,7 @@
 <template>
   <div class="mt-3 rounded-sm">
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="productNo" label="日期">
+      <el-table-column prop="productNo" :label="$t('date')">
         <template #default="scope">
           <span
             @click="
@@ -13,9 +13,12 @@
           >
         </template>
       </el-table-column>
-      <el-table-column prop="productName" label="描述"></el-table-column>
+      <el-table-column
+        prop="productName"
+        :label="$t('description')"
+      ></el-table-column>
 
-      <el-table-column prop="statusName" label="类型">
+      <el-table-column prop="statusName" :label="$t('type')">
         <template #default="scope">
           <div class="flex gap-2">
             <el-popover
@@ -37,7 +40,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="productName" label="积分"></el-table-column>
+      <el-table-column
+        prop="productName"
+        :label="$t('points')"
+      ></el-table-column>
     </el-table>
     <el-pagination
       @current-change="handlePageChange"
