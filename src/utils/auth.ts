@@ -128,6 +128,7 @@ export function removeToken() {
   Cookies.remove(multipleTabsKey);
   storageLocal().removeItem(userKey);
   storageLocal().removeItem(dataSourceKey);
+  storageLocal().removeItem("curUserAvatar");
 }
 
 /** 格式化token（jwt格式） */

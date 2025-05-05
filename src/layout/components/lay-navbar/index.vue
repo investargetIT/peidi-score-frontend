@@ -128,6 +128,7 @@ const fetchCurUserInfo = () => {
         }).then(previewRes => {
           if (previewRes?.code === 200) {
             curUserAvatar.value = previewRes.data;
+            storageLocal().setItem("curUserAvatar", curUserAvatar.value);
           }
         });
       }
