@@ -11,7 +11,7 @@ import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 import { emitter } from "@/utils/mitt.ts";
 import { storageLocal } from "@pureadmin/utils";
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { getToken, formatToken } from "@/utils/auth";
 import { ElMessage } from "element-plus";
 import {
@@ -21,6 +21,7 @@ import {
 } from "@/api/pmApi.ts";
 import { getUserInfoData, updateUserInfo } from "@/api/pmApi";
 import dayjs from "dayjs";
+import { useI18n } from "vue-i18n";
 
 const {
   layout,
@@ -135,6 +136,15 @@ const fetchCurUserInfo = () => {
     }
   });
 };
+
+const { locale } = useI18n();
+const currentLangLabel = computed(() =>
+  locale.value === "en" ? "English" : "中文"
+);
+function changeLang(lang: string) {
+  locale.value = lang;
+  localStorage.setItem("lang", lang);
+}
 </script>
 
 <template>
@@ -154,13 +164,22 @@ const fetchCurUserInfo = () => {
     <LayNavMix v-if="layout === 'mix'" />
 
     <div v-if="layout === 'vertical'" class="vertical-header-right">
-      <!-- 菜单搜索 -->
-      <!-- <LaySearch id="header-search" /> -->
-      <!-- 全屏 -->
-      <!-- <LaySidebarFullScreen id="full-screen" /> -->
-      <!-- 消息通知 -->
-      <!-- <LayNotice id="header-notice" /> -->
-      <!-- 退出登录 -->
+      <!-- 语言切换 -->
+      <el-dropdown @command="changeLang" class="lang-switch">
+        <span class="el-dropdown-link">
+          <el-icon style=" margin-right: 4px;vertical-align: middle">
+            <i class="el-icon-translate"></i>
+          </el-icon>
+          {{ currentLangLabel }}
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="zh">中文</el-dropdown-item>
+            <el-dropdown-item command="en">English</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+      <!-- 头像及用户信息 -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
           <img :src="curUserAvatar || userAvatar" :style="avatarsStyle" />
@@ -310,5 +329,9 @@ const fetchCurUserInfo = () => {
     flex-wrap: wrap;
     min-width: 100%;
   }
+}
+
+.lang-switch {
+  margin-right: 16px;
 }
 </style>

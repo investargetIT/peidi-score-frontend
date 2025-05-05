@@ -21,6 +21,9 @@ import "element-plus/dist/index.css";
 // 导入字体图标
 import "./assets/iconfont/iconfont.js";
 import "./assets/iconfont/iconfont.css";
+import en from "./locales/en";
+import zh from "./locales/zh";
+import { createI18n } from "vue-i18n";
 
 const app = createApp(App);
 
@@ -53,6 +56,13 @@ import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import VueTippy from "vue-tippy";
 app.use(VueTippy);
+
+const lang = localStorage.getItem("lang") || "zh";
+const i18n = createI18n({
+  locale: lang,
+  messages: { en, zh }
+});
+app.use(i18n);
 
 getPlatformConfig(app).then(async config => {
   setupStore(app);
