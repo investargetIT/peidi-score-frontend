@@ -139,7 +139,7 @@ const fetchCurUserInfo = () => {
 
 const { locale } = useI18n();
 const currentLangLabel = computed(() =>
-  locale.value === "en" ? "English" : "中文"
+  locale.value === "en" ? "EN" : "中文"
 );
 function changeLang(lang: string) {
   locale.value = lang;
@@ -170,12 +170,16 @@ function changeLang(lang: string) {
           <el-icon style=" margin-right: 4px;vertical-align: middle">
             <i class="el-icon-translate"></i>
           </el-icon>
-          {{ currentLangLabel }}
+          {{ locale === "en" ? "English" : "中文" }}
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="zh">中文</el-dropdown-item>
-            <el-dropdown-item command="en">English</el-dropdown-item>
+            <el-dropdown-item :command="'zh'" :disabled="locale === 'zh'"
+              >中文</el-dropdown-item
+            >
+            <el-dropdown-item :command="'en'" :disabled="locale === 'en'"
+              >English</el-dropdown-item
+            >
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -333,5 +337,20 @@ function changeLang(lang: string) {
 
 .lang-switch {
   margin-right: 16px;
+}
+
+.lang-switch .el-dropdown-link {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.lang-switch .el-dropdown-link:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.lang-switch .el-dropdown-link:active {
+  outline: none !important;
+  box-shadow: none !important;
 }
 </style>
