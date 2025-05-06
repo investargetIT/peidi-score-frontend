@@ -19,5 +19,10 @@ export default {
   pointsrank: "Points Leaderboard",
   rank: "Rank",
   user: "User",
-  totalpoints: "Total Points"
+  totalpoints: "Total Points",
+  dashboard: {
+    welcome: "Welcome",
+    exchangeablePoints: "Exchangeable Points",
+    longTermPoints: "Long-Term Points"
+  }
 };

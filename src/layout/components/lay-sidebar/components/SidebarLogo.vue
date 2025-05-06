@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { getTopMenu } from "@/router/utils";
 import { useNav } from "@/layout/hooks/useNav";
+import { useI18n } from "vue-i18n";
 
 defineProps({
   collapse: Boolean
 });
 
 const { title, getLogo } = useNav();
+const { t } = useI18n();
 </script>
 
 <template>
@@ -20,7 +22,6 @@ const { title, getLogo } = useNav();
         :to="getTopMenu()?.path ?? '/'"
       >
         <img :src="getLogo()" alt="logo" />
-        <!-- <span class="sidebar-title">{{ title }}</span> -->
       </router-link>
       <router-link
         v-else
@@ -30,7 +31,6 @@ const { title, getLogo } = useNav();
         :to="getTopMenu()?.path ?? '/'"
       >
         <img :src="getLogo()" alt="logo" />
-        <!-- <span class="sidebar-title">{{ title }}</span> -->
       </router-link>
     </transition>
   </div>

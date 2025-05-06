@@ -2,7 +2,7 @@
   <div class="dashboard-header">
     <div class="header-content">
       <div>
-        <div class="welcome">欢迎</div>
+        <div class="welcome">{{ t("dashboard.welcome") }}</div>
         <div class="username">{{ username }}</div>
       </div>
       <el-avatar :size="64" :src="avatar" />
@@ -12,6 +12,10 @@
 
 <script setup>
 import { defineProps } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
 const props = defineProps({
   username: { type: String, default: "John Doe" },
   avatar: { type: String, default: "" }

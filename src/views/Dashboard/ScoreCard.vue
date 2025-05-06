@@ -2,7 +2,6 @@
   <el-card class="score-card">
     <div class="card-title">{{ title }}</div>
     <div class="card-score">{{ score }}</div>
-    <div class="card-type">{{ type }}</div>
   </el-card>
 </template>
 

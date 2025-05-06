@@ -2,10 +2,17 @@
   <div>
     <DashboardHeader :username="name" :avatar="avatar" />
     <div class="score-cards">
-      <ScoreCard title="可兑换积分" :score="2500" type="可兑换积分" />
-      <ScoreCard title="长期积分" :score="2500" type="长期积分" />
+      <ScoreCard
+        :title="t('dashboard.exchangeablePoints')"
+        :score="2500"
+        :type="t('dashboard.exchangeablePoints')"
+      />
+      <ScoreCard
+        :title="t('dashboard.longTermPoints')"
+        :score="2500"
+        :type="t('dashboard.longTermPoints')"
+      />
     </div>
-    <RecentActivity :activities="activities" />
   </div>
 </template>
 
@@ -16,6 +23,9 @@ import RecentActivity from "./RecentActivity.vue";
 import { ref } from "vue";
 import { storageLocal } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const { userAvatar } = useNav();
 

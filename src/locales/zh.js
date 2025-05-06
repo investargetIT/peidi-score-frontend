@@ -19,6 +19,11 @@ export default {
   pointsrank: "积分排行榜",
   rank: "排名",
   user: "用户",
-  totalpoints: "总积分"
+  totalpoints: "总积分",
+  dashboard: {
+    welcome: "欢迎",
+    exchangeablePoints: "可兑换积分",
+    longTermPoints: "长期积分"
+  }
   // ...其他中文翻译
 };
