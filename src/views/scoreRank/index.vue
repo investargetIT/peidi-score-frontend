@@ -3,7 +3,7 @@
     <!-- 新增产品按钮 -->
     <div class="flex justify-between items-center">
       <div class="container">
-        <h2 class="text-2xl font-bold">{{ $t("menu.pointsrank") }}</h2>
+        <h2 class="text-2xl font-bold">{{ $t("leaderboard.pointsrank") }}</h2>
       </div>
     </div>
     <!-- 产品列表 -->

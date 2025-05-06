@@ -10,16 +10,20 @@ export default {
   system: {
     title: "积分管理系统"
   },
-  pointshistory: "积分历史",
-  date: "日期",
-  description: "描述",
-  type: "类型",
-  points: "积分",
-  pointplaceholder: "请选择状态",
-  pointsrank: "积分排行榜",
-  rank: "排名",
-  user: "用户",
-  totalpoints: "总积分",
+  history: {
+    pointshistory: "积分历史",
+    date: "日期",
+    description: "描述",
+    type: "类型",
+    points: "积分",
+    pointplaceholder: "请选择状态"
+  },
+  leaderboard: {
+    pointsrank: "积分排行榜",
+    rank: "排名",
+    user: "用户",
+    totalpoints: "总积分"
+  },
   dashboard: {
     welcome: "欢迎",
     exchangeablePoints: "可兑换积分",

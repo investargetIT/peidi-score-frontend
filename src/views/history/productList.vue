@@ -1,7 +1,7 @@
 <template>
   <div class="mt-3 rounded-sm">
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="productNo" :label="$t('date')">
+      <el-table-column prop="productNo" :label="$t('history.date')">
         <template #default="scope">
           <span
             @click="
@@ -15,10 +15,10 @@
       </el-table-column>
       <el-table-column
         prop="productName"
-        :label="$t('description')"
+        :label="$t('history.description')"
       ></el-table-column>
 
-      <el-table-column prop="statusName" :label="$t('type')">
+      <el-table-column prop="statusName" :label="$t('history.type')">
         <template #default="scope">
           <div class="flex gap-2">
             <el-popover
@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column
         prop="productName"
-        :label="$t('points')"
+        :label="$t('history.points')"
       ></el-table-column>
     </el-table>
     <el-pagination
