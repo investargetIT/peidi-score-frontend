@@ -6,12 +6,12 @@
         <h2 class="text-2xl font-bold">{{ $t("history.pointshistory") }}</h2>
         <el-select
           style="width: 240px"
-          v-model="searchInfo.status"
+          v-model="searchInfo.recordTypeId"
           :placeholder="$t('history.pointplaceholder')"
           clearable
         >
           <el-option
-            v-for="item in statusList"
+            v-for="item in enumTypeList"
             :label="item.label"
             :value="item.value"
           />
@@ -29,29 +29,36 @@
 
 <script setup>
 import { ref } from "vue";
-import { fetchStatusList } from "@/api/pmApi.ts";
+import { getEnumTypeList } from "@/api/pmApi.ts";
 import productList from "./productList.vue";
 const statusList = ref([]);
 const listRef = ref(null);
 const searchInfo = ref({
-  status: "",
+  recordTypeId: "all",
   productNo: "",
   productName: ""
 });
+const enumTypeList = ref([]);
 
-const getStatusList = () => {
-  fetchStatusList().then(res => {
-    if (res.code === 200) {
-      statusList.value = res.data?.map(item => {
+const fetchEnumTypeList = () => {
+  getEnumTypeList({ type: "pointType" }).then(res => {
+    if (res?.code === 200) {
+      const tempArr = res.data?.map(item => {
         return {
           label: item.value,
           value: item.id
         };
       });
+      tempArr.unshift({
+        label: "全部",
+        value: "all"
+      });
+      enumTypeList.value = tempArr;
     }
   });
 };
-getStatusList();
+
+fetchEnumTypeList();
 </script>
 
 <style scoped>

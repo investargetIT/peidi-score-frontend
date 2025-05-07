@@ -59,7 +59,11 @@
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
-import { getProductList, deleteProduct } from "@/api/pmApi.ts";
+import {
+  getProductList,
+  deleteProduct,
+  getScoreHistoryList
+} from "@/api/pmApi.ts";
 import { reverseMapping, mapping } from "./utils";
 import { debounce, storageLocal } from "@pureadmin/utils";
 const tableData = ref([]);
@@ -71,6 +75,7 @@ const pagination = ref({
 const dialogVisible = ref(false);
 const recordDialogVisible = ref(false);
 const selectedDetails = ref({});
+
 // 在 computed 部分添加状态转换函数
 const getStatusTags = computed(() => {
   return (statusName: string) => {
@@ -128,17 +133,24 @@ const fetchProductList = () => {
     pageSize: pagination.value.pageSize
   };
   const searchArr = [] as any;
+  console.log(props.searchInfo);
+  console.log("===筛选条件啊");
   Object.keys(props.searchInfo)?.forEach(key => {
     const searchParams = {} as any;
-    if (props.searchInfo[key]) {
+    if (props.searchInfo[key] && props.searchInfo[key] !== "all") {
       searchParams.searchName = key;
       searchParams.searchType = "like";
       searchParams.searchValue = props.searchInfo[key];
       searchArr.push(searchParams);
     }
   });
+  searchArr.push({
+    searchName: "userId",
+    searchType: "equals",
+    searchValue: storageLocal().getItem("dataSource")?.id
+  });
   commonInfo.searchStr = JSON.stringify(searchArr);
-  getProductList(commonInfo).then(res => {
+  getScoreHistoryList(commonInfo).then(res => {
     // 为每个产品添加默认状态
     const products = res.data.records.map(product => ({
       ...product
@@ -152,8 +164,6 @@ const handlePageChange = (pageNo: number) => {
   pagination.value.pageNo = pageNo;
   fetchProductList();
 };
-
-fetchProductList();
 
 defineExpose({
   fetchProductList

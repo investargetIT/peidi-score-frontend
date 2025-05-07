@@ -38,8 +38,8 @@ const baseOmsUrlApi = (url: string) => {
   return `https://api.peidigroup.cn/oms${url}`;
 };
 
-const baseUrlApi = (url: string, hasPm = true) => {
-  return `https://api.peidigroup.cn/${hasPm ? "prm" : ""}${url}`;
+const baseUrlApi = (url: string, hasUi = true) => {
+  return `https://api.peidigroup.cn/${hasUi ? "ui" : ""}${url}`;
 };
 
 const commonUrlApi = (url: string) => `${"https://user.peidigroup.cn"}${url}`;
@@ -146,6 +146,20 @@ export const updateUserInfo = data => {
 // 获取用户信息
 export const getUserInfoData = params => {
   return http.request("get", baseUrlApi("ui/user/info", false), {
+    params
+  });
+};
+
+// 获取积分历史信息
+export const getScoreHistoryList = params => {
+  return http.request("get", baseUrlApi("/point/record/page"), {
+    params
+  });
+};
+
+// 获取枚举信息
+export const getEnumTypeList = params => {
+  return http.request("get", baseUrlApi("/common/enum"), {
     params
   });
 };
