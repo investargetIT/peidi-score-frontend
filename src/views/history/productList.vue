@@ -1,7 +1,11 @@
 <template>
   <div class="mt-3 rounded-sm">
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="productNo" :label="$t('history.date')">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      :empty-text="t('table.emptyText')"
+    >
+      <el-table-column prop="productNo" :label="t('history.date')">
         <template #default="scope">
           <span
             @click="
@@ -15,10 +19,10 @@
       </el-table-column>
       <el-table-column
         prop="productName"
-        :label="$t('history.description')"
+        :label="t('history.description')"
       ></el-table-column>
 
-      <el-table-column prop="statusName" :label="$t('history.type')">
+      <el-table-column prop="statusName" :label="t('history.type')">
         <template #default="scope">
           <div class="flex gap-2">
             <el-popover
@@ -42,7 +46,7 @@
       </el-table-column>
       <el-table-column
         prop="productName"
-        :label="$t('history.points')"
+        :label="t('history.points')"
       ></el-table-column>
     </el-table>
     <el-pagination
@@ -59,6 +63,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
+import { useI18n } from "vue-i18n";
 import {
   getProductList,
   deleteProduct,
@@ -66,6 +71,8 @@ import {
 } from "@/api/pmApi.ts";
 import { reverseMapping, mapping } from "./utils";
 import { debounce, storageLocal } from "@pureadmin/utils";
+
+const { t } = useI18n();
 const tableData = ref([]);
 const pagination = ref({
   pageNo: 1,
@@ -127,14 +134,11 @@ watch(
 );
 
 const fetchProductList = () => {
-  const searchStr: any = [];
   const commonInfo: IQueryParams = {
     pageNo: pagination.value.pageNo,
     pageSize: pagination.value.pageSize
   };
   const searchArr = [] as any;
-  console.log(props.searchInfo);
-  console.log("===筛选条件啊");
   Object.keys(props.searchInfo)?.forEach(key => {
     const searchParams = {} as any;
     if (props.searchInfo[key] && props.searchInfo[key] !== "all") {

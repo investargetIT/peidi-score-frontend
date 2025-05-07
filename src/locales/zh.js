@@ -28,6 +28,9 @@ export default {
     welcome: "欢迎",
     exchangeablePoints: "可兑换积分",
     longTermPoints: "长期积分"
+  },
+  table: {
+    emptyText: "暂无数据"
   }
   // ...其他中文翻译
 };

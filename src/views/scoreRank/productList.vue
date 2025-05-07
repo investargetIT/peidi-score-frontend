@@ -1,6 +1,10 @@
 <template>
   <div class="mt-3 rounded-sm">
-    <el-table :data="tableData" style="width: 100%">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      :empty-text="t('table.emptyText')"
+    >
       <el-table-column prop="productNo" :label="$t('leaderboard.rank')">
         <template #default="scope">
           <span
@@ -54,6 +58,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
+import { useI18n } from "vue-i18n";
 import {
   getProductList,
   deleteProduct,
@@ -69,6 +74,7 @@ const pagination = ref({
 const dialogVisible = ref(false);
 const recordDialogVisible = ref(false);
 const selectedDetails = ref({});
+const { t } = useI18n();
 // 在 computed 部分添加状态转换函数
 const getStatusTags = computed(() => {
   return (statusName: string) => {
