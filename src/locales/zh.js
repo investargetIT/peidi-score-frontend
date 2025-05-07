@@ -37,7 +37,8 @@ export default {
   },
   common: {
     all: "全部",
-    currentLang: "zh"
+    currentLang: "zh",
+    recordCount: "记录数：{count}"
   }
   // ...其他中文翻译
 };

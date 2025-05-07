@@ -5,7 +5,17 @@
       style="width: 100%"
       :empty-text="t('table.emptyText')"
     >
-      <el-table-column prop="createAt" :label="t('history.date')">
+      <el-table-column prop="productNo" :label="t('history.date')">
+        <template #default="scope">
+          <span
+            @click="
+              selectedDetails = scope.row;
+              recordDialogVisible = true;
+            "
+            class="cursor-pointer underline"
+            >{{ scope.row.productNo }}</span
+          >
+        </template>
       </el-table-column>
       <el-table-column
         prop="productName"
@@ -20,7 +30,7 @@
               :key="index"
               placement="top"
               trigger="hover"
-              :content="`记录数：${status?.number}`"
+              :content="t('common.recordCount', { count: status?.number })"
             >
               <template #reference>
                 <el-tag
@@ -44,13 +54,10 @@
       :current-page="pagination.pageNo"
       :page-size="pagination.pageSize"
       :total="pagination.total"
+      :locale="paginationLocale"
       layout="total, prev, pager, next"
       style="width: 100%; margin-top: 20px; text-align: center"
-    >
-      <template #total>
-        {{ t("pagination.total", { total: pagination.total }) }}
-      </template>
-    </el-pagination>
+    />
   </div>
 </template>
 
@@ -60,13 +67,23 @@ import { useI18n } from "vue-i18n";
 import { getScoreHistoryList } from "@/api/pmApi.ts";
 import { debounce, storageLocal } from "@pureadmin/utils";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const tableData = ref([]);
 const pagination = ref({
   pageNo: 1,
   pageSize: 10,
   total: 0
 });
+
+const paginationLocale = computed(() => {
+  return {
+    total: t("pagination.total", { total: pagination.value.total })
+  };
+});
+
+const dialogVisible = ref(false);
+const recordDialogVisible = ref(false);
+const selectedDetails = ref({});
 
 // 在 computed 部分添加状态转换函数
 const getStatusTags = computed(() => {
@@ -76,12 +93,15 @@ const getStatusTags = computed(() => {
       .split(",")
       .map(item => item.trim())
       .map(item => {
-        const [_, text, number] = item.match(/^([\p{Script=Han}]+)\((\d+)\)$/u);
+        const match = item.match(/^([\p{Script=Han}]+)\((\d+)\)$/u);
+        if (!match) return null;
+        const [_, text, number] = match;
         return {
           text,
           number
         };
-      });
+      })
+      .filter(Boolean);
   };
 });
 
@@ -119,11 +139,14 @@ watch(
 );
 
 const fetchProductList = () => {
+  const searchStr: any = [];
   const commonInfo: IQueryParams = {
     pageNo: pagination.value.pageNo,
     pageSize: pagination.value.pageSize
   };
   const searchArr = [] as any;
+  console.log(props.searchInfo);
+  console.log("===筛选条件啊");
   Object.keys(props.searchInfo)?.forEach(key => {
     const searchParams = {} as any;
     if (props.searchInfo[key] && props.searchInfo[key] !== "all") {
@@ -140,7 +163,11 @@ const fetchProductList = () => {
   });
   commonInfo.searchStr = JSON.stringify(searchArr);
   getScoreHistoryList(commonInfo).then(res => {
-    tableData.value = res.data?.records || [];
+    // 为每个产品添加默认状态
+    const products = res.data.records.map(product => ({
+      ...product
+    }));
+    tableData.value = products;
     pagination.value.total = res.data.total;
   });
 };
