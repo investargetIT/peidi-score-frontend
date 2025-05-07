@@ -142,6 +142,7 @@ function changeLang(lang: string) {
   locale.value = lang;
   localStorage.setItem("lang", lang);
 }
+fetchCurUserInfo();
 </script>
 
 <template>

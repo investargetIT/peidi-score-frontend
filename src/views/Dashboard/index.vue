@@ -4,12 +4,12 @@
     <div class="score-cards">
       <ScoreCard
         :title="t('dashboard.exchangeablePoints')"
-        :score="2500"
+        :score="curUserInfo?.redeemablePoints"
         :type="t('dashboard.exchangeablePoints')"
       />
       <ScoreCard
         :title="t('dashboard.longTermPoints')"
-        :score="2500"
+        :score="curUserInfo?.lifeTimePoints"
         :type="t('dashboard.longTermPoints')"
       />
     </div>
@@ -25,10 +25,13 @@ import { ref } from "vue";
 import { storageLocal } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
 import { useI18n } from "vue-i18n";
+import { getUserInfoData, getFileDownLoadPath } from "@/api/pmApi";
 
 const { t } = useI18n();
+const { id } = storageLocal()?.getItem("dataSource") || {};
 
 const { userAvatar } = useNav();
+const curUserInfo = ref({});
 
 const { name } = storageLocal()?.getItem("ddUserInfo") || {};
 const avatar = storageLocal()?.getItem("curUserAvatar") || userAvatar;
@@ -45,6 +48,33 @@ const activities = [
     type: "可兑换"
   }
 ];
+
+const fetchCurUserInfo = () => {
+  getUserInfoData({
+    userId: id
+  }).then(res => {
+    if (res?.code === 200) {
+      curUserInfo.value = res.data;
+      const avatarList = res?.data?.avatarUrl
+        ? JSON.parse(curUserInfo.value.avatarUrl)
+        : [];
+
+      // 获取头像预览地址
+      if (avatarList.length > 0) {
+        getFileDownLoadPath({
+          objectName: "ui/user/" + avatarList[0].name
+        }).then(previewRes => {
+          if (previewRes?.code === 200) {
+            curUserAvatar.value = previewRes.data;
+            storageLocal().setItem("curUserAvatar", curUserAvatar.value);
+          }
+        });
+      }
+    }
+  });
+};
+
+fetchCurUserInfo();
 </script>
 
 <style scoped>
