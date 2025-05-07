@@ -5,43 +5,24 @@
       style="width: 100%"
       :empty-text="t('table.emptyText')"
     >
-      <el-table-column prop="productNo" :label="$t('leaderboard.rank')">
+      <el-table-column :label="t('leaderboard.rank')">
         <template #default="scope">
-          <span
-            @click="
-              selectedDetails = scope.row;
-              recordDialogVisible = true;
-            "
-            class="cursor-pointer underline"
-            >{{ scope.row.productNo }}</span
-          >
+          <span>{{ scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="statusName" :label="$t('leaderboard.user')">
+      <el-table-column prop="fullName" :label="t('leaderboard.user')">
         <template #default="scope">
           <div class="flex gap-2">
-            <el-popover
-              v-for="(status, index) in getStatusTags(scope.row.statusName)"
-              :key="index"
-              placement="top"
-              trigger="hover"
-              :content="`记录数：${status?.number}`"
-            >
-              <template #reference>
-                <el-tag
-                  class="mx-1"
-                  :type="status?.text === '审核通过' ? 'success' : 'info'"
-                >
-                  {{ status?.text }}
-                </el-tag>
-              </template>
-            </el-popover>
+            <span>
+              <img :src="avatarUrls[scope.row.id]" alt="" />
+            </span>
+            <span>{{ scope.row.fullName }}</span>
           </div>
         </template>
       </el-table-column>
       <el-table-column
         prop="bothPoints"
-        :label="$t('leaderboard.totalpoints')"
+        :label="t('leaderboard.totalpoints')"
       ></el-table-column>
     </el-table>
     <el-pagination
@@ -59,37 +40,34 @@
 import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
-import {
-  getProductList,
-  deleteProduct,
-  getScoreRankList
-} from "@/api/pmApi.ts";
+import { getScoreRankList, getFileDownLoadPath } from "@/api/pmApi.ts";
 const tableData = ref([]);
 const pagination = ref({
   pageNo: 1,
   pageSize: 10,
   total: 0
 });
-const dialogVisible = ref(false);
-const recordDialogVisible = ref(false);
-const selectedDetails = ref({});
 const { t } = useI18n();
-// 在 computed 部分添加状态转换函数
-const getStatusTags = computed(() => {
-  return (statusName: string) => {
-    if (!statusName) return [];
-    return statusName
-      .split(",")
-      .map(item => item.trim())
-      .map(item => {
-        const [_, text, number] = item.match(/^([\p{Script=Han}]+)\((\d+)\)$/u);
-        return {
-          text,
-          number
-        };
-      });
-  };
-});
+const dialogImageUrl = ref("");
+const avatarUrls = ref({});
+
+const getPreviewUrl = async (file, userId) => {
+  if (!file) return "";
+  try {
+    const fileInfo = JSON.parse(file) || [];
+    const res = await getFileDownLoadPath({
+      objectName: "ui/user/" + fileInfo?.[0]?.response?.data
+    });
+    if (res.code === 200) {
+      avatarUrls.value[userId] = res.data;
+      return res.data;
+    }
+    return "";
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+};
 
 interface IQueryParams {
   pageNo: number;
@@ -97,7 +75,7 @@ interface IQueryParams {
   sortStr?: string;
 }
 
-const fetchProductList = () => {
+const fetchProductList = async () => {
   const commonInfo: IQueryParams = {
     pageNo: pagination.value.pageNo,
     pageSize: pagination.value.pageSize
@@ -105,10 +83,18 @@ const fetchProductList = () => {
   commonInfo.sortStr = JSON.stringify([
     { sortName: "bothPoints", sortType: "desc" }
   ]);
-  getScoreRankList(commonInfo).then(res => {
-    tableData.value = res?.data?.records || [];
-    pagination.value.total = res?.data?.total || 0;
-  });
+  const res = await getScoreRankList(commonInfo);
+  if (res?.data?.records) {
+    tableData.value = res.data.records;
+    pagination.value.total = res.data.total || 0;
+
+    // 预加载所有头像
+    for (const record of res.data.records) {
+      if (record.avatarUrl) {
+        await getPreviewUrl(record.avatarUrl, record.id);
+      }
+    }
+  }
 };
 
 const handlePageChange = (pageNo: number) => {

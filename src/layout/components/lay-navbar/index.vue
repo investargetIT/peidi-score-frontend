@@ -35,12 +35,9 @@ const {
   toggleSideBar
 } = useNav();
 
-console.log("====用户信息获取==");
 const { id } = storageLocal()?.getItem("dataSource") || {};
 
 const { hired_date, name, email } = storageLocal()?.getItem("ddUserInfo") || {};
-
-console.log("====用户信息获取==", storageLocal()?.getItem("ddUserInfo"));
 
 emitter.on("logout", () => {
   logout();
