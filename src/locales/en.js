@@ -36,7 +36,7 @@ export default {
     total: "Total {total} items"
   },
   common: {
-    all: "All",
+    all: "all",
     currentLang: "en"
   }
 };
