@@ -21,13 +21,13 @@
           </div>
         </transition>
       </el-tab-pane>
-      <el-tab-pane label="兑换历史" name="exchange">
+      <!-- <el-tab-pane label="兑换历史" name="exchange">
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'exchange'" key="exchange">
             <ExchangeHistory :exchangeList="exchangeList" />
           </div>
         </transition>
-      </el-tab-pane>
+      </el-tab-pane> -->
       <el-tab-pane label="积分历史" name="history">
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'history'" key="history">
