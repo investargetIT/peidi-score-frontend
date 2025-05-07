@@ -5,17 +5,7 @@
       style="width: 100%"
       :empty-text="t('table.emptyText')"
     >
-      <el-table-column prop="productNo" :label="t('history.date')">
-        <template #default="scope">
-          <span
-            @click="
-              selectedDetails = scope.row;
-              recordDialogVisible = true;
-            "
-            class="cursor-pointer underline"
-            >{{ scope.row.productNo }}</span
-          >
-        </template>
+      <el-table-column prop="createAt" :label="t('history.date')">
       </el-table-column>
       <el-table-column
         prop="productName"
@@ -66,14 +56,8 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
-import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
-import {
-  getProductList,
-  deleteProduct,
-  getScoreHistoryList
-} from "@/api/pmApi.ts";
-import { reverseMapping, mapping } from "./utils";
+import { getScoreHistoryList } from "@/api/pmApi.ts";
 import { debounce, storageLocal } from "@pureadmin/utils";
 
 const { t } = useI18n();
@@ -83,9 +67,6 @@ const pagination = ref({
   pageSize: 10,
   total: 0
 });
-const dialogVisible = ref(false);
-const recordDialogVisible = ref(false);
-const selectedDetails = ref({});
 
 // 在 computed 部分添加状态转换函数
 const getStatusTags = computed(() => {
@@ -159,11 +140,7 @@ const fetchProductList = () => {
   });
   commonInfo.searchStr = JSON.stringify(searchArr);
   getScoreHistoryList(commonInfo).then(res => {
-    // 为每个产品添加默认状态
-    const products = res.data.records.map(product => ({
-      ...product
-    }));
-    tableData.value = products.map(product => reverseMapping(product));
+    tableData.value = res.data?.records || [];
     pagination.value.total = res.data.total;
   });
 };

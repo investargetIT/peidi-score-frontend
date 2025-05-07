@@ -40,7 +40,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="productName"
+        prop="bothPoints"
         :label="$t('leaderboard.totalpoints')"
       ></el-table-column>
     </el-table>
@@ -64,7 +64,6 @@ import {
   deleteProduct,
   getScoreRankList
 } from "@/api/pmApi.ts";
-import { reverseMapping, mapping } from "./utils";
 const tableData = ref([]);
 const pagination = ref({
   pageNo: 1,
@@ -107,12 +106,8 @@ const fetchProductList = () => {
     { sortName: "bothPoints", sortType: "desc" }
   ]);
   getScoreRankList(commonInfo).then(res => {
-    // 为每个产品添加默认状态
-    const products = res.data.records.map(product => ({
-      ...product
-    }));
-    tableData.value = products.map(product => reverseMapping(product));
-    pagination.value.total = res.data.total;
+    tableData.value = res?.data?.records || [];
+    pagination.value.total = res?.data?.total || 0;
   });
 };
 
