@@ -163,3 +163,10 @@ export const getEnumTypeList = params => {
     params
   });
 };
+
+// 获取积分排行榜信息
+export const getScoreRankList = params => {
+  return http.request("get", baseUrlApi("/user/page"), {
+    params
+  });
+};

@@ -7,39 +7,14 @@
       </div>
     </div>
     <!-- 产品列表 -->
-    <productList
-      ref="listRef"
-      :searchInfo="searchInfo"
-      :statusList="statusList"
-    />
+    <productList ref="listRef" />
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { fetchStatusList } from "@/api/pmApi.ts";
 import productList from "./productList.vue";
-const statusList = ref([]);
 const listRef = ref(null);
-const searchInfo = ref({
-  status: "",
-  productNo: "",
-  productName: ""
-});
-
-const getStatusList = () => {
-  fetchStatusList().then(res => {
-    if (res.code === 200) {
-      statusList.value = res.data?.map(item => {
-        return {
-          label: item.value,
-          value: item.id
-        };
-      });
-    }
-  });
-};
-getStatusList();
 </script>
 
 <style scoped>

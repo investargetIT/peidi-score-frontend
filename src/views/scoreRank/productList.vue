@@ -54,9 +54,12 @@
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
-import { getProductList, deleteProduct } from "@/api/pmApi.ts";
+import {
+  getProductList,
+  deleteProduct,
+  getScoreRankList
+} from "@/api/pmApi.ts";
 import { reverseMapping, mapping } from "./utils";
-import { debounce, storageLocal } from "@pureadmin/utils";
 const tableData = ref([]);
 const pagination = ref({
   pageNo: 1,
@@ -83,57 +86,21 @@ const getStatusTags = computed(() => {
   };
 });
 
-const props = defineProps({
-  searchInfo: {
-    type: Object,
-    default: () => ({
-      sStatus: "",
-      productNo: "",
-      productName: ""
-    })
-  },
-  statusList: {
-    type: Array,
-    default: () => []
-  }
-});
-
 interface IQueryParams {
   pageNo: number;
   pageSize: number;
-  searchStr?: string;
+  sortStr?: string;
 }
 
-const debouncedFetch = debounce(() => {
-  fetchProductList();
-}, 500);
-
-watch(
-  () => props.searchInfo,
-  newVal => {
-    debouncedFetch();
-  },
-  { immediate: true, deep: true }
-);
-
 const fetchProductList = () => {
-  const searchStr: any = [];
   const commonInfo: IQueryParams = {
     pageNo: pagination.value.pageNo,
     pageSize: pagination.value.pageSize
   };
-  const searchArr = [] as any;
-  Object.keys(props.searchInfo)?.forEach(key => {
-    const searchParams = {} as any;
-    if (props.searchInfo[key]) {
-      searchParams.searchName = key;
-      searchParams.searchType = "like";
-      searchParams.searchValue = props.searchInfo[key];
-      searchArr.push(searchParams);
-    }
-  });
-  commonInfo.searchStr = JSON.stringify(searchArr);
-  getProductList(commonInfo).then(res => {
+  commonInfo.sortStr = JSON.stringify([
+    { sortName: "bothPoints", sortType: "desc" }
+  ]);
+  getScoreRankList(commonInfo).then(res => {
     // 为每个产品添加默认状态
     const products = res.data.records.map(product => ({
       ...product
