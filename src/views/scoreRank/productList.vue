@@ -14,7 +14,7 @@
         <template #default="scope">
           <div class="flex gap-2">
             <span>
-              <img :src="avatarUrls[scope.row.id]" alt="" />
+              <img class="userIcon" :src="avatarUrls[scope.row.email]" alt="" />
             </span>
             <span>{{ scope.row.fullName }}</span>
           </div>
@@ -56,7 +56,7 @@ const getPreviewUrl = async (file, userId) => {
   try {
     const fileInfo = JSON.parse(file) || [];
     const res = await getFileDownLoadPath({
-      objectName: "ui/user/" + fileInfo?.[0]?.response?.data
+      objectName: fileInfo?.[0]?.response?.data
     });
     if (res.code === 200) {
       avatarUrls.value[userId] = res.data;
@@ -91,7 +91,8 @@ const fetchProductList = async () => {
     // 预加载所有头像
     for (const record of res.data.records) {
       if (record.avatarUrl) {
-        await getPreviewUrl(record.avatarUrl, record.id);
+        // todo, 头像预览地址，唯一索引key，后续添加
+        await getPreviewUrl(record.avatarUrl, record.email);
       }
     }
   }
@@ -108,8 +109,14 @@ defineExpose({
   fetchProductList
 });
 </script>
-<style>
+<style scoped>
 .hhh {
   color: red;
+}
+
+.userIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 </style>
