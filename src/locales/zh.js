@@ -31,6 +31,9 @@ export default {
   },
   table: {
     emptyText: "暂无数据"
+  },
+  pagination: {
+    total: "共 {total} 条"
   }
   // ...其他中文翻译
 };

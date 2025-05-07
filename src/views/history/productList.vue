@@ -53,10 +53,14 @@
       @current-change="handlePageChange"
       :current-page="pagination.pageNo"
       :page-size="pagination.pageSize"
-      layout="total, prev, pager, next"
       :total="pagination.total"
+      layout="total, prev, pager, next"
       style="width: 100%; margin-top: 20px; text-align: center"
-    ></el-pagination>
+    >
+      <template #total>
+        {{ t("pagination.total", { total: pagination.total }) }}
+      </template>
+    </el-pagination>
   </div>
 </template>
 

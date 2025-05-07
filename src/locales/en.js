@@ -31,5 +31,8 @@ export default {
   },
   table: {
     emptyText: "No Data"
+  },
+  pagination: {
+    total: "Total {total} items"
   }
 };
