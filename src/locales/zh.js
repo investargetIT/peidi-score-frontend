@@ -34,6 +34,10 @@ export default {
   },
   pagination: {
     total: "共 {total} 条"
+  },
+  common: {
+    all: "全部",
+    currentLang: "zh"
   }
   // ...其他中文翻译
 };

@@ -34,5 +34,9 @@ export default {
   },
   pagination: {
     total: "Total {total} items"
+  },
+  common: {
+    all: "All",
+    currentLang: "en"
   }
 };
