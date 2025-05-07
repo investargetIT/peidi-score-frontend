@@ -13,6 +13,7 @@
         :type="t('dashboard.longTermPoints')"
       />
     </div>
+    <RecentActivity :activities="activities" />
   </div>
 </template>
 
