@@ -1,0 +1,100 @@
+<template>
+  <el-card class="exchange-history-card">
+    <div class="exchange-title">{{ t("monitor.history") }}</div>
+    <el-table
+      :data="scoreHistoryList"
+      class="exchange-table no-border-table"
+      header-row-class-name="exchange-header"
+    >
+      <template #empty>
+        <div
+          style="
+            padding: 40px 0;
+            font-size: 18px;
+            color: #888;
+            text-align: center;
+          "
+        >
+          {{ t("monitor.selectEmployeeFirst") }}
+        </div>
+      </template>
+      <el-table-column
+        prop="date"
+        :label="t('history.date')"
+        width="180"
+        align="center"
+      />
+      <el-table-column :label="t('history.type')" align="center" />
+      <el-table-column :label="t('history.points')" align="center">
+        <template #default="scope">
+          <span
+            :style="{
+              color: scope.row.change > 0 ? '#21ba45' : '#db2828',
+              fontWeight: 'bold'
+            }"
+          >
+            {{ scope.row.change > 0 ? "+" : "" }}{{ scope.row.change }}
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="remark"
+        :label="t('history.description')"
+        min-width="180"
+        align="center"
+      />
+    </el-table>
+  </el-card>
+</template>
+
+<script setup>
+const props = defineProps({
+  scoreHistoryList: {
+    type: Array,
+    default: () => []
+  },
+  t: {
+    type: Function,
+    required: true
+  },
+  selected: {
+    type: Object,
+    default: () => {}
+  }
+});
+</script>
+
+<style scoped>
+.exchange-history-card {
+  padding: 32px 32px 24px;
+  border-radius: 16px;
+}
+
+.exchange-title {
+  margin-bottom: 32px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.exchange-table {
+  width: 100%;
+  font-size: 18px;
+}
+
+.exchange-header th {
+  font-size: 18px;
+  font-weight: bold !important;
+  background: #fff !important;
+}
+
+.no-border-table ::v-deep .el-table__cell,
+.no-border-table ::v-deep th,
+.no-border-table ::v-deep td {
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+.no-border-table ::v-deep tr {
+  background: #fff;
+}
+</style>

@@ -42,55 +42,12 @@
       </el-tab-pane> -->
       <el-tab-pane :label="t('monitor.history')" name="history">
         <transition name="fade-transform" mode="out-in">
-          <div v-if="activeTab === 'history'" key="history">
-            <el-card class="exchange-history-card">
-              <div class="exchange-title">{{ t("monitor.history") }}</div>
-              <el-table
-                :data="scoreHistoryList"
-                class="exchange-table no-border-table"
-                header-row-class-name="exchange-header"
-              >
-                <template #empty>
-                  <div
-                    style="
-                      padding: 40px 0;
-                      font-size: 18px;
-                      color: #888;
-                      text-align: center;
-                    "
-                  >
-                    {{ t("monitor.selectEmployeeFirst") }}
-                  </div>
-                </template>
-                <el-table-column
-                  prop="date"
-                  :label="t('history.date')"
-                  width="180"
-                  align="center"
-                />
-                <el-table-column :label="t('history.type')" align="center" />
-                <el-table-column :label="t('history.points')" align="center">
-                  <template #default="scope">
-                    <span
-                      :style="{
-                        color: scope.row.change > 0 ? '#21ba45' : '#db2828',
-                        fontWeight: 'bold'
-                      }"
-                    >
-                      {{ scope.row.change > 0 ? "+" : ""
-                      }}{{ scope.row.change }}
-                    </span>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  prop="remark"
-                  :label="t('history.description')"
-                  min-width="180"
-                  align="center"
-                />
-              </el-table>
-            </el-card>
-          </div>
+          <HistoryScore
+            v-if="activeTab === 'history'"
+            :scoreHistoryList="scoreHistoryList"
+            :selected="selectedEmployee"
+            :t="t"
+          />
         </transition>
       </el-tab-pane>
     </el-tabs>
@@ -103,6 +60,7 @@ import { useI18n } from "vue-i18n";
 import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
 import ExchangeHistory from "./ExchangeHistory.vue";
+import HistoryScore from "./HistoryScore.vue";
 import avatarImg from "@/assets/login/avatar.svg";
 import { getUserList, getFileDownLoadPath } from "@/api/pmApi.ts";
 
