@@ -1,11 +1,12 @@
 <template>
   <el-card class="score-card">
     <div class="card-title">{{ title }}</div>
-    <div class="card-score">{{ score }}</div>
+    <div class="card-score">{{ changeNumberFormat(score) }}</div>
   </el-card>
 </template>
 
 <script setup>
+import { changeNumberFormat } from "@/utils/common";
 import { defineProps } from "vue";
 const props = defineProps({
   title: String,

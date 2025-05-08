@@ -22,10 +22,11 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="bothPoints"
-        :label="t('leaderboard.totalpoints')"
-      ></el-table-column>
+      <el-table-column prop="bothPoints" :label="t('leaderboard.totalpoints')">
+        <template #default="scope">
+          {{ changeNumberFormat(scope.row.bothPoints) }}
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       @current-change="handlePageChange"
@@ -39,6 +40,7 @@
 </template>
 
 <script setup lang="ts">
+import { changeNumberFormat } from "@/utils/common";
 import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";

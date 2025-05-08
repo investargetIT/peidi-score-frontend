@@ -18,11 +18,15 @@
             <div class="employee-scores">
               <div class="score-block">
                 <div class="score-label">{{ t("monitor.exchangeable") }}</div>
-                <div class="score-value">{{ employee.redeemablePoints }}</div>
+                <div class="score-value">
+                  {{ changeNumberFormat(employee.redeemablePoints) }}
+                </div>
               </div>
               <div class="score-block">
                 <div class="score-label">{{ t("monitor.longTerm") }}</div>
-                <div class="score-value">{{ employee.lifeTimePoints }}</div>
+                <div class="score-value">
+                  {{ changeNumberFormat(employee.lifeTimePoints) }}
+                </div>
               </div>
             </div>
           </div>
@@ -68,10 +72,10 @@
     :close-on-click-modal="false"
   >
     <div>
-      <div style=" margin-bottom: 16px;font-size: 16px; color: #888">
+      <div style="margin-bottom: 16px; font-size: 16px; color: #888">
         {{ t("monitor.confirmChangeDesc", { employee: employee?.name || "" }) }}
       </div>
-      <div style=" margin-bottom: 8px;font-size: 18px; font-weight: bold">
+      <div style="margin-bottom: 8px; font-size: 18px; font-weight: bold">
         {{ reasonText }} ({{ form.points > 0 ? "+" : "" }}{{ form.points }})
       </div>
       <div
@@ -99,7 +103,7 @@
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import avatarImg from "@/assets/login/avatar.svg";
-
+import { changeNumberFormat } from "@/utils/common";
 const { t } = useI18n();
 
 const props = defineProps({
