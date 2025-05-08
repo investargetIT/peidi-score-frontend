@@ -184,3 +184,10 @@ export const updateUseScore = data => {
     data
   });
 };
+
+// 获取配置规则列表
+export const getPointRuleList = params => {
+  return http.request("get", baseUrlApi("/point/rule/page"), {
+    params
+  });
+};

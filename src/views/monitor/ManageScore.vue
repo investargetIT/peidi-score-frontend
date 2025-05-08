@@ -104,8 +104,9 @@ import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import avatarImg from "@/assets/login/avatar.svg";
 import { changeNumberFormat } from "@/utils/common";
-import { updateUseScore } from "@/api/pmApi";
+import { updateUseScore, getPointRuleList } from "@/api/pmApi";
 const { t } = useI18n();
+const pointRuleList = ref([]);
 
 const props = defineProps({
   employee: Object,
@@ -161,6 +162,16 @@ watch(
     form.value.points = 0;
   }
 );
+
+const fetchPointRuleList = () => {
+  getPointRuleList({ pageNo: 1, pageSize: 1000 }).then(res => {
+    if (res?.code === 200) {
+      pointRuleList.value = res?.data?.records;
+    }
+  });
+};
+
+fetchPointRuleList();
 </script>
 
 <style scoped>
