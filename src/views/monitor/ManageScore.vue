@@ -56,15 +56,47 @@
           color="#161718"
           @click="handleSubmit"
         >
-          {{ t("common.submit") }}
+          {{ t("monitor.submit") }}
         </el-button>
       </el-form-item>
     </el-form>
   </el-card>
+  <el-dialog
+    v-model="dialogVisible"
+    :title="t('monitor.confirmChangeTitle')"
+    width="420px"
+    :close-on-click-modal="false"
+  >
+    <div>
+      <div style=" margin-bottom: 16px;font-size: 16px; color: #888">
+        {{ t("monitor.confirmChangeDesc", { employee: employee?.name || "" }) }}
+      </div>
+      <div style=" margin-bottom: 8px;font-size: 18px; font-weight: bold">
+        {{ reasonText }} ({{ form.points > 0 ? "+" : "" }}{{ form.points }})
+      </div>
+      <div
+        :style="{
+          color: form.points > 0 ? '#21ba45' : '#db2828',
+          fontSize: '20px',
+          fontWeight: 'bold'
+        }"
+      >
+        {{ form.points > 0 ? "+" : "" }}{{ form.points }}
+      </div>
+    </div>
+    <template #footer>
+      <el-button @click="dialogVisible = false">{{
+        t("monitor.cancel")
+      }}</el-button>
+      <el-button type="primary" @click="onDialogConfirm">{{
+        t("monitor.confirm")
+      }}</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import avatarImg from "@/assets/login/avatar.svg";
 
@@ -83,8 +115,24 @@ const form = ref({
   points: 0
 });
 
+const dialogVisible = ref(false);
+
+const reasonText = computed(() => {
+  if (form.value.reason === "performance")
+    return t("monitor.performanceReward");
+  if (form.value.reason === "violation") return t("monitor.violationPenalty");
+  if (form.value.reason === "other") return t("monitor.other");
+  return "";
+});
+
 const handleSubmit = () => {
-  // 处理提交逻辑
+  dialogVisible.value = true;
+};
+
+const onDialogConfirm = () => {
+  dialogVisible.value = false;
+  // 这里执行实际的提交逻辑
+  // ...
 };
 
 watch(

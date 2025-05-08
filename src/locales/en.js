@@ -60,6 +60,12 @@ export default {
     other: "Other",
     adjustPoints: "Adjust Points",
     selectEmployeeFirst:
-      "Please select an employee to view their points history"
+      "Please select an employee to view their points history",
+    confirmChangeTitle: "Confirm Points Change",
+    confirmChangeDesc:
+      "Are you sure you want to apply this points adjustment to  {employee}?",
+    submit: "Submit",
+    cancel: "Cancel",
+    confirm: "Confirm"
   }
 };

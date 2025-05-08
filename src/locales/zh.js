@@ -59,7 +59,11 @@ export default {
     violationPenalty: "违规扣分",
     other: "其他",
     adjustPoints: "调整积分",
-    selectEmployeeFirst: "请先选择一名员工以查看其积分历史"
+    selectEmployeeFirst: "请先选择一名员工以查看其积分历史",
+    confirmChangeTitle: "确认调整积分",
+    confirmChangeDesc: "确定要调整 {employee} 的积分吗？",
+    submit: "提交",
+    cancel: "取消",
+    confirm: "确认"
   }
-  // ...其他中文翻译
 };
