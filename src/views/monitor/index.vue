@@ -20,6 +20,14 @@
               <ManageScore
                 :employee="selectedEmployee"
                 :avatarUrls="avatarUrls"
+                :fetchUserListData="fetchUserListData"
+                :setSelectedEmployee="
+                  id => {
+                    selectedEmployee.value = employees.value.find(
+                      e => e.id === id
+                    );
+                  }
+                "
               />
             </div>
           </div>
@@ -197,6 +205,10 @@ const getPreviewUrl = async (file, userId) => {
 };
 
 fetchUserListData();
+
+defineExpose({
+  fetchUserListData
+});
 </script>
 
 <style scoped>

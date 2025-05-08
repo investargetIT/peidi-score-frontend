@@ -112,7 +112,9 @@ const props = defineProps({
   avatarUrls: {
     type: Object,
     default: () => ({})
-  }
+  },
+  fetchUserListData: Function,
+  setSelectedEmployee: Function
 });
 
 const form = ref({
@@ -136,15 +138,17 @@ const handleSubmit = () => {
 
 const onDialogConfirm = async () => {
   dialogVisible.value = false;
-  // 这里执行实际的提交逻辑
-  // ...
   const res = await updateUseScore({
-    userId: props.employee.id,
-    points: form.value.points,
-    reason: form.value.reason
+    userId: props.employee.userId,
+    ruleId: form.value.reason
   });
   if (res?.code === 200) {
     ElMessage.success(t("monitor.updateSuccess"));
+    if (props.fetchUserListData && props.setSelectedEmployee) {
+      const prevId = props.employee?.id;
+      await props.fetchUserListData();
+      props.setSelectedEmployee(prevId);
+    }
   } else {
     ElMessage.error(t("monitor.updateFailed"));
   }
