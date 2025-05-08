@@ -67,5 +67,19 @@ export default {
     submit: "Adjust Points",
     cancel: "Cancel",
     confirm: "Confirm"
+  },
+  navbar: {
+    updateProfile: "Update Profile",
+    logout: "Logout",
+    userProfile: "User Profile",
+    avatar: "Avatar",
+    name: "Name",
+    email: "Email",
+    hiredDate: "Hired Date",
+    longTermPoints: "Long Term Points",
+    redeemablePoints: "Exchangeable Points",
+    upload: "Upload",
+    uploadTip:
+      "Supported formats: jpg, png, jpeg, gif. Max size: 10MB. Only 1 image allowed."
   }
 };

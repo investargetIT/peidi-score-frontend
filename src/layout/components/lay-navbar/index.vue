@@ -52,6 +52,7 @@ const dialogVisible = ref(false);
 const formRef = ref(null);
 const curUserInfo = ref({});
 const curUserAvatar = ref("");
+const { t, locale } = useI18n();
 const modify = () => {
   showModifyDialog.value = true;
   fetchCurUserInfo();
@@ -134,7 +135,6 @@ const fetchCurUserInfo = () => {
   });
 };
 
-const { locale } = useI18n();
 const currentLangLabel = computed(() =>
   locale.value === "en" ? "EN" : "中文"
 );
@@ -191,24 +191,31 @@ fetchCurUserInfo();
           </div>
         </span>
         <template #dropdown>
-          <el-dropdown-menu class="logout">
+          <el-dropdown-menu
+            class="logout"
+            :style="{ width: locale === 'en' ? '135px' : '' }"
+          >
             <el-dropdown-item @click="modify">
               <IconifyIconOffline :icon="Setting" style="margin: 5px" />
-              修改资料
+              {{ t("navbar.updateProfile") }}
             </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"
                 style="margin: 5px"
               />
-              退出系统
+              {{ t("navbar.logout") }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <el-dialog v-model="showModifyDialog" title="用户资料" width="500">
+      <el-dialog
+        v-model="showModifyDialog"
+        :title="t('navbar.userProfile')"
+        width="500"
+      >
         <el-form :model="form" ref="formRef">
-          <el-form-item label="头像">
+          <el-form-item :label="t('navbar.avatar')">
             <el-upload
               v-model:file-list="form.avatarUrlList"
               :headers="{
@@ -221,36 +228,38 @@ fetchCurUserInfo();
               :before-upload="beforeUpload"
               :on-preview="handlePreview"
             >
-              <el-button size="small" type="primary">点击上传</el-button>
+              <el-button size="small" type="primary">{{
+                t("navbar.upload")
+              }}</el-button>
               <template #tip>
                 <div class="el-upload__tip">
-                  上传图片支持jpg、png、jpeg、gif格式,大小不超过10M，且最多上传1张。
+                  {{ t("navbar.uploadTip") }}
                 </div>
               </template>
             </el-upload>
           </el-form-item>
-          <el-form-item label="姓名">
+          <el-form-item :label="t('navbar.name')">
             <span>{{ name }}</span>
           </el-form-item>
-          <el-form-item label="邮箱">
+          <el-form-item :label="t('navbar.email')">
             <span>{{ email }}</span>
           </el-form-item>
-          <el-form-item label="入职时间">
+          <el-form-item :label="t('navbar.hiredDate')">
             <span>{{
               hired_date ? dayjs(hired_date).format("YYYY-MM-DD") : "-"
             }}</span>
           </el-form-item>
-          <el-form-item label="长期积分">
+          <el-form-item :label="t('navbar.longTermPoints')">
             <span>{{ curUserInfo?.lifeTimePoints ?? "" }}</span>
           </el-form-item>
-          <el-form-item label="可兑换积分">
+          <el-form-item :label="t('navbar.redeemablePoints')">
             <span>{{ curUserInfo?.redeemablePoints ?? "" }}</span>
           </el-form-item>
         </el-form>
         <template #footer>
           <div class="dialog-footer">
             <el-button type="primary" @click="handleUpdate">
-              更新资料
+              {{ t("navbar.updateProfile") }}
             </el-button>
           </div>
         </template>

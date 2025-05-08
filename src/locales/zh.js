@@ -65,5 +65,19 @@ export default {
     submit: "调整积分",
     cancel: "取消",
     confirm: "确认"
+  },
+  navbar: {
+    updateProfile: "更新资料",
+    logout: "退出系统",
+    userProfile: "用户资料",
+    avatar: "头像",
+    name: "姓名",
+    email: "邮箱",
+    hiredDate: "入职时间",
+    longTermPoints: "长期积分",
+    redeemablePoints: "可兑换积分",
+    upload: "点击上传",
+    uploadTip:
+      "上传图片支持jpg、png、jpeg、gif格式,大小不超过10M，且最多上传1张。"
   }
 };
