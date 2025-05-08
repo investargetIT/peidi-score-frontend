@@ -43,11 +43,18 @@ const avatar = storageLocal()?.getItem("curUserAvatar") || userAvatar;
 const activities = ref([]);
 
 const fetchHistoryList = () => {
+  const searchArr = [];
   const commonInfo = {
     pageNo: 1,
     pageSize: 5,
     sortStr: JSON.stringify([{ sortName: "createdAt", sortType: "desc" }])
   };
+  searchArr.push({
+    searchName: "userId",
+    searchType: "equals",
+    searchValue: storageLocal().getItem("dataSource")?.id
+  });
+  commonInfo.searchStr = JSON.stringify(searchArr);
   getScoreHistoryList(commonInfo).then(res => {
     if (res.code === 200) {
       activities.value = res?.data?.records?.map(item => {
