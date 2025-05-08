@@ -44,6 +44,8 @@ import { changeNumberFormat } from "@/utils/common";
 import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+import enUs from "element-plus/es/locale/lang/en";
 import { getScoreRankList, getFileDownLoadPath } from "@/api/pmApi.ts";
 const tableData = ref([]);
 const pagination = ref({
@@ -51,7 +53,8 @@ const pagination = ref({
   pageSize: 10,
   total: 0
 });
-const { t } = useI18n();
+const { t, locale } = useI18n();
+
 const dialogImageUrl = ref("");
 const avatarUrls = ref({});
 

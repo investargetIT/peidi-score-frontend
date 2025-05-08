@@ -32,7 +32,6 @@
       :current-page="pagination.pageNo"
       :page-size="pagination.pageSize"
       :total="pagination.total"
-      :locale="paginationLocale"
       layout="total, prev, pager, next"
       style="width: 100%; margin-top: 20px; text-align: center"
     />
@@ -52,12 +51,6 @@ const pagination = ref({
   pageNo: 1,
   pageSize: 10,
   total: 0
-});
-
-const paginationLocale = computed(() => {
-  return {
-    total: t("pagination.total", { total: pagination.value.total })
-  };
 });
 
 const props = defineProps({
