@@ -15,7 +15,11 @@
             text-align: center;
           "
         >
-          {{ t("monitor.selectEmployeeFirst") }}
+          {{
+            !props?.selected?.userId
+              ? t("monitor.selectEmployeeFirst")
+              : t("table.emptyText")
+          }}
         </div>
       </template>
       <el-table-column
