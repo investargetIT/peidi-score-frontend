@@ -64,7 +64,7 @@ export default {
     confirmChangeTitle: "Confirm Points Change",
     confirmChangeDesc:
       "Are you sure you want to apply this points adjustment to  {employee}?",
-    submit: "Submit",
+    submit: "Adjust Points",
     cancel: "Cancel",
     confirm: "Confirm"
   }

@@ -62,7 +62,7 @@ export default {
     selectEmployeeFirst: "请先选择一名员工以查看其积分历史",
     confirmChangeTitle: "确认调整积分",
     confirmChangeDesc: "确定要调整 {employee} 的积分吗？",
-    submit: "提交",
+    submit: "调整积分",
     cancel: "取消",
     confirm: "确认"
   }
