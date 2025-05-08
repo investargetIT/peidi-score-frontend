@@ -246,8 +246,9 @@ defineExpose({
   display: flex;
   gap: 32px;
   align-items: stretch;
+  height: 600px;
   min-height: 0;
-  margin-top: 24px;
+  overflow: hidden;
 }
 
 .employee-list {

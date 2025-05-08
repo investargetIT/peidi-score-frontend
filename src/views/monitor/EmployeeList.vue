@@ -49,10 +49,15 @@ watch(searchValue, val => emit("update:search", val));
 
 <style scoped>
 .employee-list {
-  width: 340px;
-  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  width: 350px;
   height: 100%;
-  padding: 24px 16px 16px;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 0 #e5e6eb;
 }
 
 .employee-title {
@@ -66,9 +71,10 @@ watch(searchValue, val => emit("update:search", val));
 }
 
 .employee-items {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex: 1 1 0;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .employee-item {

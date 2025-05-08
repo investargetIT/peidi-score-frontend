@@ -176,10 +176,15 @@ fetchPointRuleList();
 
 <style scoped>
 .manage-score {
-  flex: 1;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
   min-width: 0;
   height: 100%;
   padding: 24px 32px 32px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 0 #e5e6eb;
 }
 
 .manage-title {
