@@ -104,6 +104,7 @@ import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import avatarImg from "@/assets/login/avatar.svg";
 import { changeNumberFormat } from "@/utils/common";
+import { updateUseScore } from "@/api/pmApi";
 const { t } = useI18n();
 
 const props = defineProps({
@@ -133,10 +134,20 @@ const handleSubmit = () => {
   dialogVisible.value = true;
 };
 
-const onDialogConfirm = () => {
+const onDialogConfirm = async () => {
   dialogVisible.value = false;
   // 这里执行实际的提交逻辑
   // ...
+  const res = await updateUseScore({
+    userId: props.employee.id,
+    points: form.value.points,
+    reason: form.value.reason
+  });
+  if (res?.code === 200) {
+    ElMessage.success(t("monitor.updateSuccess"));
+  } else {
+    ElMessage.error(t("monitor.updateFailed"));
+  }
 };
 
 watch(

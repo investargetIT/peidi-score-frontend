@@ -177,3 +177,10 @@ export const getUserList = params => {
     params
   });
 };
+
+// 调整用户积分
+export const updateUseScore = data => {
+  return http.request("post", baseUrlApi("ui/point/point", false), {
+    data
+  });
+};

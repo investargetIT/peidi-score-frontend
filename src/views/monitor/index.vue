@@ -161,7 +161,6 @@ const fetchUserListData = async () => {
     });
 
     if (res?.code === 200) {
-      console.log("====用户列表==", res.data);
       employees.value = res?.data?.records?.map(item => ({
         ...item,
         name: item.fullName
