@@ -47,13 +47,12 @@
         <el-option :label="t('monitor.other')" value="other" />
       </el-select>
     </div>
-    <el-form :model="form" label-width="120px">
+    <el-form :model="form" label-width="0" class="score-form">
       <el-form-item>
         <el-button
           class="score-btn"
           type="primary"
           :disabled="!employee || !form.reason"
-          style="width: 100%"
           color="#161718"
           @click="handleSubmit"
         >
@@ -197,7 +196,21 @@ watch(
   width: 100%;
 }
 
+.score-form {
+  width: 100%;
+}
+
+.score-form :deep(.el-form-item) {
+  margin-bottom: 0;
+}
+
+.score-form :deep(.el-form-item__content) {
+  width: 100%;
+  margin-left: 0 !important;
+}
+
 .score-btn {
+  width: 100%;
   height: 48px;
   margin-top: 16px;
   font-size: 18px;
