@@ -26,6 +26,7 @@ export default {
   },
   dashboard: {
     welcome: "欢迎",
+    recentActivity: "最近活动",
     exchangeablePoints: "可兑换积分",
     longTermPoints: "长期积分"
   },

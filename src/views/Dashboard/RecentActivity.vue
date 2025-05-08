@@ -4,7 +4,7 @@
       <el-icon style="margin-right: 8px; vertical-align: middle"
         ><Clock
       /></el-icon>
-      最近活动
+      {{ $t("dashboard.recentActivity") }}
     </div>
     <div class="activity-list">
       <div

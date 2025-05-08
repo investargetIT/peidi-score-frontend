@@ -27,7 +27,8 @@ export default {
   dashboard: {
     welcome: "Welcome",
     exchangeablePoints: "Exchangeable Points",
-    longTermPoints: "Long Term Points"
+    longTermPoints: "Long Term Points",
+    recentActivity: "Recent Activity"
   },
   table: {
     emptyText: "No Data"
