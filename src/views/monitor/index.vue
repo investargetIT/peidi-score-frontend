@@ -44,9 +44,9 @@
         <transition name="fade-transform" mode="out-in">
           <HistoryScore
             v-if="activeTab === 'history'"
-            :scoreHistoryList="scoreHistoryList"
             :selected="selectedEmployee"
             :t="t"
+            :activeTab="activeTab"
           />
         </transition>
       </el-tab-pane>

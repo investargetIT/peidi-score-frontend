@@ -48,20 +48,65 @@
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
+import { getScoreHistoryList } from "@/api/pmApi.ts";
+const scoreHistoryList = ref([]);
+const pagination = ref({
+  pageNo: 1,
+  pageSize: 10,
+  total: 0
+});
 const props = defineProps({
-  scoreHistoryList: {
-    type: Array,
-    default: () => []
-  },
   t: {
     type: Function,
     required: true
   },
   selected: {
     type: Object,
-    default: () => {}
+    default: () => ({})
+  },
+  activeTab: {
+    type: String,
+    required: true
   }
 });
+
+const fetchHistoryList = () => {
+  if (!props?.selected?.userId) {
+    return;
+  }
+  const commonInfo = {
+    pageNo: pagination.value.pageNo,
+    pageSize: pagination.value.pageSize
+  };
+  const searchArr = [];
+  searchArr.push({
+    searchName: "userId",
+    searchType: "equals",
+    searchValue: props.selected.userId
+  });
+  commonInfo.searchStr = JSON.stringify(searchArr);
+  getScoreHistoryList(commonInfo).then(res => {
+    // 为每个产品添加默认状态
+    const products = res.data.records.map(product => ({
+      ...product
+    }));
+    scoreHistoryList.value = products;
+    pagination.value.total = res.data.total;
+  });
+};
+
+watch(
+  () => [props.activeTab, props.selected && props.selected.userId],
+  ([tab, userId]) => {
+    if (tab === "history" && userId) {
+      fetchHistoryList();
+    }
+  },
+  { immediate: true }
+);
+
+fetchHistoryList();
 </script>
 
 <style scoped>

@@ -5,47 +5,25 @@
       style="width: 100%"
       :empty-text="t('table.emptyText')"
     >
-      <el-table-column prop="productNo" :label="t('history.date')">
+      <el-table-column prop="createdAt" :label="t('history.date')">
         <template #default="scope">
-          <span
-            @click="
-              selectedDetails = scope.row;
-              recordDialogVisible = true;
-            "
-            class="cursor-pointer underline"
-            >{{ scope.row.productNo }}</span
-          >
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="productName"
-        :label="t('history.description')"
-      ></el-table-column>
-
-      <el-table-column prop="statusName" :label="t('history.type')">
-        <template #default="scope">
-          <div class="flex gap-2">
-            <el-popover
-              v-for="(status, index) in getStatusTags(scope.row.statusName)"
-              :key="index"
-              placement="top"
-              trigger="hover"
-              :content="t('common.recordCount', { count: status?.number })"
-            >
-              <template #reference>
-                <el-tag
-                  class="mx-1"
-                  :type="status?.text === '审核通过' ? 'success' : 'info'"
-                >
-                  {{ status?.text }}
-                </el-tag>
-              </template>
-            </el-popover>
+          <div class="activity-time">
+            {{
+              scope.row.createdAt
+                ? dayjs(scope.row.createdAt).format("YYYY-MM-DD")
+                : "-"
+            }}
           </div>
         </template>
       </el-table-column>
       <el-table-column
-        prop="productName"
+        prop="remark"
+        :label="t('history.description')"
+      ></el-table-column>
+      <el-table-column prop="recordTypeName" :label="t('history.type')">
+      </el-table-column>
+      <el-table-column
+        prop="pointsChange"
         :label="t('history.points')"
       ></el-table-column>
     </el-table>
@@ -66,6 +44,7 @@ import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { getScoreHistoryList } from "@/api/pmApi.ts";
 import { debounce, storageLocal } from "@pureadmin/utils";
+import dayjs from "dayjs";
 
 const { t, locale } = useI18n();
 const tableData = ref([]);
@@ -81,30 +60,6 @@ const paginationLocale = computed(() => {
   };
 });
 
-const dialogVisible = ref(false);
-const recordDialogVisible = ref(false);
-const selectedDetails = ref({});
-
-// 在 computed 部分添加状态转换函数
-const getStatusTags = computed(() => {
-  return (statusName: string) => {
-    if (!statusName) return [];
-    return statusName
-      .split(",")
-      .map(item => item.trim())
-      .map(item => {
-        const match = item.match(/^([\p{Script=Han}]+)\((\d+)\)$/u);
-        if (!match) return null;
-        const [_, text, number] = match;
-        return {
-          text,
-          number
-        };
-      })
-      .filter(Boolean);
-  };
-});
-
 const props = defineProps({
   searchInfo: {
     type: Object,
@@ -113,10 +68,6 @@ const props = defineProps({
       productNo: "",
       productName: ""
     })
-  },
-  statusList: {
-    type: Array,
-    default: () => []
   }
 });
 
@@ -145,8 +96,6 @@ const fetchProductList = () => {
     pageSize: pagination.value.pageSize
   };
   const searchArr = [] as any;
-  console.log(props.searchInfo);
-  console.log("===筛选条件啊");
   Object.keys(props.searchInfo)?.forEach(key => {
     const searchParams = {} as any;
     if (props.searchInfo[key] && props.searchInfo[key] !== "all") {
