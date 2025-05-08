@@ -170,3 +170,10 @@ export const getScoreRankList = params => {
     params
   });
 };
+
+// 获取用户信息
+export const getUserList = params => {
+  return http.request("get", baseUrlApi("/user/page"), {
+    params
+  });
+};

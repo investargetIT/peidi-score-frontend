@@ -1,9 +1,9 @@
 <template>
   <el-card class="employee-list">
-    <div class="employee-title">员工</div>
+    <div class="employee-title">{{ t("employee.title") }}</div>
     <el-input
       v-model="searchValue"
-      placeholder="搜索员工..."
+      :placeholder="t('employee.searchPlaceholder')"
       class="employee-search"
       clearable
     />
@@ -16,12 +16,14 @@
       >
         <el-avatar
           :size="40"
-          src="emp.avatar || require('@/assets/login/avatar.svg')"
+          :src="avatarUrls[emp.id]"
           style="margin-right: 12px"
         />
         <div>
           <div class="employee-name">{{ emp.name }}</div>
-          <div class="employee-dept">{{ emp.dept }}</div>
+          <!-- <div class="employee-dept">
+            {{ t("employee.department") }}: {{ emp.dept }}
+          </div> -->
         </div>
       </div>
     </div>
@@ -30,9 +32,14 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import defaultAvatar from "@/assets/login/avatar.svg";
+
+const { t } = useI18n();
 const props = defineProps({
   employees: Array,
   selected: Object,
+  avatarUrls: Object,
   search: String
 });
 const emit = defineEmits(["update:search", "select"]);

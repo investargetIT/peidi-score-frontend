@@ -39,6 +39,11 @@ export default {
     all: "全部",
     currentLang: "zh",
     recordCount: "记录数：{count}"
+  },
+  employee: {
+    title: "员工",
+    searchPlaceholder: "搜索员工...",
+    department: "部门"
   }
   // ...其他中文翻译
 };

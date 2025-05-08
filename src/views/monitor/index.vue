@@ -12,6 +12,7 @@
             <div class="main-content">
               <EmployeeList
                 :employees="filteredEmployees"
+                :avatarUrls="avatarUrls"
                 v-model:search="search"
                 :selected="selectedEmployee"
                 @select="selectEmployee"
@@ -91,18 +92,13 @@ import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
 import ExchangeHistory from "./ExchangeHistory.vue";
 import avatarImg from "@/assets/login/avatar.svg";
+import { getUserList, getFileDownLoadPath } from "@/api/pmApi.ts";
 
 const activeTab = ref("manage");
 const search = ref("");
 const selectedEmployee = ref(null);
-const employees = ref([
-  { name: "John Doe", dept: "Marketing" },
-  { name: "Emma Johnson", dept: "Sales" },
-  { name: "Michael Chen", dept: "Engineering" },
-  { name: "Sophia Rodriguez", dept: "Customer Support" },
-  { name: "William Taylor", dept: "Finance" },
-  { name: "Olivia Brown", dept: "Human Resources" }
-]);
+const employees = ref([]);
+const avatarUrls = ref({});
 const filteredEmployees = computed(() => {
   if (!search.value) return employees.value;
   return employees.value.filter(e =>
@@ -151,6 +147,52 @@ const scoreHistoryList = [
   { date: "2023年8月1日", type: "奖励", change: 200, remark: "月度之星" },
   { date: "2023年8月5日", type: "兑换", change: -300, remark: "兑换托特包" }
 ];
+
+const fetchUserListData = async () => {
+  try {
+    const res = await getUserList({
+      pageNo: 1,
+      pageSize: 10000
+    });
+
+    if (res?.code === 200) {
+      console.log("====用户列表==", res.data);
+      employees.value = res?.data?.records?.map(item => ({
+        ...item,
+        name: item.fullName
+      }));
+
+      // 并行预加载所有头像
+      const avatarPromises = res.data.records
+        .filter(record => record.avatarUrl)
+        .map(record => getPreviewUrl(record.avatarUrl, record.id));
+
+      await Promise.all(avatarPromises);
+    }
+  } catch (error) {
+    console.error("Failed to fetch user list:", error);
+  }
+};
+
+const getPreviewUrl = async (file, userId) => {
+  if (!file) return "";
+  try {
+    const fileInfo = JSON.parse(file) || [];
+    const res = await getFileDownLoadPath({
+      objectName: fileInfo?.[0]?.response?.data
+    });
+    if (res.code === 200) {
+      avatarUrls.value[userId] = res.data;
+      return res.data;
+    }
+    return "";
+  } catch (err) {
+    console.error("Failed to get preview URL:", err);
+    return "";
+  }
+};
+
+fetchUserListData();
 </script>
 
 <style scoped>

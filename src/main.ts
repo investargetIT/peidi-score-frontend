@@ -59,7 +59,9 @@ app.use(VueTippy);
 
 const lang = localStorage.getItem("lang") || "zh";
 const i18n = createI18n({
+  legacy: false, // Set to false to use Composition API mode
   locale: lang,
+  fallbackLocale: "en",
   messages: { en, zh }
 });
 app.use(i18n);

@@ -13,9 +13,11 @@
       <el-table-column prop="fullName" :label="t('leaderboard.user')">
         <template #default="scope">
           <div class="flex gap-2">
-            <span>
-              <img class="userIcon" :src="avatarUrls[scope.row.email]" alt="" />
-            </span>
+            <el-avatar
+              :size="32"
+              :src="avatarUrls[scope.row.id]"
+              style="margin-right: 12px"
+            />
             <span>{{ scope.row.fullName }}</span>
           </div>
         </template>
@@ -92,7 +94,7 @@ const fetchProductList = async () => {
     for (const record of res.data.records) {
       if (record.avatarUrl) {
         // todo, 头像预览地址，唯一索引key，后续添加
-        await getPreviewUrl(record.avatarUrl, record.email);
+        await getPreviewUrl(record.avatarUrl, record.id);
       }
     }
   }

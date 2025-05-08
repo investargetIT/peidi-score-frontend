@@ -33,10 +33,16 @@ export default {
     emptyText: "No Data"
   },
   pagination: {
-    total: "Total {total} items"
+    total: "Total {total} records"
   },
   common: {
     all: "all",
-    currentLang: "en"
+    currentLang: "en",
+    recordCount: "Record count: {count}"
+  },
+  employee: {
+    title: "Employees",
+    searchPlaceholder: "Search employees...",
+    department: "Department"
   }
 };
