@@ -44,6 +44,22 @@ export default {
     title: "员工",
     searchPlaceholder: "搜索员工...",
     department: "部门"
+  },
+  monitor: {
+    manage: "管理积分",
+    history: "积分历史",
+    exchange: "兑换历史",
+    selectEmployee: "选择员工",
+    manageTitle: "管理积分",
+    exchangeable: "可兑换",
+    longTerm: "长期",
+    adjustOption: "调整选项",
+    selectReason: "选择原因",
+    performanceReward: "业绩奖励",
+    violationPenalty: "违规扣分",
+    other: "其他",
+    adjustPoints: "调整积分",
+    selectEmployeeFirst: "请先选择一名员工以查看其积分历史"
   }
   // ...其他中文翻译
 };

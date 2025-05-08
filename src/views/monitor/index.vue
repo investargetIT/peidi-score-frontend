@@ -6,7 +6,7 @@
       type="card"
       @tab-click="handleTabClick"
     >
-      <el-tab-pane label="管理积分" name="manage">
+      <el-tab-pane :label="t('monitor.manage')" name="manage">
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'manage'" key="manage">
             <div class="main-content">
@@ -17,7 +17,10 @@
                 :selected="selectedEmployee"
                 @select="selectEmployee"
               />
-              <ManageScore :employee="selectedEmployee" />
+              <ManageScore
+                :employee="selectedEmployee"
+                :avatarUrls="avatarUrls"
+              />
             </div>
           </div>
         </transition>
@@ -29,11 +32,11 @@
           </div>
         </transition>
       </el-tab-pane> -->
-      <el-tab-pane label="积分历史" name="history">
+      <el-tab-pane :label="t('monitor.history')" name="history">
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'history'" key="history">
             <el-card class="exchange-history-card">
-              <div class="exchange-title">积分历史</div>
+              <div class="exchange-title">{{ t("monitor.history") }}</div>
               <el-table
                 :data="scoreHistoryList"
                 class="exchange-table no-border-table"
@@ -48,17 +51,17 @@
                       text-align: center;
                     "
                   >
-                    请先选择一名员工以查看其积分历史
+                    {{ t("monitor.selectEmployeeFirst") }}
                   </div>
                 </template>
                 <el-table-column
                   prop="date"
-                  label="日期"
+                  :label="t('history.date')"
                   width="180"
                   align="center"
                 />
-                <el-table-column prop="type" label="类型" align="center" />
-                <el-table-column prop="change" label="积分变动" align="center">
+                <el-table-column :label="t('history.type')" align="center" />
+                <el-table-column :label="t('history.points')" align="center">
                   <template #default="scope">
                     <span
                       :style="{
@@ -73,7 +76,7 @@
                 </el-table-column>
                 <el-table-column
                   prop="remark"
-                  label="备注"
+                  :label="t('history.description')"
                   min-width="180"
                   align="center"
                 />
@@ -88,12 +91,14 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
 import ExchangeHistory from "./ExchangeHistory.vue";
 import avatarImg from "@/assets/login/avatar.svg";
 import { getUserList, getFileDownLoadPath } from "@/api/pmApi.ts";
 
+const { t } = useI18n();
 const activeTab = ref("manage");
 const search = ref("");
 const selectedEmployee = ref(null);

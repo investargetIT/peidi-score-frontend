@@ -1,12 +1,12 @@
 <template>
   <el-card class="manage-score">
-    <div class="manage-title">管理积分</div>
+    <div class="manage-title">{{ t("monitor.manageTitle") }}</div>
     <div class="score-employee-box">
       <template v-if="employee">
         <div class="employee-info-card">
           <el-avatar
             :size="64"
-            :src="employee.avatar || avatarImg"
+            :src="avatarUrls[employee.id] || defaultAvatar"
             class="employee-avatar"
           />
           <div class="employee-info-main">
@@ -14,52 +14,85 @@
             <div class="employee-email">
               {{ employee.email || "john.doe@example.com" }}
             </div>
-            <div class="employee-dept">{{ employee.dept }}</div>
+            <!-- <div class="employee-dept">{{ employee.dept }}</div> -->
             <div class="employee-scores">
               <div class="score-block">
-                <div class="score-label">可兑换</div>
-                <div class="score-value">2,500</div>
+                <div class="score-label">{{ t("monitor.exchangeable") }}</div>
+                <div class="score-value">{{ employee.redeemablePoints }}</div>
               </div>
               <div class="score-block">
-                <div class="score-label">长期</div>
-                <div class="score-value">2,500</div>
+                <div class="score-label">{{ t("monitor.longTerm") }}</div>
+                <div class="score-value">{{ employee.lifeTimePoints }}</div>
               </div>
             </div>
           </div>
         </div>
       </template>
-      <div v-else class="score-employee placeholder">选择员工</div>
+      <div v-else class="score-employee placeholder">
+        {{ t("monitor.selectEmployee") }}
+      </div>
     </div>
     <div class="score-form-row">
-      <div class="score-label">调整选项</div>
-      <el-select v-model="reason" placeholder="选择原因" class="score-select">
-        <el-option label="业绩奖励" value="reward" />
-        <el-option label="违规扣分" value="penalty" />
-        <el-option label="其他" value="other" />
+      <div class="score-label">{{ t("monitor.adjustOption") }}</div>
+      <el-select
+        v-model="form.reason"
+        :placeholder="t('monitor.selectReason')"
+        class="score-select"
+      >
+        <el-option
+          :label="t('monitor.performanceReward')"
+          value="performance"
+        />
+        <el-option :label="t('monitor.violationPenalty')" value="violation" />
+        <el-option :label="t('monitor.other')" value="other" />
       </el-select>
     </div>
-    <el-button
-      class="score-btn"
-      type="primary"
-      :disabled="!employee || !reason"
-      style="width: 100%"
-      color="#161718"
-      >调整积分</el-button
-    >
+    <el-form :model="form" label-width="120px">
+      <el-form-item>
+        <el-button
+          class="score-btn"
+          type="primary"
+          :disabled="!employee || !form.reason"
+          style="width: 100%"
+          color="#161718"
+          @click="handleSubmit"
+        >
+          {{ t("common.submit") }}
+        </el-button>
+      </el-form-item>
+    </el-form>
   </el-card>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import avatarImg from "@/assets/login/avatar.svg";
+
+const { t } = useI18n();
+
 const props = defineProps({
-  employee: Object
+  employee: Object,
+  avatarUrls: {
+    type: Object,
+    default: () => ({})
+  }
 });
-const reason = ref("");
+
+const form = ref({
+  reason: "",
+  points: 0
+});
+
+const handleSubmit = () => {
+  // 处理提交逻辑
+};
+
 watch(
   () => props.employee,
   () => {
-    reason.value = "";
+    form.value.reason = "";
+    form.value.points = 0;
   }
 );
 </script>

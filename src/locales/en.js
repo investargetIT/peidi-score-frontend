@@ -44,5 +44,22 @@ export default {
     title: "Employees",
     searchPlaceholder: "Search employees...",
     department: "Department"
+  },
+  monitor: {
+    manage: "Manage Points",
+    history: "Points History",
+    exchange: "Exchange History",
+    selectEmployee: "Select Employee",
+    manageTitle: "Manage Points",
+    exchangeable: "Exchangeable",
+    longTerm: "Long Term",
+    adjustOption: "Adjustment Option",
+    selectReason: "Select Reason",
+    performanceReward: "Performance Reward",
+    violationPenalty: "Violation Penalty",
+    other: "Other",
+    adjustPoints: "Adjust Points",
+    selectEmployeeFirst:
+      "Please select an employee to view their points history"
   }
 };
