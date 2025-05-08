@@ -14,7 +14,9 @@
       >
         <div class="activity-info">
           <div class="activity-name">{{ item.name }}</div>
-          <div class="activity-time">{{ item.time }}</div>
+          <div class="activity-time">
+            {{ item.time ? dayjs(item.time).format("YYYY-MM-DD") : "-" }}
+          </div>
         </div>
         <div class="activity-extra">
           <span :class="item.score > 0 ? 'score-plus' : 'score-minus'">
@@ -40,6 +42,7 @@
 <script setup>
 import { defineProps, ref, computed } from "vue";
 import { Clock } from "@element-plus/icons-vue";
+import dayjs from "dayjs";
 const props = defineProps({
   activities: { type: Array, default: () => [] }
 });

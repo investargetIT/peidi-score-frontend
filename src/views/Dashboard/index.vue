@@ -25,29 +25,45 @@ import { ref } from "vue";
 import { storageLocal } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
 import { useI18n } from "vue-i18n";
-import { getUserInfoData, getFileDownLoadPath } from "@/api/pmApi";
+import {
+  getUserInfoData,
+  getFileDownLoadPath,
+  getScoreHistoryList
+} from "@/api/pmApi";
 
 const { t } = useI18n();
 const { id } = storageLocal()?.getItem("dataSource") || {};
 
 const { userAvatar } = useNav();
 const curUserInfo = ref({});
+const curUserAvatar = ref("");
 
 const { name } = storageLocal()?.getItem("ddUserInfo") || {};
 const avatar = storageLocal()?.getItem("curUserAvatar") || userAvatar;
+const activities = ref([]);
 
-const activities = [
-  { name: "Purchase reward", time: "大约 2 年前", score: 500, type: "可兑换" },
-  { name: "Loyalty bonus", time: "大约 2 年前", score: 500, type: "长期" },
-  { name: "Referral bonus", time: "将近 2 年前", score: 750, type: "可兑换" },
-  { name: "Anniversary bonus", time: "将近 2 年前", score: 750, type: "长期" },
-  {
-    name: "Points redemption",
-    time: "将近 2 年前",
-    score: -1000,
-    type: "可兑换"
-  }
-];
+const fetchHistoryList = () => {
+  const commonInfo = {
+    pageNo: 1,
+    pageSize: 5,
+    sortStr: JSON.stringify([{ sortName: "createdAt", sortType: "desc" }])
+  };
+  getScoreHistoryList(commonInfo).then(res => {
+    if (res.code === 200) {
+      activities.value = res?.data?.records?.map(item => {
+        return {
+          ...item,
+          name: item.remark,
+          time: item.createdAt,
+          score: item.pointsChange,
+          type: item.recordTypeName
+        };
+      });
+    }
+  });
+};
+
+fetchHistoryList();
 
 const fetchCurUserInfo = () => {
   getUserInfoData({
