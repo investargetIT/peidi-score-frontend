@@ -23,13 +23,9 @@
                 :fetchUserListData="fetchUserListData"
                 :setSelectedEmployee="
                   id => {
-                    if (Array.isArray(employees.value)) {
-                      selectedEmployee.value = employees.value.find(
-                        e => e.id === id
-                      );
-                    } else {
-                      selectedEmployee.value = null;
-                    }
+                    selectedEmployee.value = employees.value.find(
+                      e => e.id === id
+                    );
                   }
                 "
               />

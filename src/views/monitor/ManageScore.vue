@@ -153,7 +153,7 @@ const onDialogConfirm = async () => {
     ElMessage.success(t("monitor.updateSuccess"));
     if (props.fetchUserListData && props.setSelectedEmployee) {
       const prevId = props.employee?.id;
-      const list = await props.fetchUserListData();
+      await props.fetchUserListData();
       props.setSelectedEmployee(prevId);
     }
   } else {
