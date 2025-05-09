@@ -109,6 +109,23 @@ const handleUpdate = () => {
   });
 };
 
+const initUserInfo = () => {
+  const tempUserInfo = storageLocal()?.getItem("ddUserInfo") || {};
+  updateUserInfo({
+    userId: tempUserInfo?.userid,
+    avatarUrl: tempUserInfo?.avatar,
+    email: tempUserInfo?.email,
+    fullName: tempUserInfo?.name,
+    mobilePhone: tempUserInfo?.mobile
+  }).then(res => {
+    if (res?.code === 200) {
+      showModifyDialog.value = false;
+      ElMessage.success("修改成功");
+      showModifyDialog.value = false;
+    }
+  });
+};
+
 const fetchCurUserInfo = () => {
   getUserInfoData({
     userId: id
@@ -119,6 +136,10 @@ const fetchCurUserInfo = () => {
         ? JSON.parse(curUserInfo.value.avatarUrl)
         : [];
       form.avatarUrlList = avatarList;
+      // 初始化用户配置信息
+      if (!res?.data) {
+        initUserInfo();
+      }
 
       // 获取头像预览地址
       if (avatarList.length > 0) {
