@@ -153,8 +153,13 @@ const onDialogConfirm = async () => {
     ElMessage.success(t("monitor.updateSuccess"));
     if (props.fetchUserListData && props.setSelectedEmployee) {
       const prevId = props.employee?.id;
-      await props.fetchUserListData();
-      props.setSelectedEmployee(prevId);
+      const list = await props.fetchUserListData();
+      console.log("==list===");
+      console.log(list);
+      if (Array.isArray(list) && list.length > 0) {
+        const newEmp = list.find(e => e && e.id === prevId);
+        props.setSelectedEmployee(newEmp);
+      }
     }
   } else {
     ElMessage.error(t("monitor.updateFailed"));
@@ -165,7 +170,8 @@ watch(
   () => props.employee,
   newVal => {
     console.log("employee changed:", newVal);
-  }
+  },
+  { deep: true }
 );
 
 const fetchPointRuleList = () => {

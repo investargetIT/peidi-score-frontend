@@ -23,23 +23,31 @@
         </div>
       </template>
       <el-table-column
-        prop="date"
+        prop="createdAt"
         :label="t('history.date')"
         width="180"
         align="center"
-      />
-      <el-table-column :label="t('history.type')" align="center" />
-      <el-table-column :label="t('history.points')" align="center">
+      >
         <template #default="scope">
-          <span
-            :style="{
-              color: scope.row.change > 0 ? '#21ba45' : '#db2828',
-              fontWeight: 'bold'
-            }"
-          >
-            {{ scope.row.change > 0 ? "+" : "" }}{{ scope.row.change }}
+          <span>
+            {{
+              scope.row.createdAt
+                ? dayjs(scope.row.createdAt).format("YYYY-MM-DD")
+                : "-"
+            }}
           </span>
         </template>
+      </el-table-column>
+      <el-table-column
+        prop="recordTypeName"
+        :label="t('history.type')"
+        align="center"
+      />
+      <el-table-column
+        :label="t('history.points')"
+        prop="pointsChange"
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         prop="remark"
@@ -55,6 +63,7 @@
 import { ref, watch } from "vue";
 import { getScoreHistoryList } from "@/api/pmApi.ts";
 const scoreHistoryList = ref([]);
+import dayjs from "dayjs";
 const pagination = ref({
   pageNo: 1,
   pageSize: 10,

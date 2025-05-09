@@ -22,10 +22,8 @@
                 :avatarUrls="avatarUrls"
                 :fetchUserListData="fetchUserListData"
                 :setSelectedEmployee="
-                  id => {
-                    selectedEmployee.value = employees.value.find(
-                      e => e.id === id
-                    );
+                  emp => {
+                    selectedEmployee.value = emp;
                   }
                 "
               />
@@ -102,9 +100,12 @@ const fetchUserListData = async () => {
         .map(record => getPreviewUrl(record.avatarUrl, record.id));
 
       await Promise.all(avatarPromises);
+      return employees.value;
     }
+    return [];
   } catch (error) {
     console.error("Failed to fetch user list:", error);
+    return [];
   }
 };
 
