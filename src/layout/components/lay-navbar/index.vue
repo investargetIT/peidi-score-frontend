@@ -112,7 +112,8 @@ const handleUpdate = () => {
 const initUserInfo = () => {
   const tempUserInfo = storageLocal()?.getItem("ddUserInfo") || {};
   updateUserInfo({
-    userId: tempUserInfo?.userid,
+    // 传入的userid需要为user-check的id，不能是钉钉的
+    userId: id,
     avatarUrl: tempUserInfo?.avatar,
     email: tempUserInfo?.email,
     fullName: tempUserInfo?.name,
