@@ -67,7 +67,9 @@ export default {
       "Are you sure you want to apply this points adjustment to  {employee}?",
     submit: "Adjust Points",
     cancel: "Cancel",
-    confirm: "Confirm"
+    confirm: "Confirm",
+    updateSuccess: "Points updated successfully",
+    updateFailed: "Points update failed"
   },
   navbar: {
     updateProfile: "Update Profile",

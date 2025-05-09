@@ -104,6 +104,7 @@ import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { changeNumberFormat } from "@/utils/common";
 import { updateUseScore, getPointRuleList } from "@/api/pmApi";
+import { ElMessage } from "element-plus";
 const { t } = useI18n();
 const pointRuleList = ref([]);
 

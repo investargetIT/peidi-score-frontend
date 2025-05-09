@@ -65,7 +65,9 @@ export default {
     confirmChangeDesc: "确定要调整 {employee} 的积分吗？",
     submit: "调整积分",
     cancel: "取消",
-    confirm: "确认"
+    confirm: "确认",
+    updateSuccess: "积分更新成功",
+    updateFailed: "积分更新失败"
   },
   navbar: {
     updateProfile: "更新资料",
