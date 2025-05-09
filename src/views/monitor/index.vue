@@ -23,9 +23,13 @@
                 :fetchUserListData="fetchUserListData"
                 :setSelectedEmployee="
                   id => {
-                    selectedEmployee.value = employees.value.find(
-                      e => e.id === id
-                    );
+                    if (Array.isArray(employees.value)) {
+                      selectedEmployee.value = employees.value.find(
+                        e => e.id === id
+                      );
+                    } else {
+                      selectedEmployee.value = null;
+                    }
                   }
                 "
               />
@@ -82,42 +86,6 @@ function selectEmployee(emp) {
 function handleTabClick() {
   // 可扩展tab切换逻辑
 }
-const exchangeList = [
-  {
-    date: "2023年6月15日",
-    name: "无线耳机",
-    img: avatarImg,
-    points: "2,000",
-    status: "已完成"
-  },
-  {
-    date: "2023年7月10日",
-    name: "礼品卡（$25）",
-    img: avatarImg,
-    points: "1,000",
-    status: "已完成"
-  },
-  {
-    date: "2023年8月5日",
-    name: "托特包",
-    img: avatarImg,
-    points: "300",
-    status: "已发货"
-  }
-];
-const scoreHistoryList = [
-  { date: "2023年6月10日", type: "奖励", change: 500, remark: "业绩奖励" },
-  {
-    date: "2023年6月20日",
-    type: "兑换",
-    change: -2000,
-    remark: "兑换无线耳机"
-  },
-  { date: "2023年7月5日", type: "奖励", change: 300, remark: "团队协作" },
-  { date: "2023年7月10日", type: "兑换", change: -1000, remark: "兑换礼品卡" },
-  { date: "2023年8月1日", type: "奖励", change: 200, remark: "月度之星" },
-  { date: "2023年8月5日", type: "兑换", change: -300, remark: "兑换托特包" }
-];
 
 const fetchUserListData = async () => {
   try {
