@@ -44,11 +44,11 @@
         class="score-select"
       >
         <el-option
-          :label="t('monitor.performanceReward')"
-          value="performance"
+          v-for="item in pointRuleList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
         />
-        <el-option :label="t('monitor.violationPenalty')" value="violation" />
-        <el-option :label="t('monitor.other')" value="other" />
       </el-select>
     </div>
     <el-form :model="form" label-width="0" class="score-form">
@@ -76,16 +76,16 @@
         {{ t("monitor.confirmChangeDesc", { employee: employee?.name || "" }) }}
       </div>
       <div style="margin-bottom: 8px; font-size: 18px; font-weight: bold">
-        {{ reasonText }} ({{ form.points > 0 ? "+" : "" }}{{ form.points }})
+        {{ reasonText }}
       </div>
       <div
         :style="{
-          color: form.points > 0 ? '#21ba45' : '#db2828',
+          color: reasonValue > 0 ? '#21ba45' : '#db2828',
           fontSize: '20px',
           fontWeight: 'bold'
         }"
       >
-        {{ form.points > 0 ? "+" : "" }}{{ form.points }}
+        {{ reasonValue > 0 ? "+" : "" }}{{ reasonValue }}
       </div>
     </div>
     <template #footer>
@@ -102,7 +102,6 @@
 <script setup>
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import avatarImg from "@/assets/login/avatar.svg";
 import { changeNumberFormat } from "@/utils/common";
 import { updateUseScore, getPointRuleList } from "@/api/pmApi";
 const { t } = useI18n();
@@ -126,11 +125,17 @@ const form = ref({
 const dialogVisible = ref(false);
 
 const reasonText = computed(() => {
-  if (form.value.reason === "performance")
-    return t("monitor.performanceReward");
-  if (form.value.reason === "violation") return t("monitor.violationPenalty");
-  if (form.value.reason === "other") return t("monitor.other");
-  return "";
+  return (
+    pointRuleList.value.find(item => item.value === form.value.reason)?.label ||
+    ""
+  );
+});
+
+const reasonValue = computed(() => {
+  return (
+    pointRuleList.value.find(item => item.value === form.value.reason)
+      ?.pointsChange || 0
+  );
 });
 
 const handleSubmit = () => {
@@ -159,14 +164,19 @@ watch(
   () => props.employee,
   () => {
     form.value.reason = "";
-    form.value.points = 0;
   }
 );
 
 const fetchPointRuleList = () => {
   getPointRuleList({ pageNo: 1, pageSize: 1000 }).then(res => {
     if (res?.code === 200) {
-      pointRuleList.value = res?.data?.records;
+      pointRuleList.value = res?.data?.records?.map(item => {
+        return {
+          ...item,
+          label: `${item.actionName} (${item?.pointsChange > 0 ? "+" : ""}${item?.pointsChange})`,
+          value: item.id
+        };
+      });
     }
   });
 };
