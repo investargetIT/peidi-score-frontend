@@ -152,8 +152,6 @@ const onDialogConfirm = async () => {
     ElMessage.success(t("monitor.updateSuccess"));
     const prevId = props.employee?.id;
     const list = await props.fetchUserListData();
-    console.log("==list===");
-    console.log(list);
     if (Array.isArray(list) && list.length > 0) {
       const newEmp = list.find(e => e && e.id === prevId);
       emit("setSelectedEmployee", { ...newEmp });
@@ -165,14 +163,6 @@ const onDialogConfirm = async () => {
     ElMessage.error(t("monitor.updateFailed"));
   }
 };
-
-watch(
-  () => props.employee,
-  newVal => {
-    console.log("employee changed子级别: ", newVal);
-  },
-  { deep: true }
-);
 
 const fetchPointRuleList = () => {
   getPointRuleList({ pageNo: 1, pageSize: 1000 }).then(res => {

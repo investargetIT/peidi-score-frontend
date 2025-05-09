@@ -77,14 +77,6 @@ function handleTabClick() {
   // 可扩展tab切换逻辑
 }
 
-watch(
-  () => selectedEmployee.value,
-  newVal => {
-    console.log("employee changed父级别:", newVal);
-  },
-  { deep: true }
-);
-
 const fetchUserListData = async () => {
   try {
     const res = await getUserList({

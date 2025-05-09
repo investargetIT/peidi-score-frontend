@@ -11,7 +11,7 @@
       <div
         v-for="(emp, idx) in employees"
         :key="idx"
-        :class="['employee-item', emp === selected ? 'selected' : '']"
+        :class="['employee-item', emp?.id === selected?.id ? 'selected' : '']"
         @click="$emit('select', emp)"
       >
         <el-avatar
