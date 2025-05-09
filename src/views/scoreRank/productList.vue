@@ -12,7 +12,7 @@
       </el-table-column>
       <el-table-column prop="fullName" :label="t('leaderboard.user')">
         <template #default="scope">
-          <div class="flex gap-2">
+          <div class="flex gap-2 items-center">
             <el-avatar
               :size="32"
               :src="avatarUrls[scope.row.id]"
