@@ -107,7 +107,7 @@ import { updateUseScore, getPointRuleList } from "@/api/pmApi";
 import { ElMessage } from "element-plus";
 const { t } = useI18n();
 const pointRuleList = ref([]);
-
+const emit = defineEmits(["setSelectedEmployee"]);
 const props = defineProps({
   employee: Object,
   avatarUrls: {
@@ -119,8 +119,7 @@ const props = defineProps({
 });
 
 const form = ref({
-  reason: "",
-  points: 0
+  reason: ""
 });
 
 const dialogVisible = ref(false);
@@ -151,15 +150,16 @@ const onDialogConfirm = async () => {
   });
   if (res?.code === 200) {
     ElMessage.success(t("monitor.updateSuccess"));
-    if (props.fetchUserListData && props.setSelectedEmployee) {
-      const prevId = props.employee?.id;
-      const list = await props.fetchUserListData();
-      console.log("==list===");
-      console.log(list);
-      if (Array.isArray(list) && list.length > 0) {
-        const newEmp = list.find(e => e && e.id === prevId);
-        props.setSelectedEmployee(newEmp);
-      }
+    const prevId = props.employee?.id;
+    const list = await props.fetchUserListData();
+    console.log("==list===");
+    console.log(list);
+    if (Array.isArray(list) && list.length > 0) {
+      const newEmp = list.find(e => e && e.id === prevId);
+      emit("setSelectedEmployee", { ...newEmp });
+    } else {
+      // 找不到时清空状态
+      emit("setSelectedEmployee", null);
     }
   } else {
     ElMessage.error(t("monitor.updateFailed"));
@@ -169,7 +169,7 @@ const onDialogConfirm = async () => {
 watch(
   () => props.employee,
   newVal => {
-    console.log("employee changed:", newVal);
+    console.log("employee changed子级别: ", newVal);
   },
   { deep: true }
 );

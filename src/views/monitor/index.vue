@@ -21,11 +21,7 @@
                 :employee="selectedEmployee"
                 :avatarUrls="avatarUrls"
                 :fetchUserListData="fetchUserListData"
-                :setSelectedEmployee="
-                  emp => {
-                    selectedEmployee.value = emp;
-                  }
-                "
+                @setSelectedEmployee="selectEmployee"
               />
             </div>
           </div>
@@ -53,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
@@ -80,6 +76,14 @@ function selectEmployee(emp) {
 function handleTabClick() {
   // 可扩展tab切换逻辑
 }
+
+watch(
+  () => selectedEmployee.value,
+  newVal => {
+    console.log("employee changed父级别:", newVal);
+  },
+  { deep: true }
+);
 
 const fetchUserListData = async () => {
   try {
