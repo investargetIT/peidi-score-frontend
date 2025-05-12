@@ -22,9 +22,12 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="bothPoints" :label="t('leaderboard.totalpoints')">
+      <el-table-column
+        prop="lifeTimePoints"
+        :label="t('leaderboard.totalpoints')"
+      >
         <template #default="scope">
-          {{ changeNumberFormat(scope.row.bothPoints) }}
+          {{ changeNumberFormat(scope.row.lifeTimePoints) }}
         </template>
       </el-table-column>
     </el-table>
