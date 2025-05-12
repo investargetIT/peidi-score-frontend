@@ -30,9 +30,8 @@
           :label="emp.id"
           @change="handleCheck(emp.id)"
           style="margin-right: 8px"
-        >
-          <!-- 不显示 label 内容 -->
-        </el-checkbox>
+          :show-label="false"
+        />
         <el-avatar
           :size="40"
           :src="avatarUrls[emp.id]"
@@ -171,6 +170,13 @@ function handleClick(emp) {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px 0 #e5e6eb;
+}
+
+/* 隐藏复选框的label但保持交互 */
+:deep(.el-checkbox__label) {
+  width: 0;
+  overflow: hidden;
+  visibility: hidden;
 }
 
 .employee-title {
