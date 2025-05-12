@@ -67,7 +67,7 @@ export default {
       "Please select an employee to view their points history",
     confirmChangeTitle: "Confirm Points Change",
     confirmChangeDesc:
-      "Are you sure you want to apply this points adjustment to  {employee}?",
+      "Are you sure you want to apply this points adjustment to  {selectedEmployeeNames}?",
     submit: "Adjust Points",
     cancel: "Cancel",
     confirm: "Confirm",
@@ -75,7 +75,8 @@ export default {
     updateFailed: "Points update failed",
     enterReason: "Please enter score",
     otherReason: "Other",
-    onlyInteger: "Please enter an integer"
+    onlyInteger: "Please enter an integer",
+    selectedCount: "Current selected employees"
   },
   navbar: {
     updateProfile: "Update Profile",

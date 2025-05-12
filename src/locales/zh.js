@@ -64,7 +64,7 @@ export default {
     adjustPoints: "调整积分",
     selectEmployeeFirst: "请先选择一名员工以查看其积分历史",
     confirmChangeTitle: "确认调整积分",
-    confirmChangeDesc: "确定要调整 {employee} 的积分吗？",
+    confirmChangeDesc: "确定要调整 {selectedEmployeeNames} 的积分吗？",
     submit: "调整积分",
     cancel: "取消",
     confirm: "确认",
@@ -73,7 +73,8 @@ export default {
     enterReason: "请输入积分",
     otherReason: "其他",
     otherReasonPlaceholder: "请输入积分",
-    onlyInteger: "请输入整数"
+    onlyInteger: "请输入整数",
+    selectedCount: "当前选中的员工"
   },
   navbar: {
     updateProfile: "更新资料",

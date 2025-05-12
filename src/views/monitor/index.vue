@@ -24,6 +24,7 @@
                 :fetchUserListData="fetchUserListData"
                 @setSelectedEmployee="selectEmployee"
                 v-model="selectedEmployeeIds"
+                :backEmployees="backEmployees"
               />
             </div>
           </div>
@@ -67,6 +68,7 @@ const selectedEmployee = ref(null);
 const selectedEmployeeIds = ref([]);
 const selectedEmployeeList = ref([]);
 const employees = ref([]);
+const backEmployees = ref([]);
 const avatarUrls = ref({});
 const filteredEmployees = computed(() => {
   if (!search.value) return employees.value;
@@ -111,7 +113,7 @@ const fetchUserListData = async () => {
         ...item,
         name: item.fullName
       }));
-
+      backEmployees.value = employees.value;
       // 并行预加载所有头像
       const avatarPromises = res.data.records
         .filter(record => record.avatarUrl)

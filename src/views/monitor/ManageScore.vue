@@ -2,7 +2,7 @@
   <el-card class="manage-score">
     <div class="manage-title">{{ t("monitor.manageTitle") }}</div>
     <div class="score-employee-box">
-      <template v-if="employee">
+      <template v-if="modelValue?.length === 1 && employee">
         <div class="employee-info-card">
           <el-avatar
             :size="64"
@@ -30,6 +30,14 @@
               </div>
             </div>
           </div>
+        </div>
+      </template>
+      <template v-else-if="modelValue?.length > 1">
+        <div class="multi-employee-info">
+          <div class="selected-count">
+            {{ t("monitor.selectedCount", { count: modelValue.length }) }}
+          </div>
+          <div class="selected-names">{{ selectedEmployeeNames }}</div>
         </div>
       </template>
       <div v-else class="score-employee placeholder">
@@ -73,7 +81,7 @@
   >
     <div>
       <div style="margin-bottom: 16px; font-size: 16px; color: #888">
-        {{ t("monitor.confirmChangeDesc", { employee: employee?.name || "" }) }}
+        {{ t("monitor.confirmChangeDesc", { selectedEmployeeNames }) }}
       </div>
       <template v-if="form.reason === 'other'">
         <el-form :model="ohterForm" class="score-form">
@@ -131,7 +139,8 @@ const props = defineProps({
   },
   fetchUserListData: Function,
   setSelectedEmployee: Function,
-  modelValue: Array
+  modelValue: Array,
+  backEmployees: Array
 });
 const checkedIds = ref(props.modelValue ? [...props.modelValue] : []);
 
@@ -150,8 +159,6 @@ watch(
   () => props.modelValue,
   val => {
     checkedIds.value = val ? [...val] : [];
-    // console.log("====checkedIds 积分管理===");
-    // console.log(checkedIds.value);
   }
 );
 
@@ -202,22 +209,40 @@ const onDialogConfirm = async () => {
       curRuleId = res?.data;
     }
   }
+
+  const tempArr =
+    props.backEmployees
+      ?.filter(item => props.modelValue?.includes(item?.id))
+      ?.map(item => item.userId) || [];
+  // 获取所有选中用户的userId
+  const userIds =
+    props.modelValue?.length === 1 ? [props.employee.userId] : tempArr;
   const res = await updateUseScore({
-    userIds: [props.employee.userId],
+    userIds,
     ruleId: curRuleId
   });
+
   if (res?.code === 200) {
     ElMessage.success(t("monitor.updateSuccess"));
-    const prevId = props.employee?.id;
     const list = await props.fetchUserListData();
     if (Array.isArray(list) && list.length > 0) {
-      const newEmp = list.find(e => e && e.id === prevId);
-      emit("setSelectedEmployee", { ...newEmp });
+      if (props.modelValue?.length === 1) {
+        // 单个用户时，保持原有逻辑
+        const prevId = props.employee?.id;
+        const newEmp = list.find(e => e && e.id === prevId);
+        emit("setSelectedEmployee", { ...newEmp });
+      } else {
+        // 多个用户时，清空选择
+        emit("setSelectedEmployee", null);
+        emit("update:modelValue", []);
+      }
     } else {
       // 找不到时清空状态
       emit("setSelectedEmployee", null);
+      emit("update:modelValue", []);
     }
     dialogVisible.value = false;
+    form.value.reason = ""; // 重置选择
   } else {
     ElMessage.error(t("monitor.updateFailed"));
   }
@@ -241,6 +266,14 @@ const fetchPointRuleList = () => {
     }
   });
 };
+
+const selectedEmployeeNames = computed(() => {
+  if (!props.modelValue || !Array.isArray(props.modelValue)) return "";
+  return props.backEmployees
+    .filter(item => props.modelValue.includes(item.id))
+    .map(item => item.name)
+    .join(", ");
+});
 
 fetchPointRuleList();
 </script>
@@ -370,5 +403,27 @@ fetchPointRuleList();
   font-size: 18px;
   font-weight: 600;
   border-radius: 8px;
+}
+
+.multi-employee-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 0 24px;
+}
+
+.selected-count {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+}
+
+.selected-names {
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+  word-break: break-all;
 }
 </style>
