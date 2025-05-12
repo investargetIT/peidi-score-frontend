@@ -230,11 +230,12 @@ const onDialogConfirm = async () => {
         // 单个用户时，保持原有逻辑
         const prevId = props.employee?.id;
         const newEmp = list.find(e => e && e.id === prevId);
-        emit("setSelectedEmployee", { ...newEmp });
+        // emit("setSelectedEmployee", { ...newEmp });
+        emit("update:modelValue", checkedIds.value);
       } else {
         // 多个用户时，清空选择
-        emit("setSelectedEmployee", null);
-        emit("update:modelValue", []);
+        // emit("setSelectedEmployee", null);
+        emit("update:modelValue", checkedIds.value);
       }
     } else {
       // 找不到时清空状态
