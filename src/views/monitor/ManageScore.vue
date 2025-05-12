@@ -146,6 +146,15 @@ const ohterForm = ref({
 const dialogVisible = ref(false);
 const reasonError = ref("");
 
+watch(
+  () => props.modelValue,
+  val => {
+    checkedIds.value = val ? [...val] : [];
+    // console.log("====checkedIds 积分管理===");
+    // console.log(checkedIds.value);
+  }
+);
+
 const reasonText = computed(() => {
   return (
     pointRuleList.value.find(item => item.value === form.value.reason)?.label ||

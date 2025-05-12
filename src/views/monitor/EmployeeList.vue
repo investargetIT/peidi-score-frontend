@@ -63,13 +63,17 @@ const props = defineProps({
 });
 const emit = defineEmits(["update:search", "select", "update:modelValue"]);
 const searchValue = ref(props.search || "");
-const checkedIds = ref(props.modelValue ? [...props.modelValue] : []);
+const checkedIds = ref(props.modelValue || []);
 
 watch(searchValue, val => emit("update:search", val));
 watch(
   () => props.modelValue,
   val => {
-    checkedIds.value = val ? [...val] : [];
+    if (val && !Array.isArray(val)) {
+      console.warn("modelValue should be an array");
+      return;
+    }
+    checkedIds.value = val || [];
   }
 );
 
@@ -115,42 +119,44 @@ function handleCheck(id) {
     checkedIds.value = [];
   }
 
-  // 检查是否已经包含该ID
+  // 切换选中状态
   const index = checkedIds.value.indexOf(id);
   if (index === -1) {
-    // 如果不存在，添加到数组中
+    // 如果未选中，则添加到选中列表
     checkedIds.value = [...checkedIds.value, id];
   } else {
-    // 如果存在，从数组中移除
+    // 如果已选中，则从选中列表中移除
     checkedIds.value = checkedIds.value.filter(item => item !== id);
   }
 
-  // 发送更新事件
+  // 通知父组件更新
   emit("update:modelValue", checkedIds.value);
 
-  // 更新高亮状态
+  // 处理高亮逻辑
   if (checkedIds.value.includes(id)) {
     const emp = filteredEmployees.value.find(emp => emp.id === id);
     if (emp) emit("select", emp);
   } else if (checkedIds.value.length > 0) {
-    // 如果还有其他选中的员工，高亮第一个
     const emp = filteredEmployees.value.find(
       emp => emp.id === checkedIds.value[0]
     );
     if (emp) emit("select", emp);
   } else {
-    // 没有选中的员工时，清空高亮
     emit("select", null);
   }
 }
+
 function handleClick(emp) {
   emit("select", emp);
-  // 如果未勾选则勾选
-  if (!checkedIds.value.includes(emp.id)) {
-    // 使用数组解构创建新数组以触发响应式更新
+  // 如果未勾选则勾选，如果已勾选则取消勾选
+  const index = checkedIds.value.indexOf(emp.id);
+  if (index === -1) {
     checkedIds.value = [...checkedIds.value, emp.id];
-    emit("update:modelValue", checkedIds.value);
+  } else {
+    checkedIds.value = checkedIds.value.filter(id => id !== emp.id);
   }
+  // 通知父组件更新
+  emit("update:modelValue", checkedIds.value);
 }
 </script>
 

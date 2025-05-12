@@ -84,6 +84,8 @@ function handleTabClick() {
 
 // 多选与高亮联动
 watch(selectedEmployeeIds, ids => {
+  console.log("=== index.vue 监听 selectedEmployeeIds===");
+  console.log(ids);
   if (ids.length === 1) {
     selectedEmployee.value = filteredEmployees.value.find(
       emp => emp.id === ids[0]
