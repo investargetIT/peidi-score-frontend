@@ -50,6 +50,8 @@
         v-model="form.reason"
         :placeholder="t('monitor.selectReason')"
         class="score-select"
+        filterable
+        clearable
       >
         <el-option
           v-for="item in pointRuleList"
