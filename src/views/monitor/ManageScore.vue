@@ -77,11 +77,12 @@
       </div>
       <template v-if="form.reason === 'other'">
         <el-form :model="ohterForm" class="score-form">
-          <el-form-item :label="t('monitor.otherReason')">
+          <el-form-item :label="t('monitor.otherReason')" :error="reasonError">
             <el-input
               style="width: 240px"
               v-model="ohterForm.reasonValue"
               :placeholder="t('monitor.enterReason')"
+              @input="validateReason"
             />
           </el-form-item>
         </el-form>
@@ -116,7 +117,7 @@
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { changeNumberFormat } from "@/utils/common";
-import { updateUseScore, getPointRuleList } from "@/api/pmApi";
+import { updateUseScore, getPointRuleList, addScoreAction } from "@/api/pmApi";
 import { ElMessage } from "element-plus";
 const { t } = useI18n();
 const pointRuleList = ref([]);
@@ -140,6 +141,7 @@ const ohterForm = ref({
 });
 
 const dialogVisible = ref(false);
+const reasonError = ref("");
 
 const reasonText = computed(() => {
   return (
@@ -159,11 +161,38 @@ const handleSubmit = () => {
   dialogVisible.value = true;
 };
 
+const validateReason = () => {
+  // 只允许整数
+  if (!/^[-]?\d+$/.test(ohterForm.value.reasonValue)) {
+    reasonError.value = t("monitor.onlyInteger");
+  } else {
+    reasonError.value = "";
+  }
+};
+
 const onDialogConfirm = async () => {
-  dialogVisible.value = false;
+  // 校验整数
+  if (
+    form.value.reason === "other" &&
+    !/^[-]?\d+$/.test(ohterForm.value.reasonValue)
+  ) {
+    reasonError.value = t("monitor.onlyInteger");
+    return;
+  }
+  let curRuleId = form.value.reason;
+  // 当选择类型为其他时，新增规则
+  if (form.value.reason === "other") {
+    const res = await addScoreAction({
+      actionName: "其他",
+      pointsChange: ohterForm.value.reasonValue
+    });
+    if (res?.code === 200) {
+      curRuleId = res?.data;
+    }
+  }
   const res = await updateUseScore({
     userIds: [props.employee.userId],
-    ruleId: form.value.reason
+    ruleId: curRuleId
   });
   if (res?.code === 200) {
     ElMessage.success(t("monitor.updateSuccess"));
@@ -176,6 +205,7 @@ const onDialogConfirm = async () => {
       // 找不到时清空状态
       emit("setSelectedEmployee", null);
     }
+    dialogVisible.value = false;
   } else {
     ElMessage.error(t("monitor.updateFailed"));
   }

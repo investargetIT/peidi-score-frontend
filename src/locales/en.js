@@ -74,7 +74,8 @@ export default {
     updateSuccess: "Points updated successfully",
     updateFailed: "Points update failed",
     enterReason: "Please enter score",
-    otherReason: "Other"
+    otherReason: "Other",
+    onlyInteger: "Please enter an integer"
   },
   navbar: {
     updateProfile: "Update Profile",

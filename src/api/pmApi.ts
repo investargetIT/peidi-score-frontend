@@ -191,3 +191,10 @@ export const getPointRuleList = params => {
     params
   });
 };
+
+// 新增积分活动
+export const addScoreAction = data => {
+  return http.request("post", baseUrlApi("/point/rule/new"), {
+    data
+  });
+};

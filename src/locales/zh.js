@@ -72,7 +72,8 @@ export default {
     updateFailed: "积分更新失败",
     enterReason: "请输入积分",
     otherReason: "其他",
-    otherReasonPlaceholder: "请输入积分"
+    otherReasonPlaceholder: "请输入积分",
+    onlyInteger: "请输入整数"
   },
   navbar: {
     updateProfile: "更新资料",
