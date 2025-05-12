@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column
         prop="lifeTimePoints"
-        :label="t('leaderboard.totalpoints')"
+        :label="t('dashboard.longTermPoints')"
       >
         <template #default="scope">
           {{ changeNumberFormat(scope.row.lifeTimePoints) }}
