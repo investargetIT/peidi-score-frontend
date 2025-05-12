@@ -31,7 +31,9 @@ export default {
     longTermPoints: "长期积分"
   },
   table: {
-    emptyText: "暂无数据"
+    emptyText: "暂无数据",
+    selectAll: "全选",
+    searchPlaceholder: "搜索姓名..."
   },
   pagination: {
     total: "共 {total} 条"

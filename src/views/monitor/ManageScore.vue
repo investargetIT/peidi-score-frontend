@@ -145,7 +145,7 @@ const handleSubmit = () => {
 const onDialogConfirm = async () => {
   dialogVisible.value = false;
   const res = await updateUseScore({
-    userId: props.employee.userId,
+    userId: [props.employee.userId],
     ruleId: form.value.reason
   });
   if (res?.code === 200) {

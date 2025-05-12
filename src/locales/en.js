@@ -31,7 +31,10 @@ export default {
     recentActivity: "Recent Activity"
   },
   table: {
-    emptyText: "No Data"
+    emptyText: "No Data",
+    selectAll: "Select All",
+    searchPlaceholder: "Search name...",
+    selectEmployee: "Select Employee"
   },
   pagination: {
     total: "Total {total} records"
