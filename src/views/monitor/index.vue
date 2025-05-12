@@ -23,6 +23,7 @@
                 :avatarUrls="avatarUrls"
                 :fetchUserListData="fetchUserListData"
                 @setSelectedEmployee="selectEmployee"
+                v-model="selectedEmployeeIds"
               />
             </div>
           </div>

@@ -121,7 +121,8 @@ import { updateUseScore, getPointRuleList, addScoreAction } from "@/api/pmApi";
 import { ElMessage } from "element-plus";
 const { t } = useI18n();
 const pointRuleList = ref([]);
-const emit = defineEmits(["setSelectedEmployee"]);
+
+const emit = defineEmits(["setSelectedEmployee", "update:modelValue"]);
 const props = defineProps({
   employee: Object,
   avatarUrls: {
@@ -129,8 +130,10 @@ const props = defineProps({
     default: () => ({})
   },
   fetchUserListData: Function,
-  setSelectedEmployee: Function
+  setSelectedEmployee: Function,
+  modelValue: Array
 });
+const checkedIds = ref(props.modelValue ? [...props.modelValue] : []);
 
 const form = ref({
   reason: ""

@@ -23,12 +23,12 @@
           'employee-item',
           checkedIds.includes(emp.id) ? 'selected' : ''
         ]"
-        @click="handleRowClick(emp)"
+        @click="handleClick(emp)"
       >
         <el-checkbox
           v-model="checkedIds"
           :label="emp.id"
-          @change.stop="handleCheck(emp.id)"
+          @change="handleCheck(emp.id)"
           style="margin-right: 8px"
         >
           <!-- 不显示 label 内容 -->
@@ -52,7 +52,6 @@
 <script setup>
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import defaultAvatar from "@/assets/login/avatar.svg";
 
 const { t } = useI18n();
 const props = defineProps({
@@ -111,12 +110,45 @@ function handleCheckAll(val) {
   allChecked.value = val;
 }
 function handleCheck(id) {
+  // 确保checkedIds.value是一个数组
+  if (!Array.isArray(checkedIds.value)) {
+    checkedIds.value = [];
+  }
+
+  // 检查是否已经包含该ID
+  const index = checkedIds.value.indexOf(id);
+  if (index === -1) {
+    // 如果不存在，添加到数组中
+    checkedIds.value = [...checkedIds.value, id];
+  } else {
+    // 如果存在，从数组中移除
+    checkedIds.value = checkedIds.value.filter(item => item !== id);
+  }
+
+  // 发送更新事件
   emit("update:modelValue", checkedIds.value);
+
+  // 更新高亮状态
+  if (checkedIds.value.includes(id)) {
+    const emp = filteredEmployees.value.find(emp => emp.id === id);
+    if (emp) emit("select", emp);
+  } else if (checkedIds.value.length > 0) {
+    // 如果还有其他选中的员工，高亮第一个
+    const emp = filteredEmployees.value.find(
+      emp => emp.id === checkedIds.value[0]
+    );
+    if (emp) emit("select", emp);
+  } else {
+    // 没有选中的员工时，清空高亮
+    emit("select", null);
+  }
 }
-function handleRowClick(emp) {
+function handleClick(emp) {
   emit("select", emp);
+  // 如果未勾选则勾选
   if (!checkedIds.value.includes(emp.id)) {
-    checkedIds.value.push(emp.id);
+    // 使用数组解构创建新数组以触发响应式更新
+    checkedIds.value = [...checkedIds.value, emp.id];
     emit("update:modelValue", checkedIds.value);
   }
 }
