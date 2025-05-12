@@ -15,6 +15,7 @@
                 :avatarUrls="avatarUrls"
                 v-model:search="search"
                 :selected="selectedEmployee"
+                v-model="selectedEmployeeIds"
                 @select="selectEmployee"
               />
               <ManageScore
@@ -62,6 +63,8 @@ const { t } = useI18n();
 const activeTab = ref("manage");
 const search = ref("");
 const selectedEmployee = ref(null);
+const selectedEmployeeIds = ref([]);
+const selectedEmployeeList = ref([]);
 const employees = ref([]);
 const avatarUrls = ref({});
 const filteredEmployees = computed(() => {
@@ -71,11 +74,27 @@ const filteredEmployees = computed(() => {
   );
 });
 function selectEmployee(emp) {
+  // 只高亮，不影响多选
   selectedEmployee.value = emp;
 }
 function handleTabClick() {
   // 可扩展tab切换逻辑
 }
+
+// 多选与高亮联动
+watch(selectedEmployeeIds, ids => {
+  if (ids.length === 1) {
+    selectedEmployee.value = filteredEmployees.value.find(
+      emp => emp.id === ids[0]
+    );
+  } else if (ids.length > 1) {
+    // 多选时高亮第一个
+    const emps = filteredEmployees.value.filter(emp => ids.includes(emp.id));
+    selectedEmployee.value = emps[0] || null;
+  } else {
+    selectedEmployee.value = null;
+  }
+});
 
 const fetchUserListData = async () => {
   try {

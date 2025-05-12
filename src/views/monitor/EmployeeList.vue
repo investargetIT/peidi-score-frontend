@@ -19,7 +19,10 @@
       <div
         v-for="(emp, idx) in filteredEmployees"
         :key="idx"
-        :class="['employee-item', emp?.id === selected?.id ? 'selected' : '']"
+        :class="[
+          'employee-item',
+          checkedIds.includes(emp.id) ? 'selected' : ''
+        ]"
         @click="handleRowClick(emp)"
       >
         <el-checkbox
