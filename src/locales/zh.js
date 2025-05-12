@@ -69,7 +69,10 @@ export default {
     cancel: "取消",
     confirm: "确认",
     updateSuccess: "积分更新成功",
-    updateFailed: "积分更新失败"
+    updateFailed: "积分更新失败",
+    enterReason: "请输入积分",
+    otherReason: "其他",
+    otherReasonPlaceholder: "请输入积分"
   },
   navbar: {
     updateProfile: "更新资料",

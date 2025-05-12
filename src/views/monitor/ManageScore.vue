@@ -75,18 +75,31 @@
       <div style="margin-bottom: 16px; font-size: 16px; color: #888">
         {{ t("monitor.confirmChangeDesc", { employee: employee?.name || "" }) }}
       </div>
-      <div style="margin-bottom: 8px; font-size: 18px; font-weight: bold">
-        {{ reasonText }}
-      </div>
-      <div
-        :style="{
-          color: reasonValue > 0 ? '#21ba45' : '#db2828',
-          fontSize: '20px',
-          fontWeight: 'bold'
-        }"
-      >
-        {{ reasonValue > 0 ? "+" : "" }}{{ reasonValue }}
-      </div>
+      <template v-if="form.reason === 'other'">
+        <el-form :model="ohterForm" class="score-form">
+          <el-form-item :label="t('monitor.otherReason')">
+            <el-input
+              style="width: 240px"
+              v-model="ohterForm.reasonValue"
+              :placeholder="t('monitor.enterReason')"
+            />
+          </el-form-item>
+        </el-form>
+      </template>
+      <template v-else>
+        <div style="margin-bottom: 8px; font-size: 18px; font-weight: bold">
+          {{ reasonText }}
+        </div>
+        <div
+          :style="{
+            color: reasonValue > 0 ? '#21ba45' : '#db2828',
+            fontSize: '20px',
+            fontWeight: 'bold'
+          }"
+        >
+          {{ reasonValue > 0 ? "+" : "" }}{{ reasonValue }}
+        </div>
+      </template>
     </div>
     <template #footer>
       <el-button @click="dialogVisible = false">{{
@@ -120,6 +133,10 @@ const props = defineProps({
 
 const form = ref({
   reason: ""
+});
+
+const ohterForm = ref({
+  reasonValue: ""
 });
 
 const dialogVisible = ref(false);
@@ -167,13 +184,18 @@ const onDialogConfirm = async () => {
 const fetchPointRuleList = () => {
   getPointRuleList({ pageNo: 1, pageSize: 1000 }).then(res => {
     if (res?.code === 200) {
-      pointRuleList.value = res?.data?.records?.map(item => {
+      const tempArr = res?.data?.records?.map(item => {
         return {
           ...item,
           label: `${item.actionName} (${item?.pointsChange > 0 ? "+" : ""}${item?.pointsChange})`,
           value: item.id
         };
       });
+      tempArr.push({
+        label: "其他",
+        value: "other"
+      });
+      pointRuleList.value = tempArr;
     }
   });
 };

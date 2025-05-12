@@ -72,7 +72,9 @@ export default {
     cancel: "Cancel",
     confirm: "Confirm",
     updateSuccess: "Points updated successfully",
-    updateFailed: "Points update failed"
+    updateFailed: "Points update failed",
+    enterReason: "Please enter score",
+    otherReason: "Other"
   },
   navbar: {
     updateProfile: "Update Profile",
