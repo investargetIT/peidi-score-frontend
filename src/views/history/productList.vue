@@ -89,15 +89,15 @@ const fetchProductList = () => {
     pageSize: pagination.value.pageSize
   };
   const searchArr = [] as any;
-  Object.keys(props.searchInfo)?.forEach(key => {
-    const searchParams = {} as any;
-    if (props.searchInfo[key] && props.searchInfo[key] !== "all") {
-      searchParams.searchName = key;
-      searchParams.searchType = "like";
-      searchParams.searchValue = props.searchInfo[key];
-      searchArr.push(searchParams);
-    }
-  });
+  // Object.keys(props.searchInfo)?.forEach(key => {
+  //   const searchParams = {} as any;
+  //   if (props.searchInfo[key] && props.searchInfo[key] !== "all") {
+  //     searchParams.searchName = key;
+  //     searchParams.searchType = "like";
+  //     searchParams.searchValue = props.searchInfo[key];
+  //     searchArr.push(searchParams);
+  //   }
+  // });
   searchArr.push({
     searchName: "userId",
     searchType: "equals",

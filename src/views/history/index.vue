@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center">
       <div class="container">
         <h2 class="text-2xl font-bold">{{ t("history.pointshistory") }}</h2>
-        <el-select
+        <!-- <el-select
           style="width: 240px"
           v-model="searchInfo.recordTypeId"
           :placeholder="t('history.pointplaceholder')"
@@ -15,7 +15,7 @@
             :label="getLocalizedLabel(item.label)"
             :value="item.value"
           />
-        </el-select>
+        </el-select> -->
       </div>
     </div>
     <!-- 产品列表 -->
