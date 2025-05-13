@@ -85,7 +85,7 @@
       <div style="margin-bottom: 16px; font-size: 16px; color: #888">
         {{ t("monitor.confirmChangeDesc", { selectedEmployeeNames }) }}
       </div>
-      <template v-if="form.reason === 'other'">
+      <template v-if="otherRuleMap[form.reason]">
         <el-form :model="ohterForm" class="score-form">
           <el-form-item :label="t('monitor.otherReason')" :error="reasonError">
             <el-input
@@ -156,6 +156,12 @@ const ohterForm = ref({
 
 const dialogVisible = ref(false);
 const reasonError = ref("");
+const otherRuleMap = {
+  chairman: "【业绩突破类】-【重大贡献】-董事长特别提名奖",
+  manager: "【业绩突破类】-【重大贡献】-总经理特别提名奖",
+  company: "【业绩突破类】-【重大贡献】-公司重大贡献",
+  other: "【其他】"
+};
 
 watch(
   () => props.modelValue,
@@ -194,7 +200,7 @@ const validateReason = () => {
 const onDialogConfirm = async () => {
   // 校验整数
   if (
-    form.value.reason === "other" &&
+    otherRuleMap[form.value.reason] &&
     !/^[-]?\d+$/.test(ohterForm.value.reasonValue)
   ) {
     reasonError.value = t("monitor.onlyInteger");
@@ -202,9 +208,9 @@ const onDialogConfirm = async () => {
   }
   let curRuleId = form.value.reason;
   // 当选择类型为其他时，新增规则
-  if (form.value.reason === "other") {
+  if (otherRuleMap[form.value.reason]) {
     const res = await addScoreAction({
-      actionName: "其他",
+      actionName: otherRuleMap[form.value.reason],
       pointsChange: ohterForm.value.reasonValue
     });
     if (res?.code === 200) {
@@ -261,10 +267,13 @@ const fetchPointRuleList = () => {
           value: item.id
         };
       });
-      tempArr.push({
-        label: "其他",
-        value: "other"
+      Object.keys(otherRuleMap).forEach(key => {
+        tempArr.push({
+          label: otherRuleMap[key],
+          value: key
+        });
       });
+      pointRuleList.value = tempArr;
       pointRuleList.value = tempArr;
     }
   });
