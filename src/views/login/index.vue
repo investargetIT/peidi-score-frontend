@@ -159,7 +159,7 @@ const ddLogin = () => {
                 userId: storageLocal()?.getItem("dataSource")?.id,
                 fullName: storageLocal()?.getItem("ddUserInfo")?.name,
                 email: storageLocal()?.getItem("ddUserInfo")?.org_email,
-                hireDate: storageLocal()?.getItem("ddUserInfo")?.hired_date
+                hireDateStr: storageLocal()?.getItem("ddUserInfo")?.hired_date
               }).then(res => {
                 if (res?.success) {
                   localStorage.setItem(
