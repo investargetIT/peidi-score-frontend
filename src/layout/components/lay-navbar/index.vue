@@ -117,7 +117,8 @@ const initUserInfo = () => {
     avatarUrl: tempUserInfo?.avatar,
     email: tempUserInfo?.email,
     fullName: tempUserInfo?.name,
-    mobilePhone: tempUserInfo?.mobile
+    mobilePhone: tempUserInfo?.mobile,
+    hireDateStr: tempUserInfo?.hired_date
   }).then(res => {
     if (res?.code === 200) {
       showModifyDialog.value = false;
@@ -136,6 +137,8 @@ const fetchCurUserInfo = () => {
       const avatarList = res?.data?.avatarUrl
         ? JSON.parse(curUserInfo.value.avatarUrl)
         : [];
+      console.log("==当前用户信息==");
+      console.log(res?.data);
       form.avatarUrlList = avatarList;
       // 初始化用户配置信息
       if (!res?.data) {
