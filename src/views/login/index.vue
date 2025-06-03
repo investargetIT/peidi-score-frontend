@@ -21,7 +21,7 @@ import User from "@iconify-icons/ri/user-3-fill";
 import * as dd from "dingtalk-jsapi";
 import { useRoute } from "vue-router";
 import { getUserDataSourceApi } from "@/api/user";
-import { updateUserInfo } from "@/api/pmApi";
+import { updateUserInfo, getEnumTypeList } from "@/api/pmApi";
 import { storageLocal } from "@pureadmin/utils";
 const route = useRoute();
 
@@ -68,21 +68,32 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                   "dataSource",
                   JSON.stringify({ ...data, userEmail: ruleForm.username })
                 );
-                // 获取后端路由并跳转
-                if (route.query.tabName == "worker") {
-                  return initRouter().then(() => {
-                    router.push({
-                      path: "/my/index",
-                      query: { tabName: "worker" }
-                    });
-                  });
-                } else {
-                  return initRouter().then(() => {
-                    router.push(getTopMenu(true).path).then(() => {
-                      message("登录成功", { type: "success" });
-                    });
-                  });
-                }
+                // 获取枚举类型列表
+                getEnumTypeList({ type: "adminUser" }).then(enumRes => {
+                  if (enumRes.success) {
+                    localStorage.setItem(
+                      "adminUserEnum",
+                      JSON.stringify(enumRes.data)
+                    );
+                    // 获取后端路由并跳转
+                    if (route.query.tabName == "worker") {
+                      return initRouter().then(() => {
+                        router.push({
+                          path: "/my/index",
+                          query: { tabName: "worker" }
+                        });
+                      });
+                    } else {
+                      return initRouter().then(() => {
+                        router.push(getTopMenu(true).path).then(() => {
+                          message("登录成功", { type: "success" });
+                        });
+                      });
+                    }
+                  } else {
+                    message("获取管理员列表失败", { type: "error" });
+                  }
+                });
               } else {
                 message("获取用户数据失败", { type: "error" });
               }

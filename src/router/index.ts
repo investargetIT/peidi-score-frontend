@@ -47,6 +47,22 @@ const modules: Record<string, any> = import.meta.glob(
 );
 const Layout = () => import("@/layout/index.vue");
 
+export const isAdmin = () => {
+  const adminUserEnum = JSON.parse(
+    localStorage.getItem("adminUserEnum") || "[]"
+  );
+  console.log("adminUserEnum", adminUserEnum);
+  const curDDUserInfo = JSON.parse(localStorage.getItem("ddUserInfo") || "{}");
+  console.log("curDDUserInfo", curDDUserInfo);
+  console.log(
+    "Checking admin: ",
+    curDDUserInfo?.userid,
+    "in",
+    adminUserEnum.map(item => item.value)
+  );
+  return adminUserEnum.some(item => item.value === curDDUserInfo?.userid);
+};
+
 /** 原始静态路由（未做任何处理） */
 const routes = [
   {
@@ -94,8 +110,11 @@ const routes = [
         }
       }
     ]
-  },
-  {
+  }
+];
+
+if (isAdmin()) {
+  routes.push({
     path: "/monitor",
     name: "monitor",
     redirect: "/monitor/index",
@@ -117,8 +136,8 @@ const routes = [
         }
       }
     ]
-  }
-];
+  });
+}
 
 Object.keys(modules).forEach(key => {
   routes.push(modules[key].default);
