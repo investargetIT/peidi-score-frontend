@@ -165,11 +165,17 @@ function handleClick(emp) {
   flex-direction: column;
   width: 350px;
   height: 100%;
-  min-height: 0;
+  min-height: 500px;
+  max-height: 100vh;
   overflow: hidden;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px 0 #e5e6eb;
+}
+
+.employee-list :deep(.el-card__body) {
+  overflow: hidden;
+  border-radius: 12px;
 }
 
 /* 隐藏复选框的label但保持交互 */
@@ -197,9 +203,10 @@ function handleClick(emp) {
 }
 
 .employee-items {
-  flex: 1 1 0;
-  height: 100%;
+  flex: 1;
   min-height: 0;
+  max-height: calc(100vh - 200px);
+  padding-bottom: 20px;
   overflow-y: auto;
 }
 
