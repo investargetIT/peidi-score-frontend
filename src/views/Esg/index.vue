@@ -15,7 +15,7 @@
     </el-tabs>
 
     <!-- 动态组件内容区域 -->
-    <component :is="currentComponent" />
+    <component :is="currentComponent" :active-tab="activeTab" />
   </div>
 </template>
 
@@ -59,8 +59,6 @@ const currentComponent = computed(() => {
 </script>
 
 <style scoped>
-
-
 /* 响应式设计 */
 @media (width <= 768px) {
   .esg-tabs :deep(.el-tabs__item) {

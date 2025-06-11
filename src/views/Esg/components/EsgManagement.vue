@@ -40,11 +40,12 @@
       </el-collapse-item>
     </el-collapse>
 
-    <div class="action-buttons">
-      <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click="handleSave">保存</el-button>
-      <el-button type="success" @click="handleSubmit">提交</el-button>
-    </div>
+    <EsgActionButtons
+      :show-submit="true"
+      @cancel="handleCancel"
+      @save="handleSave"
+      @submit="handleSubmit"
+    />
   </div>
 </template>
 
@@ -52,13 +53,28 @@
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
+import EsgActionButtons from "./EsgActionButtons.vue";
+
+// 定义props，接收activeTab参数
+const props = defineProps({
+  activeTab: {
+    type: String,
+    default: "esg-management"
+  }
+});
 
 const activeCollapse = ref(["esg-system"]);
 const formData = ref({ managementSystem: "" });
 
-const handleCancel = () => ElMessage.info("已取消操作");
-const handleSave = () => ElMessage.success("保存成功");
-const handleSubmit = () => ElMessage.success("提交成功");
+const handleCancel = () => {
+  console.log("取消操作");
+};
+const handleSave = () => {
+  console.log("保存数据:", formData.value);
+};
+const handleSubmit = () => {
+  console.log("提交数据:", formData.value);
+};
 </script>
 
 <style scoped>

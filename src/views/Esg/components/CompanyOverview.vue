@@ -23,33 +23,23 @@
 
           <el-form :model="formData" label-position="left" label-width="100px">
             <!-- 定性描述 -->
-            <el-form-item label="定性描述">
+            <el-form-item label="公司全称">
               <el-input
-                v-model="formData.qualitativeDescription"
+                v-model="formData.companyName"
                 type="textarea"
                 :rows="6"
                 placeholder="请输入文档描述"
                 resize="vertical"
               />
             </el-form-item>
-
-            <!-- 附件上传 -->
-            <el-form-item label="附件上传">
-              <el-upload
-                class="upload-area"
-                drag
-                :auto-upload="false"
-                multiple
-                :on-change="handleFileChange"
-                :file-list="fileList"
-              >
-                <el-button type="primary" :icon="Upload">上传附件</el-button>
-                <template #tip>
-                  <div class="el-upload__tip">
-                    支持多种文件格式，单个文件不超过10MB
-                  </div>
-                </template>
-              </el-upload>
+            <el-form-item label="总部所在地">
+              <el-input
+                v-model="formData.headquartersLocation"
+                type="textarea"
+                :rows="6"
+                placeholder="请输入文档描述"
+                resize="vertical"
+              />
             </el-form-item>
           </el-form>
         </div>
@@ -83,7 +73,7 @@
                 v-model="formData.qualitativeDescription"
                 type="textarea"
                 :rows="6"
-                placeholder="请输入文档描述"
+                placeholder="列出将在ESG报告中纳入的所有实体（包含中文全称、简写、英文名称）"
                 resize="vertical"
               />
             </el-form-item>
@@ -115,7 +105,11 @@
           <div class="collapse-title">
             <span
               >活动、品牌、产品和服务
-              <el-tooltip content="对应GRI标准: 102-2" placement="top">
+              <el-tooltip
+                raw-content
+                content="对应GRI标准: 102-6<br/>对应MSCI ESG指标: 无<br/>对应港交所ESG指引: 无"
+                placement="top"
+              >
                 <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
@@ -142,7 +136,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="公司总部的位置" name="headquarters-location">
+      <!-- <el-collapse-item title="公司总部的位置" name="headquarters-location">
         <template #title>
           <div class="collapse-title">
             <span
@@ -168,9 +162,9 @@
             </el-form-item>
           </el-form>
         </div>
-      </el-collapse-item>
+      </el-collapse-item> -->
 
-      <el-collapse-item title="经营位置" name="business-locations">
+      <!-- <el-collapse-item title="经营位置" name="business-locations">
         <template #title>
           <div class="collapse-title">
             <span
@@ -198,9 +192,9 @@
             </el-form-item>
           </el-form>
         </div>
-      </el-collapse-item>
+      </el-collapse-item> -->
 
-      <el-collapse-item title="所有权的性质及法律形式" name="ownership-legal">
+      <!-- <el-collapse-item title="所有权的性质及法律形式" name="ownership-legal">
         <template #title>
           <div class="collapse-title">
             <span
@@ -232,7 +226,7 @@
             </el-form-item>
           </el-form>
         </div>
-      </el-collapse-item>
+      </el-collapse-item> -->
     </el-collapse>
 
     <!-- 操作按钮 -->
@@ -249,13 +243,23 @@ import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
+import { getEsgRuleDetail, updateEsgConfig } from "@/api/esg";
+
+// 定义props，接收activeTab参数
+const props = defineProps({
+  activeTab: {
+    type: String,
+    default: "company-overview"
+  }
+});
 
 // 折叠面板
 const activeCollapse = ref(["company-structure"]);
 
 // 表单数据
 const formData = ref({
-  qualitativeDescription: "",
+  companyName: "",
+  headquartersLocation: "",
   activitiesDescription: "",
   headquartersAddress: "",
   businessLocations: "",
@@ -280,6 +284,17 @@ const handleCancel = () => {
 const handleSave = () => {
   console.log("保存数据:", formData.value);
   // 自定义保存逻辑
+  const sendConfig = {
+    content: JSON.stringify(formData.value),
+    type: props.activeTab
+  };
+  updateEsgConfig(sendConfig).then(res => {
+    if (res.code === 200) {
+      ElMessage.success("保存成功");
+    } else {
+      ElMessage.error("保存失败");
+    }
+  });
 };
 </script>
 

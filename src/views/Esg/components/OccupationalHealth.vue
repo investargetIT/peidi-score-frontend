@@ -57,6 +57,14 @@ import { ElMessage } from "element-plus";
 import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
 
+// 定义props，接收activeTab参数
+const props = defineProps({
+  activeTab: {
+    type: String,
+    default: "occupational-health"
+  }
+});
+
 const activeCollapse = ref(["occupational-health"]);
 const formData = ref({ healthSafety: "" });
 
