@@ -246,4 +246,10 @@ const handleSubmit = () => {
 
 <style scoped>
 @import url("./styles/common.css");
+
+/* tooltip图标垂直位置调整 */
+.collapse-title span :deep(.el-tooltip__trigger) {
+  position: relative;
+  top: 3px;
+}
 </style>

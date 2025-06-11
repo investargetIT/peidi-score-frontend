@@ -36,6 +36,12 @@
   margin-left: 8px;
 }
 
+/* tooltip图标垂直位置调整 */
+.collapse-title span :deep(.el-tooltip__trigger) {
+  position: relative;
+  top: 3px;
+}
+
 .form-section {
   padding: 0;
 }
