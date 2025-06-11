@@ -1,118 +1,105 @@
 <template>
-  <div>
-    <DashboardHeader :username="name" :avatar="avatar" />
-    <div class="score-cards">
-      <ScoreCard
-        :title="t('dashboard.exchangeablePoints')"
-        :score="curUserInfo?.redeemablePoints"
-        :type="t('dashboard.exchangeablePoints')"
-      />
-      <ScoreCard
-        :title="t('dashboard.longTermPoints')"
-        :score="curUserInfo?.lifeTimePoints"
-        :type="t('dashboard.longTermPoints')"
-      />
-    </div>
-    <RecentActivity :activities="activities" />
+  <div class="esg-management">
+    <!-- 顶部导航标签 -->
+    <el-tabs v-model="activeTab" class="esg-tabs">
+      <el-tab-pane label="公司概况" name="company-overview" />
+      <el-tab-pane label="公司治理" name="corporate-governance" />
+      <el-tab-pane label="ESG管理" name="esg-management" />
+      <el-tab-pane label="业务运营" name="business-operations" />
+      <el-tab-pane label="员工" name="employees" />
+      <el-tab-pane label="环境影响" name="environmental-impact" />
+      <el-tab-pane label="职业健康安全" name="occupational-health" />
+      <el-tab-pane label="供应商管理" name="supplier-management" />
+      <el-tab-pane label="社区公益" name="community-welfare" />
+      <el-tab-pane label="产品和服务" name="products-services" />
+    </el-tabs>
+
+    <!-- 动态组件内容区域 -->
+    <component :is="currentComponent" />
   </div>
 </template>
 
 <script setup>
-import DashboardHeader from "./DashboardHeader.vue";
-import ScoreCard from "./ScoreCard.vue";
-import RecentActivity from "./RecentActivity.vue";
-import { ref } from "vue";
-import { storageLocal } from "@pureadmin/utils";
-import { useNav } from "@/layout/hooks/useNav";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import {
-  getUserInfoData,
-  getFileDownLoadPath,
-  getScoreHistoryList
-} from "@/api/pmApi";
+import CompanyOverview from "./components/CompanyOverview.vue";
+import CorporateGovernance from "./components/CorporateGovernance.vue";
+import EsgManagement from "./components/EsgManagement.vue";
+import BusinessOperations from "./components/BusinessOperations.vue";
+import Employees from "./components/Employees.vue";
+import EnvironmentalImpact from "./components/EnvironmentalImpact.vue";
+import OccupationalHealth from "./components/OccupationalHealth.vue";
+import SupplierManagement from "./components/SupplierManagement.vue";
+import CommunityWelfare from "./components/CommunityWelfare.vue";
+import ProductsServices from "./components/ProductsServices.vue";
 
 const { t } = useI18n();
-const { id } = storageLocal()?.getItem("dataSource") || {};
 
-const { userAvatar } = useNav();
-const curUserInfo = ref({});
-const curUserAvatar = ref("");
+// 活动标签页
+const activeTab = ref("company-overview");
 
-const { name } = storageLocal()?.getItem("ddUserInfo") || {};
-const avatar = storageLocal()?.getItem("curUserAvatar") || userAvatar;
-const activities = ref([]);
-
-const fetchHistoryList = () => {
-  const searchArr = [];
-  const commonInfo = {
-    pageNo: 1,
-    pageSize: 5,
-    sortStr: JSON.stringify([{ sortName: "createdAt", sortType: "desc" }])
-  };
-  searchArr.push({
-    searchName: "userId",
-    searchType: "equals",
-    searchValue: storageLocal().getItem("dataSource")?.id
-  });
-  commonInfo.searchStr = JSON.stringify(searchArr);
-  getScoreHistoryList(commonInfo).then(res => {
-    if (res.code === 200) {
-      activities.value = res?.data?.records?.map(item => {
-        return {
-          ...item,
-          name: item.remark,
-          time: item.createdAt,
-          score: item.pointsChange,
-          type: item.recordTypeName
-        };
-      });
-    }
-  });
+// 组件映射
+const componentMap = {
+  "company-overview": CompanyOverview,
+  "corporate-governance": CorporateGovernance,
+  "esg-management": EsgManagement,
+  "business-operations": BusinessOperations,
+  employees: Employees,
+  "environmental-impact": EnvironmentalImpact,
+  "occupational-health": OccupationalHealth,
+  "supplier-management": SupplierManagement,
+  "community-welfare": CommunityWelfare,
+  "products-services": ProductsServices
 };
 
-fetchHistoryList();
-
-const fetchCurUserInfo = () => {
-  getUserInfoData({
-    userId: id
-  }).then(res => {
-    if (res?.code === 200) {
-      curUserInfo.value = res.data;
-      const avatarList = res?.data?.avatarUrl
-        ? JSON.parse(curUserInfo.value.avatarUrl)
-        : [];
-
-      // 获取头像预览地址
-      if (avatarList.length > 0) {
-        getFileDownLoadPath({
-          objectName: "ui/user/" + avatarList[0].name
-        }).then(previewRes => {
-          if (previewRes?.code === 200) {
-            curUserAvatar.value = previewRes.data;
-            storageLocal().setItem("curUserAvatar", curUserAvatar.value);
-          }
-        });
-      }
-    }
-  });
-};
-
-fetchCurUserInfo();
+// 当前组件
+const currentComponent = computed(() => {
+  return componentMap[activeTab.value] || CompanyOverview;
+});
 </script>
 
 <style scoped>
-.score-cards {
-  display: flex;
-  gap: 32px;
-  margin-bottom: 32px;
+
+
+/* 响应式设计 */
+@media (width <= 768px) {
+  .esg-tabs :deep(.el-tabs__item) {
+    padding: 0 12px;
+    font-size: 13px;
+  }
 }
 
-.score-card {
-  flex: 1;
-  min-width: 0;
+.esg-management {
+  min-height: 100vh;
+  padding: 0;
+  background: #f5f7fa;
 }
 
-.recent-activity {
-  width: 100%;
+.esg-tabs {
+  padding: 0 20px;
+  margin-bottom: 0;
+  background: #fff;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+}
+
+.esg-tabs :deep(.el-tabs__header) {
+  margin: 0;
+}
+
+.esg-tabs :deep(.el-tabs__nav-wrap::after) {
+  display: none;
+}
+
+.esg-tabs :deep(.el-tabs__item) {
+  height: 50px;
+  padding: 0 20px;
+  font-size: 14px;
+  line-height: 50px;
+  color: #606266;
+}
+
+.esg-tabs :deep(.el-tabs__item.is-active) {
+  font-weight: 600;
+  color: #409eff;
 }
 </style>
