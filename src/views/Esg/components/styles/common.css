@@ -1,12 +1,11 @@
 .esg-content {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 20px 0;
+  width: 100%;
 }
 
 .esg-collapse {
   background: #fff;
-  border-radius: 8px;
+  border-radius: 0;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
@@ -72,17 +71,17 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 0;
   padding: 20px;
   background: #fff;
-  border-radius: 8px;
+  border-radius: 0;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
   .esg-content {
-    padding: 12px;
+    padding: 12px 0;
   }
 
   .action-buttons {
