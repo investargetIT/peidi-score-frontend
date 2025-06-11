@@ -73,28 +73,9 @@
   padding: 20px;
 }
 
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 0;
-  padding: 20px;
-  background: #fff;
-  border-radius: 0;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .esg-content {
     padding: 12px 0;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-  }
-
-  .action-buttons .el-button {
-    width: 100%;
   }
 }
