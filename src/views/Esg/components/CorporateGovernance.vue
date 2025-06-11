@@ -75,11 +75,12 @@
     </el-collapse>
 
     <!-- 操作按钮 -->
-    <div class="action-buttons">
-      <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click="handleSave">保存</el-button>
-      <el-button type="success" @click="handleSubmit">提交</el-button>
-    </div>
+    <EsgActionButtons
+      :show-submit="true"
+      @cancel="handleCancel"
+      @save="handleSave"
+      @submit="handleSubmit"
+    />
   </div>
 </template>
 
@@ -87,6 +88,7 @@
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
+import EsgActionButtons from "./EsgActionButtons.vue";
 
 const activeCollapse = ref(["governance-structure"]);
 
@@ -95,9 +97,18 @@ const formData = ref({
   internalControl: ""
 });
 
-const handleCancel = () => ElMessage.info("已取消操作");
-const handleSave = () => ElMessage.success("保存成功");
-const handleSubmit = () => ElMessage.success("提交成功");
+const handleCancel = () => {
+  // 自定义取消逻辑
+  console.log("取消操作");
+};
+const handleSave = () => {
+  // 自定义保存逻辑
+  console.log("保存数据:", formData.value);
+};
+const handleSubmit = () => {
+  // 自定义提交逻辑
+  console.log("提交数据:", formData.value);
+};
 </script>
 
 <style scoped>

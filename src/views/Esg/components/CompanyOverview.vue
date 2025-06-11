@@ -236,10 +236,11 @@
     </el-collapse>
 
     <!-- 操作按钮 -->
-    <div class="action-buttons">
-      <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click="handleSave">保存</el-button>
-    </div>
+    <EsgActionButtons
+      :show-submit="false"
+      @cancel="handleCancel"
+      @save="handleSave"
+    />
   </div>
 </template>
 
@@ -247,6 +248,7 @@
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
+import EsgActionButtons from "./EsgActionButtons.vue";
 
 // 折叠面板
 const activeCollapse = ref(["company-structure"]);
@@ -271,17 +273,13 @@ const handleFileChange = (file, fileList) => {
 
 // 操作处理函数
 const handleCancel = () => {
-  ElMessage.info("已取消操作");
+  // 自定义取消逻辑
+  console.log("取消操作");
 };
 
 const handleSave = () => {
   console.log("保存数据:", formData.value);
-  ElMessage.success("保存成功");
-};
-
-const handleSubmit = () => {
-  console.log("提交数据:", formData.value);
-  ElMessage.success("提交成功");
+  // 自定义保存逻辑
 };
 </script>
 
@@ -292,22 +290,6 @@ const handleSubmit = () => {
 .collapse-title span :deep(.el-tooltip__trigger) {
   position: relative;
   top: 3px;
-}
-
-/* 底部操作按钮sticky效果 */
-.action-buttons {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  padding: 16px 20px;
-  background: #fff;
-  border-top: 1px solid #e4e7ed;
-  box-shadow: 0 -2px 8px rgb(0 0 0 / 10%);
 }
 
 /* 为esg-content添加底部padding，避免内容被按钮遮挡 */
