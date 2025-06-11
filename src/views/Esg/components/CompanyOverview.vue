@@ -6,7 +6,7 @@
         <template #title>
           <div class="collapse-title">
             <span>公司名称与组织架构</span>
-            <el-icon class="collapse-icon"><InfoFilled /></el-icon>
+            <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
 
@@ -66,7 +66,7 @@
         <template #title>
           <div class="collapse-title">
             <span>活动、品牌、产品和服务</span>
-            <el-icon class="collapse-icon"><InfoFilled /></el-icon>
+            <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
         <div class="form-section">
@@ -93,7 +93,7 @@
         <template #title>
           <div class="collapse-title">
             <span>公司总部的位置</span>
-            <el-icon class="collapse-icon"><InfoFilled /></el-icon>
+            <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
         <div class="form-section">
@@ -116,7 +116,7 @@
         <template #title>
           <div class="collapse-title">
             <span>经营位置</span>
-            <el-icon class="collapse-icon"><InfoFilled /></el-icon>
+            <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
         <div class="form-section">
@@ -141,7 +141,7 @@
         <template #title>
           <div class="collapse-title">
             <span>所有权的性质及法律形式</span>
-            <el-icon class="collapse-icon"><InfoFilled /></el-icon>
+            <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
         <div class="form-section">
