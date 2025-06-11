@@ -40,7 +40,6 @@ const handleCancel = () => {
 
 const handleSave = () => {
   emit("save");
-  ElMessage.success("保存成功");
 };
 
 const handleSubmit = () => {

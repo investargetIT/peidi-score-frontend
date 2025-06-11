@@ -260,6 +260,7 @@ const activeCollapse = ref(["company-structure"]);
 const formData = ref({
   companyName: "",
   headquartersLocation: "",
+  qualitativeDescription: "",
   activitiesDescription: "",
   headquartersAddress: "",
   businessLocations: "",
@@ -284,10 +285,19 @@ const loadData = async () => {
       if (res.data.content) {
         try {
           const contentData = JSON.parse(res.data.content);
+
           // 将数据回填到表单
           Object.keys(contentData).forEach(key => {
-            if (formData.value.hasOwnProperty(key)) {
+            // 检查是否有映射关系
+            const targetKey = key;
+
+            if (formData.value.hasOwnProperty(targetKey)) {
+              formData.value[targetKey] = contentData[key];
+            } else if (formData.value.hasOwnProperty(key)) {
+              // 如果没有映射关系，直接使用原字段名
               formData.value[key] = contentData[key];
+            } else {
+              console.warn(`字段 ${key} 在formData中不存在，跳过回填`);
             }
           });
         } catch (e) {
