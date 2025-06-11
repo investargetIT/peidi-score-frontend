@@ -72,10 +72,3 @@
   height: auto;
   padding: 20px;
 }
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .esg-content {
-    padding: 12px 0;
-  }
-}

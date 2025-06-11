@@ -49,20 +49,7 @@ const handleSubmit = () => {
 </script>
 
 <style scoped>
-
-
-/* 响应式设计 */
-@media (width <= 768px) {
-  .action-buttons {
-    flex-direction: column;
-    padding: 16px 20px;
-  }
-
-  .action-buttons .el-button {
-    width: 100%;
-  }
-}
-
+/* 底部操作按钮sticky效果 */
 .action-buttons {
   position: fixed;
   right: 0;
@@ -79,6 +66,4 @@ const handleSubmit = () => {
   border-radius: 0;
   box-shadow: 0 -2px 8px rgb(0 0 0 / 10%);
 }
-
-/* 底部操作按钮sticky效果 */
 </style>
