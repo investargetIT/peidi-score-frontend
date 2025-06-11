@@ -51,21 +51,64 @@
                 </template>
               </el-upload>
             </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item
+        title="纳入组织可持续发展报告的实体"
+        name="company-structure"
+      >
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >纳入组织可持续发展报告的实体
+              <el-tooltip content="对应GRI标准: 102-2" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
 
-            <!-- 相关内容链接 -->
-            <el-form-item label="相关内容链接">
+        <div class="form-section">
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">公司全称与简称、公司组织架构图。</span>
+          </div>
+
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <!-- 定性描述 -->
+            <el-form-item label="定性描述">
               <el-input
-                v-model="formData.relatedLinks"
+                v-model="formData.qualitativeDescription"
                 type="textarea"
-                :rows="4"
-                placeholder="请输入相关文档目录"
+                :rows="6"
+                placeholder="请输入文档描述"
                 resize="vertical"
               />
+            </el-form-item>
+
+            <!-- 附件上传 -->
+            <el-form-item label="附件上传">
+              <el-upload
+                class="upload-area"
+                drag
+                :auto-upload="false"
+                multiple
+                :on-change="handleFileChange"
+                :file-list="fileList"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">
+                    支持多种文件格式，单个文件不超过10MB
+                  </div>
+                </template>
+              </el-upload>
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-
       <!-- 其他折叠项 -->
       <el-collapse-item title="活动、品牌、产品和服务" name="activities-brands">
         <template #title>
@@ -196,7 +239,6 @@
     <div class="action-buttons">
       <el-button @click="handleCancel">取消</el-button>
       <el-button type="primary" @click="handleSave">保存</el-button>
-      <el-button type="success" @click="handleSubmit">提交</el-button>
     </div>
   </div>
 </template>
@@ -212,7 +254,6 @@ const activeCollapse = ref(["company-structure"]);
 // 表单数据
 const formData = ref({
   qualitativeDescription: "",
-  relatedLinks: "",
   activitiesDescription: "",
   headquartersAddress: "",
   businessLocations: "",
@@ -251,5 +292,26 @@ const handleSubmit = () => {
 .collapse-title span :deep(.el-tooltip__trigger) {
   position: relative;
   top: 3px;
+}
+
+/* 底部操作按钮sticky效果 */
+.action-buttons {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 16px 20px;
+  background: #fff;
+  border-top: 1px solid #e4e7ed;
+  box-shadow: 0 -2px 8px rgb(0 0 0 / 10%);
+}
+
+/* 为esg-content添加底部padding，避免内容被按钮遮挡 */
+.esg-content {
+  padding-bottom: 80px;
 }
 </style>
