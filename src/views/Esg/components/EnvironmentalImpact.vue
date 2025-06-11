@@ -4,7 +4,12 @@
       <el-collapse-item title="环境影响管理" name="environmental-impact">
         <template #title>
           <div class="collapse-title">
-            <span>环境影响管理</span>
+            <span
+              >环境影响管理
+              <el-tooltip content="对应GRI标准: 301-1" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"><InfoFilled /></el-icon>
           </div>
         </template>
@@ -48,7 +53,7 @@
 <script setup>
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { Upload, InfoFilled } from "@element-plus/icons-vue";
+import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
 
 const activeCollapse = ref(["environmental-impact"]);
 const formData = ref({ environmentalManagement: "" });

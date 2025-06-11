@@ -4,7 +4,12 @@
       <el-collapse-item title="ESG管理体系" name="esg-system">
         <template #title>
           <div class="collapse-title">
-            <span>ESG管理体系</span>
+            <span
+              >ESG管理体系
+              <el-tooltip content="对应GRI标准: 102-20" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"><InfoFilled /></el-icon>
           </div>
         </template>
@@ -46,7 +51,7 @@
 <script setup>
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { Upload, InfoFilled } from "@element-plus/icons-vue";
+import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
 
 const activeCollapse = ref(["esg-system"]);
 const formData = ref({ managementSystem: "" });

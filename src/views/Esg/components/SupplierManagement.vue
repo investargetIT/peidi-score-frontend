@@ -4,7 +4,12 @@
       <el-collapse-item title="供应商管理" name="supplier-management">
         <template #title>
           <div class="collapse-title">
-            <span>供应商管理</span>
+            <span
+              >供应商管理
+              <el-tooltip content="对应GRI标准: 308-1" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"><InfoFilled /></el-icon>
           </div>
         </template>
@@ -42,7 +47,7 @@
 <script setup>
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { Upload, InfoFilled } from "@element-plus/icons-vue";
+import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
 
 const activeCollapse = ref(["supplier-management"]);
 const formData = ref({ supplierManagement: "" });

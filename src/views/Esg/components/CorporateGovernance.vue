@@ -4,7 +4,12 @@
       <el-collapse-item title="治理结构" name="governance-structure">
         <template #title>
           <div class="collapse-title">
-            <span>治理结构</span>
+            <span
+              >治理结构
+              <el-tooltip content="对应GRI标准: 102-18" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"><InfoFilled /></el-icon>
           </div>
         </template>
@@ -39,7 +44,12 @@
       <el-collapse-item title="内控制度" name="internal-control">
         <template #title>
           <div class="collapse-title">
-            <span>内控制度</span>
+            <span
+              >内控制度
+              <el-tooltip content="对应GRI标准: 102-19" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"><InfoFilled /></el-icon>
           </div>
         </template>
@@ -76,7 +86,7 @@
 <script setup>
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { Upload, InfoFilled } from "@element-plus/icons-vue";
+import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
 
 const activeCollapse = ref(["governance-structure"]);
 

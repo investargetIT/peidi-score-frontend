@@ -4,7 +4,12 @@
       <el-collapse-item title="员工权益保障" name="employee-rights">
         <template #title>
           <div class="collapse-title">
-            <span>员工权益保障</span>
+            <span
+              >员工权益保障
+              <el-tooltip content="对应GRI标准: 401-1" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"><InfoFilled /></el-icon>
           </div>
         </template>
@@ -48,7 +53,7 @@
 <script setup>
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { Upload, InfoFilled } from "@element-plus/icons-vue";
+import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
 
 const activeCollapse = ref(["employee-rights"]);
 const formData = ref({ employeeRights: "" });

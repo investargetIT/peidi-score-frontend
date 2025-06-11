@@ -5,7 +5,12 @@
       <el-collapse-item title="公司名称与组织架构" name="company-structure">
         <template #title>
           <div class="collapse-title">
-            <span>公司名称与组织架构</span>
+            <span
+              >公司名称与组织架构
+              <el-tooltip content="对应GRI标准: 102-1" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -65,7 +70,12 @@
       <el-collapse-item title="活动、品牌、产品和服务" name="activities-brands">
         <template #title>
           <div class="collapse-title">
-            <span>活动、品牌、产品和服务</span>
+            <span
+              >活动、品牌、产品和服务
+              <el-tooltip content="对应GRI标准: 102-2" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -92,7 +102,12 @@
       <el-collapse-item title="公司总部的位置" name="headquarters-location">
         <template #title>
           <div class="collapse-title">
-            <span>公司总部的位置</span>
+            <span
+              >公司总部的位置
+              <el-tooltip content="对应GRI标准: 102-3" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -115,7 +130,12 @@
       <el-collapse-item title="经营位置" name="business-locations">
         <template #title>
           <div class="collapse-title">
-            <span>经营位置</span>
+            <span
+              >经营位置
+              <el-tooltip content="对应GRI标准: 102-4" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -140,7 +160,12 @@
       <el-collapse-item title="所有权的性质及法律形式" name="ownership-legal">
         <template #title>
           <div class="collapse-title">
-            <span>所有权的性质及法律形式</span>
+            <span
+              >所有权的性质及法律形式
+              <el-tooltip content="对应GRI标准: 102-5" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -179,7 +204,7 @@
 <script setup>
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { Upload, InfoFilled } from "@element-plus/icons-vue";
+import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 
 // 折叠面板
 const activeCollapse = ref(["company-structure"]);

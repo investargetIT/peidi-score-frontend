@@ -4,7 +4,12 @@
       <el-collapse-item title="职业健康安全" name="occupational-health">
         <template #title>
           <div class="collapse-title">
-            <span>职业健康安全</span>
+            <span
+              >职业健康安全
+              <el-tooltip content="对应GRI标准: 403-1" placement="top">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
             <el-icon class="collapse-icon"><InfoFilled /></el-icon>
           </div>
         </template>
@@ -48,7 +53,7 @@
 <script setup>
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { Upload, InfoFilled } from "@element-plus/icons-vue";
+import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
 
 const activeCollapse = ref(["occupational-health"]);
 const formData = ref({ healthSafety: "" });
