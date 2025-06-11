@@ -40,14 +40,14 @@ const baseUrlApi = (url: string, hasUi = true) => {
 
 // 获取配置规则列表
 export const getEsgRuleDetail = params => {
-  return http.request("get", baseUrlApi("ui/esg/info"), {
+  return http.request("get", baseUrlApi("/esg/info"), {
     params
   });
 };
 
 // 更新esg
 export const updateEsgConfig = data => {
-  return http.request("post", baseUrlApi("ui/esg/info"), {
+  return http.request("post", baseUrlApi("/esg/info"), {
     data
   });
 };

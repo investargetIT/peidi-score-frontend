@@ -85,10 +85,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, InfoFilled, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
+import { getEsgRuleDetail, updateEsgConfig } from "@/api/esg";
 
 // 定义props，接收activeTab参数
 const props = defineProps({
@@ -105,6 +106,32 @@ const formData = ref({
   internalControl: ""
 });
 
+// 页面加载时获取数据
+const loadData = async () => {
+  try {
+    const res = await getEsgRuleDetail({ type: props.activeTab });
+    if (res.code === 200 && res.data && res.data.content) {
+      try {
+        const contentData = JSON.parse(res.data.content);
+        Object.keys(contentData).forEach(key => {
+          if (formData.value.hasOwnProperty(key)) {
+            formData.value[key] = contentData[key];
+          }
+        });
+      } catch (e) {
+        console.warn("解析content数据失败:", e);
+      }
+    }
+  } catch (error) {
+    console.error("获取数据失败:", error);
+  }
+};
+
+// 组件挂载后加载数据
+onMounted(() => {
+  loadData();
+});
+
 const handleCancel = () => {
   // 自定义取消逻辑
   console.log("取消操作");
@@ -112,6 +139,17 @@ const handleCancel = () => {
 const handleSave = () => {
   // 自定义保存逻辑
   console.log("保存数据:", formData.value);
+  const sendConfig = {
+    content: JSON.stringify(formData.value),
+    type: props.activeTab
+  };
+  updateEsgConfig(sendConfig).then(res => {
+    if (res.code === 200) {
+      ElMessage.success("保存成功");
+    } else {
+      ElMessage.error("保存失败");
+    }
+  });
 };
 const handleSubmit = () => {
   // 自定义提交逻辑

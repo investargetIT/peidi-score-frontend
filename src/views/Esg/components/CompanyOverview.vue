@@ -239,7 +239,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
@@ -274,6 +274,36 @@ const fileList = ref([]);
 const handleFileChange = (file, fileList) => {
   console.log("文件变化:", file, fileList);
 };
+
+// 页面加载时获取数据
+const loadData = async () => {
+  try {
+    const res = await getEsgRuleDetail({ type: props.activeTab });
+    if (res.code === 200 && res.data) {
+      // 如果返回的content是JSON字符串，需要解析
+      if (res.data.content) {
+        try {
+          const contentData = JSON.parse(res.data.content);
+          // 将数据回填到表单
+          Object.keys(contentData).forEach(key => {
+            if (formData.value.hasOwnProperty(key)) {
+              formData.value[key] = contentData[key];
+            }
+          });
+        } catch (e) {
+          console.warn("解析content数据失败:", e);
+        }
+      }
+    }
+  } catch (error) {
+    console.error("获取数据失败:", error);
+  }
+};
+
+// 组件挂载后加载数据
+onMounted(() => {
+  loadData();
+});
 
 // 操作处理函数
 const handleCancel = () => {
