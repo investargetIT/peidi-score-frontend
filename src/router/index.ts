@@ -114,6 +114,7 @@ const routes = [
   {
     path: "/esg",
     name: "esg",
+    hidden: true,
     redirect: "/esg/index",
     component: Layout,
     meta: {
@@ -129,7 +130,8 @@ const routes = [
         meta: {
           title: "menu.esg",
           showParent: false,
-          icon: "flowbite:address-book-outline"
+          icon: "flowbite:address-book-outline",
+          hidden: true
         }
       }
     ]
