@@ -121,7 +121,6 @@ const ddLogin = () => {
           if (res.success) {
             const { data: ddUserInfo } = res;
             console.log("ddUserInfo", ddUserInfo);
-            // alert(JSON.stringify(ddUserInfo));
             localStorage.setItem("ddUserInfo", JSON.stringify(ddUserInfo));
             const { org_email, name } = ddUserInfo;
             if (org_email) {
@@ -170,7 +169,8 @@ const ddLogin = () => {
                 userId: storageLocal()?.getItem("dataSource")?.id,
                 fullName: storageLocal()?.getItem("ddUserInfo")?.name,
                 email: storageLocal()?.getItem("ddUserInfo")?.org_email,
-                hireDateStr: storageLocal()?.getItem("ddUserInfo")?.hired_date
+                hireDateStr: storageLocal()?.getItem("ddUserInfo")?.hired_date,
+                avatarUrl: storageLocal()?.getItem("ddUserInfo")?.avatar
               }).then(res => {
                 if (res?.success) {
                   localStorage.setItem(

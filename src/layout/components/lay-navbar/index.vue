@@ -133,26 +133,55 @@ const fetchCurUserInfo = () => {
     userId: id
   }).then(res => {
     if (res?.code === 200) {
-      curUserInfo.value = res.data;
-      const avatarList = res?.data?.avatarUrl
-        ? JSON.parse(curUserInfo.value.avatarUrl)
-        : [];
-      form.avatarUrlList = avatarList;
+      console.log("===当前用户信息==");
+      console.log(res.data);
       // 初始化用户配置信息
       if (!res?.data) {
         initUserInfo();
+        return;
+      }
+      curUserInfo.value = res.data;
+
+      // 优化avatarUrl处理逻辑，支持两种格式
+      let avatarList = [];
+      if (res?.data?.avatarUrl) {
+        try {
+          // 尝试作为JSON字符串解析
+          const parsed = JSON.parse(res.data.avatarUrl);
+          // 确保解析后是数组格式
+          if (Array.isArray(parsed)) {
+            avatarList = parsed;
+          } else {
+            console.warn("avatarUrl解析后不是数组格式:", parsed);
+          }
+        } catch (error) {
+          // 如果JSON.parse失败，说明是单纯的字符串
+          console.log("avatarUrl是单纯字符串，直接使用:", res.data.avatarUrl);
+          // 直接使用字符串作为头像URL
+          curUserAvatar.value = res.data.avatarUrl;
+          storageLocal().setItem("curUserAvatar", res.data.avatarUrl);
+          return; // 直接返回，不需要处理数组逻辑
+        }
       }
 
-      // 获取头像预览地址
+      // 处理数组格式的avatarList
       if (avatarList.length > 0) {
+        form.avatarUrlList = avatarList;
         getFileDownLoadPath({
           objectName: "ui/user/" + avatarList[0].name
-        }).then(previewRes => {
-          if (previewRes?.code === 200) {
-            curUserAvatar.value = previewRes.data;
-            storageLocal().setItem("curUserAvatar", curUserAvatar.value);
-          }
-        });
+        })
+          .then(previewRes => {
+            if (previewRes?.code === 200) {
+              curUserAvatar.value = previewRes.data;
+              storageLocal().setItem("curUserAvatar", curUserAvatar.value);
+            }
+          })
+          .catch(err => {
+            console.warn("获取头像预览地址失败:", err);
+          });
+      } else {
+        // 如果数组为空，清空头像
+        form.avatarUrlList = [];
       }
     }
   });

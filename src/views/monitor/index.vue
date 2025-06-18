@@ -131,19 +131,32 @@ const fetchUserListData = async () => {
 
 const getPreviewUrl = async (file, userId) => {
   if (!file) return "";
+
   try {
-    const fileInfo = JSON.parse(file) || [];
-    const res = await getFileDownLoadPath({
-      objectName: fileInfo?.[0]?.response?.data
-    });
-    if (res.code === 200) {
-      avatarUrls.value[userId] = res.data;
-      return res.data;
+    // 尝试作为JSON字符串解析
+    const parsed = JSON.parse(file);
+
+    // 确保解析后是数组格式
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      // 处理数组格式，提取objectName
+      const objectName = parsed[0]?.response?.data || parsed[0]?.name;
+      if (objectName) {
+        const res = await getFileDownLoadPath({
+          objectName: objectName
+        });
+        if (res.code === 200) {
+          avatarUrls.value[userId] = res.data;
+          return res.data;
+        }
+      }
     }
+
     return "";
-  } catch (err) {
-    console.error("Failed to get preview URL:", err);
-    return "";
+  } catch (error) {
+    // 如果JSON.parse失败，说明是单纯的字符串，直接返回使用
+    console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
+    avatarUrls.value[userId] = file;
+    return file;
   }
 };
 
