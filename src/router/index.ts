@@ -137,31 +137,31 @@ if (isAdmin()) {
       }
     ]
   });
-  routes.push({
-    path: "/esg",
-    name: "esg",
-    hidden: true,
-    redirect: "/esg/index",
-    component: Layout,
-    meta: {
-      icon: "flowbite:address-book-outline",
-      title: "menu.esg",
-      rank: 0
-    },
-    children: [
-      {
-        path: "/esg/index",
-        name: "esg",
-        component: () => import("@/views/esg/index.vue"),
-        meta: {
-          title: "menu.esg",
-          showParent: false,
-          icon: "flowbite:address-book-outline",
-          hidden: true
-        }
-      }
-    ]
-  });
+  // routes.push({
+  //   path: "/esg",
+  //   name: "esg",
+  //   hidden: true,
+  //   redirect: "/esg/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "flowbite:address-book-outline",
+  //     title: "menu.esg",
+  //     rank: 0
+  //   },
+  //   children: [
+  //     {
+  //       path: "/esg/index",
+  //       name: "esg",
+  //       component: () => import("@/views/esg/index.vue"),
+  //       meta: {
+  //         title: "menu.esg",
+  //         showParent: false,
+  //         icon: "flowbite:address-book-outline",
+  //         hidden: true
+  //       }
+  //     }
+  //   ]
+  // });
 }
 
 Object.keys(modules).forEach(key => {
