@@ -406,6 +406,7 @@ To carry out."
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
+                accept=".jpg,.jpeg,.png"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -467,6 +468,7 @@ To carry out."
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
+                accept=".jpg,.jpeg,.png"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -519,6 +521,7 @@ To carry out."
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
+                accept=".jpg,.jpeg,.png"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -577,6 +580,7 @@ To carry out."
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
+                accept=".jpg,.jpeg,.png"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
