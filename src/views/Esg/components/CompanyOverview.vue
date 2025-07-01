@@ -713,23 +713,10 @@ const loadData = async () => {
       if (res.data.content) {
         try {
           const contentData = JSON.parse(res.data.content);
-
-          // 字段映射关系 - 支持旧字段名到新字段名的映射
-          const fieldMapping = {
-            // 旧字段名 -> 新字段名
-            companyName: "companyFullName",
-            qualitativeDescription: "reportingEntitiesDescription",
-            activitiesDescription: "activitiesAndServicesDescription",
-            headquartersAddress: "serviceCountries",
-            businessLocations: "serviceGeographicLocations",
-            ownershipNature: "strategicVision",
-            legalForm: "mission"
-          };
-
           // 将数据回填到表单
           Object.keys(contentData).forEach(key => {
             // 检查是否有字段映射
-            const targetKey = fieldMapping[key] || key;
+            const targetKey = key;
 
             if (formData.value.hasOwnProperty(targetKey)) {
               formData.value[targetKey] = contentData[key];
