@@ -130,6 +130,18 @@
             <el-form-item
               label="与先前报告期相比，组织的活动、产品、服务 ，以及所服务的市场是否有重大变化"
             >
+              <template #label>
+                <div>
+                  <span>
+                    与先前报告期相比，组织的活动、产品、服务
+                    ，以及所服务的市场是否有重大变化</span
+                  >
+
+                  <EsgTooltip
+                    content="可包括：活动的变化，如设施的开设、关闭或扩大；组织的供应链结构或与供应商关系的变化，包括选择和终止；或供应商位置的变化。"
+                  />
+                </div>
+              </template>
               <el-input
                 v-model="formData.activitiesDescription"
                 type="textarea"
@@ -137,7 +149,7 @@
                 placeholder="可包括：活动的变化，如设施的开设、关闭或扩大；组织的供应链结构或与供应商关系的变化，包括选择和终止；或供应商位置的变化。"
               />
             </el-form-item>
-            <el-form-item label="定性描述">
+            <el-form-item label="主要产品功能与用途">
               <el-input
                 v-model="formData.qualitativeDescription"
                 type="textarea"
@@ -376,10 +388,6 @@ const handleSave = () => {
 @import url("./styles/common.css");
 
 /* tooltip图标垂直位置调整 */
-.collapse-title span :deep(.el-tooltip__trigger) {
-  position: relative;
-  top: 3px;
-}
 
 /* 为esg-content添加底部padding，避免内容被按钮遮挡 */
 .esg-content {

@@ -5,7 +5,7 @@
     :effect="effect"
     :raw-content="rawContent"
   >
-    <el-icon
+    <el-icon :style="iconStyle"
       ><slot><QuestionFilled /></slot
     ></el-icon>
   </el-tooltip>
@@ -29,6 +29,10 @@ const props = defineProps({
   rawContent: {
     type: Boolean,
     default: false
+  },
+  iconStyle: {
+    type: String,
+    default: "font-size: 15px"
   }
 });
 </script>
