@@ -34,7 +34,7 @@ export type RefreshTokenResult = {
   };
 };
 
-const baseUrlApi = (url: string, hasUi = true) => {
+export const baseUrlApi = (url: string, hasUi = true) => {
   return `https://api.peidigroup.cn/${hasUi ? "ui" : ""}${url}`;
 };
 
@@ -49,5 +49,11 @@ export const getEsgRuleDetail = params => {
 export const updateEsgConfig = data => {
   return http.request("post", baseUrlApi("/esg/info"), {
     data
+  });
+};
+
+export const getFileDownLoadPath = params => {
+  return http.request("get", baseUrlApi("/common/download-url"), {
+    params
   });
 };

@@ -82,14 +82,19 @@
             </el-form-item>
 
             <!-- 附件上传 -->
-            <el-form-item label="附件上传">
+            <el-form-item label="附件上传" prop="reportingEntitiesFileList">
               <el-upload
                 class="upload-area"
-                drag
-                :auto-upload="false"
-                multiple
+                v-model:file-list="formData.reportingEntitiesFileList"
+                :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :file-list="fileList"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -564,6 +569,9 @@ To carry out."
       @save="handleSave"
     />
   </div>
+  <el-dialog v-model="dialogVisible">
+    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+  </el-dialog>
 </template>
 
 <script setup>
@@ -571,8 +579,15 @@ import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
-import { getEsgRuleDetail, updateEsgConfig } from "@/api/esg";
+import {
+  getEsgRuleDetail,
+  updateEsgConfig,
+  baseUrlApi,
+  getFileDownLoadPath
+} from "@/api/esg";
 import EsgTooltip from "./EsgTooltip.vue";
+import { formatToken, getToken } from "@/utils/auth.ts";
+const uploadUrl = baseUrlApi("/esg/upload");
 
 // 定义props，接收activeTab参数
 const props = defineProps({
@@ -584,6 +599,8 @@ const props = defineProps({
 
 // 折叠面板
 const activeCollapse = ref(["company-name-structure"]);
+const dialogImageUrl = ref("");
+const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
@@ -636,6 +653,25 @@ const fileList = ref([]);
 // 文件上传处理
 const handleFileChange = (file, fileList) => {
   console.log("文件变化:", file, fileList);
+};
+
+const handlePictureCardPreview = uploadFile => {
+  if (uploadFile.response?.code !== 200) return;
+  getFileDownLoadPath({
+    objectName: uploadFile.response.data
+  })
+    .then(res => {
+      const { code, msg, data } = res;
+      if (code === 200) {
+        dialogImageUrl.value = res.data;
+        dialogVisible.value = true;
+      } else {
+        ElMessage.error("图片预览失败--" + msg);
+      }
+    })
+    .catch(err => {
+      ElMessage.error("图片预览失败");
+    });
 };
 
 // 页面加载时获取数据
