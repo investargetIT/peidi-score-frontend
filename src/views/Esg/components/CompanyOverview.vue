@@ -25,10 +25,10 @@
             <!-- 定性描述 -->
             <el-form-item label="公司全称">
               <el-input
-                v-model="formData.companyName"
+                v-model="formData.companyFullName"
                 type="textarea"
                 :rows="6"
-                placeholder="请输入文档描述"
+                placeholder="请输入公司全称"
                 resize="vertical"
               />
             </el-form-item>
@@ -37,7 +37,7 @@
                 v-model="formData.headquartersLocation"
                 type="textarea"
                 :rows="6"
-                placeholder="请输入文档描述"
+                placeholder="请输入总部详细地址"
                 resize="vertical"
               />
             </el-form-item>
@@ -70,7 +70,7 @@
             <!-- 定性描述 -->
             <el-form-item label="定性描述">
               <el-input
-                v-model="formData.qualitativeDescription"
+                v-model="formData.reportingEntitiesDescription"
                 type="textarea"
                 :rows="6"
                 placeholder="列出将在ESG报告中纳入的所有实体（包含中文全称、简写、英文名称）"
@@ -124,7 +124,7 @@
               label="说明：组织的活动、产品、服务 ，以及所服务的市场"
             >
               <el-input
-                v-model="formData.activitiesDescription"
+                v-model="formData.activitiesAndServicesDescription"
                 type="textarea"
                 :rows="8"
                 placeholder="主营业务
@@ -149,15 +149,15 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.activitiesDescription"
+                v-model="formData.activitiesChangesDescription"
                 type="textarea"
                 :rows="8"
-                placeholder=""
+                placeholder="可包括：活动的变化，如设施的开设、关闭或扩大；组织的供应链结构或与供应商关系的变化，包括选择和终止；或供应商位置的变化。"
               />
             </el-form-item>
             <el-form-item label="主要产品功能与用途">
               <el-input
-                v-model="formData.qualitativeDescription"
+                v-model="formData.productFunctionDescription"
                 type="textarea"
                 :rows="6"
                 placeholder="包括产品名称，功能及用途"
@@ -207,19 +207,19 @@
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item label="生产基地所在国家">
               <el-input
-                v-model="formData.qualitativeDescription"
+                v-model="formData.productionBaseCountries"
                 type="textarea"
                 :rows="4"
-                placeholder="包括产品名称，功能及用途"
+                placeholder="请输入生产基地所在的国家"
                 resize="vertical"
               />
             </el-form-item>
             <el-form-item label="提供产品和服务的国家">
               <el-input
-                v-model="formData.headquartersAddress"
+                v-model="formData.serviceCountries"
                 type="textarea"
                 :rows="4"
-                placeholder=""
+                placeholder="请输入提供产品和服务的国家"
               />
             </el-form-item>
           </el-form>
@@ -248,26 +248,26 @@
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item label="提供产品和服务所在的地理位置">
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.serviceGeographicLocations"
                 type="textarea"
                 :rows="4"
-                placeholder=""
+                placeholder="请输入提供产品和服务的地理位置"
               />
             </el-form-item>
             <el-form-item label="服务的行业">
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.serviceIndustries"
                 type="textarea"
                 :rows="4"
-                placeholder=""
+                placeholder="请输入服务的行业类型"
               />
             </el-form-item>
             <el-form-item label="客户和受益人的类型">
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.customerBeneficiaryTypes"
                 type="textarea"
                 :rows="4"
-                placeholder=""
+                placeholder="请输入客户和受益人的类型"
               />
             </el-form-item>
           </el-form>
@@ -296,7 +296,7 @@
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item label="战略愿景">
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.strategicVision"
                 type="textarea"
                 :rows="4"
                 placeholder="成为人宠和谐健康生态的卓越建设者
@@ -305,7 +305,7 @@ Love Pets, Love Life."
             </el-form-item>
             <el-form-item label="使命">
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.mission"
                 type="textarea"
                 :rows="4"
                 placeholder="用全球好产品推动宠物健康标准升级
@@ -314,7 +314,7 @@ To provide the finest products and services, to bring you and your pets health a
             </el-form-item>
             <el-form-item label="核心价值观">
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.coreValues"
                 type="textarea"
                 :rows="6"
                 placeholder="阳光、保鲜、担当、靠谱
@@ -326,7 +326,7 @@ To carry out."
             </el-form-item>
             <el-form-item label="发展战略">
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.developmentStrategy"
                 type="textarea"
                 :rows="4"
                 placeholder="六个全球化企业发展战略： “研发、标准、制造、供应链、市场和组织”"
@@ -363,13 +363,17 @@ To carry out."
                 </div>
               </template>
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.externalInitiativesDescription"
                 type="textarea"
                 :rows="4"
+                placeholder="请描述组织参与或支持的外界发起的经济、环境、社会章程、原则或其他倡议"
               />
             </el-form-item>
             <el-form-item label="新闻链接">
-              <el-input v-model="formData.businessLocations" />
+              <el-input
+                v-model="formData.externalInitiativesNewsLink"
+                placeholder="请输入相关新闻链接"
+              />
             </el-form-item>
             <el-form-item label="附件上传">
               <el-upload
@@ -410,20 +414,22 @@ To carry out."
             <el-form-item>
               <template #label>
                 <div>
-                  <span
-                    >组织参与或支持的外界发起的经济、环境、社会章程、原则或其他倡议。</span
-                  >
+                  <span>主要协会成员资格清单。</span>
                   <EsgTooltip content="文本后可附新闻链接" />
                 </div>
               </template>
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.associationMembershipDescription"
                 type="textarea"
                 :rows="4"
+                placeholder="请列出组织的主要协会成员资格"
               />
             </el-form-item>
             <el-form-item label="新闻链接">
-              <el-input v-model="formData.businessLocations" />
+              <el-input
+                v-model="formData.associationMembershipNewsLink"
+                placeholder="请输入相关新闻链接"
+              />
             </el-form-item>
             <el-form-item label="附件上传">
               <el-upload
@@ -466,9 +472,10 @@ To carry out."
                 </div>
               </template>
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.honorsAndRecognitionDescription"
                 type="textarea"
                 :rows="4"
+                placeholder="请描述公司及其子公司获得的重要荣誉奖项与颁奖单位"
               />
             </el-form-item>
             <el-form-item label="附件上传">
@@ -512,13 +519,17 @@ To carry out."
                 </div>
               </template>
               <el-input
-                v-model="formData.businessLocations"
+                v-model="formData.annualMajorEventsDescription"
                 type="textarea"
                 :rows="4"
+                placeholder="请描述公司本年度发生的重大事件"
               />
             </el-form-item>
             <el-form-item label="新闻链接">
-              <el-input v-model="formData.businessLocations" />
+              <el-input
+                v-model="formData.annualMajorEventsNewsLink"
+                placeholder="请输入相关新闻链接"
+              />
             </el-form-item>
             <el-form-item label="附件上传">
               <el-upload
@@ -568,16 +579,49 @@ const props = defineProps({
 // 折叠面板
 const activeCollapse = ref(["company-structure"]);
 
-// 表单数据
+// 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
-  companyName: "",
-  headquartersLocation: "",
-  qualitativeDescription: "",
-  activitiesDescription: "",
-  headquartersAddress: "",
-  businessLocations: "",
-  ownershipNature: "",
-  legalForm: ""
+  // 公司名称与组织架构
+  companyFullName: "", // 公司全称
+  headquartersLocation: "", // 总部所在地
+
+  // 纳入组织可持续发展报告的实体
+  reportingEntitiesDescription: "", // 定性描述
+
+  // 活动、品牌、产品和服务
+  activitiesAndServicesDescription: "", // 组织的活动、产品、服务说明
+  activitiesChangesDescription: "", // 与先前报告期相比的重大变化
+  productFunctionDescription: "", // 主要产品功能与用途
+
+  // 经营位置
+  productionBaseCountries: "", // 生产基地所在国家
+  serviceCountries: "", // 提供产品和服务的国家
+
+  // 服务的市场与行业
+  serviceGeographicLocations: "", // 提供产品和服务所在的地理位置
+  serviceIndustries: "", // 服务的行业
+  customerBeneficiaryTypes: "", // 客户和受益人的类型
+
+  // 公司文化与行为规范
+  strategicVision: "", // 战略愿景
+  mission: "", // 使命
+  coreValues: "", // 核心价值观
+  developmentStrategy: "", // 发展战略
+
+  // 外部倡议
+  externalInitiativesDescription: "", // 外部倡议描述
+  externalInitiativesNewsLink: "", // 新闻链接
+
+  // 协会成员资格
+  associationMembershipDescription: "", // 协会成员资格描述
+  associationMembershipNewsLink: "", // 新闻链接
+
+  // 荣誉认可
+  honorsAndRecognitionDescription: "", // 荣誉认可描述
+
+  // 公司年度重大事件
+  annualMajorEventsDescription: "", // 年度重大事件描述
+  annualMajorEventsNewsLink: "" // 新闻链接
 });
 
 // 文件列表
@@ -598,18 +642,29 @@ const loadData = async () => {
         try {
           const contentData = JSON.parse(res.data.content);
 
+          // 字段映射关系 - 支持旧字段名到新字段名的映射
+          const fieldMapping = {
+            // 旧字段名 -> 新字段名
+            companyName: "companyFullName",
+            qualitativeDescription: "reportingEntitiesDescription",
+            activitiesDescription: "activitiesAndServicesDescription",
+            headquartersAddress: "serviceCountries",
+            businessLocations: "serviceGeographicLocations",
+            ownershipNature: "strategicVision",
+            legalForm: "mission"
+          };
+
           // 将数据回填到表单
           Object.keys(contentData).forEach(key => {
-            // 检查是否有映射关系
-            const targetKey = key;
+            // 检查是否有字段映射
+            const targetKey = fieldMapping[key] || key;
 
             if (formData.value.hasOwnProperty(targetKey)) {
               formData.value[targetKey] = contentData[key];
-            } else if (formData.value.hasOwnProperty(key)) {
-              // 如果没有映射关系，直接使用原字段名
-              formData.value[key] = contentData[key];
             } else {
-              console.warn(`字段 ${key} 在formData中不存在，跳过回填`);
+              console.warn(
+                `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
+              );
             }
           });
         } catch (e) {
