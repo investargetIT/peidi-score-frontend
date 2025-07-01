@@ -92,6 +92,7 @@
                 :action="uploadUrl"
                 :auto-upload="true"
                 multiple
+                accept=".jpg,.jpeg,.png"
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
@@ -196,6 +197,7 @@
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
+                accept=".jpg,.jpeg,.png"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -394,7 +396,7 @@ To carry out."
             <el-form-item label="附件上传" prop="externalInitiativesFileList">
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.reportingEntitiesFileList"
+                v-model:file-list="formData.externalInitiativesFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -562,14 +564,19 @@ To carry out."
                 placeholder="请输入相关新闻链接"
               />
             </el-form-item>
-            <el-form-item label="附件上传">
+            <el-form-item label="附件上传" prop="annualMajorEventsFileList">
               <el-upload
                 class="upload-area"
-                drag
-                :auto-upload="false"
-                multiple
+                v-model:file-list="formData.annualMajorEventsFileList"
+                :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :file-list="fileList"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
