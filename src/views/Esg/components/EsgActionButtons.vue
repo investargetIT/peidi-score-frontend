@@ -34,8 +34,9 @@ const emit = defineEmits(["cancel", "save", "submit"]);
 
 // 按钮处理函数
 const handleCancel = () => {
-  emit("cancel");
-  ElMessage.info("已取消操作");
+  // emit("cancel");
+  // ElMessage.info("已取消操作");
+  window.location.reload();
 };
 
 const handleSave = () => {
