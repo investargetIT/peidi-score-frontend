@@ -183,14 +183,19 @@
             </el-form-item>
 
             <!-- 附件上传 -->
-            <el-form-item label="附件上传">
+            <el-form-item label="附件上传" prop="activitiesAndServicesFileList">
               <el-upload
                 class="upload-area"
-                drag
-                :auto-upload="false"
-                multiple
+                v-model:file-list="formData.activitiesAndServicesFileList"
+                :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :file-list="fileList"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -386,14 +391,19 @@ To carry out."
             <el-form-item label="新闻链接">
               <el-input v-model="formData.externalInitiativesNewsLink" />
             </el-form-item>
-            <el-form-item label="附件上传">
+            <el-form-item label="附件上传" prop="externalInitiativesFileList">
               <el-upload
                 class="upload-area"
-                drag
-                :auto-upload="false"
-                multiple
+                v-model:file-list="formData.reportingEntitiesFileList"
+                :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :file-list="fileList"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -442,14 +452,19 @@ To carry out."
                 placeholder="请输入相关新闻链接"
               />
             </el-form-item>
-            <el-form-item label="附件上传">
+            <el-form-item label="附件上传" prop="associationMembershipFileList">
               <el-upload
                 class="upload-area"
-                drag
-                :auto-upload="false"
-                multiple
+                v-model:file-list="formData.associationMembershipFileList"
+                :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :file-list="fileList"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -489,14 +504,19 @@ To carry out."
                 placeholder="请描述公司及其子公司获得的重要荣誉奖项与颁奖单位"
               />
             </el-form-item>
-            <el-form-item label="附件上传">
+            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
               <el-upload
                 class="upload-area"
-                drag
-                :auto-upload="false"
-                multiple
+                v-model:file-list="formData.honorsAndRecognitionFileList"
+                :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :file-list="fileList"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -610,16 +630,18 @@ const formData = ref({
 
   // 纳入组织可持续发展报告的实体
   reportingEntitiesDescription: "", // 定性描述
+  reportingEntitiesFileList: [], // 附件列表
 
   // 活动、品牌、产品和服务
   activitiesAndServicesDescription: "", // 组织的活动、产品、服务说明
   activitiesChangesDescription: "", // 与先前报告期相比的重大变化
   productFunctionDescription: "", // 主要产品功能与用途
+  activitiesAndServicesFileList: [], // 附件列表
 
   // 经营位置
   productionBaseCountries: "", // 生产基地所在国家
   serviceCountries: "", // 提供产品和服务的国家
-
+  businessLocationsFileList: [], // 附件列表
   // 服务的市场与行业
   serviceGeographicLocations: "", // 提供产品和服务所在的地理位置
   serviceIndustries: "", // 服务的行业
@@ -634,17 +656,18 @@ const formData = ref({
   // 外部倡议
   externalInitiativesDescription: "", // 外部倡议描述
   externalInitiativesNewsLink: "", // 新闻链接
-
+  externalInitiativesFileList: [], // 附件列表
   // 协会成员资格
   associationMembershipDescription: "", // 协会成员资格描述
   associationMembershipNewsLink: "", // 新闻链接
-
+  associationMembershipFileList: [], // 附件列表
   // 荣誉认可
   honorsAndRecognitionDescription: "", // 荣誉认可描述
-
+  honorsAndRecognitionFileList: [], // 附件列表
   // 公司年度重大事件
   annualMajorEventsDescription: "", // 年度重大事件描述
-  annualMajorEventsNewsLink: "" // 新闻链接
+  annualMajorEventsNewsLink: "", // 新闻链接
+  annualMajorEventsFileList: [] // 附件列表
 });
 
 // 文件列表
