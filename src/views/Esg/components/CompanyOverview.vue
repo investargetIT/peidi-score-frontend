@@ -68,7 +68,7 @@
 
           <el-form :model="formData" label-position="left" label-width="100px">
             <!-- 定性描述 -->
-            <el-form-item label="定性描述">
+            <el-form-item label="公司组织架构图">
               <el-input
                 v-model="formData.reportingEntitiesDescription"
                 type="textarea"
@@ -152,15 +152,21 @@
                 v-model="formData.activitiesChangesDescription"
                 type="textarea"
                 :rows="8"
-                placeholder="可包括：活动的变化，如设施的开设、关闭或扩大；组织的供应链结构或与供应商关系的变化，包括选择和终止；或供应商位置的变化。"
+                placeholder=""
               />
             </el-form-item>
             <el-form-item label="主要产品功能与用途">
+              <template #label>
+                <div>
+                  <span> 主要产品功能与用途</span>
+
+                  <EsgTooltip content="包括产品名称，功能及用途" />
+                </div>
+              </template>
               <el-input
                 v-model="formData.productFunctionDescription"
                 type="textarea"
                 :rows="6"
-                placeholder="包括产品名称，功能及用途"
                 resize="vertical"
               />
             </el-form-item>
@@ -210,7 +216,6 @@
                 v-model="formData.productionBaseCountries"
                 type="textarea"
                 :rows="4"
-                placeholder="请输入生产基地所在的国家"
                 resize="vertical"
               />
             </el-form-item>
@@ -219,7 +224,6 @@
                 v-model="formData.serviceCountries"
                 type="textarea"
                 :rows="4"
-                placeholder="请输入提供产品和服务的国家"
               />
             </el-form-item>
           </el-form>
@@ -251,7 +255,6 @@
                 v-model="formData.serviceGeographicLocations"
                 type="textarea"
                 :rows="4"
-                placeholder="请输入提供产品和服务的地理位置"
               />
             </el-form-item>
             <el-form-item label="服务的行业">
@@ -259,7 +262,6 @@
                 v-model="formData.serviceIndustries"
                 type="textarea"
                 :rows="4"
-                placeholder="请输入服务的行业类型"
               />
             </el-form-item>
             <el-form-item label="客户和受益人的类型">
@@ -267,7 +269,6 @@
                 v-model="formData.customerBeneficiaryTypes"
                 type="textarea"
                 :rows="4"
-                placeholder="请输入客户和受益人的类型"
               />
             </el-form-item>
           </el-form>
@@ -366,14 +367,10 @@ To carry out."
                 v-model="formData.externalInitiativesDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="请描述组织参与或支持的外界发起的经济、环境、社会章程、原则或其他倡议"
               />
             </el-form-item>
             <el-form-item label="新闻链接">
-              <el-input
-                v-model="formData.externalInitiativesNewsLink"
-                placeholder="请输入相关新闻链接"
-              />
+              <el-input v-model="formData.externalInitiativesNewsLink" />
             </el-form-item>
             <el-form-item label="附件上传">
               <el-upload
