@@ -7,9 +7,7 @@
           <div class="collapse-title">
             <span
               >公司名称与组织架构
-              <el-tooltip content="对应GRI标准: 102-1" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
+              <EsgTooltip content="对应GRI标准: 102-1" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -52,9 +50,7 @@
           <div class="collapse-title">
             <span
               >纳入组织可持续发展报告的实体
-              <el-tooltip content="对应GRI标准: 102-2" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
+              <EsgTooltip content="对应GRI标准: 102-2" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -90,9 +86,7 @@
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
-                  <div class="el-upload__tip">
-                    支持多种文件格式，单个文件不超过10MB
-                  </div>
+                  <div class="el-upload__tip">附件上传集团架构</div>
                 </template>
               </el-upload>
             </el-form-item>
@@ -105,13 +99,9 @@
           <div class="collapse-title">
             <span
               >活动、品牌、产品和服务
-              <el-tooltip
-                raw-content
+              <EsgTooltip
                 content="对应GRI标准: 102-6<br/>对应MSCI ESG指标: 无<br/>对应港交所ESG指引: 无"
-                placement="top"
-              >
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
+              />
             </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -124,13 +114,56 @@
             >
           </div>
           <el-form :model="formData" label-position="left" label-width="100px">
-            <el-form-item label="详细描述">
+            <el-form-item
+              label="说明：组织的活动、产品、服务 ，以及所服务的市场"
+            >
               <el-input
                 v-model="formData.activitiesDescription"
                 type="textarea"
-                :rows="4"
-                placeholder="请输入活动、品牌、产品和服务相关信息"
+                :rows="8"
+                placeholder="主营业务
+佩蒂股份作为中国宠物食品行业的领军企业之一，已于 2023 年荣获国家高新技术企业认证。公司主营业务涵盖宠物食品全赛道，集研发、智能制造、全球销售及多品牌运营于一体，构建了完整的宠物食品产业链，致力于为全球宠物提供 多元化、高品质的营养解决方案。
+公司产品线丰富，包括：宠物营养肉质零食，甄选优质肉源，科学配比，提供宠物所需的蛋白质和微量元素；宠物主粮， 涵盖全价干粮、湿粮及功能性主粮，满足宠物不同生命阶段的营养需求；以及其他满足多元化市场需求的宠物食品。公司产品主要面向犬猫等家庭宠物，以科学配方、严格品控，为宠物健康保驾护航。
+——《佩蒂股份2024年ESG报告》"
               />
+            </el-form-item>
+            <el-form-item
+              label="与先前报告期相比，组织的活动、产品、服务 ，以及所服务的市场是否有重大变化"
+            >
+              <el-input
+                v-model="formData.activitiesDescription"
+                type="textarea"
+                :rows="8"
+                placeholder="可包括：活动的变化，如设施的开设、关闭或扩大；组织的供应链结构或与供应商关系的变化，包括选择和终止；或供应商位置的变化。"
+              />
+            </el-form-item>
+            <el-form-item label="定性描述">
+              <el-input
+                v-model="formData.qualitativeDescription"
+                type="textarea"
+                :rows="6"
+                placeholder="包括产品名称，功能及用途"
+                resize="vertical"
+              />
+            </el-form-item>
+
+            <!-- 附件上传 -->
+            <el-form-item label="附件上传">
+              <el-upload
+                class="upload-area"
+                drag
+                :auto-upload="false"
+                multiple
+                :on-change="handleFileChange"
+                :file-list="fileList"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">
+                    上传提到的所有产品图片（高清，白底）
+                  </div>
+                </template>
+              </el-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -244,6 +277,7 @@ import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
 import { getEsgRuleDetail, updateEsgConfig } from "@/api/esg";
+import EsgTooltip from "./EsgTooltip.vue";
 
 // 定义props，接收activeTab参数
 const props = defineProps({
@@ -350,5 +384,14 @@ const handleSave = () => {
 /* 为esg-content添加底部padding，避免内容被按钮遮挡 */
 .esg-content {
   padding-bottom: 80px;
+}
+
+:deep(.el-form-item__label) {
+  height: 20px;
+
+  /* font-weight: bold;
+  color: #222;
+  font-size: 16px; */
+  line-height: 2;
 }
 </style>
