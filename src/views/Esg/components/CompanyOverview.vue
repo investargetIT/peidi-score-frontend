@@ -201,7 +201,7 @@
               <el-input
                 v-model="formData.qualitativeDescription"
                 type="textarea"
-                :rows="3"
+                :rows="4"
                 placeholder="包括产品名称，功能及用途"
                 resize="vertical"
               />
@@ -210,7 +210,7 @@
               <el-input
                 v-model="formData.headquartersAddress"
                 type="textarea"
-                :rows="3"
+                :rows="4"
                 placeholder=""
               />
             </el-form-item>
@@ -240,7 +240,7 @@
               <el-input
                 v-model="formData.businessLocations"
                 type="textarea"
-                :rows="3"
+                :rows="4"
                 placeholder=""
               />
             </el-form-item>
@@ -248,7 +248,7 @@
               <el-input
                 v-model="formData.businessLocations"
                 type="textarea"
-                :rows="3"
+                :rows="4"
                 placeholder=""
               />
             </el-form-item>
@@ -256,7 +256,7 @@
               <el-input
                 v-model="formData.businessLocations"
                 type="textarea"
-                :rows="3"
+                :rows="4"
                 placeholder=""
               />
             </el-form-item>
@@ -304,7 +304,7 @@ To provide the finest products and services, to bring you and your pets health a
               <el-input
                 v-model="formData.businessLocations"
                 type="textarea"
-                :rows="4"
+                :rows="6"
                 placeholder="阳光、保鲜、担当、靠谱
 Be positive,
 Be exploring,
@@ -319,6 +319,201 @@ To carry out."
                 :rows="4"
                 placeholder="六个全球化企业发展战略： “研发、标准、制造、供应链、市场和组织”"
               />
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="外部倡议" name="business-locations">
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >外部倡议
+              <EsgTooltip content="对应GRI标准: 102-12" />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">各经营场所的地址及业务范围。</span>
+          </div>
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span
+                    >组织参与或支持的外界发起的经济、环境、社会章程、原则或其他倡议。</span
+                  >
+                  <EsgTooltip content="文本后可附新闻链接" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="新闻链接">
+              <el-input v-model="formData.businessLocations" />
+            </el-form-item>
+            <el-form-item label="附件上传">
+              <el-upload
+                class="upload-area"
+                drag
+                :auto-upload="false"
+                multiple
+                :on-change="handleFileChange"
+                :file-list="fileList"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">如有活动图片请上传</div>
+                </template>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="协会成员资格" name="business-locations">
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >协会成员资格
+              <EsgTooltip content="对应GRI标准: 102-13" />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">各经营场所的地址及业务范围。</span>
+          </div>
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span
+                    >组织参与或支持的外界发起的经济、环境、社会章程、原则或其他倡议。</span
+                  >
+                  <EsgTooltip content="文本后可附新闻链接" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="新闻链接">
+              <el-input v-model="formData.businessLocations" />
+            </el-form-item>
+            <el-form-item label="附件上传">
+              <el-upload
+                class="upload-area"
+                drag
+                :auto-upload="false"
+                multiple
+                :on-change="handleFileChange"
+                :file-list="fileList"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">如有活动图片请上传</div>
+                </template>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="荣誉认可" name="business-locations">
+        <template #title>
+          <div class="collapse-title">
+            <span>荣誉认可 </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">各经营场所的地址及业务范围。</span>
+          </div>
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>公司及其子公司获得的重要荣誉奖项与颁奖单位。</span>
+                  <EsgTooltip content="文本后可附新闻链接" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="附件上传">
+              <el-upload
+                class="upload-area"
+                drag
+                :auto-upload="false"
+                multiple
+                :on-change="handleFileChange"
+                :file-list="fileList"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">请上传奖项图片</div>
+                </template>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="公司年度重大事件" name="business-locations">
+        <template #title>
+          <div class="collapse-title">
+            <span>公司年度重大事件 </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">各经营场所的地址及业务范围。</span>
+          </div>
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>公司本年度发生的重大事件。</span>
+                  <EsgTooltip content="文本后可附新闻链接" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="新闻链接">
+              <el-input v-model="formData.businessLocations" />
+            </el-form-item>
+            <el-form-item label="附件上传">
+              <el-upload
+                class="upload-area"
+                drag
+                :auto-upload="false"
+                multiple
+                :on-change="handleFileChange"
+                :file-list="fileList"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">如有图片请上传</div>
+                </template>
+              </el-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -451,6 +646,6 @@ const handleSave = () => {
   /* font-weight: bold;
   color: #222;
   font-size: 16px; */
-  line-height: 2;
+  line-height: 1.3;
 }
 </style>
