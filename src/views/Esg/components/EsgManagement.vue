@@ -703,35 +703,47 @@ Wind评级"
                   <EsgTooltip content="公司召开股东大会4次，审议通过32项议案" />
                 </div>
               </template>
-              <div style="display: flex; gap: 8px; align-items: center">
-                <div>
+              <div class="textContainer">
+                <div class="textAlignStyle">
                   <span>召开</span>
-                  <el-input v-model="formData.meetingCount" />
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.meetingCount"
+                  />
                   <span>次</span>
                 </div>
-                <div>
+                <div class="textAlignStyle">
                   <span>审议通过</span>
-                  <el-input v-model="formData.meetingCount" />
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.meetingCount"
+                  />
                   <span>项议案</span>
                 </div>
               </div>
             </el-form-item>
             <el-form-item>
               <template #label>
-                <div>
+                <div class="textAlignStyle">
                   <span>董事会召开情况</span>
                   <EsgTooltip content="召开董事会10次，审议通过52项议案" />
                 </div>
               </template>
-              <div style="display: flex; gap: 8px; align-items: center">
-                <div>
+              <div class="textContainer">
+                <div class="textAlignStyle">
                   <span>召开</span>
-                  <el-input v-model="formData.meetingCount" />
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.meetingCount"
+                  />
                   <span>次</span>
                 </div>
-                <div>
+                <div class="textAlignStyle">
                   <span>审议通过</span>
-                  <el-input v-model="formData.meetingCount" />
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.meetingCount"
+                  />
                   <span>项议案</span>
                 </div>
               </div>
@@ -742,15 +754,21 @@ Wind评级"
                   <span>董事会专门委员会召开情况</span>
                 </div>
               </template>
-              <div style="display: flex; gap: 8px; align-items: center">
-                <div>
+              <div class="textContainer">
+                <div class="textAlignStyle">
                   <span>召开</span>
-                  <el-input v-model="formData.meetingCount" />
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.meetingCount"
+                  />
                   <span>次</span>
                 </div>
-                <div>
+                <div class="textAlignStyle">
                   <span>审议通过</span>
-                  <el-input v-model="formData.meetingCount" />
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.meetingCount"
+                  />
                   <span>项议案</span>
                 </div>
               </div>
@@ -762,15 +780,21 @@ Wind评级"
                   <EsgTooltip content="召开监事会8次，审议通过31项议案" />
                 </div>
               </template>
-              <div style="display: flex; gap: 8px; align-items: center">
-                <div>
+              <div class="textContainer">
+                <div class="textAlignStyle">
                   <span>召开</span>
-                  <el-input v-model="formData.meetingCount" />
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.meetingCount"
+                  />
                   <span>次</span>
                 </div>
-                <div>
+                <div class="textAlignStyle">
                   <span>审议通过</span>
-                  <el-input v-model="formData.meetingCount" />
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.meetingCount"
+                  />
                   <span>项议案</span>
                 </div>
               </div>
@@ -1144,5 +1168,17 @@ const handleSave = () => {
   color: #222;
   font-size: 16px; */
   line-height: 1.3;
+}
+
+.textContainer {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.textAlignStyle {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
 }
 </style>
