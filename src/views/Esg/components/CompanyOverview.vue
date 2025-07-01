@@ -616,7 +616,7 @@ import {
   baseUrlApi,
   getFileDownLoadPath
 } from "@/api/esg";
-import EsgTooltip from "./EsgTooltip.vue";
+import EsgTooltip from "@/components/EsgTooltip/index.vue";
 import { formatToken, getToken } from "@/utils/auth.ts";
 const uploadUrl = baseUrlApi("/esg/upload");
 
