@@ -92,7 +92,7 @@
                 :action="uploadUrl"
                 :auto-upload="true"
                 multiple
-                accept=".jpg,.jpeg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
@@ -197,7 +197,7 @@
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
-                accept=".jpg,.jpeg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -406,7 +406,7 @@ To carry out."
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
-                accept=".jpg,.jpeg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -468,7 +468,7 @@ To carry out."
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
-                accept=".jpg,.jpeg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -521,7 +521,7 @@ To carry out."
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
-                accept=".jpg,.jpeg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -580,7 +580,7 @@ To carry out."
                 :headers="{
                   Authorization: formatToken(getToken().accessToken)
                 }"
-                accept=".jpg,.jpeg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
                 <template #tip>
@@ -652,7 +652,6 @@ const formData = ref({
   // 经营位置
   productionBaseCountries: "", // 生产基地所在国家
   serviceCountries: "", // 提供产品和服务的国家
-  businessLocationsFileList: [], // 附件列表
   // 服务的市场与行业
   serviceGeographicLocations: "", // 提供产品和服务所在的地理位置
   serviceIndustries: "", // 服务的行业
@@ -680,9 +679,6 @@ const formData = ref({
   annualMajorEventsNewsLink: "", // 新闻链接
   annualMajorEventsFileList: [] // 附件列表
 });
-
-// 文件列表
-const fileList = ref([]);
 
 // 文件上传处理
 const handleFileChange = (file, fileList) => {
@@ -771,6 +767,7 @@ const handleSave = () => {
     content: JSON.stringify(formData.value),
     type: props.activeTab
   };
+
   updateEsgConfig(sendConfig).then(res => {
     if (res.code === 200) {
       ElMessage.success("保存成功");
