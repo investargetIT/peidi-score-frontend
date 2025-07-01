@@ -146,7 +146,7 @@
                 v-model="formData.activitiesDescription"
                 type="textarea"
                 :rows="8"
-                placeholder="可包括：活动的变化，如设施的开设、关闭或扩大；组织的供应链结构或与供应商关系的变化，包括选择和终止；或供应商位置的变化。"
+                placeholder=""
               />
             </el-form-item>
             <el-form-item label="主要产品功能与用途">
@@ -181,14 +181,12 @@
         </div>
       </el-collapse-item>
 
-      <!-- <el-collapse-item title="公司总部的位置" name="headquarters-location">
+      <el-collapse-item title="经营位置" name="headquarters-location">
         <template #title>
           <div class="collapse-title">
             <span
-              >公司总部的位置
-              <el-tooltip content="对应GRI标准: 102-3" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
+              >经营位置
+              <EsgTooltip content="对应GRI标准: 102-6" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -199,24 +197,35 @@
             <span class="description">公司总部详细地址及地理位置信息。</span>
           </div>
           <el-form :model="formData" label-position="left" label-width="100px">
-            <el-form-item label="总部地址">
+            <el-form-item label="生产基地所在国家">
+              <el-input
+                v-model="formData.qualitativeDescription"
+                type="textarea"
+                :rows="3"
+                placeholder="包括产品名称，功能及用途"
+                resize="vertical"
+              />
+            </el-form-item>
+            <el-form-item label="提供产品和服务的国家">
               <el-input
                 v-model="formData.headquartersAddress"
-                placeholder="请输入公司总部详细地址"
+                type="textarea"
+                :rows="3"
+                placeholder=""
               />
             </el-form-item>
           </el-form>
         </div>
-      </el-collapse-item> -->
+      </el-collapse-item>
 
-      <!-- <el-collapse-item title="经营位置" name="business-locations">
+      <el-collapse-item title="服务的市场与行业" name="business-locations">
         <template #title>
           <div class="collapse-title">
             <span
-              >经营位置
-              <el-tooltip content="对应GRI标准: 102-4" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
+              >服务的市场与行业
+              <EsgTooltip
+                content="对应GRI标准: 102-6<br/>对应MSCI ESG指标: 环境机会, 社区机会"
+              />
             </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -227,26 +236,42 @@
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           <el-form :model="formData" label-position="left" label-width="100px">
-            <el-form-item label="经营地址">
+            <el-form-item label="提供产品和服务所在的地理位置">
               <el-input
                 v-model="formData.businessLocations"
                 type="textarea"
                 :rows="3"
-                placeholder="请输入各经营地址"
+                placeholder=""
+              />
+            </el-form-item>
+            <el-form-item label="服务的行业">
+              <el-input
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="3"
+                placeholder=""
+              />
+            </el-form-item>
+            <el-form-item label="客户和受益人的类型">
+              <el-input
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="3"
+                placeholder=""
               />
             </el-form-item>
           </el-form>
         </div>
-      </el-collapse-item> -->
+      </el-collapse-item>
 
-      <!-- <el-collapse-item title="所有权的性质及法律形式" name="ownership-legal">
+      <el-collapse-item title="公司文化与行为规范" name="ownership-legal">
         <template #title>
           <div class="collapse-title">
             <span
-              >所有权的性质及法律形式
-              <el-tooltip content="对应GRI标准: 102-5" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
+              >公司文化与行为规范
+              <EsgTooltip
+                content="对应GRI标准: 102-16<br/>对应MSCI ESG指标: 商业道德"
+              />
             </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -257,21 +282,47 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           <el-form :model="formData" label-position="left" label-width="100px">
-            <el-form-item label="所有权性质">
+            <el-form-item label="战略愿景">
               <el-input
-                v-model="formData.ownershipNature"
-                placeholder="请输入所有权性质"
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="4"
+                placeholder="成为人宠和谐健康生态的卓越建设者
+Love Pets, Love Life."
               />
             </el-form-item>
-            <el-form-item label="法律形式">
+            <el-form-item label="使命">
               <el-input
-                v-model="formData.legalForm"
-                placeholder="请输入法律形式"
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="4"
+                placeholder="用全球好产品推动宠物健康标准升级
+To provide the finest products and services, to bring you and your pets health and joy."
+              />
+            </el-form-item>
+            <el-form-item label="核心价值观">
+              <el-input
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="4"
+                placeholder="阳光、保鲜、担当、靠谱
+Be positive,
+Be exploring,
+To lead,
+To carry out."
+              />
+            </el-form-item>
+            <el-form-item label="发展战略">
+              <el-input
+                v-model="formData.businessLocations"
+                type="textarea"
+                :rows="4"
+                placeholder="六个全球化企业发展战略： “研发、标准、制造、供应链、市场和组织”"
               />
             </el-form-item>
           </el-form>
         </div>
-      </el-collapse-item> -->
+      </el-collapse-item>
     </el-collapse>
 
     <!-- 操作按钮 -->

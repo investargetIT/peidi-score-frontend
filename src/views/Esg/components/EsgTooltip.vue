@@ -28,7 +28,7 @@ const props = defineProps({
   },
   rawContent: {
     type: Boolean,
-    default: false
+    default: true
   },
   iconStyle: {
     type: String,
