@@ -802,12 +802,12 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="协会成员资格" name="association-membership">
+      <el-collapse-item title="高管薪酬" name="association-membership">
         <template #title>
           <div class="collapse-title">
             <span
-              >协会成员资格
-              <EsgTooltip content="对应GRI标准: 102-13" />
+              >高管薪酬
+              <EsgTooltip content="Wind评级、GRI2-19" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -823,51 +823,42 @@ Wind评级"
             <el-form-item>
               <template #label>
                 <div>
-                  <span>主要协会成员资格清单。</span>
-                  <EsgTooltip content="文本后可附新闻链接" />
+                  <span>高管薪酬政策</span>
+                  <EsgTooltip
+                    content="对高管薪酬及福利情况的披露，与年报口径保持一致，包括<br/> 1.固定工资和浮动工资；<br/> 2.签约奖金或招聘奖励金；<br/> 3.退休金；<br/> 4.回拨（指在没有达到某些雇佣条件或目标的情况下，需要向雇主偿还先前获得的薪酬）；<br/> 5.退休福利"
+                  />
                 </div>
               </template>
               <el-input
                 v-model="formData.associationMembershipDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="请列出组织的主要协会成员资格"
+                placeholder="公司构建多维度的董事会成员绩效评价体系，综合公司生产经营管理情况、经营目标完成情况、财务预算执行情况及工作履职情况来决定绩效评价。其中，独立董事的薪酬经公司股东大会审议通过，职工董事的薪酬根据公司的薪酬管理制度以及个人的绩效考评结果来综合评估。 ——《贵州茅台2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="新闻链接">
+            <el-form-item label="高管薪酬与ESG表现挂钩">
+              <template #label>
+                <div>
+                  <span>高管薪酬与ESG表现挂钩</span>
+                  <EsgTooltip
+                    content="描述公司高管薪酬与ESG绩效挂钩的方式，以保障董事会可持续发展决策在公司运营中得到严格落实。"
+                  />
+                </div>
+              </template>
               <el-input
                 v-model="formData.associationMembershipNewsLink"
-                placeholder="请输入相关新闻链接"
+                type="textarea"
+                :rows="4"
+                placeholder="为确保实现可持续发展目标承诺，伊利的可持续发展战略目标与经营战略目标一样，成为集团高级管理人员（负责可持续发展相关议题的部门负责人）（简称“高级管理人员”）的考核指标之一，并将可持续发展绩效表现与高级管理人员薪酬绩效挂钩。作为绩效考核的一部分，伊利将包含温室气体减排目标、水资源管理目标在内的可持续发展战略目标的监督纳入高级管理人员的考核计划中，促使高级管理人员对可持续发展工作进展负责，切实推进可持续发展战略目标的实现。——《伊利股份2023年可持续发展报告》"
               />
-            </el-form-item>
-            <el-form-item label="附件上传" prop="associationMembershipFileList">
-              <el-upload
-                class="upload-area"
-                v-model:file-list="formData.associationMembershipFileList"
-                :on-preview="handlePictureCardPreview"
-                :on-change="handleFileChange"
-                drag
-                :action="uploadUrl"
-                :auto-upload="true"
-                multiple
-                :headers="{
-                  Authorization: formatToken(getToken().accessToken)
-                }"
-                accept=".jpg,.jpeg,.png,.webp"
-              >
-                <el-button type="primary" :icon="Upload">上传附件</el-button>
-                <template #tip>
-                  <div class="el-upload__tip">如有活动图片请上传</div>
-                </template>
-              </el-upload>
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="荣誉认可" name="honors-recognition">
+      <el-collapse-item title="信息披露" name="honors-recognition">
         <template #title>
           <div class="collapse-title">
-            <span>荣誉认可 </span>
+            <span>信息披露 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -882,45 +873,72 @@ Wind评级"
             <el-form-item>
               <template #label>
                 <div>
-                  <span>公司及其子公司获得的重要荣誉奖项与颁奖单位。</span>
-                  <EsgTooltip content="文本后可附新闻链接" />
+                  <span>信息披露遵循的理念或原则</span>
+                  <EsgTooltip
+                    content="根据公司信息披露管理办法对指标进行管理和更新。"
+                  />
                 </div>
               </template>
               <el-input
                 v-model="formData.honorsAndRecognitionDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="请描述公司及其子公司获得的重要荣誉奖项与颁奖单位"
+                placeholder="在满足强制性信息披露要求的基础上，广州酒家高度重视投资者需求，主动披露环境责任、社会责任、公司治理及经营等信息，持续提升公司信息披露有效性。——《广州酒家2023年度ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
-              <el-upload
-                class="upload-area"
-                v-model:file-list="formData.honorsAndRecognitionFileList"
-                :on-preview="handlePictureCardPreview"
-                :on-change="handleFileChange"
-                drag
-                :action="uploadUrl"
-                :auto-upload="true"
-                multiple
-                :headers="{
-                  Authorization: formatToken(getToken().accessToken)
-                }"
-                accept=".jpg,.jpeg,.png,.webp"
-              >
-                <el-button type="primary" :icon="Upload">上传附件</el-button>
-                <template #tip>
-                  <div class="el-upload__tip">请上传奖项图片</div>
-                </template>
-              </el-upload>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>信息披露遵循的法律法规及规范性文件</span>
+                  <EsgTooltip
+                    content="根据公司信息披露管理办法对指标进行管理和更新。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.honorsAndRecognitionDescription"
+                type="textarea"
+                :rows="4"
+                placeholder="根据中国证监会颁布的《公开发行证券的公司信息披露内容与格式准则第2号——年度报告的内容与格式》《上海证券交易所上市公司自律监管指南第6号——定期报告》等要求，真实、准确、完整、及时、公平地披露2022年年度报告、2023年第一季度报告、2023年半年度报告、2023年第三季度报告。——《广州酒家2023年度ESG报告》"
+              />
+            </el-form-item>
+            <el-form-item label="定期报告发布数">
+              <template #label>
+                <div>
+                  <span> 定期报告发布数 </span>
+                  <EsgTooltip content="公司定期报告年度发布数量" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>项</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="临时报告发布数">
+              <template #label>
+                <div>
+                  <span> 临时报告发布数 </span>
+                  <EsgTooltip content="公司临时报告年度发布数量。" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>项</span>
+              </div>
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="公司年度重大事件" name="annual-major-events">
+      <el-collapse-item title="投资者互动" name="annual-major-events">
         <template #title>
           <div class="collapse-title">
-            <span>公司年度重大事件 </span>
+            <span>投资者互动 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -935,24 +953,70 @@ Wind评级"
             <el-form-item>
               <template #label>
                 <div>
-                  <span>公司本年度发生的重大事件。</span>
-                  <EsgTooltip content="文本后可附新闻链接" />
+                  <span>投资者沟通渠道</span>
+                  <EsgTooltip
+                    content="投资者沟通渠道包括但不仅限于：电话、邮件、网络会议、接待日、参观等。"
+                  />
                 </div>
               </template>
               <el-input
                 v-model="formData.annualMajorEventsDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="请描述公司本年度发生的重大事件"
+                placeholder="公司不断优化投资者保护长效机制，持续完善投资者关系管理模式。公司通过投资者电话热线、邮箱、e互动、公司官网、公司官方微信公众号等多种渠道，传递公司信息，聆听投资者意见，增强投资者和公司之间的互信和理解。——《国投中鲁2023年度ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="新闻链接">
+            <el-form-item label="投资者沟通活动类型">
+              <template #label>
+                <div>
+                  <span>投资者沟通活动类型</span>
+                  <EsgTooltip
+                    content="按公司实际情况对投资者沟通活动进行分类。"
+                  />
+                </div>
+              </template>
               <el-input
                 v-model="formData.annualMajorEventsNewsLink"
-                placeholder="请输入相关新闻链接"
+                placeholder="公司高度重视与投资者特别是中小股东之间沟通渠道的多元和畅通，并建立起常态和多元化的投资者沟通机制。公司高度重视投资者的调研，专人负责投资者调研接待工作；公司官网设置投资者专区，投资者可在线预约参观调研；公司充分利用上交所互动平台，对投资者的问题给予及时解答和回复；并通过电话、邮件等多种方式服务投资者，及时向投资者传递公司最新的动态、经营业绩和方针。——《海天味业2023年环境、社会及治理报告》"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="收到的投资者问询总数">
+              <template #label>
+                <div>
+                  <span>收到的投资者问询总数</span>
+                  <EsgTooltip content="按实际情况统计" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.annualMajorEventsNewsLink"
+                placeholder="按实际情况统计各个渠道回复投资者问题的数量。"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="年度领导重要讲话稿">
+              <template #label>
+                <div>
+                  <span>年度领导重要讲话稿 </span>
+                  <EsgTooltip content="公司本年度领导重要的内外部讲话稿" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.annualMajorEventsNewsLink"
+                placeholder=""
+                type="textarea"
+                :rows="4"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="annualMajorEventsFileList">
+              <template #label>
+                <div>
+                  <span>附件上传 </span>
+                  <EsgTooltip content="如有相关图片请提供" />
+                </div>
+              </template>
               <el-upload
                 class="upload-area"
                 v-model:file-list="formData.annualMajorEventsFileList"
@@ -968,10 +1032,96 @@ Wind评级"
                 accept=".jpg,.jpeg,.png,.webp"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
-                <template #tip>
-                  <div class="el-upload__tip">如有图片请上传</div>
-                </template>
               </el-upload>
+            </el-form-item>
+            <el-form-item label="优秀投资者交流活动案例">
+              <template #label>
+                <div>
+                  <span>优秀投资者交流活动案例 </span>
+                  <EsgTooltip content="优秀投资者交流活动以及的图文资料。" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.annualMajorEventsNewsLink"
+                placeholder="公司还会定期发起“走进上市公司”系列活动，在同投资者交流时，除了介绍公司情况业绩之外，还会实际参观公司的各个生产车间、宠物营养健康研究院、研发中心等核心区域，同时，我们也会在路演现场陈列公司产品，并对产品进行现场的讲解。投资者通过参观工厂可以了解到公司的生产情况，而触及到实际的产品才能加深对公司业务的印象，使投资者全方位的深入了解公司情况， 通过这样的直接互动，公司不仅传达了真实透明的信息，也进一步拉近了与投资者的距离，共同探讨和构筑长期共赢的合作关系。 ——《中宠股份2023年社会责任报告》"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="annualMajorEventsFileList">
+              <template #label>
+                <div>
+                  <span>附件上传 </span>
+                  <EsgTooltip content="如有相关图片请提供" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.annualMajorEventsFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="投资者问询答复率">
+              <template #label>
+                <div>
+                  <span> 投资者问询答复率 </span>
+                  <EsgTooltip
+                    content="按实际情况统计各个渠道回复投资者问题的答复率。"
+                  />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>%</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="各类型投资者沟通活动举办次数">
+              <template #label>
+                <div>
+                  <span> 各类型投资者沟通活动举办次数 </span>
+                  <EsgTooltip
+                    content="按不同类型划分的投资者沟通活动举办次数"
+                  />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>次</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="各类型投资者沟通活动覆盖人次">
+              <template #label>
+                <div>
+                  <span> 各类型投资者沟通活动覆盖人次 </span>
+                  <EsgTooltip
+                    content="按不同类型划分的投资者沟通活动覆盖人次。"
+                  />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>人次</span>
+              </div>
             </el-form-item>
           </el-form>
         </div>
