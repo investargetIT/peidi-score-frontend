@@ -2,7 +2,10 @@
   <div class="esg-content">
     <!-- 公司名称与组织架构 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
-      <el-collapse-item title="公司名称与组织架构" name="company-structure">
+      <el-collapse-item
+        title="公司名称与组织架构"
+        name="company-name-structure"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -46,7 +49,7 @@
       </el-collapse-item>
       <el-collapse-item
         title="纳入组织可持续发展报告的实体"
-        name="company-structure"
+        name="reporting-entities"
       >
         <template #title>
           <div class="collapse-title">
@@ -98,7 +101,10 @@
         </div>
       </el-collapse-item>
       <!-- 其他折叠项 -->
-      <el-collapse-item title="活动、品牌、产品和服务" name="activities-brands">
+      <el-collapse-item
+        title="活动、品牌、产品和服务"
+        name="activities-products-services"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -193,7 +199,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="经营位置" name="headquarters-location">
+      <el-collapse-item title="经营位置" name="business-locations">
         <template #title>
           <div class="collapse-title">
             <span
@@ -230,7 +236,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="服务的市场与行业" name="business-locations">
+      <el-collapse-item title="服务的市场与行业" name="markets-industries">
         <template #title>
           <div class="collapse-title">
             <span
@@ -275,7 +281,10 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="公司文化与行为规范" name="ownership-legal">
+      <el-collapse-item
+        title="公司文化与行为规范"
+        name="corporate-culture-ethics"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -336,7 +345,7 @@ To carry out."
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="外部倡议" name="business-locations">
+      <el-collapse-item title="外部倡议" name="external-initiatives">
         <template #title>
           <div class="collapse-title">
             <span
@@ -390,7 +399,7 @@ To carry out."
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="协会成员资格" name="business-locations">
+      <el-collapse-item title="协会成员资格" name="association-membership">
         <template #title>
           <div class="collapse-title">
             <span
@@ -446,7 +455,7 @@ To carry out."
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="荣誉认可" name="business-locations">
+      <el-collapse-item title="荣誉认可" name="honors-recognition">
         <template #title>
           <div class="collapse-title">
             <span>荣誉认可 </span>
@@ -493,7 +502,7 @@ To carry out."
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="公司年度重大事件" name="business-locations">
+      <el-collapse-item title="公司年度重大事件" name="annual-major-events">
         <template #title>
           <div class="collapse-title">
             <span>公司年度重大事件 </span>
@@ -574,7 +583,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["company-structure"]);
+const activeCollapse = ref(["company-name-structure"]);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
