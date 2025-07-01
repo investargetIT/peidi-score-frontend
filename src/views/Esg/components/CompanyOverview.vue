@@ -14,10 +14,12 @@
         </template>
 
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">公司全称与简称、公司组织架构图。</span>
           </div>
+          -->
 
           <el-form :model="formData" label-position="left" label-width="100px">
             <!-- 定性描述 -->
@@ -57,10 +59,12 @@
         </template>
 
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">公司全称与简称、公司组织架构图。</span>
           </div>
+          -->
 
           <el-form :model="formData" label-position="left" label-width="100px">
             <!-- 定性描述 -->
@@ -107,12 +111,14 @@
           </div>
         </template>
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description"
               >企业主要活动、品牌介绍、产品和服务详情。</span
             >
           </div>
+          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item
               label="说明：组织的活动、产品、服务 ，以及所服务的市场"
@@ -192,10 +198,12 @@
           </div>
         </template>
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">公司总部详细地址及地理位置信息。</span>
           </div>
+          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item label="生产基地所在国家">
               <el-input
@@ -231,10 +239,12 @@
           </div>
         </template>
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
+          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item label="提供产品和服务所在的地理位置">
               <el-input
@@ -277,10 +287,12 @@
           </div>
         </template>
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
+          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item label="战略愿景">
               <el-input
@@ -334,10 +346,12 @@ To carry out."
           </div>
         </template>
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
+          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item>
               <template #label>
@@ -386,10 +400,12 @@ To carry out."
           </div>
         </template>
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
+          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item>
               <template #label>
@@ -435,10 +451,12 @@ To carry out."
           </div>
         </template>
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
+          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item>
               <template #label>
@@ -479,10 +497,12 @@ To carry out."
           </div>
         </template>
         <div class="form-section">
+          <!--
           <div class="section-description">
             <span class="label">内容详解：</span>
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
+          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item>
               <template #label>
