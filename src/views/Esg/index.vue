@@ -3,15 +3,15 @@
     <!-- 顶部导航标签 -->
     <el-tabs v-model="activeTab" class="esg-tabs">
       <el-tab-pane label="公司概况" name="company-overview" />
-      <el-tab-pane label="公司治理" name="corporate-governance" />
       <el-tab-pane label="ESG管理" name="esg-management" />
-      <el-tab-pane label="业务运营" name="business-operations" />
-      <el-tab-pane label="员工" name="employees" />
-      <el-tab-pane label="环境影响" name="environmental-impact" />
-      <el-tab-pane label="职业健康安全" name="occupational-health" />
-      <el-tab-pane label="供应商管理" name="supplier-management" />
-      <el-tab-pane label="社区公益" name="community-welfare" />
-      <el-tab-pane label="产品和服务" name="products-services" />
+      <el-tab-pane label="公司治理" name="corporate-governance" />
+      <el-tab-pane label="产业发展与运营" name="business-operations" />
+      <el-tab-pane label="质量与食品安全管理" name="employees" />
+      <el-tab-pane label="供应链管理" name="environmental-impact" />
+      <el-tab-pane label="信息安全与隐私保护" name="occupational-health" />
+      <el-tab-pane label="员工" name="supplier-management" />
+      <el-tab-pane label="环境影响" name="community-welfare" />
+      <el-tab-pane label="回馈社会" name="products-services" />
     </el-tabs>
 
     <!-- 动态组件内容区域 -->
@@ -41,8 +41,8 @@ const activeTab = ref("company-overview");
 // 组件映射
 const componentMap = {
   "company-overview": CompanyOverview,
-  "corporate-governance": CorporateGovernance,
   "esg-management": EsgManagement,
+  "corporate-governance": CorporateGovernance,
   "business-operations": BusinessOperations,
   employees: Employees,
   "environmental-impact": EnvironmentalImpact,
