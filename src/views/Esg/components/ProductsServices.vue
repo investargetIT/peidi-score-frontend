@@ -758,6 +758,7 @@ import {
 import EsgTooltip from "@/components/EsgTooltip/index.vue";
 import { formatToken, getToken } from "@/utils/auth.ts";
 const uploadUrl = baseUrlApi("/esg/upload");
+import { onlyPositiveInteger, onlyPositiveNumber } from "../utils";
 
 // 定义props，接收activeTab参数
 const props = defineProps({
