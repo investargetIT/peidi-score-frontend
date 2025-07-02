@@ -167,6 +167,8 @@
                 <el-input
                   v-model="formData.employeeDirectorRatio"
                   @input="handleBoardCountInput"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -212,6 +214,8 @@
                 <el-input
                   v-model="formData.employeeSupervisorRatio"
                   @input="handleBoardCountInput"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>人</span>
               </div>
@@ -305,6 +309,8 @@
                 <el-input
                   v-model="formData.femaleDirectorRatio"
                   @input="handleBoardCountInput"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -393,6 +399,8 @@
                 <el-input
                   v-model="formData.boardTrainingCoverage"
                   @input="handleBoardCountInput"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -508,6 +516,8 @@ Wind评级"
                 <el-input
                   v-model="formData.independentDirectorRatio"
                   @input="handleBoardCountInput"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -538,6 +548,8 @@ Wind评级"
                 <el-input
                   v-model="formData.nonExecutiveDirectorRatio"
                   @input="handleBoardCountInput"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -568,6 +580,8 @@ Wind评级"
                 <el-input
                   v-model="formData.independentNonExecutiveDirectorRatio"
                   @input="handleBoardCountInput"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -1111,8 +1125,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.investorReplyRate"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -1679,8 +1693,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.integrityCommitmentSigningRate"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -1968,8 +1982,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.violationHandlingRate"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -2315,6 +2329,18 @@ const handleSave = () => {
 const onlyPositiveInteger = value => {
   const v = String(value).replace(/\D/g, "");
   return v.replace(/^0+/, "") || "";
+};
+
+// 新增正数（大于0的小数）校验方法
+const onlyPositiveNumber = value => {
+  let v = String(value).replace(/[^\d.]/g, "");
+  // 只保留第一个小数点
+  v = v.replace(/\.(?=.*\.)/g, "");
+  // 去除前导0
+  v = v.replace(/^0+(?=\d)/, "");
+  // 去除开头小数点
+  v = v.replace(/^\./, "");
+  return v;
 };
 </script>
 
