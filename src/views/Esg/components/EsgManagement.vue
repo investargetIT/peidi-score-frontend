@@ -2,7 +2,10 @@
   <div class="esg-content">
     <!-- 公司名称与组织架构 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
-      <el-collapse-item title="管治架构和组成" name="company-name-structure">
+      <el-collapse-item
+        title="管治架构和组成"
+        name="governance-structure-composition"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -61,7 +64,10 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="公司董事会构成名单" name="reporting-entities">
+      <el-collapse-item
+        title="公司董事会构成名单"
+        name="board-composition-list"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -213,7 +219,7 @@
       <!-- 其他折叠项 -->
       <el-collapse-item
         title="董事会多元化声明"
-        name="activities-products-services"
+        name="board-diversity-statement"
       >
         <template #title>
           <div class="collapse-title">
@@ -304,7 +310,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="董事培训" name="business-locations">
+      <el-collapse-item title="董事培训" name="board-training">
         <template #title>
           <div class="collapse-title">
             <span>董事培训 </span>
@@ -392,7 +398,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="董事会独立性" name="markets-industries">
+      <el-collapse-item title="董事会独立性" name="board-independence">
         <template #title>
           <div class="collapse-title">
             <span
@@ -569,7 +575,7 @@ Wind评级"
 
       <el-collapse-item
         title="董事会提名与遴选"
-        name="corporate-culture-ethics"
+        name="board-nomination-selection"
       >
         <template #title>
           <div class="collapse-title">
@@ -614,7 +620,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="三会运作" name="external-initiatives">
+      <el-collapse-item title="三会运作" name="three-meetings-operation">
         <template #title>
           <div class="collapse-title">
             <span
@@ -802,7 +808,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="高管薪酬" name="association-membership">
+      <el-collapse-item title="高管薪酬" name="executive-compensation">
         <template #title>
           <div class="collapse-title">
             <span
@@ -849,13 +855,13 @@ Wind评级"
                 v-model="formData.associationMembershipNewsLink"
                 type="textarea"
                 :rows="4"
-                placeholder="为确保实现可持续发展目标承诺，伊利的可持续发展战略目标与经营战略目标一样，成为集团高级管理人员（负责可持续发展相关议题的部门负责人）（简称“高级管理人员”）的考核指标之一，并将可持续发展绩效表现与高级管理人员薪酬绩效挂钩。作为绩效考核的一部分，伊利将包含温室气体减排目标、水资源管理目标在内的可持续发展战略目标的监督纳入高级管理人员的考核计划中，促使高级管理人员对可持续发展工作进展负责，切实推进可持续发展战略目标的实现。——《伊利股份2023年可持续发展报告》"
+                placeholder="为确保实现可持续发展目标承诺，伊利的可持续发展战略目标与经营战略目标一样，成为集团高级管理人员（负责可持续发展相关议题的部门负责人）（简称'高级管理人员'）的考核指标之一，并将可持续发展绩效表现与高级管理人员薪酬绩效挂钩。作为绩效考核的一部分，伊利将包含温室气体减排目标、水资源管理目标在内的可持续发展战略目标的监督纳入高级管理人员的考核计划中，促使高级管理人员对可持续发展工作进展负责，切实推进可持续发展战略目标的实现。——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="信息披露" name="honors-recognition">
+      <el-collapse-item title="信息披露" name="information-disclosure">
         <template #title>
           <div class="collapse-title">
             <span>信息披露 </span>
@@ -935,7 +941,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="投资者互动" name="annual-major-events">
+      <el-collapse-item title="投资者互动" name="investor-interaction">
         <template #title>
           <div class="collapse-title">
             <span>投资者互动 </span>
@@ -1043,7 +1049,7 @@ Wind评级"
               </template>
               <el-input
                 v-model="formData.annualMajorEventsNewsLink"
-                placeholder="公司还会定期发起“走进上市公司”系列活动，在同投资者交流时，除了介绍公司情况业绩之外，还会实际参观公司的各个生产车间、宠物营养健康研究院、研发中心等核心区域，同时，我们也会在路演现场陈列公司产品，并对产品进行现场的讲解。投资者通过参观工厂可以了解到公司的生产情况，而触及到实际的产品才能加深对公司业务的印象，使投资者全方位的深入了解公司情况， 通过这样的直接互动，公司不仅传达了真实透明的信息，也进一步拉近了与投资者的距离，共同探讨和构筑长期共赢的合作关系。 ——《中宠股份2023年社会责任报告》"
+                placeholder="公司还会定期发起'走进上市公司'系列活动，在同投资者交流时，除了介绍公司情况业绩之外，还会实际参观公司的各个生产车间、宠物营养健康研究院、研发中心等核心区域，同时，我们也会在路演现场陈列公司产品，并对产品进行现场的讲解。投资者通过参观工厂可以了解到公司的生产情况，而触及到实际的产品才能加深对公司业务的印象，使投资者全方位的深入了解公司情况， 通过这样的直接互动，公司不仅传达了真实透明的信息，也进一步拉近了与投资者的距离，共同探讨和构筑长期共赢的合作关系。 ——《中宠股份2023年社会责任报告》"
                 type="textarea"
                 :rows="4"
               />
@@ -1126,7 +1132,10 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="投资者教育与保护" name="annual-major-events">
+      <el-collapse-item
+        title="投资者教育与保护"
+        name="investor-education-protection"
+      >
         <template #title>
           <div class="collapse-title">
             <span>投资者教育与保护 </span>
@@ -1216,7 +1225,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="理念与目标" name="annual-major-events">
+      <el-collapse-item title="理念与目标" name="philosophy-goals">
         <template #title>
           <div class="collapse-title">
             <span>理念与目标 </span>
@@ -1242,7 +1251,7 @@ Wind评级"
                 v-model="formData.annualMajorEventsDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="伊利秉承“强内控、防风险、促合规、创价值”的风控管理理念，逐步构建以风险和价值为导向、以控制为手段、以互联网技术为支撑、以制度为平台、以绩效管理为保障、以流程为对象的“六位一体”的内部控制与风险管理体系，并推动有效落实，推进全面风险管理。——《伊利股份2023年可持续发展报告》"
+                placeholder="伊利秉承'强内控、防风险、促合规、创价值'的风控管理理念，逐步构建以风险和价值为导向、以控制为手段、以互联网技术为支撑、以制度为平台、以绩效管理为保障、以流程为对象的'六位一体'的内部控制与风险管理体系，并推动有效落实，推进全面风险管理。——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
 
@@ -1262,7 +1271,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="体系与机制" name="corporate-culture-ethics">
+      <el-collapse-item title="体系与机制" name="system-mechanism">
         <template #title>
           <div class="collapse-title">
             <span
@@ -1361,10 +1370,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item
-        title="商业道德理念与目标"
-        name="corporate-culture-ethics"
-      >
+      <el-collapse-item title="商业道德理念与目标" name="business-ethics-goals">
         <template #title>
           <div class="collapse-title">
             <span>商业道德理念与目标 </span>
@@ -1392,8 +1398,7 @@ Wind评级"
                 v-model="formData.strategicVision"
                 type="textarea"
                 :rows="4"
-                placeholder="水井坊根据《刑法》《反不正当竞争法》《关于办理商业贿赂刑事案件适用法律若干问题的意见》等各项法律法规、部委规章、司法解释规定，及公司《商业行为准则》，制定了《四川水井坊股份有限公司反贿赂政策》。该政策适用于水井坊及子公司与其所有员工，在“接受礼品与招待”“提供礼品与招待”“与政府官员往来”“公益捐赠”“记录和记账规范”“政策咨询”等方面均做出了详细规定。
-——《水井坊2023年度ESG报告》"
+                placeholder="水井坊根据《刑法》《反不正当竞争法》《关于办理商业贿赂刑事案件适用法律若干问题的意见》等各项法律法规、部委规章、司法解释规定，及公司《商业行为准则》，制定了《四川水井坊股份有限公司反贿赂政策》。该政策适用于水井坊及子公司与其所有员工，在接受礼品与招待、提供礼品与招待、与政府官员往来、公益捐赠、记录和记账规范、政策咨询等方面均做出了详细规定。——《水井坊2023年度ESG报告》"
               />
             </el-form-item>
           </el-form>
@@ -1401,7 +1406,7 @@ Wind评级"
       </el-collapse-item>
       <el-collapse-item
         title="平等对待中小企业（财务）"
-        name="corporate-culture-ethics"
+        name="sme-fair-treatment-finance"
       >
         <template #title>
           <div class="collapse-title">
@@ -1438,7 +1443,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="反贪污腐败" name="corporate-culture-ethics">
+      <el-collapse-item title="反贪污腐败" name="anti-corruption">
         <template #title>
           <div class="collapse-title">
             <span
@@ -1701,7 +1706,7 @@ Wind评级"
       </el-collapse-item>
       <el-collapse-item
         title="反垄断与公平竞争"
-        name="corporate-culture-ethics"
+        name="anti-monopoly-fair-competition"
       >
         <template #title>
           <div class="collapse-title">
@@ -1857,7 +1862,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="违规违纪事件" name="corporate-culture-ethics">
+      <el-collapse-item title="违规违纪事件" name="violation-incidents">
         <template #title>
           <div class="collapse-title">
             <span
@@ -1939,7 +1944,7 @@ Wind评级"
       </el-collapse-item>
       <el-collapse-item
         title="公司治理年度重大事件"
-        name="corporate-culture-ethics"
+        name="governance-major-events"
       >
         <template #title>
           <div class="collapse-title">
@@ -1974,7 +1979,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="荣誉认可" name="corporate-culture-ethics">
+      <el-collapse-item title="荣誉认可" name="honors-recognition">
         <template #title>
           <div class="collapse-title">
             <span>荣誉认可 </span>
@@ -2042,7 +2047,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["company-name-structure"]);
+const activeCollapse = ref(["governance-structure-composition"]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 
