@@ -857,63 +857,38 @@ const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
-  // 公司名称与组织架构
-  companyFullName: "", // 公司全称
-  headquartersLocation: "", // 总部所在地
-
-  // 纳入组织可持续发展报告的实体
-  reportingEntitiesDescription: "", // 定性描述
-  reportingEntitiesFileList: [], // 附件列表
-
-  // 活动、品牌、产品和服务
-  activitiesAndServicesDescription: "", // 组织的活动、产品、服务说明
-  activitiesChangesDescription: "", // 与先前报告期相比的重大变化
-  productFunctionDescription: "", // 主要产品功能与用途
-  activitiesAndServicesFileList: [], // 附件列表
-
-  // 经营位置
-  productionBaseCountries: "", // 生产基地所在国家
-  serviceCountries: "", // 提供产品和服务的国家
-  // 服务的市场与行业
-  serviceGeographicLocations: "", // 提供产品和服务所在的地理位置
-  serviceIndustries: "", // 服务的行业
-  customerBeneficiaryTypes: "", // 客户和受益人的类型
-
-  // 公司文化与行为规范
-  strategicVision: "", // 战略愿景
-  mission: "", // 使命
-  coreValues: "", // 核心价值观
-  developmentStrategy: "", // 发展战略
-
-  // 外部倡议
-  externalInitiativesDescription: "", // 外部倡议描述
-  externalInitiativesNewsLink: "", // 新闻链接
-  externalInitiativesFileList: [], // 附件列表
-  // 协会成员资格
-  associationMembershipDescription: "", // 协会成员资格描述
-  associationMembershipNewsLink: "", // 新闻链接
-  associationMembershipFileList: [], // 附件列表
-  // 荣誉认可
-  honorsAndRecognitionDescription: "", // 荣誉认可描述
-  honorsAndRecognitionFileList: [], // 附件列表
-  // 公司年度重大事件
-  annualMajorEventsDescription: "", // 年度重大事件描述
-  annualMajorEventsNewsLink: "", // 新闻链接
-  annualMajorEventsFileList: [], // 附件列表
-  publicityTrainingFileList: [], // 宣传与培训附件
-  industryActivitiesFileList: [], // 行业活动附件
-  // 管理体系下知识产权相关表单项唯一命名
+  directEconomicBenefit: "",
+  governmentSubsidy: "",
+  strategyPolicy: "",
+  goalAchievement: "",
+  organizationStructure: "",
+  policySystem: "",
+  researchPlatform: "",
+  scientificEthics: "",
+  majorInnovationAchievements: "",
+  scienceTechHonors: "",
+  rndInvestment: "",
+  innovationCertification: "",
+  innovationImpact: "",
+  sustainableDesign: "",
+  cooperationMechanism: "",
+  standardsEstablishment: "",
+  industryActivities: "",
+  managementSystem: "",
   intellectualPropertyOrgStructure: "",
   intellectualPropertyLaws: "",
   intellectualPropertyPolicies: "",
   intellectualPropertyProtection: "",
   patentTotalCount: "",
   patentNewTypeCount: "",
+  publicityTraining: "",
   iprTrainingSessions: "",
   iprTrainingParticipants: "",
   iprTrainingTotalHours: "",
-  iprTrainingAvgHours: ""
-  // ... existing code ...
+  iprTrainingAvgHours: "",
+  honorsAndRecognitionFileList: [],
+  industryActivitiesFileList: [],
+  publicityTrainingFileList: []
 });
 
 // 文件上传处理
