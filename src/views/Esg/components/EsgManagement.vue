@@ -124,7 +124,8 @@
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.boardMemberCount"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>人</span>
               </div>
@@ -139,7 +140,8 @@
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.boardCommitteeMemberCount"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>人</span>
               </div>
@@ -154,7 +156,8 @@
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.employeeDirectorCount"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveIntege"
                 />
                 <span>人</span>
               </div>
@@ -169,7 +172,6 @@
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.employeeDirectorRatio"
-                  @input="handleBoardCountInput"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -184,10 +186,7 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
-                  v-model="formData.supervisorCount"
-                  @input="handleBoardCountInput"
-                />
+                <el-input v-model="formData.supervisorCount" />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -199,10 +198,7 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
-                  v-model="formData.employeeSupervisorCount"
-                  @input="handleBoardCountInput"
-                />
+                <el-input v-model="formData.employeeSupervisorCount" />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -216,7 +212,6 @@
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.employeeSupervisorRatio"
-                  @input="handleBoardCountInput"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -292,10 +287,7 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
-                  v-model="formData.femaleDirectorCount"
-                  @input="handleBoardCountInput"
-                />
+                <el-input v-model="formData.femaleDirectorCount" />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -311,7 +303,6 @@
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.femaleDirectorRatio"
-                  @input="handleBoardCountInput"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -387,10 +378,7 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
-                  v-model="formData.boardTrainingCount"
-                  @input="handleBoardCountInput"
-                />
+                <el-input v-model="formData.boardTrainingCount" />
                 <span>次</span>
               </div>
             </el-form-item>
@@ -404,7 +392,6 @@
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.boardTrainingCoverage"
-                  @input="handleBoardCountInput"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -504,10 +491,7 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
-                  v-model="formData.independentDirectorCount"
-                  @input="handleBoardCountInput"
-                />
+                <el-input v-model="formData.independentDirectorCount" />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -521,7 +505,6 @@ Wind评级"
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.independentDirectorRatio"
-                  @input="handleBoardCountInput"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -536,10 +519,7 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
-                  v-model="formData.nonExecutiveDirectorCount"
-                  @input="handleBoardCountInput"
-                />
+                <el-input v-model="formData.nonExecutiveDirectorCount" />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -553,7 +533,6 @@ Wind评级"
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.nonExecutiveDirectorRatio"
-                  @input="handleBoardCountInput"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -570,7 +549,6 @@ Wind评级"
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.independentNonExecutiveDirectorCount"
-                  @input="handleBoardCountInput"
                 />
                 <span>人</span>
               </div>
@@ -585,7 +563,6 @@ Wind评级"
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.independentNonExecutiveDirectorRatio"
-                  @input="handleBoardCountInput"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
