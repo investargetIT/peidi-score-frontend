@@ -49,6 +49,7 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
+                placeholder="中粮糖业坚持货比三家、择优选择、程序规范、过程透明 的采购原则 ，建立健全采购管理制度和内部控制体系，加强采购制度梳理与完善，增强业务流程建设、采购绩效管理、采购监督管理，从制度上保障对供应商管理的合规有序，保证供应商在公平公正的环境下进行投标或谈判活动， 实现公司采购管理标准化、规范化、高效化。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
           </el-form>
@@ -223,8 +224,8 @@
               <div class="textContainer">
                 <el-input
                   v-model="formData.esgTrainingParticipationRate"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -303,7 +304,7 @@
                 placeholder="双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为准则)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item>
+            <el-form-item style="margin-bottom: 35px">
               <template #label>
                 <div>
                   <span>
@@ -323,7 +324,7 @@
                 <span>%</span>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item style="margin-bottom: 35px">
               <template #label>
                 <div>
                   <span>
@@ -343,7 +344,7 @@
                 <span>家</span>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item style="margin-bottom: 35px">
               <template #label>
                 <div>
                   <span>
@@ -363,7 +364,7 @@
                 <span>家</span>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item style="margin-bottom: 45px">
               <template #label>
                 <div>
                   <span
@@ -372,7 +373,6 @@
                       content="若经确定为具有实际和潜在负面环境影响的供应商数量>0，应说明公司采取了何种措施帮助供应商改进，或者是否采取惩处措施，如取消供应商资格。"
                     />
                   </span>
-                  >
                 </div>
               </template>
               <div class="textContainer">
@@ -384,7 +384,7 @@
                 <span>家</span>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item style="margin-bottom: 45px">
               <template #label>
                 <div>
                   <span
@@ -438,8 +438,8 @@
               <div class="textContainer">
                 <el-input
                   v-model="formData.supplierCertificationRate"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -500,8 +500,8 @@
               <div class="textContainer">
                 <el-input
                   v-model="formData.localSupplierPurchaseRate"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
@@ -536,8 +536,8 @@
               <div class="textContainer">
                 <el-input
                   v-model="formData.socialStandardNewSupplierRate"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
               </div>
