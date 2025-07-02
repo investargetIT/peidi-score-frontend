@@ -2376,6 +2376,7 @@ const onlyPositiveNumber = value => {
   display: flex;
   gap: 30px;
   align-items: center;
+  white-space: nowrap;
 }
 
 .textAlignStyle {
