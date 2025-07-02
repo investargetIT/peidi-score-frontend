@@ -583,7 +583,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.intellectualPropertyHoldings"
+                v-model="formData.intellectualPropertyOrgStructure"
                 type="textarea"
                 :rows="6"
                 placeholder="海天已逐步建立起完善的知识产权管理架构。我们设置独立的知识产权部负责集团知识产权的统筹管理。独立的知识产权部门有助于专门集中处理知识产权相关事务，提高管理专业性和效率。——《海天味业2023年环境、社会及治理报告》"
@@ -599,7 +599,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.intellectualPropertyHoldings"
+                v-model="formData.intellectualPropertyLaws"
                 type="textarea"
                 :rows="6"
                 placeholder="我们严格遵守《中华人民共和国专利法》《中华人民共和国商标法》《中华人民共和国著作权法》等法律法规，贯彻《企业知识产权管理规范》（GB/T29490-2013）等国家标准。——《海天味业2023年环境、社会及治理报告》"
@@ -615,7 +615,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.intellectualPropertyHoldings"
+                v-model="formData.intellectualPropertyPolicies"
                 type="textarea"
                 :rows="6"
                 placeholder="我们制定了《知识产权管理工作手册》《专利管理规定》《商标管理规定》等内部管理政策。——《海天味业2023年环境、社会及治理报告》"
@@ -631,7 +631,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.intellectualPropertyHoldings"
+                v-model="formData.intellectualPropertyProtection"
                 type="textarea"
                 :rows="6"
                 placeholder="海天与第三方专业机构合作，加大力度搜集和分析相关侵权线索，以便及时发现并采取适当的措施应对侵权行为。同时，海天还积极发动内部员工，鼓励他们密切关注身边可能出现的侵权情况并及时反馈侵权线索给知识产权部。——《海天味业2023年环境、社会及治理报告》"
@@ -901,7 +901,12 @@ const formData = ref({
   annualMajorEventsNewsLink: "", // 新闻链接
   annualMajorEventsFileList: [], // 附件列表
   publicityTrainingFileList: [], // 宣传与培训附件
-  industryActivitiesFileList: [] // 行业活动附件
+  industryActivitiesFileList: [], // 行业活动附件
+  // 管理体系下知识产权相关表单项唯一命名
+  intellectualPropertyOrgStructure: "",
+  intellectualPropertyLaws: "",
+  intellectualPropertyPolicies: "",
+  intellectualPropertyProtection: ""
   // ... existing code ...
 });
 
