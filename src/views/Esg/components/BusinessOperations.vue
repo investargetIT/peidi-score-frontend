@@ -49,7 +49,7 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.governmentSubsidies" />
+                <el-input v-model="formData.governmentSubsidy" />
                 <span>万元</span>
               </div>
             </el-form-item>
@@ -90,10 +90,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.reportingEntitiesDescription"
+                v-model="formData.strategyPolicy"
                 type="textarea"
                 :rows="6"
-                placeholder="公司着力推进以‘核心技术为主体、市场为导向、产学研相结合’的技术创新体制建设，协同整合公司内部科技资源，建立三级科技创新网络开展科研工作。上海梅林围绕公司发展规划、产品品类及相关领域开展新品研发工作， 培育新的经济增长点;同时参与技术创新、技术改造、技术引进消化创新项目，使公司在产品质量、工艺技术和产设备等方面得到持续改进。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="公司着力推进以'核心技术为主体、市场为导向、产学研相结合'的技术创新体制建设，协同整合公司内部科技资源，建立三级科技创新网络开展科研工作。上海梅林围绕公司发展规划、产品品类及相关领域开展新品研发工作， 培育新的经济增长点;同时参与技术创新、技术改造、技术引进消化创新项目，使公司在产品质量、工艺技术和产设备等方面得到持续改进。 ——《上海梅林2023年ESG 暨可持续发展报告》"
                 resize="vertical"
               />
             </el-form-item>
@@ -105,10 +105,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.reportingEntitiesDescription"
+                v-model="formData.goalAchievement"
                 type="textarea"
                 :rows="6"
-                placeholder="公司着力推进以‘核心技术为主体、市场为导向、产学研相结合’的技术创新体制建设，协同整合公司内部科技资源，建立三级科技创新网络开展科研工作。上海梅林围绕公司发展规划、产品品类及相关领域开展新品研发工作， 培育新的经济增长点;同时参与技术创新、技术改造、技术引进消化创新项目，使公司在产品质量、工艺技术和产设备等方面得到持续改进。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="公司着力推进以'核心技术为主体、市场为导向、产学研相结合'的技术创新体制建设，协同整合公司内部科技资源，建立三级科技创新网络开展科研工作。上海梅林围绕公司发展规划、产品品类及相关领域开展新品研发工作， 培育新的经济增长点;同时参与技术创新、技术改造、技术引进消化创新项目，使公司在产品质量、工艺技术和产设备等方面得到持续改进。 ——《上海梅林2023年ESG 暨可持续发展报告》"
                 resize="vertical"
               />
             </el-form-item>
@@ -149,7 +149,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.activitiesAndServicesDescription"
+                v-model="formData.organizationStructure"
                 type="textarea"
                 :rows="8"
                 placeholder="由上海梅林总部技术质量部牵头，配合市级和区级技术中心及高新技术企业的专业研发团队，针对企业实际情况、市场需求，结合最新的研发科技信息与食品安全信息，开展计划性、合理性、安全性地 开发新产品和升级老产品，丰富上海梅林旗下产品线。 公司对研发项目的实施和管理进行了具体的规定，研发项目由研发部统一管理，大的项目成立项目组，实行项目组长负责制。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -163,10 +163,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.activitiesChangesDescription"
+                v-model="formData.policySystem"
                 type="textarea"
                 :rows="8"
-                placeholder="双汇发展从生产、技术、市场、质量和管理五个方面鼓励和评价创新，通过修订完善《双汇发展创新管理制度》，明确分工和责任。我们依据《双汇发展‘重大项目创新奖’实施方案》等制度和规定，对创新成果显著的团队和个人发放奖金，从体制上保持创新活力。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展从生产、技术、市场、质量和管理五个方面鼓励和评价创新，通过修订完善《双汇发展创新管理制度》，明确分工和责任。我们依据《双汇发展'重大项目创新奖'实施方案》等制度和规定，对创新成果显著的团队和个人发放奖金，从体制上保持创新活力。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="科研平台建设">
@@ -179,7 +179,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.productFunctionDescription"
+                v-model="formData.researchPlatform"
                 type="textarea"
                 :rows="6"
                 resize="vertical"
@@ -221,7 +221,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.productionBaseCountries"
+                v-model="formData.scientificEthics"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -257,10 +257,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.serviceGeographicLocations"
+                v-model="formData.majorInnovationAchievements"
                 type="textarea"
                 :rows="4"
-                placeholder="我们围绕生物医药辅料战略新兴产业，针对注射级蔗 糖这一‘卡脖子’难题，设立药用糖研发项目，取得 阶段性重大突破，研发国内第一瓶注射级蔗糖，在国 家药品评审中心正式备案;并借此打开面向战略新兴 产业的发展空间，陆续研制成功了国内第一个儿童药 用糖、第一个药用红糖，用实际行动守护中国孩子和 妈妈的健康。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="我们围绕生物医药辅料战略新兴产业，针对注射级蔗 糖这一'卡脖子'难题，设立药用糖研发项目，取得 阶段性重大突破，研发国内第一瓶注射级蔗糖，在国 家药品评审中心正式备案;并借此打开面向战略新兴 产业的发展空间，陆续研制成功了国内第一个儿童药 用糖、第一个药用红糖，用实际行动守护中国孩子和 妈妈的健康。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="科学技术奖励与荣誉">
@@ -273,7 +273,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.serviceIndustries"
+                v-model="formData.scienceTechHonors"
                 type="textarea"
                 :rows="4"
               />
@@ -330,7 +330,7 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.strategicVision" />
+                <el-input v-model="formData.rndInvestment" />
                 <span>万元</span>
               </div>
             </el-form-item>
@@ -343,7 +343,11 @@ Wind评级"
                   />
                 </div>
               </template>
-              <el-input v-model="formData.mission" type="textarea" :rows="4" />
+              <el-input
+                v-model="formData.innovationCertification"
+                type="textarea"
+                :rows="4"
+              />
             </el-form-item>
             <el-form-item label="创新影响">
               <template #label>
@@ -355,10 +359,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.coreValues"
+                v-model="formData.innovationImpact"
                 type="textarea"
                 :rows="6"
-                placeholder="中粮糖业通过对甜菜种植过程中各环节技术指标的归纳和总结，结合‘互联网 +’思维模式，开发具有自主知识产权的‘农聚通’APP 及甜菜学校信息指导系统 APP，提供便捷高效的农业管理模式，实现订单合同、订单农户信息、种植档案信息、 种植地块 GIS 信息等信息化管理，为管理和决策提供数据支撑，有效提升工作效率和管理效能。同时，为甜菜种植户提 供线上农业技术指导与培训，帮助农民提升种植技术理论和实践操作水平。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="中粮糖业通过对甜菜种植过程中各环节技术指标的归纳和总结，结合'互联网 +'思维模式，开发具有自主知识产权的'农聚通'APP 及甜菜学校信息指导系统 APP，提供便捷高效的农业管理模式，实现订单合同、订单农户信息、种植档案信息、 种植地块 GIS 信息等信息化管理，为管理和决策提供数据支撑，有效提升工作效率和管理效能。同时，为甜菜种植户提 供线上农业技术指导与培训，帮助农民提升种植技术理论和实践操作水平。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
           </el-form>
@@ -392,7 +396,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.externalInitiativesDescription"
+                v-model="formData.sustainableDesign"
                 type="textarea"
                 :rows="4"
                 placeholder="在环境和交叉污染方面，本集团实行了以下管控举措:1)提高原料综合利用率，降低厨余和废弃原料数量;2)生产线裹粉类在回收利用，减少废弃物料数量; 3)辅料及包装材料使用MRP系统 按生产订单计划精准采购，减少剩余和报废的风险;4)引入UV喷码机进行在线包装标识打码，解决小品项使用不干胶贴，减少产生包材废弃物。 ——《大成食品2023年环境、社会及管治报告》"
@@ -426,10 +430,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.associationMembershipDescription"
+                v-model="formData.cooperationMechanism"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展与中国肉研中心、中国农科院等院校联合申请了国家重点研发计划‘肉制品智能制造与信息化无人工厂关键技术研发与产业化示范’等项目，探索肉制品生产制造新阶段。 ——《双汇发展2023年ESG报告》<br/> 行业协会作为政府与食品生产经营企业以外的‘第三部门’，既是沟通政府、企业和市场的桥梁与纽带，又是社会多 元利益的协调机构，也是实现行业自律，规范行业行为，开展行业服务，保障公平竞争的社会组织。上海梅林目前参与的行业协会有协会上海市食品协会、全国食品工业标准化委员会罐头分技术委员会、中国食品协会冷冻冷藏食品专业委员会、上海市食品安全联合会、上海市轻工科技协会、上海市食品学会6家。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="双汇发展与中国肉研中心、中国农科院等院校联合申请了国家重点研发计划'肉制品智能制造与信息化无人工厂关键技术研发与产业化示范'等项目，探索肉制品生产制造新阶段。 ——《双汇发展2023年ESG报告》<br/> 行业协会作为政府与食品生产经营企业以外的'第三部门'，既是沟通政府、企业和市场的桥梁与纽带，又是社会多 元利益的协调机构，也是实现行业自律，规范行业行为，开展行业服务，保障公平竞争的社会组织。上海梅林目前参与的行业协会有协会上海市食品协会、全国食品工业标准化委员会罐头分技术委员会、中国食品协会冷冻冷藏食品专业委员会、上海市食品安全联合会、上海市轻工科技协会、上海市食品学会6家。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
           </el-form>
@@ -460,7 +464,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.honorsAndRecognitionDescription"
+                v-model="formData.standardsEstablishment"
                 type="textarea"
                 :rows="6"
                 placeholder="上海梅林罐头是全国食品工业标准化委员会罐头分技术委员会理事长单位，2023年参与了3项国家标准《肉糜类罐头质量通则》《罐头食品的检验方法》《火腿罐头质量通则》的制修订工作，参与行业标准《辣椒罐头》《莲藕罐头和莲子罐头》《元蹄罐头》《香肠罐头》等9项行业标准的审议工作。 冠生园蜂制品公司参与了GH/T1393-2022《蜂蜜中阿洛酮糖含量的测定高效液相色谱法》和GH/T1398-2022《薰衣草蜂蜜风味挥发物质的测定气相色谱质谱联用法》标准的制定。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -497,10 +501,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.annualMajorEventsDescription"
+                v-model="formData.industryActivities"
                 type="textarea"
                 :rows="4"
-                placeholder="•2023年5月17日，参加河南省企业联合会组织的‘企业绿色低碳转型高峰论坛’<br/> •2023年6月9日，作为重点企业代表参加由国家卫生健康委、国家食品安全风 险评估中心组织的漯河市食品企业座谈会<br/> •2023年9月18日，参加2023中国国际肉类产业周(CIMIW2023)系列活动<br/> •2023年11月6日，参加第十六届‘一带一路’生态农业与食品安全论坛<br/> •2023年11月7日，作为副主任委员单位，参加全国肉禽蛋制品标准化技术委员会年会 ——《双汇发展2023年ESG报告》"
+                placeholder="•2023年5月17日，参加河南省企业联合会组织的'企业绿色低碳转型高峰论坛'<br/> •2023年6月9日，作为重点企业代表参加由国家卫生健康委、国家食品安全风险评估中心组织的漯河市食品企业座谈会<br/> •2023年9月18日，参加2023中国国际肉类产业周(CIMIW2023)系列活动<br/> •2023年11月6日，参加第十六届'一带一路'生态农业与食品安全论坛<br/> •2023年11月7日，作为副主任委员单位，参加全国肉禽蛋制品标准化技术委员会年会 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="annualMajorEventsFileList">
@@ -553,7 +557,7 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.annualMajorEventsDescription" />
+                <el-input v-model="formData.managementSystem" />
                 <span>万元</span>
               </div>
             </el-form-item>
@@ -567,7 +571,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.honorsAndRecognitionDescription"
+                v-model="formData.intellectualPropertyHoldings"
                 type="textarea"
                 :rows="6"
                 placeholder="海天已逐步建立起完善的知识产权管理架构。我们设置独立的知识产权部负责集团知识产权的统筹管理。独立的知识产权部门有助于专门集中处理知识产权相关事务，提高管理专业性和效率。——《海天味业2023年环境、社会及治理报告》"
@@ -583,7 +587,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.honorsAndRecognitionDescription"
+                v-model="formData.intellectualPropertyHoldings"
                 type="textarea"
                 :rows="6"
                 placeholder="我们严格遵守《中华人民共和国专利法》《中华人民共和国商标法》《中华人民共和国著作权法》等法律法规，贯彻《企业知识产权管理规范》（GB/T29490-2013）等国家标准。——《海天味业2023年环境、社会及治理报告》"
@@ -599,7 +603,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.honorsAndRecognitionDescription"
+                v-model="formData.intellectualPropertyHoldings"
                 type="textarea"
                 :rows="6"
                 placeholder="我们制定了《知识产权管理工作手册》《专利管理规定》《商标管理规定》等内部管理政策。——《海天味业2023年环境、社会及治理报告》"
@@ -615,7 +619,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.honorsAndRecognitionDescription"
+                v-model="formData.intellectualPropertyHoldings"
                 type="textarea"
                 :rows="6"
                 placeholder="海天与第三方专业机构合作，加大力度搜集和分析相关侵权线索，以便及时发现并采取适当的措施应对侵权行为。同时，海天还积极发动内部员工，鼓励他们密切关注身边可能出现的侵权情况并及时反馈侵权线索给知识产权部。——《海天味业2023年环境、社会及治理报告》"
@@ -652,7 +656,7 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.annualMajorEventsDescription" />
+                <el-input v-model="formData.intellectualPropertyHoldings" />
                 <span>项</span>
               </div>
             </el-form-item>
@@ -666,7 +670,7 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.annualMajorEventsDescription" />
+                <el-input v-model="formData.intellectualPropertyHoldings" />
                 <span>项</span>
               </div>
             </el-form-item>
@@ -696,7 +700,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.honorsAndRecognitionDescription"
+                v-model="formData.publicityTraining"
                 type="textarea"
                 :rows="6"
                 placeholder="2023 年，公司邀请外部专家分别于 5 月、10 月开展知识产权保护法律法规以及知识产权专业知识培训，进一步提高了员工知识产权保护意识，降低了公司的知识产权风险，保护了公司的品牌价值与创新成果。——《洋河股份2023年社会责任报告》"
@@ -733,7 +737,7 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.annualMajorEventsDescription" />
+                <el-input v-model="formData.intellectualPropertyHoldings" />
                 <span>次</span>
               </div>
             </el-form-item>
@@ -744,7 +748,7 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.annualMajorEventsDescription" />
+                <el-input v-model="formData.intellectualPropertyHoldings" />
                 <span>人次</span>
               </div>
             </el-form-item>
@@ -755,7 +759,7 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.annualMajorEventsDescription" />
+                <el-input v-model="formData.intellectualPropertyHoldings" />
                 <span>小时</span>
               </div>
             </el-form-item>
@@ -766,7 +770,7 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.annualMajorEventsDescription" />
+                <el-input v-model="formData.intellectualPropertyHoldings" />
                 <span>小时</span>
               </div>
             </el-form-item>
