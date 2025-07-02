@@ -41,6 +41,12 @@
 
             <!-- 附件上传 -->
             <el-form-item label="附件上传" prop="governanceStructureFiles">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="附件上传集团架构" />
+                </div>
+              </template>
               <el-upload
                 class="upload-area"
                 v-model:file-list="formData.governanceStructureFiles"
@@ -56,9 +62,6 @@
                 }"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
-                <template #tip>
-                  <div class="el-upload__tip">附件上传集团架构</div>
-                </template>
               </el-upload>
             </el-form-item>
           </el-form>
@@ -353,6 +356,12 @@
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="boardTrainingFiles">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="如有图片请上传" />
+                </div>
+              </template>
               <el-upload
                 class="upload-area"
                 v-model:file-list="formData.boardTrainingFiles"
@@ -368,9 +377,6 @@
                 accept=".jpg,.jpeg,.png,.webp"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
-                <template #tip>
-                  <div class="el-upload__tip">如有图片请上传</div>
-                </template>
               </el-upload>
             </el-form-item>
             <el-form-item label="董事培训次数">
