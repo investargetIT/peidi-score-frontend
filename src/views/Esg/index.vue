@@ -47,12 +47,12 @@ const componentMap = {
   "esg-management": EsgManagement,
   "corporate-governance": CorporateGovernance,
   "business-operations": BusinessOperations,
+  "quality-food-safety": ProductsServices,
+  "supplier-management": SupplierManagement,
+  "information-security-privacy": OccupationalHealth,
   employees: Employees,
   "environmental-impact": EnvironmentalImpact,
-  "occupational-health": OccupationalHealth,
-  "supplier-management": SupplierManagement,
-  "community-welfare": CommunityWelfare,
-  "products-services": ProductsServices
+  "community-welfare": CommunityWelfare
 };
 
 // 当前组件
