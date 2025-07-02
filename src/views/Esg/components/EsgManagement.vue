@@ -724,7 +724,7 @@ Wind评级"
             </el-form-item>
             <el-form-item>
               <template #label>
-                <div class="textAlignStyle">
+                <div>
                   <span>董事会召开情况</span>
                   <EsgTooltip content="召开董事会10次，审议通过52项议案" />
                 </div>
@@ -1121,6 +1121,515 @@ Wind评级"
                   @input="handleBoardCountInput"
                 />
                 <span>人次</span>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="投资者教育与保护" name="annual-major-events">
+        <template #title>
+          <div class="collapse-title">
+            <span>投资者教育与保护 </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">各经营场所的地址及业务范围。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>投资者教育活动与宣传</span>
+                  <EsgTooltip
+                    content="公司开展的投资者教育活动与宣传活动情况，如全国投资者保护宣传日活动。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.annualMajorEventsDescription"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="annualMajorEventsFileList">
+              <template #label>
+                <div>
+                  <span>附件上传 </span>
+                  <EsgTooltip content="如有相关图片请提供" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.annualMajorEventsFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="投资者保护举措">
+              <template #label>
+                <div>
+                  <span>投资者保护举措</span>
+                  <EsgTooltip
+                    content="描述公司有关投资者保护的政策、制度和实践举措。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.annualMajorEventsNewsLink"
+                placeholder="中粮糖业安排专职专岗开展投资者关系管理，重视信息披露，提高信息披露质量。严格按照《上海证券交易所股票上市规则》《信息披露事务管理制度》等相关规定，真实、准确、完整、及时地披露公司定期报告、临时公告，帮助投资者更便捷、更有效地了解公司经营情况，切实保障所有股东尤其是中小投资者对公司重大事项和经营管理情况的知情权。 ——《中粮糖业2023年度ESG报告》"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+
+            <el-form-item label="中小股东保护">
+              <template #label>
+                <div>
+                  <span>中小股东保护 </span>
+                  <EsgTooltip
+                    content="描述公司在中小股东保护方面的政策、制度和实践举措。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.annualMajorEventsNewsLink"
+                placeholder=""
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="理念与目标" name="annual-major-events">
+        <template #title>
+          <div class="collapse-title">
+            <span>理念与目标 </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">各经营场所的地址及业务范围。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>内控和风险管理理念或管理方针</span>
+                  <EsgTooltip content="公司内控及风险应对理念及管理方针。" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.annualMajorEventsDescription"
+                type="textarea"
+                :rows="4"
+                placeholder="伊利秉承“强内控、防风险、促合规、创价值”的风控管理理念，逐步构建以风险和价值为导向、以控制为手段、以互联网技术为支撑、以制度为平台、以绩效管理为保障、以流程为对象的“六位一体”的内部控制与风险管理体系，并推动有效落实，推进全面风险管理。——《伊利股份2023年可持续发展报告》"
+              />
+            </el-form-item>
+
+            <el-form-item label="内控和风险管理战略或总体目标">
+              <template #label>
+                <div>
+                  <span>内控和风险管理战略或总体目标</span>
+                  <EsgTooltip content="公司内控与风险管理阶段性目标" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.annualMajorEventsNewsLink"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="体系与机制" name="corporate-culture-ethics">
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >体系与机制
+              <EsgTooltip content="GRI2-25" />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">企业所有权结构和法律组织形式。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item label="管理组织架构及职责">
+              <template #label>
+                <div>
+                  <span> 管理组织架构及职责 </span>
+                  <EsgTooltip
+                    content="公司内控和风险管理组织架构及各层级职责。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="第一道防线:各业务及职能部门负责人负责部门相关风险的识别、评估、落实整改以及防范和化解潜在风险点;第二道防线:风险委员会对风险控制标准的执行情况进行监督;第三道防线:独立内部审计内审部负责定期对公司风险管理和合规流程有效性进行的内部审计，并将结果向审计委员会汇报；外部审计——《金龙鱼2023年可持续发展报告》"
+              />
+            </el-form-item>
+            <el-form-item label="管理核心制度">
+              <template #label>
+                <div>
+                  <span> 管理核心制度 </span>
+                  <EsgTooltip content="公司内控和风险管理主要政策、制度等。" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="基于《伊利集团内部控制与风险管理制度》及其配套管理流程，持续完善公司内部控制、风险管理及合规管理相关机制。——《伊利股份2023年可持续发展报告》"
+              />
+            </el-form-item>
+            <el-form-item label="管理流程">
+              <template #label>
+                <div>
+                  <span> 管理流程 </span>
+                  <EsgTooltip
+                    content="披露公司识别、评估及应对风险的主要管理流程和举措。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="针对关键领域和重点业务开展风险识别，并通过完成风险清单编制、确定风险等级及优先顺序、制定重大风险应对方案，进一步夯实公司风控管理体系，保障公司健康运行及可持续发展。 ——《伊利股份2023年可持续发展报告》"
+              />
+            </el-form-item>
+            <el-form-item label="风险识别">
+              <template #label>
+                <div>
+                  <span> 风险识别 </span>
+                  <EsgTooltip
+                    content="公司为管理风险而开展的识别工作及识别结果"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="目前，公司的风险矩阵中囊括了商业道德与反贪腐、产品质量管理、环境保护与资源节约、生产安全及食品安全管理等ESG风险控制点，有效地将企业ESG相关风险管理融合在现有的企业风险管控框架中。 ——《安井食品2023年ESG报告》"
+              />
+            </el-form-item>
+            <el-form-item label="风险应对措施">
+              <template #label>
+                <div>
+                  <span> 风险应对措施 </span>
+                  <EsgTooltip
+                    content="公司依据风险识别结果而制定的应对措施。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="公司内审部还根据重要性议题评估结果，将环保风险、劳工风险等、食品安全风险等主要的对公司长远发展及价值创造和对环境、社会具有重要影响的ESG风险纳入常规风险管理及内控机制当中，融入风险矩阵，制定专项检查及整改措施，全面提升风险防控质效。——《金龙鱼2023年可持续发展报告》"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item
+        title="商业道德理念与目标"
+        name="corporate-culture-ethics"
+      >
+        <template #title>
+          <div class="collapse-title">
+            <span>商业道德理念与目标 </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">企业所有权结构和法律组织形式。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item label="商业道德理念或管理方针以及总体目标">
+              <template #label>
+                <div>
+                  <span> 商业道德理念或管理方针以及总体目标 </span>
+                  <EsgTooltip
+                    content="公司为践行反腐败、反贪污、反垄断、反不正当竞争而制定的理念、管理方针及阶段性目标。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="水井坊根据《刑法》《反不正当竞争法》《关于办理商业贿赂刑事案件适用法律若干问题的意见》等各项法律法规、部委规章、司法解释规定，及公司《商业行为准则》，制定了《四川水井坊股份有限公司反贿赂政策》。该政策适用于水井坊及子公司与其所有员工，在“接受礼品与招待”“提供礼品与招待”“与政府官员往来”“公益捐赠”“记录和记账规范”“政策咨询”等方面均做出了详细规定。
+——《水井坊2023年度ESG报告》"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item
+        title="平等对待中小企业（财务）"
+        name="corporate-culture-ethics"
+      >
+        <template #title>
+          <div class="collapse-title">
+            <span>平等对待中小企业（财务） </span>
+            <EsgTooltip content="交易所可持续发展指引" />
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">企业所有权结构和法律组织形式。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item label="平等对待中小企业">
+              <template #label>
+                <div>
+                  <span> 平等对待中小企业 </span>
+                  <EsgTooltip content="逾期未支付中小企业款项的具体情况" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="企业报告期末应付账款（含应付票据）余额超过300亿元或占总资产的比重超过50％的，应当披露报告期末逾期未支付的金额。企业或者其控股子公司通过国家企业信用信息公示系统向社会公示逾期尚未支付中小企业款项信息的，应当披露逾期未支付中小企业款项的金额、对中小企业供应商的账期设置情况、逾期账款的形成原因、是否涉及诉讼仲裁等情况。"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="反贪污腐败" name="corporate-culture-ethics">
+        <template #title>
+          <div class="collapse-title">
+            <span>反贪污腐败 </span>
+            <EsgTooltip
+              content="对应GRI标准: GRI205<br/>
+对应MSCI ESG指标: 公司治理-腐败与不稳定性<br/>
+交易所可持续发展指引<br/>
+Wind评级"
+            />
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">企业所有权结构和法律组织形式。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item label="反腐廉洁组织架构及职责">
+              <template #label>
+                <div>
+                  <span> 反腐廉洁组织架构及职责 </span>
+                  <EsgTooltip
+                    content="公司反腐败、反贪污管理组织架构及各层级职责。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="公司全力打造'清廉一鸣',制定《浙江一鸣食品股份有限公司反舞弊制度》,防止各类舞弊事件发生,保障管理层有效履行管理工作。公司监察组主要负责开展反舞弊工作,通过规范公司员工的职业行为,保证公司各部门、中心制度规范运行,防止损害公司利益的行为发生。 公司监察组在董事会领导下独立行使职权,直接上级为董事长,不受业务部门、职能部门、行政部门的干涉和管理。公司监察组的监察工作向公司董事会及审计委员会负责并汇报工作。 ——《一鸣食品2023年ESG报告》"
+              />
+            </el-form-item>
+            <el-form-item label="反腐廉洁政策">
+              <template #label>
+                <div>
+                  <span> 反腐廉洁政策 </span>
+                  <EsgTooltip content="公司反腐败、反贪污主要政策。" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="公司严格遵守国家法律法规，制定了《商业道德行为准则》《反腐败政策》《员工职务行为准则》等覆盖公司运营全流程的商业道德政策制度及管理机制，对全体员工、供应商、承包商、经销商等进行监管和约束，并对腐败、贿赂、舞弊、洗钱、不正当竞争、利益冲突等行为和不遵守情况做出明确的规范，同时将员工的年终考评和职务调整与员工行为准则相关联。公司持续完善商业道德管理体系，由董事会审计委员会进行总体监督。公司依据公司商业道德相关政策制度及管理中的要求，将运营中商业道德及违规风险纳入审计评估，每三年完成覆盖所有运营地的内部审计。 ——《金龙鱼2023年可持续发展报告》"
+              />
+            </el-form-item>
+            <el-form-item label="腐败风险评估">
+              <template #label>
+                <div>
+                  <span> 腐败风险评估 </span>
+                  <EsgTooltip
+                    content="公司已进行腐败风险评估的运营点的总数及百分比；<br/> 通过风险评估确认的重大腐败风险"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="公司开展关键岗位和重点人员的廉洁风险点识别，制定防控措施，2023年公司采购、销售、工程、财务、人事等重点条线识别出46个重大廉洁风险点。 ——《光明乳业2023年可持续发展报告》"
+              />
+            </el-form-item>
+            <el-form-item label="反腐败举报制度">
+              <template #label>
+                <div>
+                  <span> 反腐败举报制度 </span>
+                  <EsgTooltip
+                    content="公司为及时检举腐败行为而搭建的举报制度。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="反腐败举报渠道">
+              <template #label>
+                <div>
+                  <span> 反腐败举报渠道 </span>
+                  <EsgTooltip
+                    content="公司为及时检举腐败行为而搭建的举报渠道。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="双汇发展建立各类反腐败信息举报渠道，包括总裁直通车、稽查审计举报热线、采购吹哨人制度、各管理系统信息沟通平台、工厂经理信箱等，及时解决收到的举报，并充分保护举报人信息。 ——《双汇发展2023年社会责任报告》"
+              />
+            </el-form-item>
+            <el-form-item label="举报人保护政策">
+              <template #label>
+                <div>
+                  <span> 举报人保护政策 </span>
+                  <EsgTooltip content="公司为保护举报人而建立的保护政策。" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="公司保护举报人的正当权益不受侵害，对举报人的信息和举报事项予以保密。举报属实且为公司挽回损失的，酌情给予奖励。实名举报的，调查结果向举报人反馈。禁止以任何形式对举报人进行打击报复。——《国投中鲁2023年度ESG报告》"
+              />
+            </el-form-item>
+            <el-form-item label="廉洁承诺书覆盖面">
+              <template #label>
+                <div>
+                  <span> 廉洁承诺书覆盖面 </span>
+                  <EsgTooltip
+                    content="公司与员工、供应商、承包商等相关方签署廉洁承诺书的情况。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="重大工程建设项目开工时，公司监管部门会在项目现场进行廉政教育，并要求施工单位、监理方须与公司签订三方廉洁协议，公司项目管理人员、施工方和监理公司等参与工程项目人员签署廉洁承诺；项目保证金中含有廉政保证金。——《光明乳业2023年可持续发展报告》"
+              />
+            </el-form-item>
+            <el-form-item label="对商业伙伴反贪污，贿赂的监管">
+              <template #label>
+                <div>
+                  <span> 对商业伙伴反贪污，贿赂的监管 </span>
+                  <EsgTooltip content="按实际情况统计" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="根据ESG审查方法，制订年度现场评审供应商名单，由供应商评审小组进行现场评审，并将评审结果反馈给供应商改进。供应商年度现场评审由公司内部相关专家组成现场评审小组或由第三方专业机构派遣专家组成现场评审小组，由现场评审小组作出评审结论，公司根据评审结论确定是否继续合作。——《光明乳业2023年可持续发展报告》"
+              />
+            </el-form-item>
+            <el-form-item label="廉洁文化宣传渠道与措施">
+              <template #label>
+                <div>
+                  <span> 廉洁文化宣传渠道与措施 </span>
+                  <EsgTooltip content="公司为提升廉洁意识而开展的宣传。" />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="6"
+                placeholder="公司采用多样化的形式开展廉洁自律宣传教育活动，旨在让廉洁文化深入人心。我们推出文化简报，以最新的资讯传递廉洁之声；举办廉洁专题宣传活动，深入剖析廉洁自律的重要性；开展廉洁文化快闪活动，以生动有趣的方式吸引员工参与；同时还打造了丰富的文化周边产品，以生动的方式强化对员工的廉洁教育。通过这些举措，我们不仅让廉洁文化变得可见，更使其成为企业文化的一部分，潜移默化地影响每位员工。2023年，海天通过公司内网、公告、宣传栏、学习平台、面授、沙龙、文化快闪等形式全方位对员工开展廉洁自律教育，警钟长鸣，共有10,380人次参加廉自律相关学习，8,699人次参加相关考试。——《海天味业2023年度ESG报告》"
+              />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="directorTrainingFileList">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="如有活动图片请上传" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.directorTrainingFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="反腐败反贿赂发生事件">
+              <template #label>
+                <div>
+                  <span> 反腐败反贿赂发生事件 </span>
+                  <EsgTooltip
+                    content="报告期内发生的商业贿赂及贪污事件的具体情况，包括董事、管理层人员、员工由于商业贿赂或贪污行为而被解雇或受到处分、被有权部门调查、与业务合作伙伴的合同被终止或未续约以及针对公司或其董事、管理层人员、员工商业贿赂或贪污行为的诉讼案件具体情况（如有）"
+                  />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>次</span>
               </div>
             </el-form-item>
           </el-form>
