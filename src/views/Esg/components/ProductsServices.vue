@@ -769,7 +769,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["industry-value-finance"]);
+const activeCollapse = ref(["policy-goals"]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 

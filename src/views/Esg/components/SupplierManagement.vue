@@ -115,7 +115,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.lifecycleQualityManagement"
+                v-model="formData.riskManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="根据BRC准入原则，公司建立《ML/QP842供方管理控制程序》，对现有合格供应商进行高风险、中风险、低风险的分级管理: 高风险材料供应商的准入需满足以下2个条件中任何1个: 1供方通过GFSI认证且样品试样通过; 2供方资质齐全、食品安全等级至少为A级、样品试样通过且现场审核通过或经整改验证通过; 中风险材料供应商的准入需满足以下2个条件中任何1个: 1供方通过HACCP或ISO认证且样品试样通过; 2供方资质齐全、食品安全等级至少为B级且样品试样通过; 低风险材料供应商的准入需满足以下条件: 供方资质齐全、食品安全等级至少为C级且样品试样通过。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -132,7 +132,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.certificationAndAudit"
+                v-model="formData.digitalManagementPlatform"
                 type="textarea"
                 :rows="4"
                 placeholder="旺旺依托供应商协同平台(SRM)系统进行平台化的供应链管理，我们已建立包含供应商开发、审核、评估、分级评价等全部环节在内的供应商管理体系，一体化管控供应商从注册报名到资质单管理、 访厂单管理、检验单管理、试车单管理全阶段，提升管理效率。 ——《中国旺旺2022/23年环境、社会及管治报告》"
@@ -169,13 +169,13 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.qualityImprovementActions"
+                v-model="formData.esgTrainingSystem"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展注重与合作供应商之间的沟通与交流，通过形式多样、主题丰富的培训帮助供应商提 升可持续发展能力。报告期内我们通过驻厂、电话、书面函件、视频会议等多渠道形式，保障我们与供应商伙伴双方的可持续发展，助推当地产业发展。 对于需要重点帮扶、问题较多的供应商，我们积极通过分析实际案例、解决具体问题等形式与 合作伙伴展开一对一深入沟通，通过对新出现的质量问题开展预防性测试，以提高供应商的可 持续发展管理水平。报告期内，我们共培训原料供应商65家，辅包供应商387家，生猪供应商4,245家，并对异地纸箱、五金供应商133家进行杂质、质量红线管控培训，帮助10家原料供应商恢复正常供应，持续助力供应商成长。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="qualityPracticeFileList">
+            <el-form-item label="附件上传" prop="trainingAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -184,7 +184,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.qualityPracticeFileList"
+                v-model:file-list="formData.trainingAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -207,7 +207,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.esgTrainingCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -222,7 +222,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.esgTrainingParticipationRate"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -237,7 +237,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.sustainableProcurementRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -279,7 +279,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.animalWelfarePolicy"
+                v-model="formData.esgReviewAssessment"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -296,7 +296,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.safetyManagementPolicies"
+                v-model="formData.codeOfConductSigning"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -316,7 +316,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.envLaborClauseSupplierRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -336,7 +336,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.socialImpactAssessmentSupplierCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -356,7 +356,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.environmentalImpactSupplierCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -377,7 +377,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.negativeSocialImpactSupplierCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -397,7 +397,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.negativeEnvironmentalImpactSupplierCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -417,7 +417,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.supplierCertificationCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -437,7 +437,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.supplierCertificationRate"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -479,7 +479,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.supplierTotalCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -499,7 +499,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.localSupplierPurchaseRate"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -517,7 +517,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.newSupplierCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -535,7 +535,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.productRecallCount"
+                  v-model="formData.socialStandardNewSupplierRate"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -573,7 +573,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.hazardRiskAssessment"
+                v-model="formData.fairTrade"
                 type="textarea"
                 :rows="4"
                 placeholder="上海梅林根据《人力资源控制程序》《采购控制程序》《岗位职责任职要求》《物资采购管理办法》的制度，明确 规定采购部门的业务人员的岗位任职要求、业务流程规范。同时公司纪监部门，要求相关采购人员签订《廉洁承诺书》，要求采购人员在思想意识方面严格遵守公司纪律、规定。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -589,13 +589,13 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.hazardRiskAssessment"
+                v-model="formData.capacityBuildingSupport"
                 type="textarea"
                 :rows="4"
                 placeholder="同时，我们对标同行业，探索新技术，引进新资源，坚持走出去，引进来的发展理念，组织集团相关部门与行业内龙头企业交流学习，资源共享，深度延伸供应资源价值。2023 年，双汇发展共组织设备、饲料行业和鸡产业供应商技术交流 51 场，组织辅包供应商信息交流 40 场，协同推进集团新产品新产业发展。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="qualityPracticeFileList">
+            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -604,7 +604,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.qualityPracticeFileList"
+                v-model:file-list="formData.rightsAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -667,38 +667,33 @@ const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
-  policyCommitment: "", // 目标、理念方针及承诺
+  policyCommitment: "", // 目标、方针及承诺
   goalCompletionStatus: "", // 目标完成情况
   organizationStructure: "", // 组织架构
   policyAndRegulation: "", // 政策与制度
-  lifecycleQualityManagement: "", // 全周期产品质量管理
-  certificationAndAudit: "", // 认证与审验
-  qualityPracticeFileList: [], // 附件上传 (质量管理实践)
-  trainingAndPromotion: "", // 宣贯与培训
-  qualityImprovementActions: "", // 活动与举措
-  honorsAndAwards: "", // 荣誉及奖项
-  honorsAndAwardsFileList: [], // 附件上传 (荣誉及奖项)
-  majorIncidents: "", // 重大事故
-  healthAndSafety: "", // 健康与安全
-  animalWelfarePolicy: "", // 肉鸡生产理念/动物福利相关
-  safetyManagementPolicies: "", // 安全生产管理制度体系/政策数披露
-  safetyManagementOrg: "", // 安全生产管理组织架构
-  safetyTraining: "", // 培训与宣导
-  safetyTrainingFileList: [], // 附件上传 (管理实践)
-  riskIdentification: "", // 安全风险识别与检查
-  emergencyManagement: "", // 安全应急事件管理
-  equipmentSafetyManagement: "", // 装备安全管理
-  hazardRiskAssessment: "", // 识别评估工作场所潜在危害和风险因素的程序
-  productComposition: "", // 产品组成
-  productDisposalImpact: "", // 产品处置及环境、社会影响
-  productLabelViolation: "", // 设计产品信息与标识的违规事件
-  marketing: "", // 市场营销
-  productAccessibility: "", // 产品可及性
-  customerComplaints: "", // 客户投诉
-  customerSatisfaction: "", // 客户满意度
-  productRecallProcedure: "", // 产品召回程序
-  productRecallCount: "" // 产品召回数量
-  // ... (add any other fields as needed based on template usage)
+  riskManagement: "", // 风险管理
+  digitalManagementPlatform: "", // 供应商管理数字化平台
+  esgTrainingSystem: "", // 供应商ESG培训体系
+  trainingAttachmentFileList: [], // 附件上传 (宣贯及培训)
+  esgTrainingCount: "", // 开展供应商ESG培训次数
+  esgTrainingParticipationRate: "", // 供应商参与ESG培训百分比
+  sustainableProcurementRate: "", // 公司内部通过可持续采购培训的采购员比例
+  esgReviewAssessment: "", // 供应商ESG审查与评估
+  codeOfConductSigning: "", // 签署供应商行为准则
+  envLaborClauseSupplierRate: "", // 签订包含环境和劳工要求条款的供应商百分比
+  socialImpactAssessmentSupplierCount: "", // 开展了社会影响评估的供应商数量
+  environmentalImpactSupplierCount: "", // 开展了环境影响评估的供应商数量
+  negativeSocialImpactSupplierCount: "", // 经确定为具有实际和潜在重大负面社会影响的供应商数量
+  negativeEnvironmentalImpactSupplierCount: "", // 经确定为具有实际和潜在重大负面环境影响的供应商数量
+  supplierCertificationCount: "", // 供应商认证及审核
+  supplierCertificationRate: "", // 供应商认证及审核率
+  supplierTotalCount: "", // 供应商总数
+  localSupplierPurchaseRate: "", // 向当地供应商采购比例
+  newSupplierCount: "", // 新增供应商数量
+  socialStandardNewSupplierRate: "", // 使用社会标准筛选的新供应商百分比
+  fairTrade: "", // 公平交易
+  capacityBuildingSupport: "", // 能力建设支持
+  rightsAttachmentFileList: [] // 附件上传 (供应商/承包商权益保护)
 });
 
 // 文件上传处理
