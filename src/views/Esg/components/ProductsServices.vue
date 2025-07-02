@@ -30,7 +30,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.directEconomicBenefit"
+                v-model="formData.policyCommitment"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -45,7 +45,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.governmentSubsidy"
+                v-model="formData.goalCompletionStatus"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -88,7 +88,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.strategyPolicy"
+                v-model="formData.organizationStructure"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展已建有一个权责清晰的集团级、事业部级、项目公司级三级食品安全管理架构，推进和落实产品质量控制和保障工作。我们设有食品安全监督小组，负责推进和敦促各项食品安全管理措施的执行。品质管理中心负责生产基地的驻厂督导和检验，并按照《双汇发展2023年项目公司质量管理评价方案》执行绩效考核。我们每月进行质量指标的跟踪，不断推动质量管理工作有效实施，保障食品质量与安全。 ——《双汇发展2023年ESG报告》"
@@ -105,7 +105,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.goalAchievement"
+                v-model="formData.policyAndRegulation"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展以最严谨的标准、最严格的监督、最严厉的处理、最严肃的问责四个最严作为质量管理的总体原则，严格遵循中华人民共和国食品安全法、中华人民共和国食品安全法实施条例、中华人民共和国产品质量法、企业落实食品安全主体责任监督管理规定等国家法律和地方法规，各产业运行基于国际标准的质量管理体系，制定双汇发展食品安全事故应急预案、卫生标准操作规范等质量管理制度和操作规程，并不断优化双汇发展2023年项目公司质量管理评价方案、双汇发展产品质量、食品安全考核管理规定等管理和监督制度和程序，以达到公司各产业质量标准。——双汇发展2023年ESG报告"
@@ -122,7 +122,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.goalAchievement"
+                v-model="formData.lifecycleQualityManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="上海梅林旗下各企业围绕质量和食品安全管理体系，从原辅料、产品、生产工艺、危害分析工作表对食品安全风险控制提出了要求和识别。对于体系覆盖的产品建立了HACCP计划，根据计划实施关键点控制。 我们围绕《食品安全法》与质量和食品安全管理体系的要求，制定了《产品模拟追溯演练管理办法》《产品召回管理办法》等制度，建立产品可追溯性控制程序，实现从原辅料到销售全过程的追溯，以方便消费者通过追溯系统对整个生产过程进行溯源，进而保障食品质量安全可靠。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -139,13 +139,13 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.goalAchievement"
+                v-model="formData.certificationAndAudit"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展的下属生产企业按业务属性和需要获得和保有多个国际质量管理体系认证。报告期内，2家下属公司新增相关认证:汇佳味公司获得ISO 9001认证，食用油科技公司获得ISO 9001认证和HACCP认证。截止2023年底，本公司拥有的质量体系认证情况如下:双汇发展及其下属公司100%保有ISO 9001质量管理体系认证，共覆盖42家公司;涉及屠宰和肉制品加工的公司拥有HACCP危害分析与关键控制点体系认证，已覆盖17家公司;ISO 22000食品安全管理体系覆盖16家公司;我们亦根据国际客户的需求定向申请FSSC 22000食品安全管理体系认证，覆盖6家公司。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
+            <el-form-item label="附件上传" prop="honorsAndAwardsFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -154,7 +154,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.honorsAndRecognitionFileList"
+                v-model:file-list="formData.honorsAndAwardsFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -179,35 +179,11 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.goalAchievement"
+                v-model="formData.trainingAndPromotion"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展秉持产品质量无小事，食品安全大如天的理念，致力于以自上而下的方式打造质量文化，通过每年组织开展系统性、专业性的质量培训，培养员工及合作伙伴的质量意识和技能，确保产品质量的持续提升。同时，我们每月组织工厂召开质量专题会，主要通报各工厂在质量管理方面存在的短板指标，督促相对排名靠后的工厂分析原因并及时反馈和进行必要整改，形成解决质量问题的长效机制。报告期内，我们举办劳动比赛、技术比武176场次，开展食品安全质量知识竞赛、安全生产知识竞赛56场次，有效提高职工实际岗位技能，加强员工团结协作融合。我们每年开展质量安全相关培训，2023年共开展5235次培训，参与培训468215人次，培训时长总计1224490时，员工培训覆盖率100%。——双汇发展2023年ESG报告"
               />
-            </el-form-item>
-            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
-              <template #label>
-                <div>
-                  <span> 附件上传 </span>
-                  <EsgTooltip content="上传图片" />
-                </div>
-              </template>
-              <el-upload
-                class="upload-area"
-                v-model:file-list="formData.honorsAndRecognitionFileList"
-                :on-preview="handlePictureCardPreview"
-                :on-change="handleFileChange"
-                drag
-                :action="uploadUrl"
-                :auto-upload="true"
-                multiple
-                :headers="{
-                  Authorization: formatToken(getToken().accessToken)
-                }"
-                accept=".jpg,.jpeg,.png,.webp"
-              >
-                <el-button type="primary" :icon="Upload">上传附件</el-button>
-              </el-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -247,13 +223,13 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.qualityImprovementActions"
                 type="textarea"
                 :rows="4"
-                placeholder="本集团食品安全中心在各级领导的支持下，带领团队，高举GMP大旗，紧紧围绕‘100-1=0’的管理理念，积极推进并落实日常GMP改善计划追踪工作， 稽核内容逐年细化精进，稽核水平逐年提升。食品、肉品同步管理，硬件和软件同步精进，消除短板，加长长板，共同达成1+1≥2的目的;稽核内容有基本硬件设施要求和维护、收发货和仓储管理、设备维护保养校准人员卫生要求和培训、清洁消毒和虫鼠管理、追溯体系、异物和过敏源管理HACCP计划、 SOP落地执行9个模块。本集团共12个被稽核单位，总分100%达成90分以上好成绩。团队整体表现优秀，持续改善一直在进行中，为质量管理目标的圆满达成奠定了良好的基础。 ——《大成食品2023年环境、社会及管治报告》"
+                placeholder="本集团食品安全中心在各级领导的支持下，带领团队，高举GMP大旗，紧紧围绕'100-1=0'的管理理念，积极推进并落实日常GMP改善计划追踪工作， 稽核内容逐年细化精进，稽核水平逐年提升。食品、肉品同步管理，硬件和软件同步精进，消除短板，加长长板，共同达成1+1≥2的目的;稽核内容有基本硬件设施要求和维护、收发货和仓储管理、设备维护保养校准人员卫生要求和培训、清洁消毒和虫鼠管理、追溯体系、异物和过敏源管理HACCP计划、 SOP落地执行9个模块。本集团共12个被稽核单位，总分100%达成90分以上好成绩。团队整体表现优秀，持续改善一直在进行中，为质量管理目标的圆满达成奠定了良好的基础。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
+            <el-form-item label="附件上传" prop="qualityPracticeFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -262,7 +238,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.honorsAndRecognitionFileList"
+                v-model:file-list="formData.qualityPracticeFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -287,67 +263,9 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.policySystem"
+                v-model="formData.honorsAndAwards"
                 type="textarea"
                 :rows="4"
-              />
-            </el-form-item>
-            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
-              <template #label>
-                <div>
-                  <span> 附件上传 </span>
-                  <EsgTooltip content="上传图片" />
-                </div>
-              </template>
-              <el-upload
-                class="upload-area"
-                v-model:file-list="formData.honorsAndRecognitionFileList"
-                :on-preview="handlePictureCardPreview"
-                :on-change="handleFileChange"
-                drag
-                :action="uploadUrl"
-                :auto-upload="true"
-                multiple
-                :headers="{
-                  Authorization: formatToken(getToken().accessToken)
-                }"
-                accept=".jpg,.jpeg,.png,.webp"
-              >
-                <el-button type="primary" :icon="Upload">上传附件</el-button>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="重大事故">
-              <template #label>
-                <div>
-                  <span> 重大事故</span>
-                  <EsgTooltip
-                    content="描述公司发生的产品和服务相关的安全与质量重大责任事故，包括事件性质（如行政处罚等）、造成的影响及损害涉及的金额、采取的应对措施及进展（如有）。"
-                  />
-                </div>
-              </template>
-              <el-input
-                v-model="formData.researchPlatform"
-                type="textarea"
-                :rows="4"
-                resize="vertical"
-                placeholder="我们依据《中华人民共和国食品安全法》和上海市食品安全事故应急预案制定《食品安全事故应急管理预案》制度，建立了食品安全应急处置领导小组和工作小组、应急预案启动处置程序、应急处置及报告、应急管理保障等， 并根据计划各企业每年定期开展产品模拟召回撤回计划演练、专项应急预案演练。 上海梅林共有《食品安全管理办法》《食品安全应急管理预案》等6个食品安全的相关制度文件及对应的权限和流程，2023年未发生产品或服务对客户生命或财产安全造成潜在或实质威胁的负面事件。 ——《上海梅林2023年ESG 暨可持续发展报告》"
-              />
-            </el-form-item>
-            <el-form-item label="健康与安全">
-              <template #label>
-                <div>
-                  <span> 健康与安全</span>
-                  <EsgTooltip
-                    content="描述公司对产品的安全性进行评估和改善的举措、以及相关产品所占的比例、产品违反健康/安全法律法规的情况。"
-                  />
-                </div>
-              </template>
-              <el-input
-                v-model="formData.researchPlatform"
-                type="textarea"
-                :rows="4"
-                resize="vertical"
-                placeholder="我们高度重视质量风险管控，在报告期内修订完善了《食品安全风险管控清单》《每日食品安全检查记录》，其中《食品安全风险管控清单》涉及68类118项风险、《每日食品安全检查记录》 涉及68类260项检查内容，用于指导各环节的日管控、周排查、月调度工作。我们依据《食品安全风险监测计划》通过统计抽样方法从宏观层面监测风险情况，及时发现问题并防范质量风险， 促进食品安全主体责任落实。 同时，我们定期开展质量隐患排查工作，根据《关于质量隐患排查的通知》要求，收集各事业部、项目公司需要协调解决的质量隐患。2023年，面对夏季炎热高温带来的用能和生产挑战， 我们面向研发中心、肉制品事业部、肉制品项目公司收集安全度夏存在的隐患及改进建议，共收集到181项肉制品安全度夏建议，并积极根据建议推动落实整改，通过降低初始菌数和环境温度、升高杀菌温度和保险系数、加快生产周转和市场流通等方法实现对因夏季高温带来的肉制品隐患的控制。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
           </el-form>
@@ -382,11 +300,11 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.scientificEthics"
+                v-model="formData.safetyManagementSystem"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="本集团一直秉承‘诚信、谦和、前瞻’的理念进行肉鸡生产，对肉鸡养殖到肉鸡屠宰进行全过程管理。本集团下属蚌埠食品厂成立以总经理为总负责人，下设各部门主管负责的动物福利委员会，从养殖过程到屠宰过程以动物福利五大原则为基础进行生产管理，从养殖的一线员工到屠宰的一线员工进行岗前、岗中的动物福利培训与考核，程序文件完全遵守国家法律法规，由取得国家级资格证书的人员负责。本集团坚持提供动物福利，以持续改善的动物福利创造更优的经济动物价值，奉献安全、美味的鸡肉食品。 ——《大成食品2023年环境、社会及管治报告》"
+                placeholder="本集团一直秉承'诚信、谦和、前瞻'的理念进行肉鸡生产，对肉鸡养殖到肉鸡屠宰进行全过程管理。本集团下属蚌埠食品厂成立以总经理为总负责人，下设各部门主管负责的动物福利委员会，从养殖过程到屠宰过程以动物福利五大原则为基础进行生产管理，从养殖的一线员工到屠宰的一线员工进行岗前、岗中的动物福利培训与考核，程序文件完全遵守国家法律法规，由取得国家级资格证书的人员负责。本集团坚持提供动物福利，以持续改善的动物福利创造更优的经济动物价值，奉献安全、美味的鸡肉食品。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
             <el-form-item label="安全生产管理制度体系">
@@ -399,7 +317,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.scientificEthics"
+                v-model="formData.safetyManagementSystem"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -414,7 +332,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.scientificEthics"
+                v-model="formData.safetyManagementOrg"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -453,13 +371,13 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.majorInnovationAchievements"
+                v-model="formData.safetyTraining"
                 type="textarea"
                 :rows="4"
                 placeholder="公司始终将员工的安全作为企业稳定发展的脉搏所在，通过组织开展丰富多样的安全教育培训活动，2023年上海梅林共组织安全教育培训活动705次，参加安全培训54114人次，其中安全管理人员5342人次、职工人员33757人次、外来劳务人员15015人次。使广大干部员工不断增强安全意识、掌握安全知识技能、提升安全履职能力，为进一步提高公司安全生产管理水平奠定了良好基础。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
+            <el-form-item label="附件上传" prop="safetyTrainingFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -468,7 +386,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.honorsAndRecognitionFileList"
+                v-model:file-list="formData.safetyTrainingFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -493,7 +411,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.scienceTechHonors"
+                v-model="formData.riskIdentification"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年，本公司重点围绕消防、特种设备、安全生产等相关标准进行了风险点评估，深入分析了各环节可能存在的安全隐患，对识别出的风险进行了相应的改造和优化，不仅提升了企业的安全管理水平，也为员工创造了一个更加安全、健康的工作环境。 我们通过设施更新、应急演练和安全排查，从风险源头管控、预防消除隐患，维护安全的作业环境，保障员工和财产安全。对已发生的事故，我们采取了相应的纠正措施，以预防未来再次发生类似事件。 ——《双汇发展2023年ESG报告》"
@@ -509,50 +427,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.scienceTechHonors"
+                v-model="formData.emergencyManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年各单位共进行各类应急演练1,287场次，累计参加应急演练人员19万余人次。 ——《双汇发展2023年ESG报告》"
-              />
-            </el-form-item>
-            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
-              <template #label>
-                <div>
-                  <span> 附件上传 </span>
-                  <EsgTooltip content="上传图片" />
-                </div>
-              </template>
-              <el-upload
-                class="upload-area"
-                v-model:file-list="formData.honorsAndRecognitionFileList"
-                :on-preview="handlePictureCardPreview"
-                :on-change="handleFileChange"
-                drag
-                :action="uploadUrl"
-                :auto-upload="true"
-                multiple
-                :headers="{
-                  Authorization: formatToken(getToken().accessToken)
-                }"
-                accept=".jpg,.jpeg,.png,.webp"
-              >
-                <el-button type="primary" :icon="Upload">上传附件</el-button>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="装备安全管理">
-              <template #label>
-                <div>
-                  <span> 装备安全管理 </span>
-                  <EsgTooltip
-                    content="公司为维护装备的使用安全而制定的措施、投入的金额、建立的预防机制等。"
-                  />
-                </div>
-              </template>
-              <el-input
-                v-model="formData.scienceTechHonors"
-                type="textarea"
-                :rows="4"
-                placeholder="公司所属公司加装粉尘过滤设备，为了降低筛分场所内的粉尘浓度，保护作业环境安全性，确保原辅料车间的洁净度。设备安全投入23.2万元。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
           </el-form>
@@ -589,7 +467,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.innovationCertification"
+                v-model="formData.hazardRiskAssessment"
                 type="textarea"
                 :rows="4"
                 placeholder="我们始终将员工的职业健康放在首位，并采取了一系列的管理举措，保障全体员工的健康与安全。报告期内，我们通过识别职业危害因素岗位，定期进行职业病危害因素检测，配备职业病危害防护用品等措施，保障员工的健康安全。我们对各单位接触职业危害因素的岗位员工定期进行职业健康体检，共覆盖5,200余名接触职业危害因素的员工，投入约60万元。 ——《双汇发展2023年ESG报告》"
@@ -626,7 +504,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.sustainableDesign"
+                v-model="formData.productComposition"
                 type="textarea"
                 :rows="4"
                 placeholder="据销售宣传需要，相关部门配合品牌市场提供相应的产品特点、烹饪方法、营养成分标注等方面的技术支撑，并积 极督促引导下属子公司严格落实食品安全责任，规范经营行为,同时考虑到产品受众群体对产品的营养、感官、体验感等因素，将产品营养成分标注于产品外包装上，供顾客参考。
@@ -645,7 +523,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.sustainableDesign"
+                v-model="formData.productDisposalImpact"
                 type="textarea"
                 :rows="4"
               />
@@ -660,7 +538,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.sustainableDesign"
+                v-model="formData.productLabelViolation"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年，公司不存在夸大其词、隐瞒风险、过度营销等无底线营销产品的违法行为。
@@ -698,7 +576,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.cooperationMechanism"
+                v-model="formData.marketing"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展秉持负责任的营销理念，规避不公平营销或虚假宣传行为发生的同时，积极宣导健康产品理念，引导消费者合理膳食，构建健康、均衡、营养的生活方式。我们严格遵守《中华人民共和国广告法》等相关法律法规，开展广告投放工作。     ——《双汇发展2023年ESG报告》"
@@ -735,7 +613,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.standardsEstablishment"
+                v-model="formData.productAccessibility"
                 type="textarea"
                 :rows="6"
                 placeholder="我们通过传统节日微电影拍摄、综艺年轻化营销、线上线下多平台明星营销推广等方式，向不同年龄段消费者普及食品健康相关知识。2023年，我们持续探索负责任营销和责任品牌建设路径，通过开展体育运动相关营销活动，树立健康消费新标杆，向社会传递大健康消费理念。     ——《双汇发展2023年ESG报告》"
@@ -772,7 +650,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.industryActivities"
+                v-model="formData.customerComplaints"
                 type="textarea"
                 :rows="4"
                 placeholder="客户及消费者投诉处理流程：受理相关问题，创建投诉工单；通过信息化系统将相关投诉工单分配至相关部门与人员；统计投诉问题及基本情况，在1小时内通过工单流转到具体业务人员。 ——《双汇发展2023年ESG报告》<br/> 客户权益的保护是我们首要责任。真诚用心服务客户， 我们持续健全客户投诉机制，规范投诉的受理与反馈， 畅通内部沟通渠道，贯彻落实整改情况并及时反馈客户， 切实保障客户合法权益。公司收到客诉81起，较去年下降22起。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -788,7 +666,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.industryActivities"
+                v-model="formData.customerSatisfaction"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年上海梅林及其下属子公司通过公布投诉电话、市场调查、走访客户、电话、邮件、QQ、微信、手机等客服平台等方式，对零售市场、团购市场和消费者进行满意度调查，调查对象采取随机抽样法，综合客户满意率为95.78%，消费者对上海梅林产品质量和服务质量较认可。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -825,7 +703,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.industryActivities"
+                v-model="formData.productRecallProcedure"
                 type="textarea"
                 :rows="4"
                 placeholder="一级程度,经济损失在5000元以上 1超保质期 2标签信息批量错误(品名、生产日期错误) 3生产日期批量打印模糊或缺失 4产品批量变质 5来自政府和新闻媒介或相关部门的投诉; 6社会后果严重或将会引发一系列具有社会影响的问题; 7涉及产品安全问题的投诉。 批量指同批次产品发生投诉或退货数量在10件以上。48h内做应14日内提出解决方案。按《食品质量安全预与应急处置预案》执行 是否启动产品召回程序 由公司总经理决定，若启动则按《产品召回控制程序》流程处理，所有的纠正措施实施须由责任部门分管领导派有关人员予以验证提交技质部管理评审、跟踪。 ——《上海梅林2023年ESG 暨可持续发展报告》<br/> 为切实保障消费者健康与安全，预防发生产品缺陷事件造成广泛影响，双汇发展未雨绸缪，每 年按照《产品召回控制操作规范》组织模拟召回，报告期内，各项目公司均组织2次产品召回演练，锻炼产品召回能力，发现问题及时改进。报告期内，未发生任何产品召回事件。 ——《双汇发展2023年ESG报告》"
@@ -842,7 +720,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.managementSystem"
+                  v-model="formData.productRecallCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -896,38 +774,37 @@ const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
-  directEconomicBenefit: "",
-  governmentSubsidy: "",
-  strategyPolicy: "",
-  goalAchievement: "",
-  organizationStructure: "",
-  policySystem: "",
-  researchPlatform: "",
-  scientificEthics: "",
-  majorInnovationAchievements: "",
-  scienceTechHonors: "",
-  rndInvestment: "",
-  innovationCertification: "",
-  innovationImpact: "",
-  sustainableDesign: "",
-  cooperationMechanism: "",
-  standardsEstablishment: "",
-  industryActivities: "",
-  managementSystem: "",
-  intellectualPropertyOrgStructure: "",
-  intellectualPropertyLaws: "",
-  intellectualPropertyPolicies: "",
-  intellectualPropertyProtection: "",
-  patentTotalCount: "",
-  patentNewTypeCount: "",
-  publicityTraining: "",
-  iprTrainingSessions: "",
-  iprTrainingParticipants: "",
-  iprTrainingTotalHours: "",
-  iprTrainingAvgHours: "",
-  honorsAndRecognitionFileList: [],
-  industryActivitiesFileList: [],
-  publicityTrainingFileList: []
+  policyCommitment: "", // 目标、理念方针及承诺
+  goalCompletionStatus: "", // 目标完成情况
+  organizationStructure: "", // 组织架构
+  policyAndRegulation: "", // 政策与制度
+  lifecycleQualityManagement: "", // 全周期产品质量管理
+  certificationAndAudit: "", // 认证与审验
+  qualityPracticeFileList: [], // 附件上传 (质量管理实践)
+  trainingAndPromotion: "", // 宣贯与培训
+  qualityImprovementActions: "", // 活动与举措
+  honorsAndAwards: "", // 荣誉及奖项
+  honorsAndAwardsFileList: [], // 附件上传 (荣誉及奖项)
+  majorIncidents: "", // 重大事故
+  healthAndSafety: "", // 健康与安全
+  safetyManagementSystem: "", // 安全生产管理制度体系
+  safetyManagementOrg: "", // 安全生产管理组织架构
+  safetyTraining: "", // 培训与宣导
+  safetyTrainingFileList: [], // 附件上传 (管理实践)
+  riskIdentification: "", // 安全风险识别与检查
+  emergencyManagement: "", // 安全应急事件管理
+  equipmentSafetyManagement: "", // 装备安全管理
+  hazardRiskAssessment: "", // 识别评估工作场所潜在危害和风险因素的程序
+  productComposition: "", // 产品组成
+  productDisposalImpact: "", // 产品处置及环境、社会影响
+  productLabelViolation: "", // 设计产品信息与标识的违规事件
+  marketing: "", // 市场营销
+  productAccessibility: "", // 产品可及性
+  customerComplaints: "", // 客户投诉
+  customerSatisfaction: "", // 客户满意度
+  productRecallProcedure: "", // 产品召回程序
+  productRecallCount: "" // 产品召回数量
+  // ... (add any other fields as needed based on template usage)
 });
 
 // 文件上传处理
