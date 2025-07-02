@@ -2346,6 +2346,9 @@ const onlyPositiveNumber = value => {
   v = v.replace(/^0+(?=\d)/, "");
   // 去除开头小数点
   v = v.replace(/^\./, "");
+  if (!v) return v;
+  // 限制最大值为100
+  if (parseFloat(v) > 100) v = "100";
   return v;
 };
 </script>
