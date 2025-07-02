@@ -300,7 +300,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.safetyManagementSystem"
+                v-model="formData.animalWelfarePolicy"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -317,7 +317,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.safetyManagementSystem"
+                v-model="formData.safetyManagementPolicies"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -588,8 +588,8 @@ Wind评级"
       <el-collapse-item title="产品可及性" name="product-accessibility">
         <template #title>
           <div class="collapse-title">
-            <span>
-              产品可及性
+            <span
+              >产品可及性
               <EsgTooltip content="交易所可持续发展报告指引、Wind评级" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
@@ -788,7 +788,8 @@ const formData = ref({
   honorsAndAwardsFileList: [], // 附件上传 (荣誉及奖项)
   majorIncidents: "", // 重大事故
   healthAndSafety: "", // 健康与安全
-  safetyManagementSystem: "", // 安全生产管理制度体系
+  animalWelfarePolicy: "", // 肉鸡生产理念/动物福利相关
+  safetyManagementPolicies: "", // 安全生产管理制度体系/政策数披露
   safetyManagementOrg: "", // 安全生产管理组织架构
   safetyTraining: "", // 培训与宣导
   safetyTrainingFileList: [], // 附件上传 (管理实践)
