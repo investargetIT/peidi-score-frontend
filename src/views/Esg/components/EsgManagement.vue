@@ -1095,7 +1095,7 @@ Wind评级"
                 :rows="4"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="investorInteractionFiles">
+            <el-form-item label="附件上传" prop="investorInteractionCaseFiles">
               <template #label>
                 <div>
                   <span>附件上传 </span>
@@ -1104,7 +1104,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.investorInteractionFiles"
+                v-model:file-list="formData.investorInteractionCaseFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -2178,8 +2178,8 @@ const formData = ref({
   investorCommunicationTypes: "", // 投资者沟通活动类型
   investorInquiryCount: "", // 收到的投资者问询总数
   annualSpeech: "", // 年度领导重要讲话稿
-  investorInteractionFiles: [], // 附件上传
-  investorInteractionCase: "", // 优秀投资者交流活动案例
+  investorInteractionFiles: [], // 附件上传（投资者互动主表）
+  investorInteractionCaseFiles: [], // 附件上传（优秀投资者交流活动案例专用）
   investorReplyRate: "", // 投资者问询答复率
   investorActivityCount: "", // 各类型投资者沟通活动举办次数
   investorActivityCoverage: "", // 各类型投资者沟通活动覆盖人次
