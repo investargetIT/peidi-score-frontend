@@ -51,8 +51,8 @@
               <div class="textContainer">
                 <el-input
                   v-model="formData.governmentSubsidy"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>万元</span>
               </div>
@@ -336,8 +336,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.rndInvestment"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>万元</span>
               </div>
@@ -567,8 +567,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.managementSystem"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>万元</span>
               </div>
