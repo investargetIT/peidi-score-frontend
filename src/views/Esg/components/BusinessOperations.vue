@@ -669,7 +669,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.intellectualPropertyHoldings"
+                  v-model="formData.patentTotalCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -687,7 +687,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.intellectualPropertyHoldings"
+                  v-model="formData.patentNewTypeCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -758,7 +758,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.intellectualPropertyHoldings"
+                  v-model="formData.iprTrainingSessions"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -773,7 +773,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.intellectualPropertyHoldings"
+                  v-model="formData.iprTrainingParticipants"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -788,7 +788,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.intellectualPropertyHoldings"
+                  v-model="formData.iprTrainingTotalHours"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -803,7 +803,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.intellectualPropertyHoldings"
+                  v-model="formData.iprTrainingAvgHours"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -906,7 +906,13 @@ const formData = ref({
   intellectualPropertyOrgStructure: "",
   intellectualPropertyLaws: "",
   intellectualPropertyPolicies: "",
-  intellectualPropertyProtection: ""
+  intellectualPropertyProtection: "",
+  patentTotalCount: "",
+  patentNewTypeCount: "",
+  iprTrainingSessions: "",
+  iprTrainingParticipants: "",
+  iprTrainingTotalHours: "",
+  iprTrainingAvgHours: ""
   // ... existing code ...
 });
 
