@@ -49,7 +49,11 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.governmentSubsidy" />
+                <el-input
+                  v-model="formData.governmentSubsidy"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>万元</span>
               </div>
             </el-form-item>
@@ -278,7 +282,7 @@ Wind评级"
                 :rows="4"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="externalInitiativesFileList">
+            <el-form-item label="附件上传" prop="honorsAndRecognitionFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -287,7 +291,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.externalInitiativesFileList"
+                v-model:file-list="formData.honorsAndRecognitionFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -330,7 +334,11 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.rndInvestment" />
+                <el-input
+                  v-model="formData.rndInvestment"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>万元</span>
               </div>
             </el-form-item>
@@ -507,7 +515,7 @@ Wind评级"
                 placeholder="•2023年5月17日，参加河南省企业联合会组织的'企业绿色低碳转型高峰论坛'<br/> •2023年6月9日，作为重点企业代表参加由国家卫生健康委、国家食品安全风险评估中心组织的漯河市食品企业座谈会<br/> •2023年9月18日，参加2023中国国际肉类产业周(CIMIW2023)系列活动<br/> •2023年11月6日，参加第十六届'一带一路'生态农业与食品安全论坛<br/> •2023年11月7日，作为副主任委员单位，参加全国肉禽蛋制品标准化技术委员会年会 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="annualMajorEventsFileList">
+            <el-form-item label="附件上传" prop="industryActivitiesFileList">
               <template #label>
                 <div>
                   <span>附件上传</span>
@@ -516,7 +524,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.annualMajorEventsFileList"
+                v-model:file-list="formData.industryActivitiesFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -557,7 +565,11 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.managementSystem" />
+                <el-input
+                  v-model="formData.managementSystem"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>万元</span>
               </div>
             </el-form-item>
@@ -656,7 +668,11 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.intellectualPropertyHoldings" />
+                <el-input
+                  v-model="formData.intellectualPropertyHoldings"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>项</span>
               </div>
             </el-form-item>
@@ -670,7 +686,11 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.intellectualPropertyHoldings" />
+                <el-input
+                  v-model="formData.intellectualPropertyHoldings"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>项</span>
               </div>
             </el-form-item>
@@ -706,7 +726,7 @@ Wind评级"
                 placeholder="2023 年，公司邀请外部专家分别于 5 月、10 月开展知识产权保护法律法规以及知识产权专业知识培训，进一步提高了员工知识产权保护意识，降低了公司的知识产权风险，保护了公司的品牌价值与创新成果。——《洋河股份2023年社会责任报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="externalInitiativesFileList">
+            <el-form-item label="附件上传" prop="publicityTrainingFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -715,7 +735,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.externalInitiativesFileList"
+                v-model:file-list="formData.publicityTrainingFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -737,7 +757,11 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.intellectualPropertyHoldings" />
+                <el-input
+                  v-model="formData.intellectualPropertyHoldings"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>次</span>
               </div>
             </el-form-item>
@@ -748,7 +772,11 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.intellectualPropertyHoldings" />
+                <el-input
+                  v-model="formData.intellectualPropertyHoldings"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>人次</span>
               </div>
             </el-form-item>
@@ -759,7 +787,11 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.intellectualPropertyHoldings" />
+                <el-input
+                  v-model="formData.intellectualPropertyHoldings"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>小时</span>
               </div>
             </el-form-item>
@@ -770,7 +802,11 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input v-model="formData.intellectualPropertyHoldings" />
+                <el-input
+                  v-model="formData.intellectualPropertyHoldings"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>小时</span>
               </div>
             </el-form-item>
@@ -863,7 +899,10 @@ const formData = ref({
   // 公司年度重大事件
   annualMajorEventsDescription: "", // 年度重大事件描述
   annualMajorEventsNewsLink: "", // 新闻链接
-  annualMajorEventsFileList: [] // 附件列表
+  annualMajorEventsFileList: [], // 附件列表
+  publicityTrainingFileList: [], // 宣传与培训附件
+  industryActivitiesFileList: [] // 行业活动附件
+  // ... existing code ...
 });
 
 // 文件上传处理
