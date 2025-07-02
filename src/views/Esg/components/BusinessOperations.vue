@@ -2,7 +2,7 @@
   <div class="esg-content">
     <!-- 公司名称与组织架构 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
-      <el-collapse-item title="产业价值(财务)" name="company-name-structure">
+      <el-collapse-item title="产业价值(财务)" name="industry-value-finance">
         <template #title>
           <div class="collapse-title">
             <span
@@ -56,7 +56,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="战略与目标" name="reporting-entities">
+      <el-collapse-item title="战略与目标" name="strategy-goals">
         <template #title>
           <div class="collapse-title">
             <span
@@ -93,7 +93,7 @@ Wind评级"
                 v-model="formData.reportingEntitiesDescription"
                 type="textarea"
                 :rows="6"
-                placeholder="公司着力推进以“核心技术为主体、市场为导向、产学研相结合”的技术创新体制建设，协同整合公司内部科技资源，建立三级科技创新网络开展科研工作。上海梅林围绕公司发展规划、产品品类及相关领域开展新品研发工作， 培育新的经济增长点;同时参与技术创新、技术改造、技术引进消化创新项目，使公司在产品质量、工艺技术和产设备等方面得到持续改进。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="公司着力推进以‘核心技术为主体、市场为导向、产学研相结合’的技术创新体制建设，协同整合公司内部科技资源，建立三级科技创新网络开展科研工作。上海梅林围绕公司发展规划、产品品类及相关领域开展新品研发工作， 培育新的经济增长点;同时参与技术创新、技术改造、技术引进消化创新项目，使公司在产品质量、工艺技术和产设备等方面得到持续改进。 ——《上海梅林2023年ESG 暨可持续发展报告》"
                 resize="vertical"
               />
             </el-form-item>
@@ -108,7 +108,7 @@ Wind评级"
                 v-model="formData.reportingEntitiesDescription"
                 type="textarea"
                 :rows="6"
-                placeholder="公司着力推进以“核心技术为主体、市场为导向、产学研相结合”的技术创新体制建设，协同整合公司内部科技资源，建立三级科技创新网络开展科研工作。上海梅林围绕公司发展规划、产品品类及相关领域开展新品研发工作， 培育新的经济增长点;同时参与技术创新、技术改造、技术引进消化创新项目，使公司在产品质量、工艺技术和产设备等方面得到持续改进。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="公司着力推进以‘核心技术为主体、市场为导向、产学研相结合’的技术创新体制建设，协同整合公司内部科技资源，建立三级科技创新网络开展科研工作。上海梅林围绕公司发展规划、产品品类及相关领域开展新品研发工作， 培育新的经济增长点;同时参与技术创新、技术改造、技术引进消化创新项目，使公司在产品质量、工艺技术和产设备等方面得到持续改进。 ——《上海梅林2023年ESG 暨可持续发展报告》"
                 resize="vertical"
               />
             </el-form-item>
@@ -116,7 +116,7 @@ Wind评级"
         </div>
       </el-collapse-item>
       <!-- 其他折叠项 -->
-      <el-collapse-item title="体系及策略" name="activities-products-services">
+      <el-collapse-item title="体系及策略" name="system-strategy">
         <template #title>
           <div class="collapse-title">
             <span
@@ -166,7 +166,7 @@ Wind评级"
                 v-model="formData.activitiesChangesDescription"
                 type="textarea"
                 :rows="8"
-                placeholder="双汇发展从生产、技术、市场、质量和管理五个方面鼓励和评价创新，通过修订完善《双汇发展创新管理制度》，明确分工和责任。我们依据《双汇发展“重大项目创新奖”实施方案》等制度和规定，对创新成果显著的团队和个人发放奖金，从体制上保持创新活力。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展从生产、技术、市场、质量和管理五个方面鼓励和评价创新，通过修订完善《双汇发展创新管理制度》，明确分工和责任。我们依据《双汇发展‘重大项目创新奖’实施方案》等制度和规定，对创新成果显著的团队和个人发放奖金，从体制上保持创新活力。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="科研平台建设">
@@ -190,7 +190,7 @@ Wind评级"
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="科学伦理" name="business-locations">
+      <el-collapse-item title="科学伦理" name="scientific-ethics">
         <template #title>
           <div class="collapse-title">
             <span
@@ -232,7 +232,7 @@ Wind评级"
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="成果与荣誉" name="markets-industries">
+      <el-collapse-item title="成果与荣誉" name="achievements-honors">
         <template #title>
           <div class="collapse-title">
             <span>成果与荣誉 </span>
@@ -260,7 +260,7 @@ Wind评级"
                 v-model="formData.serviceGeographicLocations"
                 type="textarea"
                 :rows="4"
-                placeholder="我们围绕生物医药辅料战略新兴产业，针对注射级蔗 糖这一“卡脖子”难题，设立药用糖研发项目，取得 阶段性重大突破，研发国内第一瓶注射级蔗糖，在国 家药品评审中心正式备案;并借此打开面向战略新兴 产业的发展空间，陆续研制成功了国内第一个儿童药 用糖、第一个药用红糖，用实际行动守护中国孩子和 妈妈的健康。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="我们围绕生物医药辅料战略新兴产业，针对注射级蔗 糖这一‘卡脖子’难题，设立药用糖研发项目，取得 阶段性重大突破，研发国内第一瓶注射级蔗糖，在国 家药品评审中心正式备案;并借此打开面向战略新兴 产业的发展空间，陆续研制成功了国内第一个儿童药 用糖、第一个药用红糖，用实际行动守护中国孩子和 妈妈的健康。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="科学技术奖励与荣誉">
@@ -305,7 +305,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="研发与创新影响" name="corporate-culture-ethics">
+      <el-collapse-item title="研发与创新影响" name="innovation-impact">
         <template #title>
           <div class="collapse-title">
             <span>研发与创新影响 </span>
@@ -358,13 +358,13 @@ Wind评级"
                 v-model="formData.coreValues"
                 type="textarea"
                 :rows="6"
-                placeholder="中粮糖业通过对甜菜种植过程中各环节技术指标的归纳和总结，结合“互联网 +”思维模式，开发具有自主知识产权的“农聚通”APP 及甜菜学校信息指导系统 APP，提供便捷高效的农业管理模式，实现订单合同、订单农户信息、种植档案信息、 种植地块 GIS 信息等信息化管理，为管理和决策提供数据支撑，有效提升工作效率和管理效能。同时，为甜菜种植户提 供线上农业技术指导与培训，帮助农民提升种植技术理论和实践操作水平。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="中粮糖业通过对甜菜种植过程中各环节技术指标的归纳和总结，结合‘互联网 +’思维模式，开发具有自主知识产权的‘农聚通’APP 及甜菜学校信息指导系统 APP，提供便捷高效的农业管理模式，实现订单合同、订单农户信息、种植档案信息、 种植地块 GIS 信息等信息化管理，为管理和决策提供数据支撑，有效提升工作效率和管理效能。同时，为甜菜种植户提 供线上农业技术指导与培训，帮助农民提升种植技术理论和实践操作水平。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="可持续设计" name="external-initiatives">
+      <el-collapse-item title="可持续设计" name="sustainable-design">
         <template #title>
           <div class="collapse-title">
             <span
@@ -401,7 +401,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="合作机制" name="association-membership">
+      <el-collapse-item title="合作机制" name="cooperation-mechanism">
         <template #title>
           <div class="collapse-title">
             <span>协会成员资格 </span>
@@ -429,13 +429,13 @@ Wind评级"
                 v-model="formData.associationMembershipDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展与中国肉研中心、中国农科院等院校联合申请了国家重点研发计划“肉制品智能制造与信息化无人工厂关键技术研发与产业化示范”等项目，探索肉制品生产制造新阶段。 ——《双汇发展2023年ESG报告》<br/> 行业协会作为政府与食品生产经营企业以外的“第三部门”，既是沟通政府、企业和市场的桥梁与纽带，又是社会多 元利益的协调机构，也是实现行业自律，规范行业行为，开展行业服务，保障公平竞争的社会组织。上海梅林目前参与的行业协会有协会上海市食品协会、全国食品工业标准化委员会罐头分技术委员会、中国食品协会冷冻冷藏食品专业委员会、上海市食品安全联合会、上海市轻工科技协会、上海市食品学会6家。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="双汇发展与中国肉研中心、中国农科院等院校联合申请了国家重点研发计划‘肉制品智能制造与信息化无人工厂关键技术研发与产业化示范’等项目，探索肉制品生产制造新阶段。 ——《双汇发展2023年ESG报告》<br/> 行业协会作为政府与食品生产经营企业以外的‘第三部门’，既是沟通政府、企业和市场的桥梁与纽带，又是社会多 元利益的协调机构，也是实现行业自律，规范行业行为，开展行业服务，保障公平竞争的社会组织。上海梅林目前参与的行业协会有协会上海市食品协会、全国食品工业标准化委员会罐头分技术委员会、中国食品协会冷冻冷藏食品专业委员会、上海市食品安全联合会、上海市轻工科技协会、上海市食品学会6家。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="标准制定" name="honors-recognition">
+      <el-collapse-item title="标准制定" name="standards-establishment">
         <template #title>
           <div class="collapse-title">
             <span> 标准制定 </span>
@@ -469,7 +469,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="行业活动" name="annual-major-events">
+      <el-collapse-item title="行业活动" name="industry-activities">
         <template #title>
           <div class="collapse-title">
             <span>
@@ -500,7 +500,7 @@ Wind评级"
                 v-model="formData.annualMajorEventsDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="•2023年5月17日，参加河南省企业联合会组织的“企业绿色低碳转型高峰论坛”<br/> •2023年6月9日，作为重点企业代表参加由国家卫生健康委、国家食品安全风 险评估中心组织的漯河市食品企业座谈会<br/> •2023年9月18日，参加2023中国国际肉类产业周(CIMIW2023)系列活动<br/> •2023年11月6日，参加第十六届“一带一路”生态农业与食品安全论坛<br/> •2023年11月7日，作为副主任委员单位，参加全国肉禽蛋制品标准化技术委员会年会 ——《双汇发展2023年ESG报告》"
+                placeholder="•2023年5月17日，参加河南省企业联合会组织的‘企业绿色低碳转型高峰论坛’<br/> •2023年6月9日，作为重点企业代表参加由国家卫生健康委、国家食品安全风 险评估中心组织的漯河市食品企业座谈会<br/> •2023年9月18日，参加2023中国国际肉类产业周(CIMIW2023)系列活动<br/> •2023年11月6日，参加第十六届‘一带一路’生态农业与食品安全论坛<br/> •2023年11月7日，作为副主任委员单位，参加全国肉禽蛋制品标准化技术委员会年会 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="annualMajorEventsFileList">
@@ -530,7 +530,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="管理体系" name="annual-major-events">
+      <el-collapse-item title="管理体系" name="management-system">
         <template #title>
           <div class="collapse-title">
             <span> 管理体系 </span>
@@ -624,7 +624,10 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="知识产权保有量" name="annual-major-events">
+      <el-collapse-item
+        title="知识产权保有量"
+        name="intellectual-property-holdings"
+      >
         <template #title>
           <div class="collapse-title">
             <span> 知识产权保有量 </span>
@@ -670,7 +673,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="宣传与培训" name="annual-major-events">
+      <el-collapse-item title="宣传与培训" name="publicity-training">
         <template #title>
           <div class="collapse-title">
             <span> 宣传与培训 </span>
@@ -808,7 +811,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["company-name-structure"]);
+const activeCollapse = ref(["industry-value-finance"]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 
