@@ -718,6 +718,8 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.shareholderMeetingCount"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
                   />
                   <span>次</span>
                 </div>
@@ -726,6 +728,8 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.shareholderMeetingResolutionCount"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
                   />
                   <span>项议案</span>
                 </div>
@@ -744,6 +748,8 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.boardMeetingCount"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
                   />
                   <span>次</span>
                 </div>
@@ -752,6 +758,8 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.boardMeetingResolutionCount"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
                   />
                   <span>项议案</span>
                 </div>
@@ -769,6 +777,8 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.boardCommitteeMeetingCount"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
                   />
                   <span>次</span>
                 </div>
@@ -777,6 +787,8 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.boardCommitteeMeetingResolutionCount"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
                   />
                   <span>项议案</span>
                 </div>
@@ -795,6 +807,8 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.supervisorMeetingCount"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
                   />
                   <span>次</span>
                 </div>
@@ -803,6 +817,8 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.supervisorMeetingResolutionCount"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
                   />
                   <span>项议案</span>
                 </div>
@@ -921,7 +937,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.regularReportCount"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>项</span>
               </div>
@@ -936,7 +953,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.interimReportCount"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>项</span>
               </div>
@@ -1093,7 +1111,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.investorReplyRate"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>%</span>
               </div>
@@ -1110,7 +1129,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.investorActivityCount"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>次</span>
               </div>
@@ -1127,7 +1147,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.investorActivityCoverage"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>人次</span>
               </div>
@@ -1640,7 +1661,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.antiCorruptionIncidents"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>次</span>
               </div>
@@ -1657,7 +1679,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.integrityCommitmentSigningRate"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>%</span>
               </div>
@@ -1671,7 +1694,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.antiCorruptionTrainingParticipants"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>人次</span>
               </div>
@@ -1685,7 +1709,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.antiCorruptionTrainingTotalHours"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>小时</span>
               </div>
@@ -1699,7 +1724,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.antiCorruptionTrainingAvgHours"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>小时</span>
               </div>
@@ -1815,7 +1841,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.antiMonopolyTrainingSessions"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>次</span>
               </div>
@@ -1829,7 +1856,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.antiMonopolyTrainingParticipants"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>人次</span>
               </div>
@@ -1843,7 +1871,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.antiMonopolyTrainingTotalHours"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>小时</span>
               </div>
@@ -1857,7 +1886,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.antiMonopolyTrainingAvgHours"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>小时</span>
               </div>
@@ -1923,7 +1953,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.violationCount"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>次</span>
               </div>
@@ -1937,7 +1968,8 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.violationHandlingRate"
-                  @input="handleBoardCountInput"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>%</span>
               </div>
@@ -2277,6 +2309,12 @@ const handleSave = () => {
       ElMessage.error("保存失败");
     }
   });
+};
+
+// 1. 在<script setup>中添加正整数校验方法
+const onlyPositiveInteger = value => {
+  const v = String(value).replace(/\D/g, "");
+  return v.replace(/^0+/, "") || "";
 };
 </script>
 
