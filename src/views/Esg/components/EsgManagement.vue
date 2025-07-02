@@ -1405,8 +1405,11 @@ Wind评级"
       >
         <template #title>
           <div class="collapse-title">
-            <span>平等对待中小企业（财务） </span>
-            <EsgTooltip content="交易所可持续发展指引" />
+            <span
+              >平等对待中小企业（财务）
+              <EsgTooltip content="交易所可持续发展指引" />
+            </span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1438,13 +1441,16 @@ Wind评级"
       <el-collapse-item title="反贪污腐败" name="corporate-culture-ethics">
         <template #title>
           <div class="collapse-title">
-            <span>反贪污腐败 </span>
-            <EsgTooltip
-              content="对应GRI标准: GRI205<br/>
+            <span
+              >反贪污腐败
+              <EsgTooltip
+                content="对应GRI标准: GRI205<br/>
 对应MSCI ESG指标: 公司治理-腐败与不稳定性<br/>
 交易所可持续发展指引<br/>
 Wind评级"
-            />
+              />
+            </span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
