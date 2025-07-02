@@ -1450,7 +1450,6 @@ Wind评级"
 Wind评级"
               />
             </span>
-
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1637,6 +1636,370 @@ Wind评级"
                 />
                 <span>次</span>
               </div>
+            </el-form-item>
+            <el-form-item label="廉洁承诺书签署率">
+              <template #label>
+                <div>
+                  <span> 廉洁承诺书签署率 </span>
+                  <EsgTooltip
+                    content="公司与员工、供应商、承包商等相关方签署廉洁承诺书的情况。"
+                  />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>%</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="反腐败、反贿赂培训人次">
+              <template #label>
+                <div>
+                  <span> 反腐败、反贿赂培训人次 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>人次</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="反腐败、反贿赂培训总时长">
+              <template #label>
+                <div>
+                  <span> 反腐败、反贿赂培训总时长 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>小时</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="反腐败、反贿赂培训人均时长">
+              <template #label>
+                <div>
+                  <span> 反腐败、反贿赂培训人均时长 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>小时</span>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item
+        title="反垄断与公平竞争"
+        name="corporate-culture-ethics"
+      >
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >反贪污腐败
+              <EsgTooltip
+                content="对应GRI标准: <br/>
+对应MSCI ESG指标: 公司治理-反竞争行为<br/>
+交易所可持续发展指引<br/>
+Wind评级"
+              />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">企业所有权结构和法律组织形式。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item label="反垄断与公平竞争管理体系与制度">
+              <template #label>
+                <div>
+                  <span> 反垄断与公平竞争管理体系与制度 </span>
+                  <EsgTooltip
+                    content="防范不正当竞争行为（如虚假宣传、实施垄断行为、侵犯商业秘密等）管理制度体系建立与运作情况"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+                placeholder="双汇发展尊重市场竞争原则，支持和维护公平自由的市场竞争环境，反对任何形式的不正当竞双汇发展扎实推进反垄断体系优化工作，坚决支持和维护公平、自由的市场竞争环境，对任何形式的不正当竞争、垄断和洗钱行为持反对态度。2023年，我们关注反垄断规定最新动向，针对肉制品领域可能涉及的反垄断风险点及时修订完善《联销体协议》，进一步夯实反垄断管理。——《双汇发展2023年社会责任报告》"
+              />
+            </el-form-item>
+            <el-form-item label="反垄断与公平竞争风险控制">
+              <template #label>
+                <div>
+                  <span> 反垄断与公平竞争风险控制 </span>
+                  <EsgTooltip
+                    content="防范不正当竞争行为（如虚假宣传、实施垄断行为、侵犯商业秘密等）具体措施"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="反垄断与不当竞争诉讼、行政处罚">
+              <template #label>
+                <div>
+                  <span> 反垄断与不当竞争诉讼、行政处罚 </span>
+                  <EsgTooltip
+                    content="报告期内因公司不正当竞争行为导致诉讼或重大行政处罚的，应当披露具体诉讼情况、涉案金额、受到的行政处罚相关情况以及整改措施"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item
+              label="反垄断与公平竞争培训"
+              prop="directorTrainingFileList"
+            >
+              <template #label>
+                <div>
+                  <span> 反垄断与公平竞争培训 </span>
+                  <EsgTooltip content="上传培训图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.directorTrainingFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="反垄断与公平竞争培训场次">
+              <template #label>
+                <div>
+                  <span> 反垄断与公平竞争培训场次 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>次</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="反垄断与公平竞争培训人次">
+              <template #label>
+                <div>
+                  <span> 反垄断与公平竞争培训人次 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>人次</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="反垄断与公平竞争培训总时长">
+              <template #label>
+                <div>
+                  <span> 反垄断与公平竞争培训总时长 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>小时</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="反垄断与公平竞争培训人均时长">
+              <template #label>
+                <div>
+                  <span> 反垄断与公平竞争培训人均时长 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>小时</span>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="违规违纪事件" name="corporate-culture-ethics">
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >违规违纪事件
+              <EsgTooltip content="对应GRI标准: GRI2-25, GRI2-27, GRI205" />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">企业所有权结构和法律组织形式。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item label="针对违规违纪事件的处理制度">
+              <template #label>
+                <div>
+                  <span> 针对违规违纪事件的处理制度 </span>
+                  <EsgTooltip
+                    content="公司对腐败与贿赂违规事件、反垄断与公平竞争违规事件的处罚机制及违规事件的发生情况。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="违规违纪事件类型">
+              <template #label>
+                <div>
+                  <span> 违规违纪事件类型 </span>
+                  <EsgTooltip
+                    content="对违规违纪事件的分类可分为：<br/> 1.导致罚款的事例；<br/> 2.导致非经济处罚的事例；等"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+
+            <el-form-item label="违规违纪事件发生次数">
+              <template #label>
+                <div>
+                  <span> 违规违纪事件发生次数 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>次</span>
+              </div>
+            </el-form-item>
+            <el-form-item label="违规违纪事件处理率">
+              <template #label>
+                <div>
+                  <span> 违规违纪事件处理率 </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  @input="handleBoardCountInput"
+                />
+                <span>%</span>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item
+        title="公司治理年度重大事件"
+        name="corporate-culture-ethics"
+      >
+        <template #title>
+          <div class="collapse-title">
+            <span>公司治理年度重大事件 </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">企业所有权结构和法律组织形式。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item
+              label="包括股本架构改变、兼并重组、投资并购、制度修订等。"
+            >
+              <template #label>
+                <div>
+                  <span>
+                    包括股本架构改变、兼并重组、投资并购、制度修订等。
+                  </span>
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="荣誉认可" name="corporate-culture-ethics">
+        <template #title>
+          <div class="collapse-title">
+            <span>荣誉认可 </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+        <div class="form-section">
+          <!--
+          <div class="section-description">
+            <span class="label">内容详解：</span>
+            <span class="description">企业所有权结构和法律组织形式。</span>
+          </div>
+          -->
+          <el-form :model="formData" label-position="left" label-width="100px">
+            <el-form-item label="公司治理类的荣誉认可、被纳入的指数">
+              <template #label>
+                <div>
+                  <span> 公司治理类的荣誉认可、被纳入的指数 </span>
+                </div>
+              </template>
+              <el-input
+                v-model="formData.strategicVision"
+                type="textarea"
+                :rows="4"
+              />
             </el-form-item>
           </el-form>
         </div>
