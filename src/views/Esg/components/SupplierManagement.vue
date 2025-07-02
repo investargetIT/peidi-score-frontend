@@ -34,7 +34,7 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="中粮糖业坚持“货比三家、择优选择、程序规范、过程透明” 的采购原则 ，建立健全采购管理制度和内部控制体系，加强采购制度梳理与完善，增强业务流程建设、采购绩效管理、采购监督管理，从制度上保障对供应商管理的合规有序，保证供应商在公平公正的环境下进行投标或谈判活动， 实现公司采购管理标准化、规范化、高效化。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="中粮糖业坚持货比三家、择优选择、程序规范、过程透明 的采购原则 ，建立健全采购管理制度和内部控制体系，加强采购制度梳理与完善，增强业务流程建设、采购绩效管理、采购监督管理，从制度上保障对供应商管理的合规有序，保证供应商在公平公正的环境下进行投标或谈判活动， 实现公司采购管理标准化、规范化、高效化。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="目标完成情况">
@@ -101,7 +101,7 @@
                 v-model="formData.policyAndRegulation"
                 type="textarea"
                 :rows="4"
-                placeholder="我们落实从准入到淘汰的供应商管理闭环，更新《供应商管理制度》，新增I类物资8供应商引入前的考察，更新辅包、 农牧供应商的年度业绩评价标准，完善招标系统供应商管理模块上传要求，实现供应商全生命 周期的数字化高效管理。双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为“准则”)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定“供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量”，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
+                placeholder="我们落实从准入到淘汰的供应商管理闭环，更新《供应商管理制度》，新增I类物资8供应商引入前的考察，更新辅包、 农牧供应商的年度业绩评价标准，完善招标系统供应商管理模块上传要求，实现供应商全生命 周期的数字化高效管理。双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为准则)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
                 resize="vertical"
               />
             </el-form-item>
@@ -142,7 +142,7 @@
         </div>
       </el-collapse-item>
       <!-- 其他折叠项 -->
-      <el-collapse-item title="宣贯及培训" name="quality-management-practice">
+      <el-collapse-item title="宣贯及培训" name="training-publicity">
         <template #title>
           <div class="collapse-title">
             <span>宣贯及培训 </span>
@@ -248,7 +248,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="准入与评估" name="management-system">
+      <el-collapse-item title="准入与评估" name="access-evaluation">
         <template #title>
           <div class="collapse-title">
             <span
@@ -300,7 +300,7 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为“准则”)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定“供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量”，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为准则)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item>
@@ -448,7 +448,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="供应商数量" name="management-practice">
+      <el-collapse-item title="供应商数量" name="supplier-quantity">
         <template #title>
           <div class="collapse-title">
             <span
@@ -492,7 +492,7 @@
                   <span>
                     向当地供应商采购比例
                     <EsgTooltip
-                      content="统计公司向经营所在地的当地供应商采购的产品/服务百分比（”当地“的地理定义由公司自行裁定）"
+                      content="统计公司向经营所在地的当地供应商采购的产品/服务百分比（'当地'的地理定义由公司自行裁定）"
                     />
                   </span>
                 </div>
@@ -547,7 +547,7 @@
       </el-collapse-item>
       <el-collapse-item
         title="供应商/承包商权益保护"
-        name="hazard-risk-assessment"
+        name="supplier-contractor-rights"
       >
         <template #title>
           <div class="collapse-title">
@@ -592,7 +592,7 @@
                 v-model="formData.hazardRiskAssessment"
                 type="textarea"
                 :rows="4"
-                placeholder="同时，我们对标同行业，探索新技术，引进新资源，坚持“走出去，引进来”的发展理念，组织集团相关部门与行业内龙头企业交流学习，资源共享，深度延伸供应资源价值。2023 年，双汇发展共组织设备、饲料行业和鸡产业供应商技术交流 51 场，组织辅包供应商信息交流 40 场，协同推进集团新产品新产业发展。 ——《双汇发展2023年ESG报告》"
+                placeholder="同时，我们对标同行业，探索新技术，引进新资源，坚持走出去，引进来的发展理念，组织集团相关部门与行业内龙头企业交流学习，资源共享，深度延伸供应资源价值。2023 年，双汇发展共组织设备、饲料行业和鸡产业供应商技术交流 51 场，组织辅包供应商信息交流 40 场，协同推进集团新产品新产业发展。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="qualityPracticeFileList">
@@ -661,7 +661,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["industry-value-finance"]);
+const activeCollapse = ref(["policy-goals"]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 
