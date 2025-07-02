@@ -186,7 +186,11 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input v-model="formData.supervisorCount" />
+                <el-input
+                  v-model="formData.supervisorCount"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -198,7 +202,11 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input v-model="formData.employeeSupervisorCount" />
+                <el-input
+                  v-model="formData.employeeSupervisorCount"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -215,7 +223,7 @@
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
-                <span>人</span>
+                <span>%</span>
               </div>
             </el-form-item>
           </el-form>
@@ -287,7 +295,11 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input v-model="formData.femaleDirectorCount" />
+                <el-input
+                  v-model="formData.femaleDirectorCount"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -491,7 +503,11 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input v-model="formData.independentDirectorCount" />
+                <el-input
+                  v-model="formData.independentDirectorCount"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -519,7 +535,11 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input v-model="formData.nonExecutiveDirectorCount" />
+                <el-input
+                  v-model="formData.nonExecutiveDirectorCount"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
                 <span>人</span>
               </div>
             </el-form-item>
@@ -549,6 +569,8 @@ Wind评级"
               <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.independentNonExecutiveDirectorCount"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
                 />
                 <span>人</span>
               </div>
@@ -931,7 +953,7 @@ Wind评级"
                   <EsgTooltip content="公司定期报告年度发布数量" />
                 </div>
               </template>
-              <div class="textContainer">
+              <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.regularReportCount"
                   :formatter="onlyPositiveInteger"
@@ -947,7 +969,7 @@ Wind评级"
                   <EsgTooltip content="公司临时报告年度发布数量。" />
                 </div>
               </template>
-              <div class="textContainer">
+              <div style="display: flex; gap: 8px; align-items: center">
                 <el-input
                   v-model="formData.interimReportCount"
                   :formatter="onlyPositiveInteger"
@@ -1013,12 +1035,14 @@ Wind评级"
                   <EsgTooltip content="按实际情况统计" />
                 </div>
               </template>
-              <el-input
-                v-model="formData.investorInquiryCount"
-                placeholder="按实际情况统计各个渠道回复投资者问题的数量。"
-                type="textarea"
-                :rows="4"
-              />
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.investorInquiryCount"
+                  :formatter="onlyPositiveInteger"
+                  :parser="onlyPositiveInteger"
+                />
+                <span>项</span>
+              </div>
             </el-form-item>
             <el-form-item label="年度领导重要讲话稿">
               <template #label>
