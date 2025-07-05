@@ -2,7 +2,7 @@
   <div class="esg-content">
     <!-- 公司名称与组织架构 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
-      <el-collapse-item title="员工组成" name="policy-goals">
+      <el-collapse-item title="员工组成" name="employee-composition">
         <template #title>
           <div class="collapse-title">
             <span
@@ -211,7 +211,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="员工招聘" name="system-strategy">
+      <el-collapse-item title="员工招聘" name="employee-recruitment">
         <template #title>
           <div class="collapse-title">
             <span
@@ -277,14 +277,14 @@
                 v-model="formData.organizationStructure"
                 type="textarea"
                 :rows="4"
-                placeholder="在校园招聘方面，双汇发展积极推进校企合作，推行管理培训生计划，给予优秀在校学生实习机会，并为表现突出者提供留用机会。我们依据《大学生引进培养管理制度》对校园招聘的薪酬待遇、培养措施、培养周期等内容进行系统性的规范和优化，以确保招聘流程的公正、公平和透明。我们开展“领英汇”和“群英汇”校园招聘项目，通过“领英汇”项目面向国内外高校的优秀 应届毕业生招收项目管培生，通过“群英汇”项目招收本科及以上的管培学员。 校企合作 •我们与58家高校签订校企合作协议，稳定重点渠道人才输送，增设与大学生面对面交流 的机会，稳步搭建高校人才蓄水池。 本地招聘 •立足本地发展，我们携手专业招聘机构，与河南省内招聘机构合作开展专业化的大学生 校招工作，全面提升校园招聘的效率和水平。 线上招聘 •我们与多个国内知名招聘服务机构合作，为大学生人才招聘打造专属互联网平台。  在社会招聘方面，双汇发展积极通过当地劳动局或人才市场开展本土化招聘，并通过扩大内部推荐和举办专项招聘等形式不断助力公司丰富人才储备。 ——《双汇发展2023ESG报告》"
+                placeholder="在校园招聘方面，双汇发展积极推进校企合作，推行管理培训生计划，给予优秀在校学生实习机会，并为表现突出者提供留用机会。我们依据《大学生引进培养管理制度》对校园招聘的薪酬待遇、培养措施、培养周期等内容进行系统性的规范和优化，以确保招聘流程的公正、公平和透明。我们开展‘领英汇’和‘群英汇’校园招聘项目，通过‘领英汇’项目面向国内外高校的优秀 应届毕业生招收项目管培生，通过‘群英汇’项目招收本科及以上的管培学员。 校企合作 •我们与58家高校签订校企合作协议，稳定重点渠道人才输送，增设与大学生面对面交流 的机会，稳步搭建高校人才蓄水池。 本地招聘 •立足本地发展，我们携手专业招聘机构，与河南省内招聘机构合作开展专业化的大学生 校招工作，全面提升校园招聘的效率和水平。 线上招聘 •我们与多个国内知名招聘服务机构合作，为大学生人才招聘打造专属互联网平台。  在社会招聘方面，双汇发展积极通过当地劳动局或人才市场开展本土化招聘，并通过扩大内部推荐和举办专项招聘等形式不断助力公司丰富人才储备。 ——《双汇发展2023ESG报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
       <!-- 其他折叠项 -->
-      <el-collapse-item title="员工流动率" name="training-publicity">
+      <el-collapse-item title="员工流动率" name="employee-turnover">
         <template #title>
           <div class="collapse-title">
             <span
@@ -407,7 +407,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="荣誉或认可" name="access-evaluation">
+      <el-collapse-item title="荣誉或认可" name="honors-recognition">
         <template #title>
           <div class="collapse-title">
             <span>荣誉或认可 </span>
@@ -467,7 +467,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="基本权益保障" name="supplier-quantity">
+      <el-collapse-item title="基本权益保障" name="basic-rights-protection">
         <template #title>
           <div class="collapse-title">
             <span
@@ -517,7 +517,7 @@ Wind评级"
                 v-model="formData.fairTrade"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展严格遵守《中华人民共和国劳动法》《中华人民共和国劳动合同法》等国家法律法规的要求，遵循国际劳工组织的核心公约和劳工标准，并积极发挥职工代表大会的作用，使所有员工的合法权益得到充分保障和尊重。 双汇发展坚持“公平、公正、公开”的雇佣原则，制定了《人力资源管理标准化》等规章制度，合法合规雇佣，广泛吸引人才。
+                placeholder="双汇发展严格遵守《中华人民共和国劳动法》《中华人民共和国劳动合同法》等国家法律法规的要求，遵循国际劳工组织的核心公约和劳工标准，并积极发挥职工代表大会的作用，使所有员工的合法权益得到充分保障和尊重。 双汇发展坚持‘公平、公正、公开’的雇佣原则，制定了《人力资源管理标准化》等规章制度，合法合规雇佣，广泛吸引人才。
  ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
@@ -665,7 +665,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="薪酬与激励" name="supplier-contractor-rights">
+      <el-collapse-item title="薪酬与激励" name="compensation-incentives">
         <template #title>
           <div class="collapse-title">
             <span>
@@ -712,7 +712,7 @@ Wind评级"
                 v-model="formData.capacityBuildingSupport"
                 type="textarea"
                 :rows="4"
-                placeholder="业务、研发岗位员工薪酬奖励机制 报告期内，为助力“十四五”规划的顺利落实，我们针对业务、研发岗位的员工实施奖励机制， 并对收入提取办法进一步优化，按阶梯式提取标准确定部门总收入，以“多销多得”的方式增加员工收入，进一步激励他们发挥更高的工作热情，坚持与员工共创、共享、共赢。 ——《双汇发展2023年ESG报告》"
+                placeholder="业务、研发岗位员工薪酬奖励机制 报告期内，为助力‘十四五’规划的顺利落实，我们针对业务、研发岗位的员工实施奖励机制， 并对收入提取办法进一步优化，按阶梯式提取标准确定部门总收入，以’多销多得‘的方式增加员工收入，进一步激励他们发挥更高的工作热情，坚持与员工共创、共享、共赢。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="绩效反馈与申诉情况">
@@ -794,7 +794,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="福利与关怀" name="supplier-quantity">
+      <el-collapse-item title="福利与关怀" name="welfare-care">
         <template #title>
           <div class="collapse-title">
             <span
@@ -841,7 +841,7 @@ Wind评级"
                 v-model="formData.fairTrade"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展关心员工生活，组织各种暖心活动以提升员工在双汇工作的满意度。我们持续多年开展“夏送清凉”活动，为酷暑中坚守一线作业的员工送去防暑降温用品。报告期内，我们已对总部、异地61家单位11,948名高温岗位人员，发放降温物品34.7 万元。我们还持续关注困难员工的生活情况，帮助他们度过生活上的难关。此外，我们关心员工子女的教育情况，鼓励员工子女均接受高等教育，已连续13年为12,378名考取大学的职工子女设立“金秋奖学金”，累计发放 3,200万元，助力他们梦想启航。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展关心员工生活，组织各种暖心活动以提升员工在双汇工作的满意度。我们持续多年开展‘夏送清凉’活动，为酷暑中坚守一线作业的员工送去防暑降温用品。报告期内，我们已对总部、异地61家单位11,948名高温岗位人员，发放降温物品34.7 万元。我们还持续关注困难员工的生活情况，帮助他们度过生活上的难关。此外，我们关心员工子女的教育情况，鼓励员工子女均接受高等教育，已连续13年为12,378名考取大学的职工子女设立‘金秋奖学金’，累计发放 3,200万元，助力他们梦想启航。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="rightsAttachmentFileList">
@@ -946,7 +946,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="管理体系" name="publicity-training">
+      <el-collapse-item title="管理体系" name="management-system">
         <template #title>
           <div class="collapse-title">
             <span
@@ -1003,7 +1003,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="女性员工" name="publicity-training">
+      <el-collapse-item title="女性员工" name="female-employees">
         <template #title>
           <div class="collapse-title">
             <span>女性员工 <EsgTooltip content="GRI 404, GRI 405" /></span>
@@ -1084,7 +1084,7 @@ Wind评级"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="我们致力于保障女性员工的劳动权益，制定并发布了《女工劳动保护规定》，明确规定尊重女性工作的权利，并在各级管理职位中对能力突出、表现优异的女性进行优先培养及录用。 •三期(孕期、产期、哺乳期)女工工作安排避免重体力劳动 为孕期、哺乳期女职工提供爱心母婴室，双汇总部大楼爱心母婴室荣获漯河市“五星级爱心母婴室”。同时，我们在三八妇女节发放关爱物资，合计发放慰问品16,060份，金额 89.7万元。 ——《双汇发展2023年ESG报告》"
+                placeholder="我们致力于保障女性员工的劳动权益，制定并发布了《女工劳动保护规定》，明确规定尊重女性工作的权利，并在各级管理职位中对能力突出、表现优异的女性进行优先培养及录用。 •三期(孕期、产期、哺乳期)女工工作安排避免重体力劳动 为孕期、哺乳期女职工提供爱心母婴室，双汇总部大楼爱心母婴室荣获漯河市‘五星级爱心母婴室’。同时，我们在三八妇女节发放关爱物资，合计发放慰问品16,060份，金额 89.7万元。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="rightsAttachmentFileList">
@@ -1114,7 +1114,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="残障人士雇佣" name="customer-privacy">
+      <el-collapse-item title="残障人士雇佣" name="disabled-employment">
         <template #title>
           <div class="collapse-title">
             <span
@@ -1209,7 +1209,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="培训" name="customer-privacy">
+      <el-collapse-item title="培训" name="training">
         <template #title>
           <div class="collapse-title">
             <span
@@ -1305,7 +1305,10 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="员工培训与考核" name="customer-privacy">
+      <el-collapse-item
+        title="员工培训与考核"
+        name="employee-training-assessment"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -1397,7 +1400,7 @@ Wind评级"
                 v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="4"
-                placeholder="公司以“34885”教育培训体系为抓手，采用名师课堂、团队学习、外部对标、线上学习、实践锻炼等多种方式开展广泛而精准的人才培育，打造学习型组织，帮助员工实现与公司的共同发展。同时，持续推进网络学习平台建设。截至 2023 年末，平台账号共激活 6977 个，开设课程共计 1496 门，其中内部课程占比 58%，外部课程占比 42%，覆盖政治、 党建、战略、市场、销售、供应链、生产、安全、财务等 12 大类，以丰富的学习资源满足广大经理人和员工学习发展需要。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="公司以‘34885’教育培训体系为抓手，采用名师课堂、团队学习、外部对标、线上学习、实践锻炼等多种方式开展广泛而精准的人才培育，打造学习型组织，帮助员工实现与公司的共同发展。同时，持续推进网络学习平台建设。截至 2023 年末，平台账号共激活 6977 个，开设课程共计 1496 门，其中内部课程占比 58%，外部课程占比 42%，覆盖政治、 党建、战略、市场、销售、供应链、生产、安全、财务等 12 大类，以丰富的学习资源满足广大经理人和员工学习发展需要。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="人才培养管理组织架构">
@@ -1413,7 +1416,7 @@ Wind评级"
                 v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展为加强人才梯队建设，推动企业转型升级，积极完善培训体系、丰富培训内容。我们遵照《项目公司新入职员工三级培训管理规定》《内训师制度》《“领英汇”管培生培养实施方案》《培训管理制度》等内部培训制度，于2023年编制了《数字化学习平台课程管理规范》， 结合数字化学习平台的推广运用情况，提升线上培训课程使用频率，提升全方位培训能力。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展为加强人才梯队建设，推动企业转型升级，积极完善培训体系、丰富培训内容。我们遵照《项目公司新入职员工三级培训管理规定》《内训师制度》《‘领英汇’管培生培养实施方案》《培训管理制度》等内部培训制度，于2023年编制了《数字化学习平台课程管理规范》， 结合数字化学习平台的推广运用情况，提升线上培训课程使用频率，提升全方位培训能力。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item>
@@ -1667,7 +1670,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="人才晋升" name="customer-privacy">
+      <el-collapse-item title="人才晋升" name="talent-promotion">
         <template #title>
           <div class="collapse-title">
             <span
@@ -1704,7 +1707,7 @@ Wind评级"
                 v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="6"
-                placeholder="双汇发展贯彻“公开竞聘、逐级提名、分层任命”的用人原则，明确晋升标准和晋升路径，实现 人尽其才的选拔机制，促进企业内部人员正常流动和人才梯队建设。本年度，我们修订《人力资源标准化》制度，完善管理人员竞聘原则，明确后备管理人员竞聘为正式管理人员后分别进行任职满3个月和满6个月的考评，着力推动公平竞争的用人氛围。 我们秉承“能者上、平者让、庸者下”的核心理念，引导管理职位员工从事财务、技术、人事、生 产、质量、设备、法务、营销、新电商等领域，通过垂直管理通道，深耕领域技能，进而提升领导力和综合素质。 针对由“领英汇”和“群英汇”招聘项目进入公司的员工，我们制定了全方位的管培生晋升发展路 径，“领英汇”管培生将晋升为业务骨干，并成长至中层管理人员，并以成为公司高层为培养目标;“群英汇”管培学员则由一线员工晋升至班长、调度等基层管理人员，再至车间主任、各系统部长等中层管理人员，培养目标为项目公司、集团或事业部中高层。通过公开、透明的晋升路径，充分发挥员工潜能，并鼓励优秀管培生可以在培养过程中根据部门需求参与竞聘。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展贯彻‘公开竞聘、逐级提名、分层任命’的用人原则，明确晋升标准和晋升路径，实现 人尽其才的选拔机制，促进企业内部人员正常流动和人才梯队建设。本年度，我们修订《人力资源标准化》制度，完善管理人员竞聘原则，明确后备管理人员竞聘为正式管理人员后分别进行任职满3个月和满6个月的考评，着力推动公平竞争的用人氛围。 我们秉承‘能者上、平者让、庸者下’的核心理念，引导管理职位员工从事财务、技术、人事、生 产、质量、设备、法务、营销、新电商等领域，通过垂直管理通道，深耕领域技能，进而提升领导力和综合素质。 针对由‘领英汇’和‘群英汇’招聘项目进入公司的员工，我们制定了全方位的管培生晋升发展路 径，‘领英汇’管培生将晋升为业务骨干，并成长至中层管理人员，并以成为公司高层为培养目标;‘群英汇’管培学员则由一线员工晋升至班长、调度等基层管理人员，再至车间主任、各系统部长等中层管理人员，培养目标为项目公司、集团或事业部中高层。通过公开、透明的晋升路径，充分发挥员工潜能，并鼓励优秀管培生可以在培养过程中根据部门需求参与竞聘。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="接受定期绩效与职业发展考核的员工占比">
@@ -1735,13 +1738,16 @@ Wind评级"
                 v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="6"
-                placeholder="本集团会通过系统的人才盘点工作，对该年度员工工作和发展进行综合评价，结合员工的工作经历和能力，提供符合员工个人工 作愿望的发展机会，实现「专业通道」和「管理通道」的双通道晋陞路线。未来，我们会给予员工更多工作轮调、岗位轮岗等机会，知人善任、人尽其才，组织实现人才效能。 ——《大成食品2023年环境、社会及管治报告》"
+                placeholder="本集团会通过系统的人才盘点工作，对该年度员工工作和发展进行综合评价，结合员工的工作经历和能力，提供符合员工个人工 作愿望的发展机会，实现‘专业通道’和‘管理通道’的双通道晋陞路线。未来，我们会给予员工更多工作轮调、岗位轮岗等机会，知人善任、人尽其才，组织实现人才效能。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="政策与沟通渠道" name="customer-privacy">
+      <el-collapse-item
+        title="政策与沟通渠道"
+        name="policy-communication-channels"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -1797,7 +1803,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="员工沟通" name="customer-privacy">
+      <el-collapse-item title="员工沟通" name="employee-communication">
         <template #title>
           <div class="collapse-title">
             <span
@@ -1906,7 +1912,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="职业病" name="customer-privacy">
+      <el-collapse-item title="职业病" name="occupational-disease">
         <template #title>
           <div class="collapse-title">
             <span>职业病 </span>
@@ -1997,7 +2003,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="保障措施" name="customer-privacy">
+      <el-collapse-item title="保障措施" name="protection-measures">
         <template #title>
           <div class="collapse-title">
             <span>保障措施 </span>
@@ -2050,7 +2056,10 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="职业健康培训" name="customer-privacy">
+      <el-collapse-item
+        title="职业健康培训"
+        name="occupational-health-training"
+      >
         <template #title>
           <div class="collapse-title">
             <span>职业健康培训 </span>
@@ -2137,7 +2146,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="伤亡情况" name="customer-privacy">
+      <el-collapse-item title="伤亡情况" name="casualties">
         <template #title>
           <div class="collapse-title">
             <span>伤亡情况 </span>
@@ -2333,7 +2342,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["policy-goals"]);
+const activeCollapse = ref(["employee-composition"]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 
