@@ -2,7 +2,7 @@
   <div class="esg-content">
     <!-- 公司名称与组织架构 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
-      <el-collapse-item title="管理体系" name="policy-goals">
+      <el-collapse-item title="管理体系" name="management-system">
         <template #title>
           <div class="collapse-title">
             <span>
@@ -111,7 +111,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="客户隐私" name="system-strategy">
+      <el-collapse-item title="客户隐私" name="customer-privacy">
         <template #title>
           <div class="collapse-title">
             <span
@@ -152,7 +152,7 @@
         </div>
       </el-collapse-item>
       <!-- 其他折叠项 -->
-      <el-collapse-item title="数字化建设" name="training-publicity">
+      <el-collapse-item title="数字化建设" name="digital-construction">
         <template #title>
           <div class="collapse-title">
             <span>数字化建设 </span>
@@ -188,7 +188,7 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="宣传与培训" name="access-evaluation">
+      <el-collapse-item title="宣传与培训" name="publicity-training">
         <template #title>
           <div class="collapse-title">
             <span>宣传与培训 </span>
@@ -345,7 +345,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["policy-goals"]);
+const activeCollapse = ref(["management-system"]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 
