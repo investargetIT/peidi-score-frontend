@@ -102,8 +102,8 @@
               <div class="textContainer">
                 <el-input
                   v-model="formData.infoPrivacyInvestment"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>万元</span>
               </div>
@@ -285,8 +285,8 @@
               <div class="textContainer">
                 <el-input
                   v-model="formData.infoPrivacyTrainingTotalHours"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>小时</span>
               </div>
@@ -300,8 +300,8 @@
               <div class="textContainer">
                 <el-input
                   v-model="formData.infoPrivacyTrainingAvgHours"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
                 />
                 <span>小时</span>
               </div>
