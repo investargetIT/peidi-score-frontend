@@ -33,7 +33,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.policyCommitment"
+                v-model="formData.infoPrivacyOrgStructure"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -50,7 +50,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.goalCompletionStatus"
+                v-model="formData.infoPrivacyPolicySystem"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -67,7 +67,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.goalCompletionStatus"
+                v-model="formData.infoSecurityIncidents"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -84,7 +84,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.goalCompletionStatus"
+                v-model="formData.infoPrivacyProtectionMeasures"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -101,7 +101,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.esgTrainingCount"
+                  v-model="formData.infoPrivacyInvestment"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -142,7 +142,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="4"
                 placeholder="数字化技术高速发展的当下，上海梅林高度重视客户信息和隐私保护，公司严格遵守国家及有关部门颁布的《中华人民共和国网络安全法》《个人信息保护法》《数据安全法》《中华人民共和国消费者权益保护法》等隐私保护的相关 规定，打造相应的安全可信的服务体系，保障用户隐私。报告期内，本公司未接获有关客户隐私泄漏的投诉。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -179,7 +179,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.esgTrainingSystem"
+                v-model="formData.internalDigitalConstruction"
                 type="textarea"
                 :rows="4"
               />
@@ -213,13 +213,16 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.esgReviewAssessment"
+                v-model="formData.infoPrivacyTrainingDescription"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="publicityTrainingAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -228,7 +231,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.publicityTrainingAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -251,7 +254,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.environmentalImpactSupplierCount"
+                  v-model="formData.infoPrivacyTrainingSessions"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -266,7 +269,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.environmentalImpactSupplierCount"
+                  v-model="formData.infoPrivacyTrainingParticipants"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -281,7 +284,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.negativeSocialImpactSupplierCount"
+                  v-model="formData.infoPrivacyTrainingTotalHours"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -296,7 +299,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.negativeEnvironmentalImpactSupplierCount"
+                  v-model="formData.infoPrivacyTrainingAvgHours"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -351,33 +354,19 @@ const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
-  policyCommitment: "", // 目标、方针及承诺
-  goalCompletionStatus: "", // 目标完成情况
-  organizationStructure: "", // 组织架构
-  policyAndRegulation: "", // 政策与制度
-  riskManagement: "", // 风险管理
-  digitalManagementPlatform: "", // 供应商管理数字化平台
-  esgTrainingSystem: "", // 供应商ESG培训体系
-  trainingAttachmentFileList: [], // 附件上传 (宣贯及培训)
-  esgTrainingCount: "", // 开展供应商ESG培训次数
-  esgTrainingParticipationRate: "", // 供应商参与ESG培训百分比
-  sustainableProcurementRate: "", // 公司内部通过可持续采购培训的采购员比例
-  esgReviewAssessment: "", // 供应商ESG审查与评估
-  codeOfConductSigning: "", // 签署供应商行为准则
-  envLaborClauseSupplierRate: "", // 签订包含环境和劳工要求条款的供应商百分比
-  socialImpactAssessmentSupplierCount: "", // 开展了社会影响评估的供应商数量
-  environmentalImpactSupplierCount: "", // 开展了环境影响评估的供应商数量
-  negativeSocialImpactSupplierCount: "", // 经确定为具有实际和潜在重大负面社会影响的供应商数量
-  negativeEnvironmentalImpactSupplierCount: "", // 经确定为具有实际和潜在重大负面环境影响的供应商数量
-  supplierCertificationCount: "", // 供应商认证及审核
-  supplierCertificationRate: "", // 供应商认证及审核率
-  supplierTotalCount: "", // 供应商总数
-  localSupplierPurchaseRate: "", // 向当地供应商采购比例
-  newSupplierCount: "", // 新增供应商数量
-  socialStandardNewSupplierRate: "", // 使用社会标准筛选的新供应商百分比
-  fairTrade: "", // 公平交易
-  capacityBuildingSupport: "", // 能力建设支持
-  rightsAttachmentFileList: [] // 附件上传 (供应商/承包商权益保护)
+  infoPrivacyOrgStructure: "", // 信息与隐私安全保护组织架构
+  infoPrivacyPolicySystem: "", // 信息与隐私安全保护制度体系
+  infoSecurityIncidents: "", // 信息安全相关事件
+  infoPrivacyProtectionMeasures: "", // 信息与隐私安全保护防范与应对措施
+  infoPrivacyInvestment: "", // 资金投入
+  privacyLeakIncidents: "", // 泄漏事件
+  internalDigitalConstruction: "", // 内部数字化建设
+  infoPrivacyTrainingDescription: "", // 信息安全与隐私保护意识培训场次（描述）
+  publicityTrainingAttachmentFileList: [], // 附件上传 (宣传与培训)
+  infoPrivacyTrainingSessions: "", // 信息安全与隐私保护意识培训场次（数值）
+  infoPrivacyTrainingParticipants: "", // 信息安全与隐私保护意识培训人次
+  infoPrivacyTrainingTotalHours: "", // 信息安全与隐私保护意识培训总时长
+  infoPrivacyTrainingAvgHours: "" // 信息安全与隐私保护意识培训人均时长
 });
 
 // 文件上传处理
