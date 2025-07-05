@@ -439,7 +439,7 @@
                 placeholder="本年度，本集团在国内中高端人才职业发展知 名平台「猎聘」主办的2023年度「客户成功奖」 评选活动中，凭借本集团多元化人才沟通桥梁、重视人才互动与求职体验，人才吸引指数及增长率，团队招聘行为数据等评审维度，从 数百家活跃企业中脱颖而出，荣获猎聘华北区「社会责任奖」殊荣。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="honorAttachmentFileList">
+            <el-form-item label="附件上传" prop="honorCertificateAttachments">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -448,7 +448,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.honorAttachmentFileList"
+                v-model:file-list="formData.honorCertificateAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -599,7 +599,7 @@ Wind评级"
                 :rows="4"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="employeeHandbookAttachments">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -608,7 +608,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.employeeHandbookAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -638,7 +638,7 @@ Wind评级"
                 :rows="4"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="thirdPartyAuditAttachments">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -647,7 +647,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.thirdPartyAuditAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -661,6 +661,105 @@ Wind评级"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
               </el-upload>
+            </el-form-item>
+            <el-form-item label="育儿假">
+              <template #label>
+                <div>
+                  <span> 育儿假 </span>
+                  <EsgTooltip
+                    content="公司应披露以下信息： 1.按性别划分，有权享受育儿假的员工总数。 2.按性别划分，休育儿假的员工总数。 3.按性别划分，育儿假结束后在报告期内返岗的员工总数。 4.按性别划分，在育儿假结束后返岗且 12 个月后仍在职的员工总数。 5.按性别划分，休育儿假的员工的返岗率和留任率。 返岗率=（育儿假结束后返岗的员工总数/育儿假结束后应返岗的员工总数）× 100 留任率=（育儿假返岗后 12 个月仍在职的员工总数/报告期内育儿假结束后返岗的员工总数）× 100"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.fairTrade"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="parentalLeaveAttachments">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.parentalLeaveAttachments"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="员工活动">
+              <template #label>
+                <div>
+                  <span> 员工活动 </span>
+                  <EsgTooltip
+                    content="为提升员工幸福感和对企业认同感而开展的员工活动的举办情况，如举办次数等。亮点活动应提供图文案例。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.fairTrade"
+                type="textarea"
+                :rows="4"
+                placeholder="公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
+              />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="employeeActivityAttachments">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.employeeActivityAttachments"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item style="margin-bottom: 35px">
+              <template #label>
+                <div>
+                  <span>
+                    福利与关怀支出
+                    <EsgTooltip
+                      content="公司每年用于员工福利及关怀措施的投入价值总和"
+                    />
+                  </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.infoPrivacyTrainingSessions"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
+                />
+                <span>万元</span>
+              </div>
             </el-form-item>
           </el-form>
         </div>
@@ -1087,7 +1186,7 @@ Wind评级"
                 placeholder="我们致力于保障女性员工的劳动权益，制定并发布了《女工劳动保护规定》，明确规定尊重女性工作的权利，并在各级管理职位中对能力突出、表现优异的女性进行优先培养及录用。 •三期(孕期、产期、哺乳期)女工工作安排避免重体力劳动 为孕期、哺乳期女职工提供爱心母婴室，双汇总部大楼爱心母婴室荣获漯河市'五星级爱心母婴室'。同时，我们在三八妇女节发放关爱物资，合计发放慰问品16,060份，金额 89.7万元。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="femaleAttachmentFileList">
+            <el-form-item label="附件上传" prop="femaleFacilitiesAttachments">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1096,7 +1195,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.femaleAttachmentFileList"
+                v-model:file-list="formData.femaleFacilitiesAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1182,7 +1281,10 @@ Wind评级"
                 :rows="4"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="disabledAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="accessibilityFacilityAttachments"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1191,7 +1293,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.disabledAttachmentFileList"
+                v-model:file-list="formData.accessibilityFacilityAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1245,7 +1347,10 @@ Wind评级"
                 placeholder="集团内，P.A.C.E.项目的持续推进效果显著，我们不断深化项目，从赋能女性员工转而提倡两性融合，开放男性员工加入培训中，促进包容与公平的环境。项目推行至今，已有教练级讲师3位，优秀讲师181位，从试点运行截止2022年12月31日已有 5,224位员工受惠(其中女性占5,004位，男性220位)，活动覆盖20家工厂。根据2022财年年度评价，主管对员工的满意度训 前为70.1%，训后为81.1%;受训员工幸福度从92.9%提升至97.5%。 ——《中国旺旺2022/23年环境、社会及管治报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="trainingAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="antiHarassmentTrainingAttachments"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1254,7 +1359,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.trainingAttachmentFileList"
+                v-model:file-list="formData.antiHarassmentTrainingAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1363,7 +1468,7 @@ Wind评级"
                 placeholder="我们建立了三级培训体系，为不同职业发展需求的员工打造定制化的培养计划，将人才培养与梯队建设并举，为每一位员工提供全职业周期的培训资源。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="trainingAttachmentFileList">
+            <el-form-item label="附件上传" prop="talentDevelopmentAttachments">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1372,7 +1477,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.trainingAttachmentFileList"
+                v-model:file-list="formData.talentDevelopmentAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -2357,11 +2462,15 @@ const formData = ref({
   campusRecruitmentCount: "", // 校园招聘的新员工数量
   socialRecruitmentCount: "", // 社会招聘的新员工数量
   jobPositionInfo: "", // 岗位情况
-  honorAttachmentFileList: [], // 荣誉或认可 附件上传
-  rightsAttachmentFileList: [], // 基本权益保障 附件上传
-  femaleAttachmentFileList: [], // 女性员工 附件上传
-  disabledAttachmentFileList: [], // 残障人士雇佣 附件上传
-  trainingAttachmentFileList: [], // 培训与考核 附件上传
+  honorCertificateAttachments: [], // 荣誉或认可 附件上传
+  employeeHandbookAttachments: [], // 基本权益保障-员工手册 附件上传
+  thirdPartyAuditAttachments: [], // 基本权益保障-第三方审核 附件上传
+  parentalLeaveAttachments: [], // 基本权益保障-育儿假 附件上传
+  employeeActivityAttachments: [], // 基本权益保障-员工活动 附件上传
+  femaleFacilitiesAttachments: [], // 女性员工 附件上传
+  accessibilityFacilityAttachments: [], // 残障人士雇佣 附件上传
+  antiHarassmentTrainingAttachments: [], // 培训与考核-反骚扰培训 附件上传
+  talentDevelopmentAttachments: [], // 培训与考核-人才培养 附件上传
   thirdPartyAudit: "", // 第三方审核与认证
   genderSalaryRatio: "", // 男女员工薪酬比例
   startingSalaryVsLocalMinimum: "", // 起薪水平与当地最低工资之比
