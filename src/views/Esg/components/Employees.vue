@@ -943,7 +943,7 @@ Wind评级"
                 placeholder="双汇发展关心员工生活，组织各种暖心活动以提升员工在双汇工作的满意度。我们持续多年开展'夏送清凉'活动，为酷暑中坚守一线作业的员工送去防暑降温用品。报告期内，我们已对总部、异地61家单位11,948名高温岗位人员，发放降温物品34.7 万元。我们还持续关注困难员工的生活情况，帮助他们度过生活上的难关。此外，我们关心员工子女的教育情况，鼓励员工子女均接受高等教育，已连续13年为12,378名考取大学的职工子女设立'金秋奖学金'，累计发放 3,200万元，助力他们梦想启航。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="welfareCareAttachments">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -952,7 +952,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.welfareCareAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -998,7 +998,7 @@ Wind评级"
                 placeholder="公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="employeeEventAttachments">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1007,7 +1007,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.employeeEventAttachments"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -2467,6 +2467,8 @@ const formData = ref({
   thirdPartyAuditAttachments: [], // 基本权益保障-第三方审核 附件上传
   parentalLeaveAttachments: [], // 基本权益保障-育儿假 附件上传
   employeeActivityAttachments: [], // 基本权益保障-员工活动 附件上传
+  welfareCareAttachments: [], // 福利措施与关怀活动 附件上传
+  employeeEventAttachments: [], // 员工活动 附件上传
   femaleFacilitiesAttachments: [], // 女性员工 附件上传
   accessibilityFacilityAttachments: [], // 残障人士雇佣 附件上传
   antiHarassmentTrainingAttachments: [], // 培训与考核-反骚扰培训 附件上传
