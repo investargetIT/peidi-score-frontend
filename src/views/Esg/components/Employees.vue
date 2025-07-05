@@ -36,7 +36,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.permanentEmployeeCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -51,7 +51,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.temporaryEmployeeCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -66,7 +66,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.fullTimeEmployeeCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -81,7 +81,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.partTimeEmployeeCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -98,7 +98,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.employeeByEthnicity"
                 type="textarea"
                 :rows="4"
               />
@@ -113,7 +113,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.employeeByPosition"
                 type="textarea"
                 :rows="4"
               />
@@ -241,7 +241,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.campusRecruitmentCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -257,7 +257,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.socialRecruitmentCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -274,10 +274,10 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.jobPositionInfo"
                 type="textarea"
                 :rows="4"
-                placeholder="在校园招聘方面，双汇发展积极推进校企合作，推行管理培训生计划，给予优秀在校学生实习机会，并为表现突出者提供留用机会。我们依据《大学生引进培养管理制度》对校园招聘的薪酬待遇、培养措施、培养周期等内容进行系统性的规范和优化，以确保招聘流程的公正、公平和透明。我们开展‘领英汇’和‘群英汇’校园招聘项目，通过‘领英汇’项目面向国内外高校的优秀 应届毕业生招收项目管培生，通过‘群英汇’项目招收本科及以上的管培学员。 校企合作 •我们与58家高校签订校企合作协议，稳定重点渠道人才输送，增设与大学生面对面交流 的机会，稳步搭建高校人才蓄水池。 本地招聘 •立足本地发展，我们携手专业招聘机构，与河南省内招聘机构合作开展专业化的大学生 校招工作，全面提升校园招聘的效率和水平。 线上招聘 •我们与多个国内知名招聘服务机构合作，为大学生人才招聘打造专属互联网平台。  在社会招聘方面，双汇发展积极通过当地劳动局或人才市场开展本土化招聘，并通过扩大内部推荐和举办专项招聘等形式不断助力公司丰富人才储备。 ——《双汇发展2023ESG报告》"
+                placeholder="在校园招聘方面，双汇发展积极推进校企合作，推行管理培训生计划，给予优秀在校学生实习机会，并为表现突出者提供留用机会。我们依据《大学生引进培养管理制度》对校园招聘的薪酬待遇、培养措施、培养周期等内容进行系统性的规范和优化，以确保招聘流程的公正、公平和透明。我们开展'领英汇'和'群英汇'校园招聘项目，通过'领英汇'项目面向国内外高校的优秀 应届毕业生招收项目管培生，通过'群英汇'项目招收本科及以上的管培学员。 校企合作 •我们与58家高校签订校企合作协议，稳定重点渠道人才输送，增设与大学生面对面交流 的机会，稳步搭建高校人才蓄水池。 本地招聘 •立足本地发展，我们携手专业招聘机构，与河南省内招聘机构合作开展专业化的大学生 校招工作，全面提升校园招聘的效率和水平。 线上招聘 •我们与多个国内知名招聘服务机构合作，为大学生人才招聘打造专属互联网平台。  在社会招聘方面，双汇发展积极通过当地劳动局或人才市场开展本土化招聘，并通过扩大内部推荐和举办专项招聘等形式不断助力公司丰富人才储备。 ——《双汇发展2023ESG报告》"
               />
             </el-form-item>
           </el-form>
@@ -439,7 +439,7 @@
                 placeholder="本年度，本集团在国内中高端人才职业发展知 名平台「猎聘」主办的2023年度「客户成功奖」 评选活动中，凭借本集团多元化人才沟通桥梁、重视人才互动与求职体验，人才吸引指数及增长率，团队招聘行为数据等评审维度，从 数百家活跃企业中脱颖而出，荣获猎聘华北区「社会责任奖」殊荣。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="honorAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -448,7 +448,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.honorAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -517,7 +517,7 @@ Wind评级"
                 v-model="formData.fairTrade"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展严格遵守《中华人民共和国劳动法》《中华人民共和国劳动合同法》等国家法律法规的要求，遵循国际劳工组织的核心公约和劳工标准，并积极发挥职工代表大会的作用，使所有员工的合法权益得到充分保障和尊重。 双汇发展坚持‘公平、公正、公开’的雇佣原则，制定了《人力资源管理标准化》等规章制度，合法合规雇佣，广泛吸引人才。
+                placeholder="双汇发展严格遵守《中华人民共和国劳动法》《中华人民共和国劳动合同法》等国家法律法规的要求，遵循国际劳工组织的核心公约和劳工标准，并积极发挥职工代表大会的作用，使所有员工的合法权益得到充分保障和尊重。 双汇发展坚持'公平、公正、公开'的雇佣原则，制定了《人力资源管理标准化》等规章制度，合法合规雇佣，广泛吸引人才。
  ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
@@ -633,7 +633,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.thirdPartyAudit"
                 type="textarea"
                 :rows="4"
               />
@@ -712,7 +712,7 @@ Wind评级"
                 v-model="formData.capacityBuildingSupport"
                 type="textarea"
                 :rows="4"
-                placeholder="业务、研发岗位员工薪酬奖励机制 报告期内，为助力‘十四五’规划的顺利落实，我们针对业务、研发岗位的员工实施奖励机制， 并对收入提取办法进一步优化，按阶梯式提取标准确定部门总收入，以’多销多得‘的方式增加员工收入，进一步激励他们发挥更高的工作热情，坚持与员工共创、共享、共赢。 ——《双汇发展2023年ESG报告》"
+                placeholder="业务、研发岗位员工薪酬奖励机制 报告期内，为助力'十四五'规划的顺利落实，我们针对业务、研发岗位的员工实施奖励机制， 并对收入提取办法进一步优化，按阶梯式提取标准确定部门总收入，以'多销多得'的方式增加员工收入，进一步激励他们发挥更高的工作热情，坚持与员工共创、共享、共赢。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="绩效反馈与申诉情况">
@@ -741,7 +741,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.capacityBuildingSupport"
+                v-model="formData.genderSalaryRatio"
                 type="textarea"
                 :rows="4"
               />
@@ -756,7 +756,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.capacityBuildingSupport"
+                v-model="formData.startingSalaryVsLocalMinimum"
                 type="textarea"
                 :rows="4"
               />
@@ -771,7 +771,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.capacityBuildingSupport"
+                v-model="formData.equityIncentive"
                 type="textarea"
                 :rows="4"
               />
@@ -841,7 +841,7 @@ Wind评级"
                 v-model="formData.fairTrade"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展关心员工生活，组织各种暖心活动以提升员工在双汇工作的满意度。我们持续多年开展‘夏送清凉’活动，为酷暑中坚守一线作业的员工送去防暑降温用品。报告期内，我们已对总部、异地61家单位11,948名高温岗位人员，发放降温物品34.7 万元。我们还持续关注困难员工的生活情况，帮助他们度过生活上的难关。此外，我们关心员工子女的教育情况，鼓励员工子女均接受高等教育，已连续13年为12,378名考取大学的职工子女设立‘金秋奖学金’，累计发放 3,200万元，助力他们梦想启航。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展关心员工生活，组织各种暖心活动以提升员工在双汇工作的满意度。我们持续多年开展'夏送清凉'活动，为酷暑中坚守一线作业的员工送去防暑降温用品。报告期内，我们已对总部、异地61家单位11,948名高温岗位人员，发放降温物品34.7 万元。我们还持续关注困难员工的生活情况，帮助他们度过生活上的难关。此外，我们关心员工子女的教育情况，鼓励员工子女均接受高等教育，已连续13年为12,378名考取大学的职工子女设立'金秋奖学金'，累计发放 3,200万元，助力他们梦想启航。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="rightsAttachmentFileList">
@@ -1027,7 +1027,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.femaleManagerRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1045,7 +1045,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.femaleEmpowermentTrainingRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1063,7 +1063,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.femaleEmpowermentTrainingHours"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1080,14 +1080,14 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.infoPrivacyTrainingDescription"
+                v-model="formData.femaleFacilitiesAndCourses"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="我们致力于保障女性员工的劳动权益，制定并发布了《女工劳动保护规定》，明确规定尊重女性工作的权利，并在各级管理职位中对能力突出、表现优异的女性进行优先培养及录用。 •三期(孕期、产期、哺乳期)女工工作安排避免重体力劳动 为孕期、哺乳期女职工提供爱心母婴室，双汇总部大楼爱心母婴室荣获漯河市‘五星级爱心母婴室’。同时，我们在三八妇女节发放关爱物资，合计发放慰问品16,060份，金额 89.7万元。 ——《双汇发展2023年ESG报告》"
+                placeholder="我们致力于保障女性员工的劳动权益，制定并发布了《女工劳动保护规定》，明确规定尊重女性工作的权利，并在各级管理职位中对能力突出、表现优异的女性进行优先培养及录用。 •三期(孕期、产期、哺乳期)女工工作安排避免重体力劳动 为孕期、哺乳期女职工提供爱心母婴室，双汇总部大楼爱心母婴室荣获漯河市'五星级爱心母婴室'。同时，我们在三八妇女节发放关爱物资，合计发放慰问品16,060份，金额 89.7万元。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="femaleAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1096,7 +1096,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.femaleAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1144,7 +1144,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.disabledEmployeeCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1160,7 +1160,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.disabledEmployeeRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1182,7 +1182,7 @@ Wind评级"
                 :rows="4"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="disabledAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1191,7 +1191,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.disabledAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1245,7 +1245,7 @@ Wind评级"
                 placeholder="集团内，P.A.C.E.项目的持续推进效果显著，我们不断深化项目，从赋能女性员工转而提倡两性融合，开放男性员工加入培训中，促进包容与公平的环境。项目推行至今，已有教练级讲师3位，优秀讲师181位，从试点运行截止2022年12月31日已有 5,224位员工受惠(其中女性占5,004位，男性220位)，活动覆盖20家工厂。根据2022财年年度评价，主管对员工的满意度训 前为70.1%，训后为81.1%;受训员工幸福度从92.9%提升至97.5%。 ——《中国旺旺2022/23年环境、社会及管治报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="trainingAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1254,7 +1254,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.trainingAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1280,7 +1280,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.antiHarassmentTrainingCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1363,7 +1363,7 @@ Wind评级"
                 placeholder="我们建立了三级培训体系，为不同职业发展需求的员工打造定制化的培养计划，将人才培养与梯队建设并举，为每一位员工提供全职业周期的培训资源。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="trainingAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1372,7 +1372,7 @@ Wind评级"
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.trainingAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1400,7 +1400,7 @@ Wind评级"
                 v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="4"
-                placeholder="公司以‘34885’教育培训体系为抓手，采用名师课堂、团队学习、外部对标、线上学习、实践锻炼等多种方式开展广泛而精准的人才培育，打造学习型组织，帮助员工实现与公司的共同发展。同时，持续推进网络学习平台建设。截至 2023 年末，平台账号共激活 6977 个，开设课程共计 1496 门，其中内部课程占比 58%，外部课程占比 42%，覆盖政治、 党建、战略、市场、销售、供应链、生产、安全、财务等 12 大类，以丰富的学习资源满足广大经理人和员工学习发展需要。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="公司以'34885'教育培训体系为抓手，采用名师课堂、团队学习、外部对标、线上学习、实践锻炼等多种方式开展广泛而精准的人才培育，打造学习型组织，帮助员工实现与公司的共同发展。同时，持续推进网络学习平台建设。截至 2023 年末，平台账号共激活 6977 个，开设课程共计 1496 门，其中内部课程占比 58%，外部课程占比 42%，覆盖政治、 党建、战略、市场、销售、供应链、生产、安全、财务等 12 大类，以丰富的学习资源满足广大经理人和员工学习发展需要。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="人才培养管理组织架构">
@@ -1416,7 +1416,7 @@ Wind评级"
                 v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展为加强人才梯队建设，推动企业转型升级，积极完善培训体系、丰富培训内容。我们遵照《项目公司新入职员工三级培训管理规定》《内训师制度》《‘领英汇’管培生培养实施方案》《培训管理制度》等内部培训制度，于2023年编制了《数字化学习平台课程管理规范》， 结合数字化学习平台的推广运用情况，提升线上培训课程使用频率，提升全方位培训能力。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展为加强人才梯队建设，推动企业转型升级，积极完善培训体系、丰富培训内容。我们遵照《项目公司新入职员工三级培训管理规定》《内训师制度》《'领英汇'管培生培养实施方案》《培训管理制度》等内部培训制度，于2023年编制了《数字化学习平台课程管理规范》， 结合数字化学习平台的推广运用情况，提升线上培训课程使用频率，提升全方位培训能力。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item>
@@ -1428,7 +1428,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.annualTrainingExpenditure"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1444,7 +1444,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.annualTrainingExpenditure"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1462,7 +1462,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.avgTrainingHoursByGender"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1480,7 +1480,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.avgTrainingHoursByMiddleManager"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1498,7 +1498,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.avgTrainingHoursBySeniorManager"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1516,7 +1516,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.avgTrainingHoursByOther"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1534,7 +1534,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.trainingCoverageRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1552,7 +1552,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.trainingRateByGender"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1570,7 +1570,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.trainingRateByMiddleManager"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1588,7 +1588,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.trainingRateBySeniorManager"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1606,7 +1606,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.trainingRateByOther"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1624,7 +1624,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.overallTrainingPassRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1642,7 +1642,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.trainingPassRateByGender"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1660,7 +1660,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.trainingPassRateByPosition"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1707,7 +1707,7 @@ Wind评级"
                 v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="6"
-                placeholder="双汇发展贯彻‘公开竞聘、逐级提名、分层任命’的用人原则，明确晋升标准和晋升路径，实现 人尽其才的选拔机制，促进企业内部人员正常流动和人才梯队建设。本年度，我们修订《人力资源标准化》制度，完善管理人员竞聘原则，明确后备管理人员竞聘为正式管理人员后分别进行任职满3个月和满6个月的考评，着力推动公平竞争的用人氛围。 我们秉承‘能者上、平者让、庸者下’的核心理念，引导管理职位员工从事财务、技术、人事、生 产、质量、设备、法务、营销、新电商等领域，通过垂直管理通道，深耕领域技能，进而提升领导力和综合素质。 针对由‘领英汇’和‘群英汇’招聘项目进入公司的员工，我们制定了全方位的管培生晋升发展路 径，‘领英汇’管培生将晋升为业务骨干，并成长至中层管理人员，并以成为公司高层为培养目标;‘群英汇’管培学员则由一线员工晋升至班长、调度等基层管理人员，再至车间主任、各系统部长等中层管理人员，培养目标为项目公司、集团或事业部中高层。通过公开、透明的晋升路径，充分发挥员工潜能，并鼓励优秀管培生可以在培养过程中根据部门需求参与竞聘。 ——《双汇发展2023年ESG报告》"
+                placeholder="双汇发展贯彻'公开竞聘、逐级提名、分层任命'的用人原则，明确晋升标准和晋升路径，实现 人尽其才的选拔机制，促进企业内部人员正常流动和人才梯队建设。本年度，我们修订《人力资源标准化》制度，完善管理人员竞聘原则，明确后备管理人员竞聘为正式管理人员后分别进行任职满3个月和满6个月的考评，着力推动公平竞争的用人氛围。 我们秉承'能者上、平者让、庸者下'的核心理念，引导管理职位员工从事财务、技术、人事、生 产、质量、设备、法务、营销、新电商等领域，通过垂直管理通道，深耕领域技能，进而提升领导力和综合素质。 针对由'领英汇'和'群英汇'招聘项目进入公司的员工，我们制定了全方位的管培生晋升发展路 径，'领英汇'管培生将晋升为业务骨干，并成长至中层管理人员，并以成为公司高层为培养目标;'群英汇'管培学员则由一线员工晋升至班长、调度等基层管理人员，再至车间主任、各系统部长等中层管理人员，培养目标为项目公司、集团或事业部中高层。通过公开、透明的晋升路径，充分发挥员工潜能，并鼓励优秀管培生可以在培养过程中根据部门需求参与竞聘。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="接受定期绩效与职业发展考核的员工占比">
@@ -1738,7 +1738,7 @@ Wind评级"
                 v-model="formData.privacyLeakIncidents"
                 type="textarea"
                 :rows="6"
-                placeholder="本集团会通过系统的人才盘点工作，对该年度员工工作和发展进行综合评价，结合员工的工作经历和能力，提供符合员工个人工 作愿望的发展机会，实现‘专业通道’和‘管理通道’的双通道晋陞路线。未来，我们会给予员工更多工作轮调、岗位轮岗等机会，知人善任、人尽其才，组织实现人才效能。 ——《大成食品2023年环境、社会及管治报告》"
+                placeholder="本集团会通过系统的人才盘点工作，对该年度员工工作和发展进行综合评价，结合员工的工作经历和能力，提供符合员工个人工 作愿望的发展机会，实现'专业通道'和'管理通道'的双通道晋陞路线。未来，我们会给予员工更多工作轮调、岗位轮岗等机会，知人善任、人尽其才，组织实现人才效能。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
           </el-form>
@@ -1886,7 +1886,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.unionMemberCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1902,7 +1902,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.employeeCommunicationResolutionRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1939,7 +1939,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.newOccupationalDiseaseCases"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1957,7 +1957,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.occupationalDiseaseRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1975,7 +1975,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.healthMonitoringCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2030,7 +2030,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.healthMonitoringCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2086,7 +2086,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.totalOccupationalHealthTraining"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2104,7 +2104,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.avgHealthSafetyTrainingCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2120,7 +2120,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.totalHealthSafetyTrainingHours"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2136,7 +2136,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.avgHealthSafetyTrainingHours"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2175,7 +2175,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.employeeCasualtyCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2191,7 +2191,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.workRelatedCasualtyRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2348,33 +2348,55 @@ const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
-  policyCommitment: "", // 目标、方针及承诺
-  goalCompletionStatus: "", // 目标完成情况
-  organizationStructure: "", // 组织架构
-  policyAndRegulation: "", // 政策与制度
-  riskManagement: "", // 风险管理
-  digitalManagementPlatform: "", // 供应商管理数字化平台
-  esgTrainingSystem: "", // 供应商ESG培训体系
-  trainingAttachmentFileList: [], // 附件上传 (宣贯及培训)
-  esgTrainingCount: "", // 开展供应商ESG培训次数
-  esgTrainingParticipationRate: "", // 供应商参与ESG培训百分比
-  sustainableProcurementRate: "", // 公司内部通过可持续采购培训的采购员比例
-  esgReviewAssessment: "", // 供应商ESG审查与评估
-  codeOfConductSigning: "", // 签署供应商行为准则
-  envLaborClauseSupplierRate: "", // 签订包含环境和劳工要求条款的供应商百分比
-  socialImpactAssessmentSupplierCount: "", // 开展了社会影响评估的供应商数量
-  environmentalImpactSupplierCount: "", // 开展了环境影响评估的供应商数量
-  negativeSocialImpactSupplierCount: "", // 经确定为具有实际和潜在重大负面社会影响的供应商数量
-  negativeEnvironmentalImpactSupplierCount: "", // 经确定为具有实际和潜在重大负面环境影响的供应商数量
-  supplierCertificationCount: "", // 供应商认证及审核
-  supplierCertificationRate: "", // 供应商认证及审核率
-  supplierTotalCount: "", // 供应商总数
-  localSupplierPurchaseRate: "", // 向当地供应商采购比例
-  newSupplierCount: "", // 新增供应商数量
-  socialStandardNewSupplierRate: "", // 使用社会标准筛选的新供应商百分比
-  fairTrade: "", // 公平交易
-  capacityBuildingSupport: "", // 能力建设支持
-  rightsAttachmentFileList: [] // 附件上传 (供应商/承包商权益保护)
+  permanentEmployeeCount: "", // 年末长期员工总数
+  temporaryEmployeeCount: "", // 年末临时员工总数
+  fullTimeEmployeeCount: "", // 年末全职员工总数
+  partTimeEmployeeCount: "", // 年末兼职员工总数
+  employeeByEthnicity: "", // 按民族划分的员工数量及比例
+  employeeByPosition: "", // 按职级划分的员工数量及比例
+  campusRecruitmentCount: "", // 校园招聘的新员工数量
+  socialRecruitmentCount: "", // 社会招聘的新员工数量
+  jobPositionInfo: "", // 岗位情况
+  honorAttachmentFileList: [], // 荣誉或认可 附件上传
+  rightsAttachmentFileList: [], // 基本权益保障 附件上传
+  femaleAttachmentFileList: [], // 女性员工 附件上传
+  disabledAttachmentFileList: [], // 残障人士雇佣 附件上传
+  trainingAttachmentFileList: [], // 培训与考核 附件上传
+  thirdPartyAudit: "", // 第三方审核与认证
+  genderSalaryRatio: "", // 男女员工薪酬比例
+  startingSalaryVsLocalMinimum: "", // 起薪水平与当地最低工资之比
+  equityIncentive: "", // 股权激励与员工持股
+  femaleManagerRatio: "", // 女性管理人员比例
+  femaleEmpowermentTrainingRatio: "", // 女性职业赋能及领导力培训的员工占比
+  femaleEmpowermentTrainingHours: "", // 女性职业赋能及领导力培训的总培训时长
+  femaleFacilitiesAndCourses: "", // 女性设施与培训课程
+  disabledEmployeeCount: "", // 残障人士雇佣总数
+  disabledEmployeeRatio: "", // 残障人士雇佣比例
+  antiHarassmentTrainingCount: "", // 反骚扰、反歧视培训开展次数
+  annualTrainingExpenditure: "", // 年度培训支出金额
+  avgTrainingHoursByGender: "", // 按性别分类的员工平均培训小时数
+  avgTrainingHoursByMiddleManager: "", // 中层管理人员平均培训小时数
+  avgTrainingHoursBySeniorManager: "", // 高级管理人员/决策层平均培训小时数
+  avgTrainingHoursByOther: "", // 其他劳务关系人员平均培训小时数
+  trainingCoverageRate: "", // 员工培训覆盖率
+  trainingRateByGender: "", // 按性别分类的员工培训人数百分比
+  trainingRateByMiddleManager: "", // 中层管理人员培训人数百分比
+  trainingRateBySeniorManager: "", // 高级管理人员/决策层人员培训人数百分比
+  trainingRateByOther: "", // 其他劳务关系人员培训人数百分比
+  overallTrainingPassRate: "", // 培训考核总体通过率
+  trainingPassRateByGender: "", // 按性别划分培训考核通过率
+  trainingPassRateByPosition: "", // 按职级划分的培训考核通过率
+  unionMemberCount: "", // 工会会员或员工代表人数
+  employeeCommunicationResolutionRate: "", // 从业人员沟通及建议事件解决率
+  newOccupationalDiseaseCases: "", // 职业病新增病例
+  occupationalDiseaseRate: "", // 职业病发生率
+  healthMonitoringCount: "", // 接受职业健康监测的人数
+  totalOccupationalHealthTraining: "", // 职业健康培训累计人次
+  avgHealthSafetyTrainingCount: "", // 人均接受职业健康安全培训次数
+  totalHealthSafetyTrainingHours: "", // 职业健康安全培训总时长
+  avgHealthSafetyTrainingHours: "", // 人均接受职业健康安全培训时长
+  employeeCasualtyCount: "", // 员工伤亡人数
+  workRelatedCasualtyRate: "" // 因工伤亡率
 });
 
 // 文件上传处理
