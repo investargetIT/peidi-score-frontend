@@ -1982,7 +1982,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.healthMonitoringCount"
+                  v-model="formData.occupationalDiseaseExamCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2037,7 +2037,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.healthMonitoringCount"
+                  v-model="formData.occupationalHealthMonitoringCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2449,6 +2449,9 @@ const formData = ref({
   // 职业健康与安全
   newOccupationalDiseaseCases: "",
   occupationalDiseaseRate: "",
+  occupationalDiseaseExamCount: "",
+  occupationalDiseaseExamCoverageRate: "",
+  occupationalHealthMonitoringCount: "",
   healthMonitoringCount: "",
   totalOccupationalHealthTraining: "",
   avgHealthSafetyTrainingCount: "",
@@ -2469,7 +2472,6 @@ const formData = ref({
   antiHarassmentTrainingCoverageRate: "",
   collectiveBargainingCoverageRate: "",
   employeeRepresentativeMeetingCount: "",
-  occupationalDiseaseExamCoverageRate: "",
   workInjuryLostWorkdays: "",
   millionWorkHourLostTimeRate: "",
   millionWorkHourLTIR: "",
