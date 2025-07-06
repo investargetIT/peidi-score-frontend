@@ -662,125 +662,6 @@ Wind评级"
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
               </el-upload>
             </el-form-item>
-            <el-form-item label="育儿假">
-              <template #label>
-                <div>
-                  <span> 育儿假 </span>
-                  <EsgTooltip
-                    content="公司应披露以下信息： 1.按性别划分，有权享受育儿假的员工总数。 2.按性别划分，休育儿假的员工总数。 3.按性别划分，育儿假结束后在报告期内返岗的员工总数。 4.按性别划分，在育儿假结束后返岗且 12 个月后仍在职的员工总数。 5.按性别划分，休育儿假的员工的返岗率和留任率。 返岗率=（育儿假结束后返岗的员工总数/育儿假结束后应返岗的员工总数）× 100 留任率=（育儿假返岗后 12 个月仍在职的员工总数/报告期内育儿假结束后返岗的员工总数）× 100"
-                  />
-                </div>
-              </template>
-              <el-input
-                v-model="formData.parentalLeaveRightsDescription"
-                type="textarea"
-                :rows="4"
-              />
-            </el-form-item>
-            <el-form-item label="附件上传" prop="parentalLeaveAttachments">
-              <template #label>
-                <div>
-                  <span> 附件上传 </span>
-                  <EsgTooltip content="上传图片" />
-                </div>
-              </template>
-              <el-upload
-                class="upload-area"
-                v-model:file-list="formData.parentalLeaveAttachments"
-                :on-preview="handlePictureCardPreview"
-                :on-change="handleFileChange"
-                drag
-                :action="uploadUrl"
-                :auto-upload="true"
-                multiple
-                :headers="{
-                  Authorization: formatToken(getToken().accessToken)
-                }"
-                accept=".jpg,.jpeg,.png,.webp"
-              >
-                <el-button type="primary" :icon="Upload">上传附件</el-button>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="员工活动">
-              <template #label>
-                <div>
-                  <span> 员工活动 </span>
-                  <EsgTooltip
-                    content="为提升员工幸福感和对企业认同感而开展的员工活动的举办情况，如举办次数等。亮点活动应提供图文案例。"
-                  />
-                </div>
-              </template>
-              <el-input
-                v-model="formData.welfareCareMeasuresActivity"
-                type="textarea"
-                :rows="4"
-                placeholder="公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
-              />
-            </el-form-item>
-            <el-form-item label="附件上传" prop="employeeActivityAttachments">
-              <template #label>
-                <div>
-                  <span> 附件上传 </span>
-                  <EsgTooltip content="上传图片" />
-                </div>
-              </template>
-              <el-upload
-                class="upload-area"
-                v-model:file-list="formData.employeeActivityAttachments"
-                :on-preview="handlePictureCardPreview"
-                :on-change="handleFileChange"
-                drag
-                :action="uploadUrl"
-                :auto-upload="true"
-                multiple
-                :headers="{
-                  Authorization: formatToken(getToken().accessToken)
-                }"
-                accept=".jpg,.jpeg,.png,.webp"
-              >
-                <el-button type="primary" :icon="Upload">上传附件</el-button>
-              </el-upload>
-            </el-form-item>
-            <el-form-item style="margin-bottom: 35px">
-              <template #label>
-                <div>
-                  <span>
-                    福利与关怀支出
-                    <EsgTooltip
-                      content="公司每年用于员工福利及关怀措施的投入价值总和"
-                    />
-                  </span>
-                </div>
-              </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.welfareCareExpenditurePolicy"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>万元</span>
-              </div>
-            </el-form-item>
-            <el-form-item style="margin-bottom: 35px">
-              <template #label>
-                <div>
-                  <span>
-                    福利与关怀支出
-                    <EsgTooltip
-                      content="公司每年用于员工福利及关怀措施的投入价值总和"
-                    />
-                  </span>
-                </div>
-              </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.welfareCareExpenditureEvent"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>万元</span>
-              </div>
-            </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
@@ -1057,26 +938,6 @@ Wind评级"
               <div class="textContainer">
                 <el-input
                   v-model="formData.welfareCareExpenditurePolicy"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>万元</span>
-              </div>
-            </el-form-item>
-            <el-form-item style="margin-bottom: 35px">
-              <template #label>
-                <div>
-                  <span>
-                    福利与关怀支出
-                    <EsgTooltip
-                      content="公司每年用于员工福利及关怀措施的投入价值总和"
-                    />
-                  </span>
-                </div>
-              </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.welfareCareExpenditureEvent"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1574,7 +1435,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.annualTrainingExpenditure"
+                  v-model="formData.annualTrainingSessionCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1590,7 +1451,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.annualTrainingExpenditure"
+                  v-model="formData.annualTrainingExpenditureAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2565,7 +2426,8 @@ const formData = ref({
   talentReserveInventory: "",
   talentDevelopmentOrganization: "",
   // 培训统计
-  annualTrainingExpenditure: "",
+  annualTrainingSessionCount: "",
+  annualTrainingExpenditureAmount: "",
   avgTrainingHoursByGender: "",
   avgTrainingHoursByMiddleManager: "",
   avgTrainingHoursBySeniorManager: "",
