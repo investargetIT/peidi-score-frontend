@@ -1302,7 +1302,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.antiHarassmentTrainingCoverageRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1845,7 +1845,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.collectiveBargainingCoverageRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1861,7 +1861,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.employeeRepresentativeMeetingCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2000,7 +2000,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.occupationalDiseaseExamCoverageRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2214,7 +2214,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.workInjuryLostWorkdays"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2232,7 +2232,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.millionWorkHourLostTimeRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2250,7 +2250,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.millionWorkHourLTIR"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2268,7 +2268,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.millionWorkHourTRIR"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2284,7 +2284,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.workInjuryCompensationAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2465,7 +2465,16 @@ const formData = ref({
   turnoverCountByGender: "",
   turnoverCountByGenderResolution: "",
   turnoverCountByRegion: "",
-  turnoverCountByRegionResolution: ""
+  turnoverCountByRegionResolution: "",
+  antiHarassmentTrainingCoverageRate: "",
+  collectiveBargainingCoverageRate: "",
+  employeeRepresentativeMeetingCount: "",
+  occupationalDiseaseExamCoverageRate: "",
+  workInjuryLostWorkdays: "",
+  millionWorkHourLostTimeRate: "",
+  millionWorkHourLTIR: "",
+  millionWorkHourTRIR: "",
+  workInjuryCompensationAmount: ""
 });
 
 // 文件上传处理
