@@ -128,7 +128,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.employeeByEmploymentType"
                 type="textarea"
                 :rows="4"
               />
@@ -143,7 +143,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.researchTalentStructure"
                 type="textarea"
                 :rows="4"
               />
@@ -158,7 +158,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.newEmployeeByEthnicity"
                 type="textarea"
                 :rows="4"
               />
@@ -173,7 +173,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.newEmployeeByAgeGroup"
                 type="textarea"
                 :rows="4"
               />
@@ -188,7 +188,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.newEmployeeByGender"
                 type="textarea"
                 :rows="4"
               />
@@ -203,7 +203,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.organizationStructure"
+                v-model="formData.newEmployeeByRegion"
                 type="textarea"
                 :rows="4"
               />
@@ -2473,6 +2473,12 @@ const formData = ref({
   accessibilityFacilityAttachments: [], // 残障人士雇佣 附件上传
   antiHarassmentTrainingAttachments: [], // 培训与考核-反骚扰培训 附件上传
   talentDevelopmentAttachments: [], // 培训与考核-人才培养 附件上传
+  employeeByEmploymentType: "", // 按用工模式划分的员工数量及比例
+  researchTalentStructure: "", // 科研人才结构
+  newEmployeeByEthnicity: "", // 按民族划分的新员工组数和比例
+  newEmployeeByAgeGroup: "", // 按年龄组别划分的新员工总数和比例
+  newEmployeeByGender: "", // 按性别划分的新员工总数和比例
+  newEmployeeByRegion: "", // 按地区划分的新员工总数和比例
   thirdPartyAudit: "", // 第三方审核与认证
   genderSalaryRatio: "", // 男女员工薪酬比例
   startingSalaryVsLocalMinimum: "", // 起薪水平与当地最低工资之比
