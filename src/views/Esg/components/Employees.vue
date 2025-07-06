@@ -711,7 +711,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.employeeActivityDescription"
+                v-model="formData.welfareCareMeasuresActivity"
                 type="textarea"
                 :rows="4"
                 placeholder="公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -993,7 +993,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.welfareCareActivity"
+                v-model="formData.welfareCareEmployeeEvent"
                 type="textarea"
                 :rows="4"
                 placeholder="公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -1076,7 +1076,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.infoPrivacyTrainingDescription"
+                v-model="formData.diversityInclusionPolicy"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -1093,7 +1093,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.infoPrivacyTrainingDescription"
+                v-model="formData.discriminationResponseMechanism"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
