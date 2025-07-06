@@ -672,7 +672,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.parentalLeaveDescription"
+                v-model="formData.parentalLeaveRightsDescription"
                 type="textarea"
                 :rows="4"
               />
@@ -754,7 +754,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.welfareCareExpenditure"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -808,7 +808,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.capacityBuildingSupport"
+                v-model="formData.compensationIncentiveMeasures"
                 type="textarea"
                 :rows="4"
                 placeholder="业务、研发岗位员工薪酬奖励机制 报告期内，为助力'十四五'规划的顺利落实，我们针对业务、研发岗位的员工实施奖励机制， 并对收入提取办法进一步优化，按阶梯式提取标准确定部门总收入，以'多销多得'的方式增加员工收入，进一步激励他们发挥更高的工作热情，坚持与员工共创、共享、共赢。 ——《双汇发展2023年ESG报告》"
@@ -824,7 +824,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.capacityBuildingSupport"
+                v-model="formData.performanceFeedbackAppeal"
                 type="textarea"
                 :rows="4"
                 placeholder="当员工认为个人权益受到侵害，或对公司的经营管理 措施有不同意见时，可选择适当的申诉渠道向公司申 诉，并由公司相应人员接待记录并处理。申诉首先应 本着逐级反映的原则在本部门内进行反映，在本部门 反映未果的情况下可以通过工会组织、人力资源部、 安保信访等部门向公司申诉。 申诉方式可选用面谈或书面两种形式;如选用书面方式，申诉书须具实名，否则不予受理。 公司在接到员工申诉后，应认真负责、及时公正地对申 诉事件涉及的相关人事进行调查，根据调查结果尽快 作出处理决定。处理决定将 通过书面、电子邮件、电话或当面反馈的形式通报给申诉者。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -885,9 +885,10 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.capacityBuildingSupport"
+                v-model="formData.compensationIncentiveInvestment"
                 type="textarea"
                 :rows="4"
+                placeholder="本公司制定了《员工薪酬管理规定》，使薪酬标准对内具有公平性、对外具有竞争性，充分调动员工的工作热情。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
           </el-form>
@@ -977,7 +978,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.parentalLeaveDescription"
+                v-model="formData.parentalLeaveWelfareDescription"
                 type="textarea"
                 :rows="4"
               />
@@ -1035,7 +1036,7 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.welfareCareExpenditure"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
