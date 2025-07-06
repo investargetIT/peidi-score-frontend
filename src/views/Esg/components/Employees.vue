@@ -276,7 +276,7 @@
               <el-input
                 v-model="formData.jobPositionInfo"
                 type="textarea"
-                :rows="4"
+                :rows="6"
                 placeholder="在校园招聘方面，双汇发展积极推进校企合作，推行管理培训生计划，给予优秀在校学生实习机会，并为表现突出者提供留用机会。我们依据《大学生引进培养管理制度》对校园招聘的薪酬待遇、培养措施、培养周期等内容进行系统性的规范和优化，以确保招聘流程的公正、公平和透明。我们开展'领英汇'和'群英汇'校园招聘项目，通过'领英汇'项目面向国内外高校的优秀 应届毕业生招收项目管培生，通过'群英汇'项目招收本科及以上的管培学员。 校企合作 •我们与58家高校签订校企合作协议，稳定重点渠道人才输送，增设与大学生面对面交流 的机会，稳步搭建高校人才蓄水池。 本地招聘 •立足本地发展，我们携手专业招聘机构，与河南省内招聘机构合作开展专业化的大学生 校招工作，全面提升校园招聘的效率和水平。 线上招聘 •我们与多个国内知名招聘服务机构合作，为大学生人才招聘打造专属互联网平台。  在社会招聘方面，双汇发展积极通过当地劳动局或人才市场开展本土化招聘，并通过扩大内部推荐和举办专项招聘等形式不断助力公司丰富人才储备。 ——《双汇发展2023ESG报告》"
               />
             </el-form-item>
@@ -321,7 +321,7 @@
                   <span>离职员工总数</span>
                   <el-input
                     style="width: 100px"
-                    v-model="formData.shareholderMeetingCount"
+                    v-model="formData.turnoverCountByAgeGroup"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
                   />
@@ -331,7 +331,7 @@
                   <span>流动率</span>
                   <el-input
                     style="width: 100px"
-                    v-model="formData.shareholderMeetingResolutionCount"
+                    v-model="formData.turnoverCountByAgeGroupResolution"
                     :formatter="onlyPositiveNumber"
                     :parser="onlyPositiveNumber"
                   />
@@ -353,7 +353,7 @@
                   <span>离职员工总数</span>
                   <el-input
                     style="width: 100px"
-                    v-model="formData.shareholderMeetingCount"
+                    v-model="formData.turnoverCountByGender"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
                   />
@@ -363,7 +363,7 @@
                   <span>流动率</span>
                   <el-input
                     style="width: 100px"
-                    v-model="formData.shareholderMeetingResolutionCount"
+                    v-model="formData.turnoverCountByGenderResolution"
                     :formatter="onlyPositiveNumber"
                     :parser="onlyPositiveNumber"
                   />
@@ -385,7 +385,7 @@
                   <span>离职员工总数</span>
                   <el-input
                     style="width: 100px"
-                    v-model="formData.shareholderMeetingCount"
+                    v-model="formData.turnoverCountByRegion"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
                   />
@@ -395,7 +395,7 @@
                   <span>流动率</span>
                   <el-input
                     style="width: 100px"
-                    v-model="formData.shareholderMeetingResolutionCount"
+                    v-model="formData.turnoverCountByRegionResolution"
                     :formatter="onlyPositiveNumber"
                     :parser="onlyPositiveNumber"
                   />
@@ -499,7 +499,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.fairEmploymentPolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展坚持公平、多元、包容的理念，实行男女同工同酬，确保在雇佣环节不存在任何因种族、肤色、宗教、民族、性别、年龄、残疾等原因所导致的歧视行为。本公司坚定践行多元化雇佣政策，积极为包括退役军人、残疾人和女性员工在内的潜在候选人提供全方位的支持与关怀。
@@ -514,7 +514,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.employeeHandbookDescription"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展严格遵守《中华人民共和国劳动法》《中华人民共和国劳动合同法》等国家法律法规的要求，遵循国际劳工组织的核心公约和劳工标准，并积极发挥职工代表大会的作用，使所有员工的合法权益得到充分保障和尊重。 双汇发展坚持'公平、公正、公开'的雇佣原则，制定了《人力资源管理标准化》等规章制度，合法合规雇佣，广泛吸引人才。
@@ -531,7 +531,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.antiChildLaborPolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="我们明确禁止任何雇佣童工及强制劳动行为，为确保本公司聘用的员工均达到法定年龄，我们在雇佣环节开展入职身份证件查验和信息化系统登记等工作，保障员工及潜在候选人知悉公司相关规定，一旦发生违规事件，以零容忍态度严肃处理。报告期内，公司未发生任何违反与雇佣童工和强迫劳动法律法规相关的事件。 ——《双汇发展2023年ESG报告》"
@@ -547,7 +547,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.illegalEmploymentDisclosure"
                 type="textarea"
                 :rows="4"
               />
@@ -562,7 +562,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.employeeSalarySocialSecurity"
                 type="textarea"
                 :rows="4"
                 placeholder="同时，公司建立健全综合福利保障体系，为员工提供补充医疗保险和意外保险，不断提高员工重特大疾病保障水平。社会保险覆盖率100%，员工平均带薪年休假12天。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -578,7 +578,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.workingHoursLeavePolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="在依法签订劳动合同、缴纳五险一金的基础上，我们积极维护员工的休息休假权利，并确保病假、产休假、陪产看护、哺乳期关怀等各项福利措施得到有效执行。 ——《双汇发展2023年ESG报告》"
@@ -594,7 +594,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.securityHumanRightsTraining"
                 type="textarea"
                 :rows="4"
               />
@@ -672,7 +672,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.parentalLeaveDescription"
                 type="textarea"
                 :rows="4"
               />
@@ -711,7 +711,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.employeeActivityDescription"
                 type="textarea"
                 :rows="4"
                 placeholder="公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -792,7 +792,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.compensationIncentivePolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="本公司制定了《员工薪酬管理规定》，使薪酬标准对内具有公平性、对外具有竞争性，充分调动员工的工作热情。 ——《双汇发展2023年ESG报告》"
@@ -921,7 +921,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.welfareCarePolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="旺旺坚信员工是企业发展的重要基石。报告期内，我们持续修订了11个内部招聘流程，着力优化编制及薪资内容。我 们开展人资组织优化，调整集团分公司人 资团队结构， 提升共享人力资源服务覆 盖比，打造有温度、有责任的僱主品牌形 象。报告期内，旺旺已提升共享人力资源 服务比至1:550。旺旺坚持「以人为本」的发展策略， 为员工创造幸福有爱的工作环境，培养忠 于旺旺事业、志同道合的员工队伍。我们建立了完善的员工福利体系，包括年节福 利、常规福利和其他福利等，从健康、经 济、家庭与个人、工作生活平衡等多方面 提供保障，激励员工实现长足发展。 ——《中国旺旺2022/23年环境、社会及管治报告》"
@@ -937,7 +937,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.welfareCareActivity"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展关心员工生活，组织各种暖心活动以提升员工在双汇工作的满意度。我们持续多年开展'夏送清凉'活动，为酷暑中坚守一线作业的员工送去防暑降温用品。报告期内，我们已对总部、异地61家单位11,948名高温岗位人员，发放降温物品34.7 万元。我们还持续关注困难员工的生活情况，帮助他们度过生活上的难关。此外，我们关心员工子女的教育情况，鼓励员工子女均接受高等教育，已连续13年为12,378名考取大学的职工子女设立'金秋奖学金'，累计发放 3,200万元，助力他们梦想启航。 ——《双汇发展2023年ESG报告》"
@@ -977,7 +977,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.parentalLeaveDescription"
                 type="textarea"
                 :rows="4"
               />
@@ -992,7 +992,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.welfareCareActivity"
                 type="textarea"
                 :rows="4"
                 placeholder="公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -2513,7 +2513,10 @@ const formData = ref({
   totalHealthSafetyTrainingHours: "", // 职业健康安全培训总时长
   avgHealthSafetyTrainingHours: "", // 人均接受职业健康安全培训时长
   employeeCasualtyCount: "", // 员工伤亡人数
-  workRelatedCasualtyRate: "" // 因工伤亡率
+  workRelatedCasualtyRate: "", // 因工伤亡率
+  turnoverCountByAgeGroup: "", // 按年龄组别划分的离职员工总数
+  turnoverCountByGender: "", // 按性别划分的离职员工总数
+  turnoverCountByRegion: "" // 按地区划分的离职员工总数
 });
 
 // 文件上传处理
