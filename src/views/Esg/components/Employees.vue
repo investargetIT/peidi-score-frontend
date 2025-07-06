@@ -1277,7 +1277,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.accessibilityFacilityDescription"
                 type="textarea"
                 :rows="4"
               />
@@ -1342,7 +1342,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.antiHarassmentTrainingDescription"
                 type="textarea"
                 :rows="4"
                 placeholder="集团内，P.A.C.E.项目的持续推进效果显著，我们不断深化项目，从赋能女性员工转而提倡两性融合，开放男性员工加入培训中，促进包容与公平的环境。项目推行至今，已有教练级讲师3位，优秀讲师181位，从试点运行截止2022年12月31日已有 5,224位员工受惠(其中女性占5,004位，男性220位)，活动覆盖20家工厂。根据2022财年年度评价，主管对员工的满意度训 前为70.1%，训后为81.1%;受训员工幸福度从92.9%提升至97.5%。 ——《中国旺旺2022/23年环境、社会及管治报告》"
@@ -1447,7 +1447,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.talentDevelopmentConcept"
                 type="textarea"
                 :rows="4"
                 placeholder="本集团以向全体员工提供理想之终身职业为己任，重视员工个人技能提升和职业发展，秉承 「诚信、谦和、前瞻」的企业文化理念，构建完 善的学习发展体系。本集团涉足多领域专业，并基于各事业群为单位进行项目制培训。本集团还根据各事业群发展需求、员工岗位和职级，以及员工个人培训意愿，设计有针对性的 培训课程并开展对应的培训计划，持续提升员工的管理及专业技巧和晋陞机会。 ——《大成食品2023年环境、社会及管治报告》"
@@ -1463,7 +1463,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.talentDevelopmentSystem"
                 type="textarea"
                 :rows="4"
                 placeholder="我们建立了三级培训体系，为不同职业发展需求的员工打造定制化的培养计划，将人才培养与梯队建设并举，为每一位员工提供全职业周期的培训资源。 ——《双汇发展2023年ESG报告》"
@@ -1503,7 +1503,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.talentDevelopmentCategory"
                 type="textarea"
                 :rows="4"
                 placeholder="公司以'34885'教育培训体系为抓手，采用名师课堂、团队学习、外部对标、线上学习、实践锻炼等多种方式开展广泛而精准的人才培育，打造学习型组织，帮助员工实现与公司的共同发展。同时，持续推进网络学习平台建设。截至 2023 年末，平台账号共激活 6977 个，开设课程共计 1496 门，其中内部课程占比 58%，外部课程占比 42%，覆盖政治、 党建、战略、市场、销售、供应链、生产、安全、财务等 12 大类，以丰富的学习资源满足广大经理人和员工学习发展需要。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -1810,7 +1810,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.promotionDevelopmentPath"
                 type="textarea"
                 :rows="6"
                 placeholder="双汇发展贯彻'公开竞聘、逐级提名、分层任命'的用人原则，明确晋升标准和晋升路径，实现 人尽其才的选拔机制，促进企业内部人员正常流动和人才梯队建设。本年度，我们修订《人力资源标准化》制度，完善管理人员竞聘原则，明确后备管理人员竞聘为正式管理人员后分别进行任职满3个月和满6个月的考评，着力推动公平竞争的用人氛围。 我们秉承'能者上、平者让、庸者下'的核心理念，引导管理职位员工从事财务、技术、人事、生 产、质量、设备、法务、营销、新电商等领域，通过垂直管理通道，深耕领域技能，进而提升领导力和综合素质。 针对由'领英汇'和'群英汇'招聘项目进入公司的员工，我们制定了全方位的管培生晋升发展路 径，'领英汇'管培生将晋升为业务骨干，并成长至中层管理人员，并以成为公司高层为培养目标;'群英汇'管培学员则由一线员工晋升至班长、调度等基层管理人员，再至车间主任、各系统部长等中层管理人员，培养目标为项目公司、集团或事业部中高层。通过公开、透明的晋升路径，充分发挥员工潜能，并鼓励优秀管培生可以在培养过程中根据部门需求参与竞聘。 ——《双汇发展2023年ESG报告》"
@@ -1826,7 +1826,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.regularPerformanceAssessment"
                 type="textarea"
                 :rows="6"
               />
@@ -1841,7 +1841,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.talentReserveInventory"
                 type="textarea"
                 :rows="6"
                 placeholder="本集团会通过系统的人才盘点工作，对该年度员工工作和发展进行综合评价，结合员工的工作经历和能力，提供符合员工个人工 作愿望的发展机会，实现'专业通道'和'管理通道'的双通道晋陞路线。未来，我们会给予员工更多工作轮调、岗位轮岗等机会，知人善任、人尽其才，组织实现人才效能。 ——《大成食品2023年环境、社会及管治报告》"
@@ -1884,7 +1884,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.employeeCommunicationPolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展严格遵循《中华人民共和国工会法》《集体合同规定》及所在地相关法律法规，成立运营地的各级工会组织，与员工开展建设性的对话，双汇发展尊重并充分听取来自员工的意见和反馈，不仅提高员工在公司发展进程中的参与度， 还有效增强团队凝聚力，进一步促进公司发展。 ——《双汇发展2023年ESG报告》"
@@ -1900,7 +1900,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.employeeCommunicationChannel"
                 type="textarea"
                 :rows="4"
                 placeholder="我们积极搭建包括举报热线、人力资源热线、 员工座谈会、职工代表大会在内的信息反馈渠道，确保员工申诉有途径、权益有保障。2023年， 本公司召开大学生见面会、职工座谈会和年度职工代表大会及时获取并解决员工诉求。 ——《双汇发展2023年ESG报告》"
@@ -1977,7 +1977,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.employeeSatisfactionSurvey"
                 type="textarea"
                 :rows="4"
                 placeholder="集团全力打造幸福工程，提升员工幸福感。旺旺建立了集满意度和幸福度于一 体的员工幸福指数评价体系，作为评估旺旺开展各项关怀员工措施的实际成效诊断 工具。员工幸福指数评价体系每年进行指 标优化调整，综合衡量薪酬福利、工作内 容、工作环境、职业发展等维度，帮助管 理者发现问题、找到员工的共同诉求和期望，激发员工的工作热情和积极性，促进 集团长青发展。 旺旺自2016年在全国各工厂开展员 工幸福指数评估以来，持续循环精进改善 员工反馈问题，为员工提供更加优质的工 作环境和条件。我们建立健全员工福利制 度，加强员工培训和发展，并将员工幸 福指数纳入基地最高主管的关键绩效考核中，工厂员工幸福指数分数2022财年为 88.1分。 ——《中国旺旺2022/23年环境、社会及管治报告》"
@@ -2400,7 +2400,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.customerPrivacyLeakIncidents"
                 type="textarea"
                 :rows="4"
                 placeholder="数字化技术高速发展的当下，上海梅林高度重视客户信息和隐私保护，公司严格遵守国家及有关部门颁布的《中华人民共和国网络安全法》《个人信息保护法》《数据安全法》《中华人民共和国消费者权益保护法》等隐私保护的相关 规定，打造相应的安全可信的服务体系，保障用户隐私。报告期内，本公司未接获有关客户隐私泄漏的投诉。 ——《上海梅林2023年ESG 暨可持续发展报告》"
