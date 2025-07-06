@@ -1519,7 +1519,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.talentDevelopmentOrganization"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展为加强人才梯队建设，推动企业转型升级，积极完善培训体系、丰富培训内容。我们遵照《项目公司新入职员工三级培训管理规定》《内训师制度》《'领英汇'管培生培养实施方案》《培训管理制度》等内部培训制度，于2023年编制了《数字化学习平台课程管理规范》， 结合数字化学习平台的推广运用情况，提升线上培训课程使用频率，提升全方位培训能力。 ——《双汇发展2023年ESG报告》"
@@ -2153,7 +2153,7 @@ Wind评级"
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.mentalHealthServiceDescription"
                 type="textarea"
                 :rows="4"
                 placeholder="促进职工心理健康成长一直是工会关注的工作主题，结合提升职工生活品质工作部署，工会积极鼓励 各基层单位根据实际，整合外部专业力量，围绕职业成长、人际交往、婚恋交友、亲子关系、压力缓解、情绪疏导等职工关切主题，以咨询、培训、讲座等方式，开展职工心理帮助计划。 ——《上海梅林2023年ESG 暨可持续发展报告》"
@@ -2454,70 +2454,115 @@ const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
-  permanentEmployeeCount: "", // 年末长期员工总数
-  temporaryEmployeeCount: "", // 年末临时员工总数
-  fullTimeEmployeeCount: "", // 年末全职员工总数
-  partTimeEmployeeCount: "", // 年末兼职员工总数
-  employeeByEthnicity: "", // 按民族划分的员工数量及比例
-  employeeByPosition: "", // 按职级划分的员工数量及比例
-  campusRecruitmentCount: "", // 校园招聘的新员工数量
-  socialRecruitmentCount: "", // 社会招聘的新员工数量
-  jobPositionInfo: "", // 岗位情况
-  honorCertificateAttachments: [], // 荣誉或认可 附件上传
-  employeeHandbookAttachments: [], // 基本权益保障-员工手册 附件上传
-  thirdPartyAuditAttachments: [], // 基本权益保障-第三方审核 附件上传
-  parentalLeaveAttachments: [], // 基本权益保障-育儿假 附件上传
-  employeeActivityAttachments: [], // 基本权益保障-员工活动 附件上传
-  welfareCareAttachments: [], // 福利措施与关怀活动 附件上传
-  employeeEventAttachments: [], // 员工活动 附件上传
-  femaleFacilitiesAttachments: [], // 女性员工 附件上传
-  accessibilityFacilityAttachments: [], // 残障人士雇佣 附件上传
-  antiHarassmentTrainingAttachments: [], // 培训与考核-反骚扰培训 附件上传
-  talentDevelopmentAttachments: [], // 培训与考核-人才培养 附件上传
-  employeeByEmploymentType: "", // 按用工模式划分的员工数量及比例
-  researchTalentStructure: "", // 科研人才结构
-  newEmployeeByEthnicity: "", // 按民族划分的新员工组数和比例
-  newEmployeeByAgeGroup: "", // 按年龄组别划分的新员工总数和比例
-  newEmployeeByGender: "", // 按性别划分的新员工总数和比例
-  newEmployeeByRegion: "", // 按地区划分的新员工总数和比例
-  thirdPartyAudit: "", // 第三方审核与认证
-  genderSalaryRatio: "", // 男女员工薪酬比例
-  startingSalaryVsLocalMinimum: "", // 起薪水平与当地最低工资之比
-  equityIncentive: "", // 股权激励与员工持股
-  femaleManagerRatio: "", // 女性管理人员比例
-  femaleEmpowermentTrainingRatio: "", // 女性职业赋能及领导力培训的员工占比
-  femaleEmpowermentTrainingHours: "", // 女性职业赋能及领导力培训的总培训时长
-  femaleFacilitiesAndCourses: "", // 女性设施与培训课程
-  disabledEmployeeCount: "", // 残障人士雇佣总数
-  disabledEmployeeRatio: "", // 残障人士雇佣比例
-  antiHarassmentTrainingCount: "", // 反骚扰、反歧视培训开展次数
-  annualTrainingExpenditure: "", // 年度培训支出金额
-  avgTrainingHoursByGender: "", // 按性别分类的员工平均培训小时数
-  avgTrainingHoursByMiddleManager: "", // 中层管理人员平均培训小时数
-  avgTrainingHoursBySeniorManager: "", // 高级管理人员/决策层平均培训小时数
-  avgTrainingHoursByOther: "", // 其他劳务关系人员平均培训小时数
-  trainingCoverageRate: "", // 员工培训覆盖率
-  trainingRateByGender: "", // 按性别分类的员工培训人数百分比
-  trainingRateByMiddleManager: "", // 中层管理人员培训人数百分比
-  trainingRateBySeniorManager: "", // 高级管理人员/决策层人员培训人数百分比
-  trainingRateByOther: "", // 其他劳务关系人员培训人数百分比
-  overallTrainingPassRate: "", // 培训考核总体通过率
-  trainingPassRateByGender: "", // 按性别划分培训考核通过率
-  trainingPassRateByPosition: "", // 按职级划分的培训考核通过率
-  unionMemberCount: "", // 工会会员或员工代表人数
-  employeeCommunicationResolutionRate: "", // 从业人员沟通及建议事件解决率
-  newOccupationalDiseaseCases: "", // 职业病新增病例
-  occupationalDiseaseRate: "", // 职业病发生率
-  healthMonitoringCount: "", // 接受职业健康监测的人数
-  totalOccupationalHealthTraining: "", // 职业健康培训累计人次
-  avgHealthSafetyTrainingCount: "", // 人均接受职业健康安全培训次数
-  totalHealthSafetyTrainingHours: "", // 职业健康安全培训总时长
-  avgHealthSafetyTrainingHours: "", // 人均接受职业健康安全培训时长
-  employeeCasualtyCount: "", // 员工伤亡人数
-  workRelatedCasualtyRate: "", // 因工伤亡率
-  turnoverCountByAgeGroup: "", // 按年龄组别划分的离职员工总数
-  turnoverCountByGender: "", // 按性别划分的离职员工总数
-  turnoverCountByRegion: "" // 按地区划分的离职员工总数
+  // 基础员工信息
+  permanentEmployeeCount: "",
+  temporaryEmployeeCount: "",
+  fullTimeEmployeeCount: "",
+  partTimeEmployeeCount: "",
+  employeeByEthnicity: "",
+  employeeByPosition: "",
+  employeeByEmploymentType: "",
+  researchTalentStructure: "",
+  newEmployeeByEthnicity: "",
+  newEmployeeByAgeGroup: "",
+  newEmployeeByGender: "",
+  newEmployeeByRegion: "",
+  campusRecruitmentCount: "",
+  socialRecruitmentCount: "",
+  jobPositionInfo: "",
+  // 附件上传
+  honorCertificateAttachments: [],
+  employeeHandbookAttachments: [],
+  thirdPartyAuditAttachments: [],
+  parentalLeaveAttachments: [],
+  employeeActivityAttachments: [],
+  welfareCareAttachments: [],
+  employeeEventAttachments: [],
+  femaleFacilitiesAttachments: [],
+  accessibilityFacilityAttachments: [],
+  antiHarassmentTrainingAttachments: [],
+  talentDevelopmentAttachments: [],
+  // 基本权益保障/薪酬与激励/福利与关怀
+  fairEmploymentPolicy: "",
+  employeeHandbookDescription: "",
+  antiChildLaborPolicy: "",
+  illegalEmploymentDisclosure: "",
+  employeeSalarySocialSecurity: "",
+  workingHoursLeavePolicy: "",
+  securityHumanRightsTraining: "",
+  thirdPartyAudit: "",
+  genderSalaryRatio: "",
+  startingSalaryVsLocalMinimum: "",
+  equityIncentive: "",
+  compensationIncentivePolicy: "",
+  compensationIncentiveMeasures: "",
+  performanceFeedbackAppeal: "",
+  compensationIncentiveInvestment: "",
+  parentalLeaveRightsDescription: "",
+  parentalLeaveWelfareDescription: "",
+  welfareCarePolicy: "",
+  welfareCareMeasuresActivity: "",
+  welfareCareEmployeeEvent: "",
+  welfareCareExpenditure: "",
+  // 女性员工
+  femaleManagerRatio: "",
+  femaleEmpowermentTrainingRatio: "",
+  femaleEmpowermentTrainingHours: "",
+  femaleFacilitiesAndCourses: "",
+  // 残障人士雇佣
+  disabledEmployeeCount: "",
+  disabledEmployeeRatio: "",
+  accessibilityFacilityDescription: "",
+  // 培训与考核
+  antiHarassmentTrainingDescription: "",
+  antiHarassmentTrainingCount: "",
+  talentDevelopmentConcept: "",
+  talentDevelopmentSystem: "",
+  talentDevelopmentCategory: "",
+  promotionDevelopmentPath: "",
+  regularPerformanceAssessment: "",
+  talentReserveInventory: "",
+  talentDevelopmentOrganization: "",
+  // 培训统计
+  annualTrainingExpenditure: "",
+  avgTrainingHoursByGender: "",
+  avgTrainingHoursByMiddleManager: "",
+  avgTrainingHoursBySeniorManager: "",
+  avgTrainingHoursByOther: "",
+  trainingCoverageRate: "",
+  trainingRateByGender: "",
+  trainingRateByMiddleManager: "",
+  trainingRateBySeniorManager: "",
+  trainingRateByOther: "",
+  overallTrainingPassRate: "",
+  trainingPassRateByGender: "",
+  trainingPassRateByPosition: "",
+  // 沟通与满意度
+  employeeCommunicationPolicy: "",
+  employeeCommunicationChannel: "",
+  employeeSatisfactionSurvey: "",
+  unionMemberCount: "",
+  employeeCommunicationResolutionRate: "",
+  // 职业健康与安全
+  newOccupationalDiseaseCases: "",
+  occupationalDiseaseRate: "",
+  healthMonitoringCount: "",
+  totalOccupationalHealthTraining: "",
+  avgHealthSafetyTrainingCount: "",
+  totalHealthSafetyTrainingHours: "",
+  avgHealthSafetyTrainingHours: "",
+  employeeCasualtyCount: "",
+  workRelatedCasualtyRate: "",
+  // 其他
+  customerPrivacyLeakIncidents: "",
+  mentalHealthServiceDescription: "",
+  // 晋升与发展
+  turnoverCountByAgeGroup: "",
+  turnoverCountByAgeGroupResolution: "",
+  turnoverCountByGender: "",
+  turnoverCountByGenderResolution: "",
+  turnoverCountByRegion: "",
+  turnoverCountByRegionResolution: ""
 });
 
 // 文件上传处理
