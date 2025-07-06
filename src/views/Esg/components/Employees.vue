@@ -754,7 +754,27 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.welfareCareExpenditure"
+                  v-model="formData.welfareCareExpenditurePolicy"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
+                />
+                <span>万元</span>
+              </div>
+            </el-form-item>
+            <el-form-item style="margin-bottom: 35px">
+              <template #label>
+                <div>
+                  <span>
+                    福利与关怀支出
+                    <EsgTooltip
+                      content="公司每年用于员工福利及关怀措施的投入价值总和"
+                    />
+                  </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.welfareCareExpenditureEvent"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1036,7 +1056,27 @@ Wind评级"
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.welfareCareExpenditure"
+                  v-model="formData.welfareCareExpenditurePolicy"
+                  :formatter="onlyPositiveNumber"
+                  :parser="onlyPositiveNumber"
+                />
+                <span>万元</span>
+              </div>
+            </el-form-item>
+            <el-form-item style="margin-bottom: 35px">
+              <template #label>
+                <div>
+                  <span>
+                    福利与关怀支出
+                    <EsgTooltip
+                      content="公司每年用于员工福利及关怀措施的投入价值总和"
+                    />
+                  </span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.welfareCareExpenditureEvent"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2503,7 +2543,8 @@ const formData = ref({
   welfareCarePolicy: "",
   welfareCareMeasuresActivity: "",
   welfareCareEmployeeEvent: "",
-  welfareCareExpenditure: "",
+  welfareCareExpenditurePolicy: "", // 福利与关怀-政策支出
+  welfareCareExpenditureEvent: "", // 福利与关怀-活动支出
   // 女性员工
   femaleManagerRatio: "",
   femaleEmpowermentTrainingRatio: "",
