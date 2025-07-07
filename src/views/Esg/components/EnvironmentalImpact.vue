@@ -140,7 +140,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.digitalSupplierManagementPlatform"
+                v-model="formData.climateRiskManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="为提升应对气候变化的韧性   ，有效把握和控制气候相关风险与机遇，伊利遵循'目标 - 风险 - 控制'的内部控制核心理念， 搭建'风险 / 缺陷识别 - 风险 / 缺陷整改监控 -   审计评价'  全员参与的三道防线管理机制，将气候相关风险纳入自身风险评估体系中。伊利定期针对直接运营、供应链上下游进行气候变化相关风险和机遇的识别与评价，依据《气候变化相关财   务信息披露指引（TCFD）》并参考《国际财务报告可持续披露准则》（ IFRS Sustainability Disclosure   Standards），使用TCFD 风险分类框架及公司特定的风险与机遇评估模型，识别、分析与评估集团在未来短期、中期和长期运营过程中，   可能发生的气候相关风险和机遇以及相应财务影响。     ——《伊利股份2023年可持续发展报告》"
@@ -156,7 +156,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.digitalSupplierManagementPlatform"
+                v-model="formData.climateRiskIdentificationResponse"
                 type="textarea"
                 :rows="4"
                 placeholder="为了准确识别气候变化对我们业务的影响，从而更全面地部署风险应对方案与识别商业机遇，我们参考气候、宏观环境、产业政策等相关文献研究，并结合双汇发展自身业务情况，根据政府间气候变化专门委员会（IPCC）采用的典型浓度路径（Representative   Concentration Pathways，RCP）假设和央行与监管机构绿色金融网络（Network for Greening the   Financial System, NGFS）的排放情景，选取了全球温度上升的三种不同的气候情景，分别对照2度以下，2度以及2度以上情景对自身业务和上下游产业链产生的影响进行了识别与评估。我们根据气候变化风险类别，结合各部门的职能和责任进行了风险匹配。由管理层牵头并参与的气候变化专项访谈共15场，期间就各项气候风险的企业适应性和恢复力等关键课题进行了深度讨论。我们依据内部风险管控惯例设定了三个时间维度（短期：3年内，中期：3年–5年，长期：5年以上），结合上方展示的预计影响水平，位处高风险暴露的运营地占比情况，结合内部深入讨论和外部研究，运用定性和定量分析方法，综合定义出气候变化风险对公司的影响程度。     ——《双汇发展2023年ESG报告》"
@@ -172,7 +172,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.digitalSupplierManagementPlatform"
+                v-model="formData.climateTransitionPlan"
                 type="textarea"
                 :rows="4"
               />
@@ -3149,7 +3149,9 @@ const formData = ref({
   organizationStructure: "", // 组织架构
   policyAndRegulation: "", // 政策与制度
   riskManagement: "", // 风险管理
-  digitalSupplierManagementPlatform: "", // 供应商管理数字化平台
+  climateRiskManagement: "", // 气候风险管理
+  climateRiskIdentificationResponse: "", // 气候风险识别与应对
+  climateTransitionPlan: "", // 气候转型计划
   esgTrainingSystem: "", // 供应商ESG培训体系
   trainingAttachmentFileList: [], // 附件上传 (宣贯及培训)
   esgTrainingCount: "", // 开展供应商ESG培训次数
