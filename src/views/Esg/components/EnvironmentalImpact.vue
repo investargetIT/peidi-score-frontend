@@ -210,7 +210,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.materialWeightOrVolume"
+                  v-model="formData.scope1GhgEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1610,7 +1610,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.materialWeightOrVolume"
+                  v-model="formData.electricityConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2134,7 +2134,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.materialWeightOrVolume"
+                  v-model="formData.materialTotalWeightOrVolume"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -3172,9 +3172,7 @@ const formData = ref({
   envInvestmentAmount: "", // 环保投入资金
   envPollutionFine: "", // 环境污染罚款额
   newSupplierCount: "", // 新增供应商数量
-  materialWeightOrVolume: "", // 所用物料的重量或体积
-  recycledMaterialUsage: "", // 所使用的回收再利用的物料
-  recycledProductAndPackaging: "", // 回收产品及其包装材料
+  scope1GhgEmissions: "", // 范围1温室气体排放量
   noxEmissions: "", // 氮氧化物（NOx）排放量
   soxEmissions: "", // 硫氧化物（SOx）排放量
   popEmissions: "", // 持久性有机污染物（POP）排放量
