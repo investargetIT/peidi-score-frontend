@@ -228,7 +228,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.noxEmissions"
+                  v-model="formData.scope2GhgEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2360,7 +2360,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.noxEmissions"
+                  v-model="formData.noxEmissionsAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -3173,7 +3173,7 @@ const formData = ref({
   envPollutionFine: "", // 环境污染罚款额
   newSupplierCount: "", // 新增供应商数量
   scope1GhgEmissions: "", // 范围1温室气体排放量
-  noxEmissions: "", // 氮氧化物（NOx）排放量
+  scope2GhgEmissions: "", // 范围2温室气体排放量
   soxEmissions: "", // 硫氧化物（SOx）排放量
   popEmissions: "", // 持久性有机污染物（POP）排放量
   vocEmissions: "", // 挥发性有机化合物（VOC）排放量
