@@ -847,7 +847,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envProtectionGoals"
                 type="textarea"
                 :rows="4"
                 placeholder="公司始终坚持环保是生存线和生命力的理念，高度重视环境保护工作，专门指定相关部门整体负责公司的环境保护工   作，经过多年的发展，培养了一支专业的环保人才队伍，主动实施污染物治理从高、从远、从严、从优的标准。设计并   建成了高效节能低耗的生产装置及'三废处理装置',确保生产过程中产生的污染物排放符合国家和地方相关排放标准。     ——《中宠食品股份有限公司2023年度社会责任报告》"
@@ -901,7 +901,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envHonors"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利荣获'碳中和领域创新企业奖，成为乳制品行业 唯一获奖单位；伊利供应链双碳管理工作荣获 2023 年'年度低碳先锋奖CSR 单项奖；伊利入选生态环境部首批工 业园区减污降碳协同增效典 型案例 ——《伊利股份2023年可持续发展报告》"
@@ -1063,7 +1063,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envTrainingPublicity"
                 type="textarea"
                 :rows="4"
                 placeholder="公司为提高突发环境事件应对能力,预防突发环境事件及其造成的损害,建立了突发环境事件应急预案,并报保护局进行备案,确保事件发生时能够迅速、有序、高效地进行应急处置。     ——《一鸣食品2023年ESG报告》"
@@ -1181,7 +1181,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envImpactMgmtActions"
                 type="textarea"
                 :rows="4"
                 placeholder="工厂编制突发环境事件风险评估报告及突发环境事件应急预案，并在当地生态环境局完成备案；定期实施应急演练工作，并评估应急预案有效性。——《光明乳业2023年可持续发展报告》"
@@ -1236,7 +1236,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envMajorIncidentsCount"
                 type="textarea"
                 :rows="4"
                 placeholder="2022年，留有记录的严重泄漏事件及重大逸散事件为0起。     ——《伊利股份2023年可持续发展报告》"
@@ -1272,7 +1272,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envProductionPractice"
                 type="textarea"
                 :rows="4"
                 placeholder="依托先进的研发工具、专业的研发团队和丰富的合作研发经验，伊利持续开展可持续包材的研发以及应用转化工作，推动 可持续包材战略高效落地。2023 年，伊利在可持续包材技术研发与应用领域获得 16 项重要奖项，其中 3个项目被鉴定为国内或国际领先，持续发挥在产业链中的引领作用，共建可持续包材生态圈。伊 利 集 团 包 装 研 究 中 心 于 2021 年 引 入 包 装   生 命 周 期 碳 排 放 计 算 工 具 PIQET（Packaging Impact Quick Evaluation Tool），用于包装可持续改善过程中的碳排放计算及环境影响评估。2023年，PIQET 已在全部事业单元的包装设计环节进行应用，帮助伊利将包装可持续评价完美融入到业务决策中。     ——《伊利股份2023年可持续发展报告》"
@@ -1288,7 +1288,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envMonitoringActivities"
                 type="textarea"
                 :rows="4"
                 placeholder="根据国家相关法律法规的严格规定，公司制定废水、废气以及厂界噪声等关键项目的环境自行监测方案，按照既定要求开展监测工作，各项污染物排放指标均达到了国家相关标准的要求。     ——《洽洽食品2023年ESG报告》"
@@ -1304,7 +1304,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envProjects"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利与中国绿化基金会合作，在中国'四大沙尘源'之首阿拉善地区种植10万棵梭梭树，打造'梭梭保护林'，构健绿色生态屏障，助力荒漠化综合防治。同时，   伊利发起'我有一棵梭梭树'互动活动，鼓励消费者为宝宝认领一棵专属梭梭树，号召更多的家庭加入到绿化家园的行动中来。此外，伊利邀请 38个重点母婴连  锁系统合作伙伴共同开启'零碳有机绿色公益行'植树活动，前往内蒙古阿拉善，亲手种下梭梭树，助力建立美丽'生态墙'。     ——《伊利股份2023年可持续发展报告》"
@@ -1362,7 +1362,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.envTrainingPublicity"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利积极发挥行业内'领头羊'作用，通过培训赋能、打造碳中和物料、加强节能减碳项目合作等方式，助力供应链实现低碳转型及绿色发展。邀请全球第三方机构专家，通过伊利集团'伊起赢'平台为合作供应商开展    双碳管理赋能培训，向供应商传授低碳转型的方法、路径、节能项目实施等内容，组织具备双碳管理工作经验的供应商（利乐、罗盖特） 分享成功经验，   全面提升供应商碳管理水平。2023年，伊利在平台共开展 3 次双碳管理直 播培训，供应商在线人数共计 800 余人，直播回放浏览超 3,000   人次。     ——《伊利股份2023可持续发展报告》"
@@ -1423,7 +1423,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.greenOfficePolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="集团积极推进无纸化办公，在生产端、管理端、营销端大力推进移动办公和电子化留痕，包括电子合同、差旅费控、报表电子化、过程管控流程再造系统化、记录自动化数字化等，确保纸质版的文件大幅降 低，减少对纸张的使用，全年合计省A4 纸约734.4千克。 ——《安井食品2023年环境、社会及管治报告》"
@@ -1460,7 +1460,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="节约资源是保护生态环境的重要根本。双汇发展重视水资源利用效率，确立了'轻量化、定制化、可循环'的包装材料使用指导原则，并持续减少食物损耗及浪费，将减少自然资源消耗的理念融入从工厂到消费者手中的各个环节。     ——《双汇发展2023年ESG报告》"
@@ -1473,7 +1473,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="中航重机顺利完成2022   年资源使用工作，例如水资源管理方面万元增加值用水量下降16%，能源管理方面非化石能源消费比重达20%等。     ——《中航重机2022年ESG报告》"
@@ -1510,7 +1510,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="公司严格按照'党政同责、一岗双责'要求，坚持'三管三必须'原则，建立了资源节约与生态环境保护责任制体系。公司及各下属企业均成立了资源节约与生态环境保护领导小组，各级部门协调配合，形成共促绿色高质量发展合力。公司承担     管理责任，负责监督、指导、协调和服务工作；各下属企业承担直接责任，负责具体落实生态环境保护相关工作。     ——《国投中鲁2023年度ESG报告》"
@@ -1526,7 +1526,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="国投中鲁贯彻执行《中华人民共和国节约能源法》等国家与地方相关法律法规与标准，持续开展节能减排技改，加强全过     程管控，强化监督考核，有效提升能源利用效率。同时，在生产和物流环节，积极提高清洁能源利用水平，降低对传统能     源的依赖，降低碳排放，推动节能工作提质增效。     ——《国投鲁中2023年度ESG报告》"
@@ -1542,7 +1542,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年，伊利共 46 家工厂通过 ISO 50001:2018 能源管理体系认证，较 2022 年增加 27.8 %，全面提升能源管理水平。     ——《伊利股份2023年可持续发展报告》"
@@ -1628,7 +1628,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1646,7 +1646,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1664,7 +1664,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1682,7 +1682,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1700,7 +1700,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.naturalGasConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1718,7 +1718,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.fuelOilConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1736,7 +1736,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1754,7 +1754,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1772,7 +1772,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1790,7 +1790,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lpgConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1808,7 +1808,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.otherPetroleumProductsConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1828,7 +1828,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1848,7 +1848,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1868,7 +1868,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.externalEnergyConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1888,7 +1888,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.energySavingAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1908,7 +1908,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.energyIntensity"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1928,7 +1928,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.lngConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1964,7 +1964,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.waterIntake"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利构建了涵盖'决策层 -   组织层 - 执行层'的水资源管理架构，在董事会层面设立董事会战略与可持续发展委员会，委 员会由八名董事组成（包括两名独立董事）   ，伊利集团董事长兼总裁潘刚担任委员会主任委员。董事会战略与可持续发展   委员会主要负责对长期发展战略规划进行研究并提出建议、指导可持续发展工作、审阅公司年度可持续发展工作计划（包   含可持续发展战略、水资源管理等）及执行情况，督促公司可持续发展计划的实施等。董事会战略与可持续发展委员会下设可持续发展管理办公室，负责伊利集团可持续发展（包含水资源管理）工作的战略监   督及管理并向董事会战略与可持续发展委员会进行定期汇报。水资源的日常管理、项目推动、技术支持和指导由伊利集团   安全生产管理部负责，并每季度向公司可持续发展管理办公室进行汇报。     ——《伊利股份2023年可持续发展报告》"
@@ -1980,7 +1980,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.waterIntake"
                 type="textarea"
                 :rows="4"
               />
@@ -1995,7 +1995,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.waterConsumption"
                 type="textarea"
                 :rows="4"
               />
@@ -2031,7 +2031,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="水资源作为乳品行业不可或缺的资源,   在公司的生产运营中承担着重要的角色。公司遵循《中华人民共和国水法》等法律法规, 加强公 司用水管理,贯彻落实国家节水行动。公司不断加大节水改造力度,   建成投用(智慧节水)互联平台, 改造了均质机冷却水回用系统、杀菌机蒸汽冷凝水回用系统、CIP   清洗水二次回用系统,有效降低了水费、排污费支出，实现节水减排。     ——《一鸣食品2023年ESG报告》"
@@ -2097,7 +2097,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利致力于为消费者提供可持续的产品，从原料阶段关注其可持续性，积极推行绿色采购。我们制定并发布原材料可持续 采购政策，鼓励优先采购具有可持续认证的原材料、持续加强原材料溯源工作；制定《可再生农业及基地管理方案》。
@@ -2114,7 +2114,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="通过现场审核的方式定期监控上游果蔬制品基地的水源、土壤、化肥及农药使用等信息，并向农户提供可再生农业相关技术 培训，减少化肥使用对生态环境的影响，持续降低供应链毁林风险，改善供应链的环境影响。
@@ -2214,7 +2214,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利制定《环境保护可持续发展目标体系》，形成以碳排放量为一级目标，综   合能耗及水、电、气、汽、冷等使用量为二、三级目标的完整体系，实现目标 的有效支撑。     ——《伊利股份2023年可持续发展报告》"
@@ -2228,7 +2228,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="2在国家碳达峰、碳中和目标行动指引下，梅花生物坚持技术与管理并重的原则，持续降低产品能源消耗。基于绿色生物合成制造的可持续发展理念，我们鼓励全体员工对节约能源、减少碳排放提出合理化建议，对提出合理化建议实施后获得显著成效的，按规定对建议人给予奖励。同时，公司董事会战略委员会定期监督气候变化相关目标及指标的完成情况，并进行定期绩效考核，确保相关部门遵守设定的目标。报告期内，我们实现了年度的二氧化碳减排目标。     ——《梅花生物2023年度ESG报告》"
@@ -2269,7 +2269,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
               />
@@ -2284,7 +2284,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="我们制定了《废气管理规范》《固体废弃物管理规范》《污水处理站安全运行标准化》等管理制度，推行清洁生产，改善工业污染源产生的废水、废气和固体废弃物排放情况，尽可能减少或消除自身运营对环境的影响。——《双汇发展2023年ESG报告》"
@@ -2300,7 +2300,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="光明乳业严格遵循污染防治相关法律法规，新建项目严格履行了环评、'三同时'制度，在废气、废水、噪声、固体废弃物、环境污染隐患排查等多个方面进行严格把控，确保各项污染物合规处理，确保达标排放17家工厂全部实施排污许可管理，  全部环保设施运行正常。按照许可证规定的监测频次对各类污染物实施监测，按期提交排污许可证执行报告，主动公开环境信息。     ——《光明乳业2023年可持续发展报告》"
@@ -2341,7 +2341,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.odsEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2436,7 +2436,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.hapEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2455,7 +2455,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.pmEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2496,7 +2496,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="废水治理是公司及生产型子公司污染源治理工作的重点及难点。公司确保废水达标排放，不断提高废水回用比例，减少新水用量。公司工厂污染物可生化性能好，采用厌氧好氧工艺法处理。处理后的污水排入城镇下水道。污水排放指标优于国家、地方标准。     ——《光明乳业2023年可持续发展报告"
@@ -2512,7 +2512,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
               />
@@ -2653,7 +2653,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="6"
                 placeholder="双汇发展的屠宰和养殖业务均产生有害废弃物、一般固体废物和动物粪便三类固体废弃物。我们的排放物主要来源于生产和养殖环节。在生产运营过程中，双汇发展不断改进生产工艺与设施，优化排放物处理处置方式，从设施和管理两个方面降低污染物排放浓度。双汇发展亦注重养殖过程中的排放物产生的环境影响，开展通过优化饲料肉料比、饲料添加剂的相关研究，减少饲料消耗，从源头减少粪污产生，力求实现粪污减量化的目标。在常规处理方式18的基础上，我们开展专项研究推进养殖业的粪污处理工作，与第三方能源公司合作使用鸡粪制备生物质天然气，通过定向优先使用生物质天然气、价格优惠的方式，实现粪污资源化利用。报告期内，西华基地合作项目已10月份投入运行，日处理鸡粪400吨，日产天然气1万m³，后续将继续扩大产能，未来计划将合作项目拓展至阜新基地。我们于本年度将养殖业猪粪、鸡粪，及产生加工业务的滞销品、废品等纳入定量目标，报告期内，双汇发展养殖端所产生的猪粪和鸡粪已100%实现循环利用。2023年实现回收利用的废弃物1,439,813.9   吨，处置废弃物6,349.2吨。     ——《双汇发展2023年ESG报告》"
@@ -2693,7 +2693,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="洽洽食品安环部制定《危险废物管理制度》《供应链运营中心'三废'合规处理规定》等制   度，搭建以公司主要负责人为领导核心，各部门主管为坚实支柱的污染物管理网络，实现 对污染物的全面掌控和有效治理。     ——《恰恰食品2023年ESG报告》"
@@ -2709,7 +2709,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="不断压实主体责任，聚焦滤泥、堆场和粉尘、恶臭逸散区域，持续开展综合治理，     通过飞行检查、环保核查、生态环境绩效评价等方式，持续提升生态环保绩效。     ——《中粮糖业2023ESG报告》"
@@ -2725,7 +2725,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展的屠宰和养殖业务均产生有害废弃物、一般固体废物和动物粪便三类固体废弃物。我们的排放物主要来源于生产和养殖环节。
@@ -2742,7 +2742,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="在生产运营过程中，双汇发展不断改进生产工艺与设施，优化排放物处理处置方式，从设施和管理两个方面降低污染物排放浓度。双汇发展亦注重养殖过程中的排放物产生的环境影响，开展通过优化饲料肉料比、饲料添加剂的相关研究，减少饲料消耗，从源头减少粪污产生，力求实现粪污减量化的目标。在常规处理方式18的基础上，我们开展专项研究推进养殖业的粪污处理工作，与第三方能源公司合作使用鸡粪制备生物质天然气，通过定向优先使用生物质天然气、价格优惠的方式，实现粪污资源化利用。报告期内，西华基地合作项目10月份投入运行，日处理鸡粪400吨，日产天然气1万m³，后续将继续扩大产能，未来计划将合作项目拓展至阜新基地。我们于本年度将养殖业猪粪、鸡粪，及产生加工业务的滞销品、废品等纳入定量目标，报告期内，双汇发展养殖端所产生的猪粪和鸡粪已100%实现循环利用。——《双汇发展2023年ESG报告》"
@@ -2758,7 +2758,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.wasteStorage"
                 type="textarea"
                 :rows="4"
                 placeholder="公司严格遵守国家及所在运营地的法律法规要求，制定并实施了《固体废物管理办法》，对所有活动中产生的生活垃圾、不可回收利用工业垃圾、可回收利用工业垃圾和危险废弃物的处置进行全面有效的管理。——《金龙鱼2023年可持续发展报告》"
@@ -2774,7 +2774,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.wasteTransport"
                 type="textarea"
                 :rows="4"
                 placeholder="针对一般固体废物，我们积极探索适用的技术以提高固体废物的综合利用率，并提升废弃物处置的工艺及设备，推动废弃物减量化、资源化和无害化。同时，我们通过改进生产工艺、调整产品结构、开展清洁生产等多项措施，从源头减少废弃物的产生。针对危险废物，我们严格落实对其产生、收集、贮存、运输、利用、处置全过程的环境管理要求，依法对危险废物的暂存场所进行升级改造，交由有资质的第三方处置单位进行资源化利用或无害化处置，最大限度地降低废弃物对环境产生的影响。截至2023   年底，公司已经试点建立了 2 家'无废工厂'，另有 2 家子公司正在推进申报工作。——《金龙鱼2023年可持续发展报告》"
@@ -2808,7 +2808,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="西红柿作物是'用水大户'，生长全过程每亩需用水 460 余方。西红柿公司引进国际先进节水技术，采用'膜下双滴灌'，将水精确地输送到西红柿根部周围 35 厘米处。到采收季节，引导农户提前停水，既节约了宝贵的水资源，又提高了西红柿固形物含量，降低了青果率和烂果率。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -2845,7 +2845,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="公司充分认识到生物多样性对于维持地球生态平衡具有关键作用 . 保护生物多样性也是实现可持续发展的重要保障 . 我们积极响应联 合国《生物多样性公约》以及中国政府《关于进-步加强生物多样性保护的意见》.致力于推动生物多样性保护和生态可持续发展。我们承诺不在任何生态红线禁止开发区域内进行生产经营活动 . 公司的工厂和经营场所均经过环境影响评价 . 充分评估其对生态环境 的影响.对项目建设期和运营期各个阶段的生态保护要求做出规定.最大限度降低运营过程对生态环境的影响。 ——《一鸣食品2023年ESG报告》"
@@ -2859,7 +2859,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="为首个签署联合国《企业与生物多样性承诺书》 的中国企业，伊利坚持人与自然和谐共生，通过'伊利家园行动'在生物多样 性保护方面进行了诸多探索与实践，连续 6 年发布《生物多样性保护报告》，详细阐述其每年在生物多样性方面的目标完成情况。 ——《伊利股份2023年可持续发展报告》"
@@ -2904,7 +2904,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="如《水井坊环境方针》所承诺，我们不对物种、栖息地、生物多样性造成持久破坏。在保护生物多样性方面，我们遵守各项法律法规，响应全球生物多样性框架、联合国可持续发展目标、《濒危野生动植物种国际贸易公约（CITES）》等国际倡议。我们承诺在全价值链环节，包括原材料采购、生产运营等，持续减少生态足 迹，致力于达成'无净损失'（No net loss, NNL）。我们承诺净零毁林，不参与开发法定生态保护区，不将具有高度生态保护价值的区域及其周边地区用于生产运营，避免对受威胁和受保护物种造成负面影响，禁止濒危野生动植物贸易（包括但不限于 CITES 所列濒危物种——《水井坊2023ESG报告》"
@@ -2920,7 +2920,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.biodiversityMajorImpact"
                 type="textarea"
                 :rows="4"
               />
@@ -2935,7 +2935,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.protectedOrRestoredHabitats"
                 type="textarea"
                 :rows="4"
                 placeholder="为更好地保护草原生态环境，伊利金典联合 WWF、中国绿化基金会等在京共同 发起'中国有机种草节'，唤起全社会对草原生态保护的关注和参与。同时， 伊利金典向中国绿化基金会'一平米草原公益计划'捐款 10 万元，用于内蒙古 50,000 平米退化草原的修复工作，改善草原生态状况。 ——《伊利股份2023可持续发展报告》"
@@ -2951,7 +2951,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.biodiversityMgmtOrg"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利可持续发展委员会负责统筹生物多样性保护管理及相关工作，并推动董事会战略与可持续发展委员会监督公司生物多样性风险相关事宜，讨论生物多样性风险相关议题。 ——《伊利集团2023年度生物多样性保护报告》"
@@ -2965,7 +2965,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.resourceUseEfficiencyGoalStatus"
                 type="textarea"
                 :rows="4"
                 placeholder="公司遵循母公司丰益国际的 NDPE（即'不毁林开荒'不开垦泥炭地'不剥削劳工'）政策，高度重视生物多样性保护及森林保护。我们在《环境政策》和《生物多样性保护政策》中要求公司包含供应链在运营时，按照国际和国家标准来实施生物多样性保护，尽量减少对动植物及生态环境的影响。同时，我们积极保护、恢复和促进可持续利用陆地生态系统，将生物多样性考量纳入项目的全生命周期，助力构建生态环保命运共同体，致力于最大限度实现人与自然资源和谐共生。 ——《金龙鱼2023可持续发展报告》"
@@ -2981,7 +2981,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.biodiversityMitigation"
                 type="textarea"
                 :rows="4"
                 placeholder="对于生产运营过程中对生物多样性产生的潜在影响，采用'分级减缓管理'（Mitigation hierarchy approach）进行评估和应对，即避免（Avoid）、最小化（Minimise）、修复（Restore）和补偿（Offset）。——《水井坊2023ESG报告》"
@@ -3016,7 +3016,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.biodiversityInvestmentAmount"
                 type="textarea"
                 :rows="4"
                 placeholder="2023 年 8 月 12 日，在第 12 个世界大象日，伊利再捐 100 万元支 持濒危亚洲象及其栖息地保护工作。当天，伊利携手新华网联合 出品《狂'膘'吧！小象》科普视频，带动亚洲象保护科普，视 频阅读量超 6,000 万次，主流新媒体阅读量破 2 亿次，让公众了 解亚洲象的健康成长之路。 ——《伊利集团2023年度可持续发展报告》"
@@ -3030,7 +3030,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.biodiversitySoilMonitoring"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利建立以IP认证为主的、可追溯到生产源头的大豆溯源体系，通过建立大豆溯源体系和收集供应商种植基地信息，对大豆生产过程中的灌溉用水管理、农药使用频次、使用类型等情况进行持续监测和管理，规避农药的散布造成农园地区土壤污染等环境问题。——《伊利股份2023年可持续发展报告》"
@@ -3046,7 +3046,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.biodiversityMitigation"
                 type="textarea"
                 :rows="4"
                 placeholder="针对建设项目，在选址时公司会避开生态红线区、珍稀动物保护区以及自然保护区等生态敏感区域，同时在环境影响评价阶段，就项目对周边生物多样性的影响进行评价，并提出预防对策；针对收并购项目，公司会开展环境风险调查和评估，确保项目符合生物多样性保护的相关要求。 ——《金龙鱼2023年可持续发展报告》"
@@ -3066,7 +3066,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.biodiversityProtectedAreas"
                 type="textarea"
                 :rows="4"
                 placeholder="2023 年 3 月，为深入践行'绿水青山就是金山银山'发展理念，营造'全民参与、爱绿植绿护绿'的良好氛围，云南中鲁党支部组织在厂值守的党员职工开展义务植树主题党日活动。在厂区内植树点现场，大家团结协作植树 60 余株，为云南中鲁厂区环境绿化做出贡献，进一步增强环保责任意识 ——《国投鲁中2023年度ESG报告》"
@@ -3179,7 +3179,6 @@ const formData = ref({
   vocEmissions: "", // 挥发性有机化合物（VOC）排放量
   nonHazardousWasteTotal: "", // 无害废物排放总量
   wasteTransferredFromDisposal: "", // 从处置中转移的废弃物
-  fairTrade: "", // 公平交易
   envGoalCompletionStatus: "", // 年度目标完成情况
   envMgmtOrg: "", // 监管与执行组织架构
   envPolicyRegulation: "", // 政策、制度
