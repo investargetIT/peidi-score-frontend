@@ -178,8 +178,11 @@
       <el-collapse-item title="温室气体排放" name="training-publicity">
         <template #title>
           <div class="collapse-title">
-            <span>温室气体排放 </span>
-            <EsgTooltip content="GRI 305、Wind评级、交易所可持续发展报告指引" />
+            <span
+              >温室气体排放
+              <EsgTooltip content="GRI 305、Wind评级、交易所可持续发展报告指引"
+            /></span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1227,8 +1230,8 @@
       <el-collapse-item title="生产环保实践" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 生产环保实践 </span>
-            <EsgTooltip content="Wind评级" />
+            <span> 生产环保实践 <EsgTooltip content="Wind评级" /></span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1406,8 +1409,10 @@
       <el-collapse-item title="目标与方针" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 目标与方针 </span>
-            <EsgTooltip content="Wind评级、交易所可持续发展报告指引" />
+            <span>
+              目标与方针
+              <EsgTooltip content="Wind评级、交易所可持续发展报告指引"
+            /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1454,8 +1459,7 @@
       <el-collapse-item title="管理及策略" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 管理及策略 </span>
-            <EsgTooltip content="Wind评级" />
+            <span> 管理及策略 <EsgTooltip content="Wind评级" /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1545,8 +1549,13 @@
       <el-collapse-item title="能源使用" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 能源使用 </span>
-            <EsgTooltip content="GRI 302、Wind评级、交易所可持续发展报告指引" />
+            <span>
+              能源使用
+              <EsgTooltip
+                content="GRI 302、Wind评级、交易所可持续发展报告指引"
+              />
+            </span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1903,8 +1912,8 @@
       <el-collapse-item title="水资源使用" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 水资源使用 </span>
-            <EsgTooltip content="GRI 303" />
+            <span> 水资源使用 <EsgTooltip content="GRI 303" /></span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1968,8 +1977,9 @@
       <el-collapse-item title="资源节约" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 资源节约 </span>
-            <EsgTooltip content="Wind评级、交易所可持续发展报告指引" />
+            <span>
+              资源节约 <EsgTooltip content="Wind评级、交易所可持续发展报告指引"
+            /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2030,10 +2040,12 @@
       >
         <template #title>
           <div class="collapse-title">
-            <span> 原材料与包装材料（供应链） </span>
-            <EsgTooltip
-              content="GRI 301、<br/>交易所可持续发展指引<br/>Wind评级"
-            />
+            <span>
+              原材料与包装材料（供应链）
+              <EsgTooltip
+                content="GRI 301、<br/>交易所可持续发展指引<br/>Wind评级"
+              />
+            </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2145,8 +2157,10 @@
       <el-collapse-item title="目标与方针" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 目标与方针 </span>
-            <EsgTooltip content="交易所可持续发展报告指引" />
+            <span>
+              目标与方针 <EsgTooltip content="交易所可持续发展报告指引"
+            /></span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2192,8 +2206,10 @@
       <el-collapse-item title="管理及策略" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 管理及策略 </span>
-            <EsgTooltip content="交易所可持续发展报告指引" />
+            <span>
+              管理及策略 <EsgTooltip content="交易所可持续发展报告指引"
+            /></span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2258,8 +2274,8 @@
       <el-collapse-item title="废气排放" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 管理及废气排放策略 </span>
-            <EsgTooltip content="GRI 305" />
+            <span> 管理及废气排放策略 <EsgTooltip content="GRI 305" /> </span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2410,8 +2426,11 @@
       <el-collapse-item title="废水排放" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 废水排放 </span>
-            <EsgTooltip content="GRI 303、交易所可持续发展报告指引" />
+            <span>
+              废水排放
+              <EsgTooltip content="GRI 303、交易所可持续发展报告指引" />
+            </span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2505,8 +2524,13 @@
       <el-collapse-item title="固废处理" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 固废处理 </span>
-            <EsgTooltip content="GRI 306、Wind评级、交易所可持续发展报告指引" />
+            <span>
+              固废处理
+              <EsgTooltip
+                content="GRI 306、Wind评级、交易所可持续发展报告指引"
+              />
+            </span>
+
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2594,8 +2618,10 @@
       <el-collapse-item title="治污减排实践" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 治污减排实践 </span>
-            <EsgTooltip content="GRI 306、Wind评级、交易所可持续发展报告指引" />
+            <span>
+              治污减排实践
+              <EsgTooltip content="GRI 306、Wind评级、交易所可持续发展报告指引"
+            /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2710,8 +2736,7 @@
       <el-collapse-item title="产业价值" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 产业价值 </span>
-            <EsgTooltip content="GRI 413" />
+            <span> 产业价值 <EsgTooltip content="GRI 413" /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2793,8 +2818,9 @@
       <el-collapse-item title="管理及策略" name="supplier-contractor-rights">
         <template #title>
           <div class="collapse-title">
-            <span> 管理及策略 </span>
-            <EsgTooltip content="GRI 301、交易所可持续发展指引" />
+            <span>
+              管理及策略 <EsgTooltip content="GRI 301、交易所可持续发展指引"
+            /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
