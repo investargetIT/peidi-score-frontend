@@ -2,11 +2,11 @@
   <div class="esg-content">
     <!-- 公司名称与组织架构 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
-      <el-collapse-item title="战略与目标" name="policy-goals">
+      <el-collapse-item title="应对气候变化-战略与目标" name="policy-goals">
         <template #title>
           <div class="collapse-title">
             <span>
-              战略与目标
+              应对气候变化-战略与目标
               <EsgTooltip content="Wind评级、交易所可持续发展报告指引" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
@@ -56,11 +56,11 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="管理及策略" name="system-strategy">
+      <el-collapse-item title="应对气候变化-管理及策略" name="system-strategy">
         <template #title>
           <div class="collapse-title">
             <span
-              >管理及策略
+              >应对气候变化-管理及策略
               <EsgTooltip content="Wind评级、交易所可持续发展报告指引" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
@@ -175,11 +175,14 @@
         </div>
       </el-collapse-item>
       <!-- 其他折叠项 -->
-      <el-collapse-item title="温室气体排放" name="training-publicity">
+      <el-collapse-item
+        title="应对气候变化-温室气体排放"
+        name="training-publicity"
+      >
         <template #title>
           <div class="collapse-title">
             <span
-              >温室气体排放
+              >应对气候变化-温室气体排放
               <EsgTooltip content="GRI 305、Wind评级、交易所可持续发展报告指引"
             /></span>
 
@@ -373,11 +376,14 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="气候变化实践" name="access-evaluation">
+      <el-collapse-item
+        title="应对气候变化-气候变化实践"
+        name="access-evaluation"
+      >
         <template #title>
           <div class="collapse-title">
             <span
-              >气候变化实践
+              >应对气候变化-气候变化实践
               <EsgTooltip content="Wind评级、交易所可持续发展报告指引" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
@@ -673,10 +679,13 @@
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="绿色投融资（财务）" name="supplier-quantity">
+      <el-collapse-item
+        title="应对气候变化-绿色投融资（财务）"
+        name="supplier-quantity"
+      >
         <template #title>
           <div class="collapse-title">
-            <span>绿色投融资（财务） </span>
+            <span>应对气候变化-绿色投融资（财务） </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -708,10 +717,13 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="行业合作" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="应对气候变化-行业合作"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 行业合作 </span>
+            <span> 应对气候变化-行业合作 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -806,10 +818,13 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="战略与目标" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="环境管理-战略与目标"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 战略与目标 </span>
+            <span> 环境管理-战略与目标 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -852,11 +867,14 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="体系与策略" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="环境管理-体系与策略"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              体系与策略
+              环境管理-体系与策略
               <EsgTooltip content="Wind评级" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
@@ -996,13 +1014,13 @@
         </div>
       </el-collapse-item>
       <el-collapse-item
-        title="环保预警及应急"
+        title="环境管理-环保预警及应急"
         name="supplier-contractor-rights"
       >
         <template #title>
           <div class="collapse-title">
             <span>
-              环保预警及应急
+              环境管理-环保预警及应急
               <EsgTooltip content="Wind评级、交易所可持续发展报告指引" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
@@ -1112,10 +1130,13 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="环境影响评估" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="环境管理-环境影响评估"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 环境影响评估 </span>
+            <span> 环境管理-环境影响评估 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1191,22 +1212,16 @@
         </div>
       </el-collapse-item>
       <el-collapse-item
-        title="突发重大环境事件"
+        title="环境管理-突发重大环境事件"
         name="supplier-contractor-rights"
       >
         <template #title>
           <div class="collapse-title">
-            <span> 突发重大环境事件 </span>
+            <span> 环境管理-突发重大环境事件 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
         <div class="form-section">
-          <!--
-          <div class="section-description">
-            <span class="label">内容详解：</span>
-            <span class="description">企业所有权结构和法律组织形式。</span>
-          </div>
-          -->
           <el-form :model="formData" label-position="left" label-width="100px">
             <el-form-item label="突发重大环境事件起数">
               <template #label>
@@ -1227,10 +1242,15 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="生产环保实践" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="环保实践-生产环保实践"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 生产环保实践 <EsgTooltip content="Wind评级" /></span>
+            <span>
+              环保实践-生产环保实践 <EsgTooltip content="Wind评级"
+            /></span>
 
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -1372,10 +1392,13 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="绿色办公" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="环保实践-绿色办公"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 绿色办公 </span>
+            <span> 环保实践-绿色办公 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1406,11 +1429,14 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="目标与方针" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="资源使用-目标与方针"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              目标与方针
+              资源使用-目标与方针
               <EsgTooltip content="Wind评级、交易所可持续发展报告指引"
             /></span>
             <el-icon class="collapse-icon"></el-icon>
@@ -1456,10 +1482,13 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="管理及策略" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="资源使用-管理及策略"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 管理及策略 <EsgTooltip content="Wind评级" /></span>
+            <span> 资源使用-管理及策略 <EsgTooltip content="Wind评级" /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -1546,11 +1575,14 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="能源使用" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="资源使用-能源使用"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              能源使用
+              资源使用-能源使用
               <EsgTooltip
                 content="GRI 302、Wind评级、交易所可持续发展报告指引"
               />
@@ -1909,10 +1941,13 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="水资源使用" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="资源使用-水资源使用"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 水资源使用 <EsgTooltip content="GRI 303" /></span>
+            <span> 资源使用-水资源使用 <EsgTooltip content="GRI 303" /></span>
 
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -1974,11 +2009,15 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="资源节约" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="资源使用-资源节约"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              资源节约 <EsgTooltip content="Wind评级、交易所可持续发展报告指引"
+              资源使用-资源节约
+              <EsgTooltip content="Wind评级、交易所可持续发展报告指引"
             /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -2035,13 +2074,13 @@
         </div>
       </el-collapse-item>
       <el-collapse-item
-        title="原材料与包装材料（供应链）"
+        title="资源使用-原材料与包装材料（供应链）"
         name="supplier-contractor-rights"
       >
         <template #title>
           <div class="collapse-title">
             <span>
-              原材料与包装材料（供应链）
+              资源使用-原材料与包装材料（供应链）
               <EsgTooltip
                 content="GRI 301、<br/>交易所可持续发展指引<br/>Wind评级"
               />
@@ -2154,11 +2193,15 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="目标与方针" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="治污减排-目标与方针"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              目标与方针 <EsgTooltip content="交易所可持续发展报告指引"
+              治污减排-目标与方针
+              <EsgTooltip content="交易所可持续发展报告指引"
             /></span>
 
             <el-icon class="collapse-icon"></el-icon>
@@ -2203,11 +2246,15 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="管理及策略" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="治污减排-管理及策略"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              管理及策略 <EsgTooltip content="交易所可持续发展报告指引"
+              治污减排-管理及策略
+              <EsgTooltip content="交易所可持续发展报告指引"
             /></span>
 
             <el-icon class="collapse-icon"></el-icon>
@@ -2271,10 +2318,13 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="废气排放" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="治污减排-废气排放"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 管理及废气排放策略 <EsgTooltip content="GRI 305" /> </span>
+            <span> 治污减排-废气排放 <EsgTooltip content="GRI 305" /> </span>
 
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -2423,11 +2473,14 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="废水排放" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="治污减排-废水排放"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              废水排放
+              治污减排-废水排放
               <EsgTooltip content="GRI 303、交易所可持续发展报告指引" />
             </span>
 
@@ -2521,11 +2574,14 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="固废处理" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="治污减排-固废处理"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              固废处理
+              治污减排-固废处理
               <EsgTooltip
                 content="GRI 306、Wind评级、交易所可持续发展报告指引"
               />
@@ -2615,11 +2671,14 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="治污减排实践" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="治污减排-治污减排实践"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              治污减排实践
+              治污减排-治污减排实践
               <EsgTooltip content="GRI 306、Wind评级、交易所可持续发展报告指引"
             /></span>
             <el-icon class="collapse-icon"></el-icon>
@@ -2767,10 +2826,13 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="目标与方针" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="生物多样性保护-目标与方针"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
-            <span> 目标与方针 </span>
+            <span> 生物多样性保护-目标与方针 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -2815,11 +2877,15 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="管理及策略" name="supplier-contractor-rights">
+      <el-collapse-item
+        title="生物多样性保护-管理及策略"
+        name="supplier-contractor-rights"
+      >
         <template #title>
           <div class="collapse-title">
             <span>
-              管理及策略 <EsgTooltip content="GRI 301、交易所可持续发展指引"
+              生物多样性保护-管理及策略
+              <EsgTooltip content="GRI 301、交易所可持续发展指引"
             /></span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
@@ -2934,12 +3000,12 @@
         </div>
       </el-collapse-item>
       <el-collapse-item
-        title="生物多样性保护实践"
+        title="生物多样性保护-生物多样性保护实践"
         name="supplier-contractor-rights"
       >
         <template #title>
           <div class="collapse-title">
-            <span> 生物多样性保护实践 </span>
+            <span> 生物多样性保护-生物多样性保护实践 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
