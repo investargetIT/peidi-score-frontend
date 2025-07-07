@@ -248,7 +248,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.soxEmissions"
+                  v-model="formData.scope3GhgEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2379,7 +2379,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.soxEmissions"
+                  v-model="formData.soxEmissionsAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -3174,7 +3174,9 @@ const formData = ref({
   newSupplierCount: "", // 新增供应商数量
   scope1GhgEmissions: "", // 范围1温室气体排放量
   scope2GhgEmissions: "", // 范围2温室气体排放量
-  soxEmissions: "", // 硫氧化物（SOx）排放量
+  scope3GhgEmissions: "", // 范围3温室气体排放量
+  noxEmissionsAmount: "", // 氮氧化物（NOx）排放量
+  soxEmissionsAmount: "", // 硫氧化物（SOx）排放量
   popEmissions: "", // 持久性有机污染物（POP）排放量
   vocEmissions: "", // 挥发性有机化合物（VOC）排放量
   nonHazardousWasteTotal: "", // 无害废物排放总量
