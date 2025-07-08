@@ -2,7 +2,7 @@
   <div class="esg-content">
     <!-- 公司名称与组织架构 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
-      <el-collapse-item title="社会公益" name="management-system">
+      <el-collapse-item title="社会公益" name="social-welfare">
         <template #title>
           <div class="collapse-title">
             <span>
@@ -65,7 +65,10 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="社区公益-目标与理念" name="customer-privacy">
+      <el-collapse-item
+        title="社区公益-目标与理念"
+        name="community-welfare-goals"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -125,7 +128,7 @@
       <!-- 其他折叠项 -->
       <el-collapse-item
         title="社区公益-打造品牌公益项目"
-        name="digital-construction"
+        name="brand-charity-projects"
       >
         <template #title>
           <div class="collapse-title">
@@ -198,7 +201,7 @@
 
       <el-collapse-item
         title="社区公益与志愿活动实践"
-        name="publicity-training"
+        name="community-volunteer-activities"
       >
         <template #title>
           <div class="collapse-title">
@@ -305,7 +308,10 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="社区公益所获荣誉" name="digital-construction">
+      <el-collapse-item
+        title="社区公益所获荣誉"
+        name="community-welfare-honors"
+      >
         <template #title>
           <div class="collapse-title">
             <span
@@ -371,7 +377,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="乡村振兴" name="digital-construction">
+      <el-collapse-item title="乡村振兴" name="rural-revitalization">
         <template #title>
           <div class="collapse-title">
             <span
@@ -576,7 +582,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["management-system"]);
+const activeCollapse = ref(["social-welfare"]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 
