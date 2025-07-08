@@ -282,6 +282,7 @@ import {
 } from "@element-plus/icons-vue";
 import { storageLocal } from "@pureadmin/utils";
 import { useI18n } from "vue-i18n";
+import { TaskLevelList } from "./constant";
 
 const { t } = useI18n();
 
@@ -293,36 +294,45 @@ const currentQuestionId = ref(null);
 const completingTask = ref(false);
 const uploadUrl = ref("/api/upload");
 
-// 问题数据
-const questions = ref([
-  {
-    id: "q1",
-    title:
-      "Company Introduction: Please introduce yourself and explain why you chose to join our company",
-    difficulty: "beginner"
-  },
-  {
-    id: "q2",
-    title:
-      "Project Experience: Describe a challenging project you have worked on",
-    difficulty: "intermediate"
-  },
-  {
-    id: "q3",
-    title: "Technical Skills: Explain your expertise in your field",
-    difficulty: "advanced"
-  },
-  {
-    id: "q4",
-    title: "Future Goals: What are your career aspirations?",
-    difficulty: "intermediate"
-  },
-  {
-    id: "q5",
-    title: "Team Collaboration: How do you handle conflicts in a team?",
-    difficulty: "beginner"
+// 随机抽取问题的逻辑
+const generateRandomQuestions = () => {
+  // 随机选择一个难度级别
+  const levels = ["Beginner", "Intermediate", "Advanced"];
+  const selectedLevel = levels[Math.floor(Math.random() * levels.length)];
+
+  let questionsToGenerate = [];
+  let questionCount = 0;
+
+  // 根据选择的级别确定抽取数量
+  switch (selectedLevel) {
+    case "Beginner":
+      questionCount = 3;
+      break;
+    case "Intermediate":
+      questionCount = 1;
+      break;
+    case "Advanced":
+      questionCount = 1;
+      break;
   }
-]);
+
+  // 从对应级别的问题列表中随机抽取
+  const availableQuestions = TaskLevelList[selectedLevel];
+  const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+  const selectedQuestions = shuffled.slice(0, questionCount);
+
+  // 生成问题对象
+  questionsToGenerate = selectedQuestions.map((question, index) => ({
+    id: `q${index + 1}`,
+    title: question.text,
+    difficulty: selectedLevel.toLowerCase()
+  }));
+
+  return questionsToGenerate;
+};
+
+// 问题数据
+const questions = ref(generateRandomQuestions());
 
 // 答案数据
 const answers = ref({
@@ -565,6 +575,12 @@ const completeTask = async () => {
 onMounted(() => {
   // 初始化数据
   console.log("Employee Task page loaded");
+  console.log("Generated questions:", questions.value);
+  console.log(
+    "Selected difficulty level:",
+    questions.value.length > 0 ? questions.value[0].difficulty : "none"
+  );
+  console.log("Question count:", questions.value.length);
 });
 </script>
 

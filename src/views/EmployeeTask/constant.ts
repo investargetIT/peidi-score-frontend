@@ -1,4 +1,4 @@
-export const TaskList = {
+export const TaskLevelList = {
   Beginner: [
     {
       text: "🔍探索公司办公区（企业照片墙、企业文化墙、6S行为标准）-随手拍"
