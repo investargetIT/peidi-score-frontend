@@ -37,7 +37,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.socialWelfareInvestment"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -55,7 +55,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.socialContributionPerShare"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -100,7 +100,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.communityWelfareStrategy"
                 type="textarea"
                 :rows="4"
                 placeholder="中粮糖业坚持发展成果与社会共享，利用自身资源优势，开展公益志愿活动，汇聚点滴力量服务社区、关爱社会，向社会传递爱与温暖。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -116,7 +116,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.privacyLeakIncidents"
+                v-model="formData.communityWelfareSystem"
                 type="textarea"
                 :rows="4"
                 placeholder="我们积极践行“关爱与分享”的公益理念，主动担当社会公益责任，鼓励员工参与志愿服务活动，努力实现自身与社区的和谐共处、共生共荣。报告期内，公司对外捐赠659.27万元，员工注册志愿者人数78人，员工累计参与志愿服务53小时，员工参与志愿服务7人次。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -162,7 +162,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.internalDigitalConstruction"
+                v-model="formData.brandCharityProjects"
                 type="textarea"
                 :rows="4"
                 placeholder="“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
@@ -170,7 +170,7 @@
             </el-form-item>
             <el-form-item
               label="附件上传"
-              prop="ghgVerificationAttachmentFileList"
+              prop="brandCharityProjectsAttachmentFileList"
             >
               <template #label>
                 <div>
@@ -180,7 +180,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.ghgVerificationAttachmentFileList"
+                v-model:file-list="
+                  formData.brandCharityProjectsAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -233,7 +235,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.infoPrivacyTrainingDescription"
+                v-model="formData.communityVolunteerActivities"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -278,7 +280,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingSessions"
+                  v-model="formData.volunteerTotalParticipants"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
                 />
@@ -298,7 +300,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyTrainingParticipants"
+                  v-model="formData.volunteerAverageHours"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -341,7 +343,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.internalDigitalConstruction"
+                v-model="formData.communityWelfareHonors"
                 type="textarea"
                 :rows="4"
                 placeholder="“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
@@ -349,7 +351,7 @@
             </el-form-item>
             <el-form-item
               label="附件上传"
-              prop="ghgVerificationAttachmentFileList"
+              prop="communityWelfareHonorsAttachmentFileList"
             >
               <template #label>
                 <div>
@@ -359,7 +361,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.ghgVerificationAttachmentFileList"
+                v-model:file-list="
+                  formData.communityWelfareHonorsAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -407,7 +411,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.internalDigitalConstruction"
+                v-model="formData.ruralRevitalizationStrategy"
                 type="textarea"
                 :rows="4"
                 placeholder="“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
@@ -423,7 +427,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.internalDigitalConstruction"
+                v-model="formData.ruralRevitalizationPolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="中粮糖业充分发挥农业产业化龙头企业的带头作用，深入推进“种植规划+种子研发+田间管理+农机服务+数智农业” 的“五位一体”现代农业管理体系，推广智慧农业，引领产业发展，将便捷、科学的农业服务推广至千家万户，稳步 推进农业现代化转型发展。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -439,7 +443,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.internalDigitalConstruction"
+                v-model="formData.ruralRevitalizationPractice"
                 type="textarea"
                 :rows="4"
                 placeholder="中粮糖业在全国建立了 1186 个各类农业合作社，带动 10.2 万户农民就业，为农业产业高质量发展不断注入新动能。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -447,7 +451,7 @@
             </el-form-item>
             <el-form-item
               label="附件上传"
-              prop="ghgVerificationAttachmentFileList"
+              prop="ruralRevitalizationAttachmentFileList"
             >
               <template #label>
                 <div>
@@ -457,7 +461,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.ghgVerificationAttachmentFileList"
+                v-model:file-list="
+                  formData.ruralRevitalizationAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -481,7 +487,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.ruralRevitalizationInvestment"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -497,7 +503,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.agriculturalProductPurchaseAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -515,7 +521,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.supportProductDevelopmentCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -533,7 +539,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.infoPrivacyInvestment"
+                  v-model="formData.jobCreationCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -588,19 +594,39 @@ const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
-  infoPrivacyOrgStructure: "", // 信息与隐私安全保护组织架构
-  infoPrivacyPolicySystem: "", // 信息与隐私安全保护制度体系
-  infoSecurityIncidents: "", // 信息安全相关事件
-  infoPrivacyProtectionMeasures: "", // 信息与隐私安全保护防范与应对措施
-  infoPrivacyInvestment: "", // 资金投入
-  privacyLeakIncidents: "", // 泄漏事件
-  internalDigitalConstruction: "", // 内部数字化建设
-  infoPrivacyTrainingDescription: "", // 信息安全与隐私保护意识培训场次（描述）
+  // 社会公益
+  socialWelfareInvestment: "", // 社会公益投入金额
+  socialContributionPerShare: "", // 每股社会贡献值
+
+  // 社区公益-目标与理念
+  communityWelfareStrategy: "", // 战略与目标
+  communityWelfareSystem: "", // 体系及策略
+
+  // 社区公益-打造品牌公益项目
+  brandCharityProjects: "", // 打造品牌公益项目
+
+  // 社区公益与志愿活动实践
+  communityVolunteerActivities: "", // 社区公益与志愿活动实践
+  volunteerTotalParticipants: "", // 员工参与公益志愿活动总人数
+  volunteerAverageHours: "", // 员工公益志愿活动人均时长
+
+  // 社区公益所获荣誉
+  communityWelfareHonors: "", // 社区公益所获荣誉
+
+  // 乡村振兴
+  ruralRevitalizationStrategy: "", // 目标、方针及承诺；战略
+  ruralRevitalizationPolicy: "", // 政策
+  ruralRevitalizationPractice: "", // 实践
+  ruralRevitalizationInvestment: "", // 乡村振兴总投入
+  agriculturalProductPurchaseAmount: "", // 购买帮扶地区农产品总金额
+  supportProductDevelopmentCount: "", // 帮扶产品开发数量
+  jobCreationCount: "", // 创造就业岗位数量
+
+  // 附件上传
   publicityTrainingAttachmentFileList: [], // 附件上传 (宣传与培训)
-  infoPrivacyTrainingSessions: "", // 信息安全与隐私保护意识培训场次（数值）
-  infoPrivacyTrainingParticipants: "", // 信息安全与隐私保护意识培训人次
-  infoPrivacyTrainingTotalHours: "", // 信息安全与隐私保护意识培训总时长
-  infoPrivacyTrainingAvgHours: "" // 信息安全与隐私保护意识培训人均时长
+  brandCharityProjectsAttachmentFileList: [], // 附件上传 (品牌公益项目)
+  communityWelfareHonorsAttachmentFileList: [], // 附件上传 (社区公益所获荣誉)
+  ruralRevitalizationAttachmentFileList: [] // 附件上传 (乡村振兴)
 });
 
 // 文件上传处理
