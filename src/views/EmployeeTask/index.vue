@@ -1,5 +1,5 @@
 <template>
-  <div class="employee-task-page">
+  <div>
     <!-- 页面头部 -->
     <div class="task-header">
       <h1 class="task-title">{{ `Employee Task - ${employeeName}` }}</h1>
@@ -204,21 +204,17 @@
                         :type="
                           getAnswerStatusType(getAnswerStatus(question.id))
                         "
+                        size="small"
                       >
                         {{ getAnswerStatusText(getAnswerStatus(question.id)) }}
                       </el-tag>
                     </el-descriptions-item>
                     <el-descriptions-item
-                      v-if="getReviewTime(question.id)"
-                      label="Reviewed At"
+                      v-if="getReviewComments(question.id)"
+                      label="Review Comments"
+                      :span="2"
                     >
-                      {{ formatDateTime(getReviewTime(question.id)) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item
-                      v-if="getReviewComment(question.id)"
-                      label="Review Comment"
-                    >
-                      {{ getReviewComment(question.id) }}
+                      {{ getReviewComments(question.id) }}
                     </el-descriptions-item>
                   </el-descriptions>
                 </div>
@@ -229,15 +225,19 @@
       </div>
     </div>
 
-    <!-- 任务完成按钮 -->
-    <div v-if="canCompleteTask" class="complete-task-section">
+    <!-- 完成任务按钮 -->
+    <div
+      v-if="taskStatus !== 'completed' && allQuestionsAnswered"
+      class="complete-task-section"
+    >
+      <h3>Ready to Complete Task</h3>
+      <p>You have answered all questions. Click below to complete the task.</p>
       <el-button
         type="success"
         size="large"
         @click="completeTask"
         :loading="completingTask"
       >
-        <el-icon class="el-icon--left"><Check /></el-icon>
         Complete Task
       </el-button>
     </div>
@@ -329,6 +329,9 @@ const submittingAnswers = ref({});
 // 计算属性
 const totalQuestions = computed(() => questions.value.length);
 const completedQuestions = computed(() => Object.keys(answers.value).length);
+const allQuestionsAnswered = computed(
+  () => completedQuestions.value === totalQuestions.value
+);
 const canCompleteTask = computed(
   () =>
     completedQuestions.value === totalQuestions.value &&
@@ -437,6 +440,10 @@ const getReviewTime = questionId => {
 };
 
 const getReviewComment = questionId => {
+  return answers.value[questionId]?.reviewComment;
+};
+
+const getReviewComments = questionId => {
   return answers.value[questionId]?.reviewComment;
 };
 
@@ -575,48 +582,19 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
-
-/* 响应式设计 */
-@media (width <= 768px) {
-  .employee-task-page {
-    padding: 16px;
-  }
-
-  .task-meta {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
-  }
-
-  .question-info {
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-start;
-  }
-
-  .question-header {
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-  }
-}
-
-.employee-task-page {
-  max-width: 1200px;
-  padding: 20px;
-  margin: 0 auto;
-}
-
 .task-header {
-  margin-bottom: 24px;
+  padding: 32px 40px;
+  margin-bottom: 32px;
+  color: white;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
 }
 
 .task-title {
-  margin-bottom: 16px;
-  font-size: 28px;
-  font-weight: 600;
-  color: #1f2937;
+  margin: 0 0 16px;
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
 }
 
 .task-meta {
@@ -631,17 +609,17 @@ onMounted(() => {
   gap: 8px;
   align-items: center;
   font-size: 14px;
-  color: #6b7280;
+  color: rgb(255 255 255 / 90%);
 }
 
 .completion-alert {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .questions-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .question-card {
@@ -792,14 +770,38 @@ onMounted(() => {
 }
 
 .complete-task-section {
-  padding: 24px;
+  padding: 32px 40px;
   margin-top: 32px;
   text-align: center;
   background-color: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 16px;
 }
 
 .upload-demo {
   margin-bottom: 16px;
+}
+
+@media (width <= 768px) {
+  .task-header {
+    padding: 24px 20px;
+  }
+
+  .task-title {
+    font-size: 24px;
+  }
+
+  .task-meta {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .questions-container {
+    gap: 24px;
+  }
+
+  .complete-task-section {
+    padding: 24px 20px;
+  }
 }
 </style>
