@@ -200,14 +200,14 @@
 
                 <!-- 提交信息 -->
                 <div class="submission-info-card">
-                  <div class="submission-grid">
-                    <div class="submission-item">
+                  <div class="submission-inline-grid">
+                    <div class="submission-inline-item">
                       <p class="submission-label">Submitted at:</p>
                       <p class="submission-value">
                         {{ formatDateTime(getSubmissionTime(question.id)) }}
                       </p>
                     </div>
-                    <div class="submission-item">
+                    <div class="submission-inline-item">
                       <p class="submission-label">Review Status:</p>
                       <el-tag
                         :type="
@@ -618,7 +618,7 @@ onMounted(() => {
     padding: 8px 16px;
   }
 
-  .submission-grid {
+  .submission-inline-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
@@ -927,20 +927,21 @@ onMounted(() => {
 
 /* 提交信息卡片样式 */
 .submission-info-card {
-  padding: 16px;
+  padding: 12px;
   margin-bottom: 16px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  background: rgb(249 250 251 / 30%);
+  border-top: 1px solid #e5e7eb;
+  border-radius: 6px;
 }
 
-.submission-grid {
+.submission-inline-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
+  text-align: left;
 }
 
-.submission-item {
+.submission-inline-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
