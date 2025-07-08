@@ -87,7 +87,9 @@
             <!-- 答案区域 -->
             <div class="answer-section">
               <div v-if="!isQuestionAnswered(question.id)" class="answer-form">
-                <h4>Your Answer</h4>
+                <div class="answer-label">
+                  <label class="form-label">Your Answer</label>
+                </div>
 
                 <!-- 答案输入框 -->
                 <div class="answer-input-container">
@@ -95,16 +97,19 @@
                     v-model="tempAnswers[question.id]"
                     type="textarea"
                     :rows="6"
-                    placeholder="请输入您的答案..."
+                    placeholder="Your Answer"
                     resize="vertical"
                     show-word-limit
                     maxlength="2000"
+                    class="answer-textarea"
                   />
                 </div>
 
                 <!-- 附件上传 -->
                 <div class="attachments-section">
-                  <h4>Attachments</h4>
+                  <div class="answer-label">
+                    <label class="form-label">Attachments</label>
+                  </div>
                   <el-upload
                     class="upload-demo"
                     :action="uploadUrl"
@@ -129,7 +134,7 @@
                         <p class="upload-hint">Max files: 3, Max size: 5MB</p>
                       </div>
                       <el-button
-                        type="primary"
+                        type="default"
                         size="small"
                         class="select-files-btn"
                       >
@@ -146,6 +151,7 @@
                     @click="submitAnswer(question.id)"
                     :disabled="!canSubmitAnswer(question.id)"
                     :loading="submittingAnswers[question.id]"
+                    class="save-answer-btn"
                   >
                     Save Answer
                   </el-button>
@@ -154,18 +160,26 @@
 
               <!-- 已提交的答案显示 -->
               <div v-else class="submitted-answer">
-                <h4>Your Answer</h4>
-                <div
-                  class="answer-content"
-                  v-html="getAnswerContent(question.id)"
-                ></div>
+                <div class="answer-label">
+                  <label class="form-label">Your Answer</label>
+                </div>
+
+                <!-- 已提交的答案内容 -->
+                <div class="submitted-answer-content">
+                  <div
+                    class="answer-display"
+                    v-html="getAnswerContent(question.id)"
+                  ></div>
+                </div>
 
                 <!-- 附件列表 -->
                 <div
                   v-if="getSubmittedAttachments(question.id).length > 0"
                   class="submitted-attachments"
                 >
-                  <h4>Attachments</h4>
+                  <div class="answer-label">
+                    <label class="form-label">Attachments</label>
+                  </div>
                   <div class="attachment-list">
                     <div
                       v-for="attachment in getSubmittedAttachments(question.id)"
@@ -185,40 +199,38 @@
                 </div>
 
                 <!-- 提交信息 -->
-                <div class="submission-info">
-                  <el-descriptions :column="2" size="small" border>
-                    <el-descriptions-item label="Submitted At">
-                      {{ formatDateTime(getSubmissionTime(question.id)) }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="Status">
+                <div class="submission-info-card">
+                  <div class="submission-grid">
+                    <div class="submission-item">
+                      <p class="submission-label">Submitted at:</p>
+                      <p class="submission-value">
+                        {{ formatDateTime(getSubmissionTime(question.id)) }}
+                      </p>
+                    </div>
+                    <div class="submission-item">
+                      <p class="submission-label">Review Status:</p>
                       <el-tag
                         :type="
                           getAnswerStatusType(getAnswerStatus(question.id))
                         "
                         size="small"
+                        class="status-tag"
                       >
                         {{ getAnswerStatusText(getAnswerStatus(question.id)) }}
                       </el-tag>
-                    </el-descriptions-item>
-                    <el-descriptions-item
-                      v-if="getReviewComments(question.id)"
-                      label="Review Comments"
-                      :span="2"
-                    >
-                      {{ getReviewComments(question.id) }}
-                    </el-descriptions-item>
-                  </el-descriptions>
-
-                  <!-- 已提交答案的操作栏 -->
-                  <div class="submitted-answer-actions">
-                    <el-button
-                      type="primary"
-                      size="default"
-                      class="save-answer-btn"
-                    >
-                      Save Answer
-                    </el-button>
+                    </div>
                   </div>
+                </div>
+
+                <!-- 已提交答案的操作栏 -->
+                <div class="submitted-answer-actions">
+                  <el-button
+                    type="primary"
+                    size="default"
+                    class="save-answer-btn"
+                  >
+                    Save Answer
+                  </el-button>
                 </div>
               </div>
             </div>
@@ -549,6 +561,71 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+
+/* 移动端适配 */
+@media (width <= 768px) {
+  .task-header {
+    padding: 0;
+  }
+
+  .task-title {
+    font-size: 24px;
+  }
+
+  .task-meta {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .questions-container {
+    gap: 20px;
+  }
+
+  .question-card .el-card__header {
+    padding: 12px 16px;
+  }
+
+  .question-card .el-card__body {
+    padding: 12px 16px;
+  }
+
+  .question-info {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .question-number {
+    margin-right: 0;
+    margin-bottom: 4px;
+  }
+
+  .answer-input-container .el-textarea__inner {
+    font-size: 13px;
+  }
+
+  .upload-dragger-content {
+    padding: 24px 16px;
+  }
+
+  .upload-icon {
+    margin-bottom: 12px;
+    font-size: 32px;
+  }
+
+  .save-answer-btn {
+    min-width: 100px;
+    padding: 8px 16px;
+  }
+
+  .submission-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
 .task-header {
   padding: 0;
   margin-bottom: 32px;
@@ -664,10 +741,6 @@ onMounted(() => {
   margin-left: 0;
 }
 
-.status-tag {
-  margin-left: 0;
-}
-
 .completed-icon {
   margin-left: auto;
 }
@@ -695,184 +768,127 @@ onMounted(() => {
   color: #059669;
 }
 
-.answer-section h4 {
+/* 答案区域样式 */
+.answer-section {
+  margin-top: 24px;
+}
+
+.answer-label {
   margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: 600;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
 }
 
 .answer-input-container {
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 
-.answer-input-container .el-textarea__inner {
+.answer-textarea {
+  border-radius: 8px;
+}
+
+.answer-textarea :deep(.el-textarea__inner) {
+  min-height: 120px;
+  padding: 16px;
   font-size: 14px;
   line-height: 1.5;
-  border-radius: 4px;
+  resize: vertical;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
 }
 
+.answer-textarea :deep(.el-textarea__inner):focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 10%);
+}
+
+.submitted-answer-content {
+  margin-bottom: 24px;
+}
+
+.answer-display {
+  min-height: 120px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #374151;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+/* 附件区域样式 */
 .attachments-section {
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 
-.attachments-section h4 {
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: 600;
+.upload-demo :deep(.el-upload-dragger) {
+  padding: 32px 24px;
+  background: #fff;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-.submit-section {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 16px;
-  margin-top: 20px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.submit-section .el-button {
-  min-width: 120px;
-  padding: 8px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 6px;
-}
-
-.submit-section .el-button--primary {
-  background-color: #409eff;
-  border-color: #409eff;
-}
-
-.submit-section .el-button--primary:hover {
-  background-color: #66b1ff;
-  border-color: #66b1ff;
-}
-
-.submit-section .el-button--primary:disabled {
-  background-color: #a0cfff;
-  border-color: #a0cfff;
-}
-
-.submitted-answer {
-  padding: 12px;
-  background-color: transparent;
-  border-radius: 6px;
-}
-
-.answer-content {
-  min-height: 60px;
-  padding: 10px;
-  margin-bottom: 12px;
-  font-size: 14px;
-  line-height: 1.5;
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-}
-
-.submitted-attachments {
-  margin-bottom: 12px;
-}
-
-.attachment-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.attachment-item {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  padding: 6px 8px;
-  font-size: 14px;
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-}
-
-.submission-info {
-  margin-top: 12px;
-}
-
-.complete-task-section {
-  padding: 32px 40px;
-  margin-top: 32px;
-  text-align: center;
-  background-color: #f8f9fa;
-  border-radius: 16px;
-}
-
-.upload-demo {
-  margin-bottom: 0;
-}
-
-.upload-demo .el-upload {
-  width: 100%;
-}
-
-.upload-demo .el-upload-dragger {
-  width: 100%;
-  height: auto;
-  background-color: #fafafa;
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  transition: all 0.3s;
-}
-
-.upload-demo .el-upload-dragger:hover {
-  background-color: #f5f7fa;
-  border-color: #409eff;
-}
-
-.upload-demo .el-upload__tip {
-  margin-top: 4px;
-  font-size: 12px;
-  color: #999;
+.upload-demo :deep(.el-upload-dragger):hover {
+  background: #f8fafc;
+  border-color: #3b82f6;
 }
 
 .upload-dragger-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 30px 20px;
+  text-align: center;
 }
 
 .upload-icon {
   margin-bottom: 16px;
-  font-size: 48px;
-  color: #c0c4cc;
-}
-
-.upload-text {
-  margin-bottom: 16px;
-  color: #606266;
-  text-align: center;
+  font-size: 40px;
+  color: #9ca3af;
 }
 
 .upload-text p {
   margin: 0;
   font-size: 14px;
-  line-height: 1.5;
+  color: #6b7280;
 }
 
 .upload-text p:first-child {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .upload-hint {
   font-size: 12px;
-  color: #909399;
+  color: #9ca3af;
 }
 
 .select-files-btn {
-  margin-top: 0;
+  padding: 8px 16px;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #374151;
+  background: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-.submitted-answer-actions {
+.select-files-btn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* 提交区域样式 */
+.submit-section {
   display: flex;
   justify-content: flex-end;
-  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
 }
 
 .save-answer-btn {
@@ -883,92 +899,76 @@ onMounted(() => {
   border-radius: 6px;
 }
 
-@media (width <= 768px) {
-  .task-header {
-    padding: 0;
-  }
+/* 已提交答案样式 */
+.submitted-attachments {
+  margin-bottom: 24px;
+}
 
-  .task-title {
-    font-size: 24px;
-  }
+.attachment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  .task-meta {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-  }
+.attachment-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
 
-  .questions-container {
-    gap: 20px;
-  }
+.attachment-item .el-icon {
+  color: #6b7280;
+}
 
-  .question-card .el-card__header {
-    padding: 12px 16px;
-  }
+/* 提交信息卡片样式 */
+.submission-info-card {
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
 
-  .question-card .el-card__body {
-    padding: 12px 16px;
-  }
+.submission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
 
-  .question-info {
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-start;
-  }
+.submission-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-  .question-number {
-    margin-right: 0;
-    margin-bottom: 4px;
-  }
+.submission-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
 
-  .answer-input-container .el-textarea__inner {
-    font-size: 13px;
-  }
+.submission-value {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+}
 
-  .upload-dragger-content {
-    padding: 20px 15px;
-  }
+.status-tag {
+  align-self: flex-start;
+  margin-left: 0;
+}
 
-  .upload-icon {
-    margin-bottom: 12px;
-    font-size: 36px;
-  }
-
-  .upload-text {
-    margin-bottom: 12px;
-  }
-
-  .upload-text p {
-    font-size: 13px;
-  }
-
-  .upload-hint {
-    font-size: 11px;
-  }
-
-  .submit-section {
-    padding-top: 12px;
-    margin-top: 16px;
-  }
-
-  .submit-section .el-button {
-    min-width: 100px;
-    padding: 6px 16px;
-    font-size: 13px;
-  }
-
-  .submitted-answer-actions {
-    margin-top: 10px;
-  }
-
-  .save-answer-btn {
-    min-width: 100px;
-    padding: 6px 16px;
-    font-size: 13px;
-  }
-
-  .complete-task-section {
-    padding: 24px 20px;
-  }
+/* 已提交答案操作栏 */
+.submitted-answer-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
 }
 </style>
