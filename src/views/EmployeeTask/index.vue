@@ -386,7 +386,8 @@ const shouldShowEmptyState = computed(() => {
   const validDateObj = new Date(validDate.value);
 
   // 比较日期：如果入职日期大于有效日期，则显示空状态
-  return hiredDateObj > validDateObj;
+  // todo,本地开发，临时放开
+  return hiredDateObj < validDateObj;
 });
 
 // 工具函数
@@ -541,9 +542,57 @@ const submitAnswer = async questionId => {
   submittingAnswers.value[questionId] = true;
 
   try {
+    // 收集所有问题的答案数据
+    const allAnswersData = questions.value.map(question => {
+      const questionKey = question.key;
+      const tempAnswer = tempAnswers.value[questionKey] || "";
+      const tempAttachment = tempAttachments.value[questionKey] || [];
+      const existingAnswer = answers.value[questionKey];
+
+      return {
+        questionKey: questionKey,
+        questionId: question.id,
+        questionTitle: question.title,
+        difficulty: question.difficulty,
+        content: tempAnswer || existingAnswer?.content || "",
+        attachments:
+          tempAttachment.length > 0
+            ? tempAttachment
+            : existingAnswer?.attachments || [],
+        isAnswered: !!(tempAnswer || existingAnswer?.content),
+        submittedAt: existingAnswer?.submittedAt || null,
+        reviewStatus: existingAnswer?.reviewStatus || "pending"
+      };
+    });
+
+    // 准备保存的数据
+    const saveData = {
+      userId: id,
+      taskData: {
+        employeeName: employeeName.value,
+        dueDate: dueDate.value,
+        taskStatus: taskStatus.value,
+        totalQuestions: totalQuestions.value,
+        completedQuestions: allAnswersData.filter(item => item.isAnswered)
+          .length
+      },
+      answers: allAnswersData,
+      currentAnswer: {
+        questionKey: questionId,
+        content: tempAnswers.value[questionId],
+        attachments: tempAttachments.value[questionId] || []
+      }
+    };
+
+    console.log("Saving all answers data:", saveData);
+
+    // 调用API保存所有数据
+    // await updateQaConfig(saveData);
+
     // 模拟API调用
     await new Promise(resolve => setTimeout(resolve, 1000));
 
+    // 更新本地答案数据
     answers.value[questionId] = {
       content: tempAnswers.value[questionId],
       attachments: tempAttachments.value[questionId] || [],
@@ -553,18 +602,20 @@ const submitAnswer = async questionId => {
       reviewComment: null
     };
 
-    // 清空临时数据
+    // 清空当前问题的临时数据
     tempAnswers.value[questionId] = "";
     tempAttachments.value[questionId] = [];
 
-    ElMessage.success("答案提交成功");
+    ElMessage.success("答案保存成功");
 
     // 检查是否所有问题都已回答
-    if (completedQuestions.value === totalQuestions.value) {
-      ElMessage.info("所有问题已完成，您可以提交整个任务了");
+    const completedCount = Object.keys(answers.value).length;
+    if (completedCount === totalQuestions.value) {
+      ElMessage.info("所有问题已完成");
     }
   } catch (error) {
-    ElMessage.error("提交失败，请重试");
+    console.error("保存失败:", error);
+    ElMessage.error("保存失败，请重试");
   } finally {
     submittingAnswers.value[questionId] = false;
   }
