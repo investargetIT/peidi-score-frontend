@@ -65,7 +65,7 @@
           <template #header>
             <div class="question-header">
               <div class="question-info">
-                <span class="question-number">Question {{ index + 1 }}</span>
+                <span class="question-number">{{ question.key }}</span>
                 <el-tag
                   :type="getDifficultyType(question.difficulty)"
                   size="small"
@@ -161,7 +161,6 @@
                   <el-button
                     type="primary"
                     @click="submitAnswer(question.id)"
-                    :disabled="!canSubmitAnswer(question.id)"
                     :loading="submittingAnswers[question.id]"
                     class="save-answer-btn"
                   >
@@ -250,23 +249,6 @@
         </el-card>
       </div>
     </div>
-
-    <!-- 完成任务按钮 -->
-    <div
-      v-if="taskStatus !== 'completed' && allQuestionsAnswered"
-      class="complete-task-section"
-    >
-      <h3>Ready to Complete Task</h3>
-      <p>You have answered all questions. Click below to complete the task.</p>
-      <el-button
-        type="success"
-        size="large"
-        @click="completeTask"
-        :loading="completingTask"
-      >
-        Complete Task
-      </el-button>
-    </div>
   </div>
 </template>
 
@@ -323,9 +305,10 @@ const generateRandomQuestions = () => {
 
   // 生成问题对象
   questionsToGenerate = selectedQuestions.map((question, index) => ({
-    id: `q${index + 1}`,
+    id: question.key,
     title: question.text,
-    difficulty: selectedLevel.toLowerCase()
+    difficulty: selectedLevel.toLowerCase(),
+    key: question.key
   }));
 
   return questionsToGenerate;
@@ -336,14 +319,15 @@ const questions = ref(generateRandomQuestions());
 
 // 答案数据
 const answers = ref({
-  q1: {
-    content: "我是John Doe，很高兴加入佩带股份。我选择加入这家公司是因为...",
-    attachments: [],
-    submittedAt: new Date("2024-01-10T10:30:00"),
-    reviewStatus: "pending", // 'pending', 'approved', 'rejected'
-    reviewedAt: null,
-    reviewComment: null
-  }
+  // 示例答案数据，实际使用时应该为空对象或从API获取
+  // 'beginner-1': {
+  //   content: "我是John Doe，很高兴加入佩蒂股份。我选择加入这家公司是因为...",
+  //   attachments: [],
+  //   submittedAt: new Date("2024-01-10T10:30:00"),
+  //   reviewStatus: "pending", // 'pending', 'approved', 'rejected'
+  //   reviewedAt: null,
+  //   reviewComment: null
+  // }
 });
 
 // 临时答案数据（编辑中）
@@ -354,14 +338,6 @@ const submittingAnswers = ref({});
 // 计算属性
 const totalQuestions = computed(() => questions.value.length);
 const completedQuestions = computed(() => Object.keys(answers.value).length);
-const allQuestionsAnswered = computed(
-  () => completedQuestions.value === totalQuestions.value
-);
-const canCompleteTask = computed(
-  () =>
-    completedQuestions.value === totalQuestions.value &&
-    taskStatus.value !== "completed"
-);
 
 // 工具函数
 const formatDate = date => {
@@ -544,33 +520,6 @@ const submitAnswer = async questionId => {
   }
 };
 
-// 完成任务
-const completeTask = async () => {
-  try {
-    await ElMessageBox.confirm(
-      "确认要完成此任务吗？提交后将无法修改答案。",
-      "确认提交",
-      {
-        confirmButtonText: "确认",
-        cancelButtonText: "取消",
-        type: "warning"
-      }
-    );
-
-    completingTask.value = true;
-
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    taskStatus.value = "completed";
-    ElMessage.success("任务已完成！等待审核中...");
-  } catch (error) {
-    // 用户取消
-  } finally {
-    completingTask.value = false;
-  }
-};
-
 // 生命周期
 onMounted(() => {
   // 初始化数据
@@ -581,6 +530,20 @@ onMounted(() => {
     questions.value.length > 0 ? questions.value[0].difficulty : "none"
   );
   console.log("Question count:", questions.value.length);
+
+  // 为测试目的，添加一个示例答案（使用第一个问题的key）
+  if (questions.value.length > 0) {
+    const firstQuestionKey = questions.value[0].key;
+    answers.value[firstQuestionKey] = {
+      content: "这是一个示例答案，展示已提交的状态。",
+      attachments: [],
+      submittedAt: new Date("2024-01-10T10:30:00"),
+      reviewStatus: "pending",
+      reviewedAt: null,
+      reviewComment: null
+    };
+    console.log("Added sample answer for question:", firstQuestionKey);
+  }
 });
 </script>
 
@@ -622,6 +585,7 @@ onMounted(() => {
   .question-number {
     margin-right: 0;
     margin-bottom: 4px;
+    font-size: 12px;
   }
 
   .answer-input-container .el-textarea__inner {
@@ -776,9 +740,14 @@ onMounted(() => {
 }
 
 .question-number {
+  padding: 4px 8px;
   margin-right: 8px;
-  font-size: 16px;
+  font-family: Monaco, Menlo, "Ubuntu Mono", monospace;
+  font-size: 14px;
   font-weight: 600;
+  color: #374151;
+  background: #f3f4f6;
+  border-radius: 4px;
 }
 
 .difficulty-tag {
