@@ -280,6 +280,7 @@ const currentQuestionId = ref(null);
 const completingTask = ref(false);
 const uploadUrl = ref("/api/upload");
 const { id } = storageLocal()?.getItem("dataSource") || {};
+const { hired_date } = storageLocal()?.getItem("ddUserInfo") || {};
 const curDaInfo = ref({});
 const validDate = ref("");
 const validPeriod = ref("");
@@ -297,12 +298,12 @@ const fetchDataConfig = () => {
 const fetchEnumTypeList = () => {
   getEnumTypeList({ type: "qaDate" }).then(res => {
     if (res?.code === 200) {
-      validDate.value = res?.data;
+      validDate.value = res?.data?.[0]?.value || "";
     }
   });
   getEnumTypeList({ type: "qaPeriod" }).then(res => {
     if (res?.code === 200) {
-      validPeriod.value = res?.data;
+      validPeriod.value = res?.data?.[0]?.value || "";
     }
   });
 };
