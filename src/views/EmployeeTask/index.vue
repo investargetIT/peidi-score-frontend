@@ -642,7 +642,7 @@ const submitAnswer = async questionId => {
         questionTitle: question.title,
         difficulty: question.difficulty,
         content: tempAnswer || existingAnswer?.content || "",
-        createTime: new Date().getTime(),
+        createTime: new Date().toISOString(),
         attachments:
           tempAttachment.length > 0
             ? tempAttachment
