@@ -9,8 +9,8 @@
           <span>Due Date: {{ formatDate(dueDate) }}</span>
         </div>
         <div class="meta-item">
-          <el-tag :type="getStatusType(taskStatus)" size="large">
-            {{ getStatusText(taskStatus) }}
+          <el-tag :type="getStatusType(computedTaskStatus)" size="large">
+            {{ getStatusText(computedTaskStatus) }}
           </el-tag>
         </div>
         <div class="meta-item">
@@ -24,7 +24,7 @@
 
     <!-- 完成提示 -->
     <el-alert
-      v-if="taskStatus === 'completed'"
+      v-if="computedTaskStatus === 'completed'"
       title="Congratulations! You have completed all tasks."
       type="success"
       :closable="false"
@@ -142,6 +142,7 @@
                     :headers="{
                       Authorization: formatToken(getToken().accessToken)
                     }"
+                    :before-upload="beforeUpload"
                   >
                     <div class="upload-dragger-content">
                       <el-icon class="upload-icon">
@@ -149,7 +150,6 @@
                       </el-icon>
                       <div class="upload-text">
                         <p>Drag and drop files here, or click to select</p>
-                        <p class="upload-hint">Max files: 3, Max size: 5MB</p>
                       </div>
                       <el-button
                         type="default"
@@ -288,7 +288,6 @@ const { t } = useI18n();
 
 // 基础数据
 const employeeName = ref("John Doe");
-const dueDate = ref(new Date("2024-02-10"));
 const taskStatus = ref("in_progress"); // 'in_progress', 'completed', 'approved', 'overdue'
 const currentQuestionId = ref(null);
 const completingTask = ref(false);
@@ -300,6 +299,15 @@ const validDate = ref("");
 const validPeriod = ref("");
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
+
+const beforeUpload = file => {
+  const isLt10M = file.size / 1024 / 1024 < 2;
+
+  if (!isLt10M) {
+    ElMessage.error("上传文件大小不超过10M");
+  }
+  return isLt10M;
+};
 
 const fetchDataConfig = () => {
   getQaDetail({
@@ -414,6 +422,49 @@ const submittingAnswers = ref({});
 // 计算属性
 const totalQuestions = computed(() => questions.value.length);
 const completedQuestions = computed(() => Object.keys(answers.value).length);
+
+// 计算截止日期：validDate + validPeriod
+const dueDate = computed(() => {
+  if (!validDate.value || !validPeriod.value) {
+    console.log("Missing validDate or validPeriod, using current date");
+    return new Date(); // 如果没有有效数据，返回当前日期
+  }
+
+  const baseDate = new Date(validDate.value);
+  const periodDays = parseInt(validPeriod.value, 10);
+
+  if (isNaN(periodDays)) {
+    console.log("Invalid validPeriod, using base date");
+    return baseDate; // 如果周期不是有效数字，返回基础日期
+  }
+
+  // 计算截止日期 = validDate + validPeriod天
+  const calculatedDueDate = new Date(baseDate);
+  calculatedDueDate.setDate(baseDate.getDate() + periodDays);
+
+  console.log("Calculated dueDate:", {
+    validDate: validDate.value,
+    validPeriod: validPeriod.value,
+    baseDate: baseDate,
+    periodDays: periodDays,
+    calculatedDueDate: calculatedDueDate
+  });
+
+  return calculatedDueDate;
+});
+
+// 自动检查任务状态（是否过期）
+const computedTaskStatus = computed(() => {
+  const now = new Date();
+  const due = dueDate.value;
+
+  // 如果当前时间超过截止日期，且任务还未完成，则标记为过期
+  if (now > due && taskStatus.value === "in_progress") {
+    return "overdue";
+  }
+
+  return taskStatus.value;
+});
 
 // 日期比较逻辑
 const shouldShowEmptyState = computed(() => {
@@ -591,6 +642,7 @@ const submitAnswer = async questionId => {
         questionTitle: question.title,
         difficulty: question.difficulty,
         content: tempAnswer || existingAnswer?.content || "",
+        createTime: new Date().getTime(),
         attachments:
           tempAttachment.length > 0
             ? tempAttachment
@@ -607,12 +659,16 @@ const submitAnswer = async questionId => {
       taskData: {
         employeeName: employeeName.value,
         dueDate: dueDate.value,
-        taskStatus: taskStatus.value,
+        taskStatus: computedTaskStatus.value,
         totalQuestions: totalQuestions.value,
         completedQuestions: allAnswersData.filter(item => item.isAnswered)
           .length
       },
-      answers: allAnswersData
+      answers: allAnswersData,
+      remark: JSON.stringify({
+        validPeriod
+      }),
+      hasReview: false
     };
 
     console.log("Saving all answers data:", saveData);
@@ -666,8 +722,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
-
 /* 移动端适配 */
 @media (width <= 768px) {
   .employee-task-container {
