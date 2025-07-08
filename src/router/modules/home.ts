@@ -14,7 +14,7 @@ export default {
   children: [
     {
       path: "/index",
-      name: "task",
+      name: "dashboard",
       component: () => import("@/views/dashboard/index.vue"),
       meta: {
         title: "menu.dashboard",

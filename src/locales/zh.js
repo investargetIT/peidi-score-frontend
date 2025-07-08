@@ -6,7 +6,8 @@ export default {
     pointsrank: "积分排行榜",
     adminboard: "管理员仪表板",
     dashboard: "仪表盘",
-    esg: "ESG"
+    esg: "ESG",
+    task: "任务"
   },
   system: {
     title: "积分管理系统"

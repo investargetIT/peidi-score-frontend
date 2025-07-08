@@ -67,7 +67,7 @@ export const isAdmin = () => {
 const routes = [
   {
     path: "/history",
-    name: "history",
+    name: "historyLayout",
     redirect: "/history/index",
     component: Layout,
     meta: {
@@ -90,7 +90,7 @@ const routes = [
   },
   {
     path: "/score",
-    name: "score",
+    name: "scoreLayout",
     redirect: "/scoreRank/index",
     component: Layout,
     meta: {
@@ -116,7 +116,7 @@ const routes = [
 if (isAdmin()) {
   routes.push({
     path: "/monitor",
-    name: "monitor",
+    name: "monitorLayout",
     redirect: "/monitor/index",
     component: Layout,
     meta: {
@@ -165,7 +165,7 @@ if (isAdmin()) {
 }
 routes.push({
   path: "/esg",
-  name: "esg",
+  name: "esgLayout",
   hidden: true,
   redirect: "/esg/index",
   component: Layout,
@@ -184,6 +184,30 @@ routes.push({
         showParent: false,
         icon: "flowbite:address-book-outline",
         hidden: true
+      }
+    }
+  ]
+});
+
+routes.push({
+  path: "/task",
+  name: "taskLayout",
+  redirect: "/task/index",
+  component: Layout,
+  meta: {
+    icon: "flowbite:address-book-outline",
+    title: "menu.task",
+    rank: 0
+  },
+  children: [
+    {
+      path: "/task/index",
+      name: "task",
+      component: () => import("@/views/EmployeeTask/index.vue"),
+      meta: {
+        title: "menu.task",
+        showParent: false,
+        icon: "flowbite:address-book-outline"
       }
     }
   ]

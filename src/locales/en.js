@@ -6,7 +6,8 @@ export default {
     pointsrank: "Leaderboard",
     adminboard: "Admin",
     dashboard: "Dashboard",
-    esg: "ESG"
+    esg: "ESG",
+    task: "Task"
   },
   system: {
     title: "Points Management System"
