@@ -147,7 +147,7 @@
                     :disabled="!canSubmitAnswer(question.id)"
                     :loading="submittingAnswers[question.id]"
                   >
-                    Submit Answer
+                    Save Answer
                   </el-button>
                 </div>
               </div>
