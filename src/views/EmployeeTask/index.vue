@@ -287,13 +287,13 @@ import {
 const { t } = useI18n();
 
 // 基础数据
-const employeeName = ref("John Doe");
 const taskStatus = ref("in_progress"); // 'in_progress', 'completed', 'approved', 'overdue'
 const currentQuestionId = ref(null);
 const completingTask = ref(false);
 const uploadUrl = baseUrlApi("/qa/upload");
 const { id } = storageLocal()?.getItem("dataSource") || {};
-const { hired_date } = storageLocal()?.getItem("ddUserInfo") || {};
+const { hired_date, name: employeeName } =
+  storageLocal()?.getItem("ddUserInfo") || {};
 const curDaInfo = ref({});
 const validDate = ref("");
 const validPeriod = ref("");
@@ -656,17 +656,12 @@ const submitAnswer = async questionId => {
     // 准备保存的数据
     const saveData = {
       userId: id,
-      taskData: {
-        employeeName: employeeName.value,
-        dueDate: dueDate.value,
-        taskStatus: computedTaskStatus.value,
+      answers: allAnswersData,
+      remark: JSON.stringify({
+        validPeriod,
         totalQuestions: totalQuestions.value,
         completedQuestions: allAnswersData.filter(item => item.isAnswered)
           .length
-      },
-      answers: allAnswersData,
-      remark: JSON.stringify({
-        validPeriod
       }),
       hasReview: false
     };
