@@ -294,7 +294,7 @@ const uploadUrl = baseUrlApi("/qa/upload");
 const { id } = storageLocal()?.getItem("dataSource") || {};
 const { hired_date, name: employeeName } =
   storageLocal()?.getItem("ddUserInfo") || {};
-const curDaInfo = ref({});
+const curQaInfo = ref({});
 const validDate = ref("");
 const validPeriod = ref("");
 const dialogImageUrl = ref("");
@@ -315,8 +315,9 @@ const fetchDataConfig = () => {
   }).then(res => {
     console.log(res);
     if (res?.code === 200) {
-      curDaInfo.value = res?.data;
+      curQaInfo.value = res?.data;
     }
+    initializeQuestions();
   });
 };
 const fetchEnumTypeList = () => {
@@ -396,8 +397,85 @@ const generateRandomQuestions = () => {
   return questionsToGenerate;
 };
 
+// 初始化问题数据
+const initializeQuestions = async () => {
+  if (!curQaInfo.value || Object.keys(curQaInfo.value).length === 0) {
+    // 当 curQaInfo 为空时，生成随机问题并进行初始化保存
+    const randomQuestions = generateRandomQuestions();
+    questions.value = randomQuestions;
+
+    // 调用 submitAnswer 进行初始化保存
+    try {
+      await initializeSaveQuestions(randomQuestions);
+    } catch (error) {
+      console.error("初始化保存失败:", error);
+    }
+  } else {
+    // 当 curQaInfo 不为空时，从中获取问题数据
+    try {
+      const qaData = JSON.parse(curQaInfo.value.qa || "[]");
+      questions.value = qaData.map(item => ({
+        id: item.questionId,
+        title: item.questionTitle,
+        difficulty: item.difficulty,
+        key: item.questionKey
+      }));
+
+      // 恢复答案数据
+      qaData.forEach(item => {
+        if (item.isAnswered && item.content) {
+          answers.value[item.questionKey] = {
+            content: item.content,
+            attachments: item.attachments || [],
+            submittedAt: item.submittedAt
+              ? new Date(item.submittedAt)
+              : new Date(),
+            reviewStatus: item.reviewStatus || "pending",
+            reviewedAt: null,
+            reviewComment: null
+          };
+        }
+      });
+    } catch (error) {
+      console.error("解析问题数据失败:", error);
+      // 如果解析失败，回退到随机生成
+      questions.value = generateRandomQuestions();
+    }
+  }
+};
+
+// 初始化保存问题
+const initializeSaveQuestions = async randomQuestions => {
+  const allAnswersData = randomQuestions.map(question => ({
+    questionKey: question.key,
+    questionId: question.id,
+    questionTitle: question.title,
+    difficulty: question.difficulty,
+    content: "",
+    createTime: new Date().toISOString(),
+    attachments: [],
+    isAnswered: false,
+    submittedAt: null,
+    reviewStatus: "pending"
+  }));
+
+  const saveData = {
+    userId: id,
+    qa: JSON.stringify(allAnswersData),
+    remark: JSON.stringify({
+      validPeriod,
+      totalQuestions: randomQuestions.length,
+      completedQuestions: 0
+    }),
+    hasReview: false
+  };
+
+  await updateQaConfig(saveData);
+  console.log("问题初始化保存成功");
+};
+
 // 问题数据
-const questions = ref(generateRandomQuestions());
+const questions = ref([]);
 
 // 答案数据
 const answers = ref({
@@ -687,7 +765,7 @@ const submitAnswer = async questionId => {
     tempAttachments.value[questionId] = [];
 
     ElMessage.success("答案保存成功");
-    if (!curDaInfo) {
+    if (!curQaInfo.value || Object.keys(curQaInfo.value).length === 0) {
       window.location.reload();
     }
   } catch (error) {
@@ -699,22 +777,6 @@ const submitAnswer = async questionId => {
 };
 
 // 生命周期
-onMounted(() => {
-  // 为测试目的，添加一个示例答案（使用第一个问题的key）
-  // todo,后续放开测试
-  // if (questions.value.length > 0 && !shouldShowEmptyState.value) {
-  //   const firstQuestionKey = questions.value[0].key;
-  //   answers.value[firstQuestionKey] = {
-  //     content: "这是一个示例答案，展示已提交的状态。",
-  //     attachments: [],
-  //     submittedAt: new Date("2024-01-10T10:30:00"),
-  //     reviewStatus: "pending",
-  //     reviewedAt: null,
-  //     reviewComment: null
-  //   };
-  //   console.log("Added sample answer for question:", firstQuestionKey);
-  // }
-});
 </script>
 
 <style scoped>
