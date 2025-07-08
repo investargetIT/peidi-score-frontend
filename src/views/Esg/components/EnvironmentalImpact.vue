@@ -308,7 +308,10 @@
                 :rows="4"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="ghgVerificationAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -317,7 +320,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.ghgVerificationAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -437,7 +440,10 @@
                 placeholder="咖啡、鸡尾酒及茶饮的理想冲调伴侣。率先践行减碳、零碳责任，国内首家'零碳工厂'推出的甘蔗糖浆，品质达国标精制级，为国内用糖企业提供更高效、更节能、更绿色的解决方案。配合升级物流方案，好糖走出'碳足迹'。     ——《中粮糖业2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="carbonReductionTechAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -446,7 +452,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.carbonReductionTechAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -478,7 +486,10 @@
                 placeholder="伊利为消费者提供5款'碳中和'产品，由权威第三方机构遵循ISO 14067:2018《温室气体 - 产品碳足迹 - 量化要求 和指南》及 PAS 2060:2014《碳中和论证规范》要求，颁发《产品碳足迹核查意见声明》及《碳中和宣告核查声明》，通过清洁能源替代、购买绿色电力、推动分布式光伏发电、采用可回收包装、降低运输排放、购买碳抵消等方式，实现产品全生命周期碳中和。具体内容详见《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="lowCarbonProductRAndDAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -487,7 +498,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.lowCarbonProductRAndDAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -519,7 +532,10 @@
                 placeholder="伊利积极引入各类生产工艺减碳、节能降碳等新技术，包括梯度供冷、永磁电机节能、闪蒸汽回收、热泵技术等多种节能减碳技术，并广泛开展工艺改善类项目、节水减排类项目、节能降耗类项目等   6 大类型节能推广项目，项目覆盖2023 年伊利共开展节能减排项1,153 项覆盖生产与运营所在地。伊利集团绿电使用比例达19.99%伊利累计 41   家分子公司获得国家级'绿色工厂'认证。所有核心生产设施。2023 年，伊利共开展节能减排项目 1,153 项，100% 覆盖   生产与运营所在地，共计节约电量 6,432 万千瓦时、节约蒸汽 6 万吨、节约能源消耗 1.91 万吨标煤。     ——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="energySavingMeasuresAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -528,7 +544,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.energySavingMeasuresAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -560,7 +578,10 @@
                 placeholder="光明乳业秉持绿色生产理念，持续节能增效，不断提高能源和资源的使用效率，积极推广清洁能源使用，将节能减碳措施融入生产运营的各环节之中，最大化降低生产运营对环境所造成的影响。公司积极开发新能源，利用工厂屋顶资源，建设分布式光伏发电站，所发电力全部自用。其中，2023年郑州工   厂以合同能源管理的形式，建成分布式光伏发电站，装机容量2.43MW。加上已经投入运营的中心工厂、射阳工厂、益民一厂光伏发电站，共发电915.01万度电，全部自用。随着SAP   项目上线，公司电子运单实现全覆盖。同时应用绿色技术装备，对仓库现有制冷设备、设施进行节能   改造，完成康桥一号库、二号库的优化整合，实现节电约140万度，节约电费约100万左右。     ——《光明乳业2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="cleanProductionMeasuresAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -569,7 +590,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.cleanProductionMeasuresAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -599,7 +622,10 @@
                 placeholder="伊利积极发挥行业内'领头羊'作用，通过培训赋能、打造碳中和物料、加强节能减碳项目合作等方式，助力供应链实现低碳转型及绿色发展。邀请全球第三方机构专家，通过伊利集团'伊起赢'平台为合作供应商开展    双碳管理赋能培训，向供应商传授低碳转型的方法、路径、节能项目实施等内容，组织具备双碳管理工作经验的供应商（利乐、罗盖特） 分享成功经验，   全面提升供应商碳管理水平。2023年，伊利在平台共开展 3 次双碳管理直    播培训，供应商在线人数共计 800 余人，直播回放浏览超 3,000   人次。协同内外部相关方开展物料替换工作，优先采购行业新型环保材料，减少原材料生产、使用过程的碳排放，2023 年实现减碳 3.28   万吨。选择核心供应商作为优先推进对象，完成碳盘查核证，积极推动原材料供应商打造碳中和物料。2023 年，伊利已成功推动 6   家供应商完成碳中和核查认证，并获取碳中和证书，加快供应商绿色低碳转型。     ——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="valueChainEnergySavingAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -608,7 +634,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.valueChainEnergySavingAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -757,7 +785,10 @@
                 placeholder="伊利股份支持和发起的应对气候变化相关计划与倡议：《企业与生物多样性承诺书》签署方，可持续棕榈油圆桌倡议组织成员，联合国   COP28《 为人类、自然和气候转变粮食体系：共同行动倡议 （CTA）》签署方，联合国全球契约组织'加速前进'倡议承诺企业。     ——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="climateInitiativeAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -766,7 +797,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.climateInitiativeAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -797,7 +828,10 @@
                 placeholder="参加《联合国气候变化框架公约》第二十七次缔约方大会（COP27）'基于自然的解决方案推动气候和生物多样性协同治理'边会，介绍中国石油推进气候变化应对与生物多样性保护协同治理的创新实践。     ——《中国石油2022年环境、社会及管治报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="climateActivityAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -806,7 +840,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.climateActivityAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -907,7 +941,7 @@
                 placeholder="伊利荣获'碳中和领域创新企业奖，成为乳制品行业 唯一获奖单位；伊利供应链双碳管理工作荣获 2023 年'年度低碳先锋奖CSR 单项奖；伊利入选生态环境部首批工 业园区减污降碳协同增效典 型案例 ——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="envHonorsAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -916,7 +950,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.envHonorsAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -989,7 +1023,10 @@
                 :rows="4"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="envSystemCertificationAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -998,7 +1035,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.envSystemCertificationAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1069,7 +1108,10 @@
                 placeholder="公司为提高突发环境事件应对能力,预防突发环境事件及其造成的损害,建立了突发环境事件应急预案,并报保护局进行备案,确保事件发生时能够迅速、有序、高效地进行应急处置。     ——《一鸣食品2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="envEmergencyTrainingAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1078,7 +1120,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.envEmergencyTrainingAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1187,7 +1231,10 @@
                 placeholder="工厂编制突发环境事件风险评估报告及突发环境事件应急预案，并在当地生态环境局完成备案；定期实施应急演练工作，并评估应急预案有效性。——《光明乳业2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="envImpactMgmtActionsAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1196,7 +1243,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.envImpactMgmtActionsAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1310,7 +1359,7 @@
                 placeholder="伊利与中国绿化基金会合作，在中国'四大沙尘源'之首阿拉善地区种植10万棵梭梭树，打造'梭梭保护林'，构健绿色生态屏障，助力荒漠化综合防治。同时，   伊利发起'我有一棵梭梭树'互动活动，鼓励消费者为宝宝认领一棵专属梭梭树，号召更多的家庭加入到绿化家园的行动中来。此外，伊利邀请 38个重点母婴连  锁系统合作伙伴共同开启'零碳有机绿色公益行'植树活动，前往内蒙古阿拉善，亲手种下梭梭树，助力建立美丽'生态墙'。     ——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item label="附件上传" prop="envProjectsAttachmentFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1319,7 +1368,7 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="formData.envProjectsAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1368,7 +1417,10 @@
                 placeholder="伊利积极发挥行业内'领头羊'作用，通过培训赋能、打造碳中和物料、加强节能减碳项目合作等方式，助力供应链实现低碳转型及绿色发展。邀请全球第三方机构专家，通过伊利集团'伊起赢'平台为合作供应商开展    双碳管理赋能培训，向供应商传授低碳转型的方法、路径、节能项目实施等内容，组织具备双碳管理工作经验的供应商（利乐、罗盖特） 分享成功经验，   全面提升供应商碳管理水平。2023年，伊利在平台共开展 3 次双碳管理直 播培训，供应商在线人数共计 800 余人，直播回放浏览超 3,000   人次。     ——《伊利股份2023可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="envTrainingPublicityAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1377,7 +1429,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.envTrainingPublicityAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -1548,7 +1602,10 @@
                 placeholder="2023年，伊利共 46 家工厂通过 ISO 50001:2018 能源管理体系认证，较 2022 年增加 27.8 %，全面提升能源管理水平。     ——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="energyManagementSystemCertificationAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -1557,7 +1614,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.energyManagementSystemCertificationAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -2037,7 +2096,10 @@
                 placeholder="水资源作为乳品行业不可或缺的资源,   在公司的生产运营中承担着重要的角色。公司遵循《中华人民共和国水法》等法律法规, 加强公 司用水管理,贯彻落实国家节水行动。公司不断加大节水改造力度,   建成投用(智慧节水)互联平台, 改造了均质机冷却水回用系统、杀菌机蒸汽冷凝水回用系统、CIP   清洗水二次回用系统,有效降低了水费、排污费支出，实现节水减排。     ——《一鸣食品2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="waterSavingMeasuresAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -2046,7 +2108,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.waterSavingMeasuresAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -3072,7 +3136,10 @@
                 placeholder="2023 年 3 月，为深入践行'绿水青山就是金山银山'发展理念，营造'全民参与、爱绿植绿护绿'的良好氛围，云南中鲁党支部组织在厂值守的党员职工开展义务植树主题党日活动。在厂区内植树点现场，大家团结协作植树 60 余株，为云南中鲁厂区环境绿化做出贡献，进一步增强环保责任意识 ——《国投鲁中2023年度ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="rightsAttachmentFileList">
+            <el-form-item
+              label="附件上传"
+              prop="biodiversityProtectedAreasAttachmentFileList"
+            >
               <template #label>
                 <div>
                   <span> 附件上传 </span>
@@ -3081,7 +3148,9 @@
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.rightsAttachmentFileList"
+                v-model:file-list="
+                  formData.biodiversityProtectedAreasAttachmentFileList
+                "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -3264,7 +3333,37 @@ const formData = ref({
   circularEconomyInitiatives: "", // 循环经济倡议
   fairTrade: "", // 公平贸易
   capacityBuildingSupport: "", // 能力建设支持
-  rightsAttachmentFileList: [], // 附件上传 (供应商/承包商权益保护)
+  // 附件上传字段
+  valueChainEnergySavingAttachmentFileList: [], // 价值链节能减排附件
+  climateInitiativeAttachmentFileList: [], // 气候变化倡议附件
+  climateActivityAttachmentFileList: [], // 气候变化活动附件
+  envHonorsAttachmentFileList: [], // 环境荣誉附件
+  envSystemCertificationAttachmentFileList: [], // 环境体系认证附件
+  envEmergencyTrainingAttachmentFileList: [], // 环境应急培训附件
+  envImpactMgmtActionsAttachmentFileList: [], // 环境影响管理措施附件
+  envProjectsAttachmentFileList: [], // 环保项目附件
+  envTrainingPublicityAttachmentFileList: [], // 环保宣贯培训附件
+  energyManagementSystemCertificationAttachmentFileList: [], // 能源管理体系认证附件
+  waterSavingMeasuresAttachmentFileList: [], // 节水措施附件
+  biodiversityProtectedAreasAttachmentFileList: [], // 生物多样性保护区附件
+  ghgVerificationAttachmentFileList: [], // 温室气体排放核查附件
+  carbonReductionTechAttachmentFileList: [], // 减碳技术研发附件
+  lowCarbonProductRAndDAttachmentFileList: [], // 低/零碳产品研发附件
+  cleanProductionMeasuresAttachmentFileList: [], // 清洁生产举措附件
+  carbonEmissionsPlatformAttachmentFileList: [], // 碳排放数字化平台附件
+  carbonReductionProjectAttachmentFileList: [], // 减碳项目投入附件
+  carbonOffsetProjectAttachmentFileList: [], // 碳抵消项目附件
+  greenFinancePracticeAttachmentFileList: [], // 绿色投融资实践附件
+  climateCooperationAttachmentFileList: [], // 气候合作项目附件
+  energyManagementAttachmentFileList: [], // 能源管理附件
+  renewableEnergyAttachmentFileList: [], // 可再生能源附件
+  energySavingMeasuresAttachmentFileList: [], // 节能实践附件
+  waterMgmtAttachmentFileList: [], // 水资源管理附件
+  wasteWaterTreatmentAttachmentFileList: [], // 废水处理附件
+  circularEconomyAttachmentFileList: [], // 循环经济附件
+  biodiversityProtectionAttachmentFileList: [], // 生物多样性保护附件
+  pollutionControlAttachmentFileList: [], // 污染控制附件
+  envProtectionAttachmentFileList: [], // 环境保护附件
 
   // 新增字段
   cleanProductionMeasures: "", // 清洁生产举措
