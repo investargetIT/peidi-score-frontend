@@ -7,7 +7,7 @@ export default {
     adminboard: "Admin",
     dashboard: "Dashboard",
     esg: "ESG",
-    task: "Task"
+    task: "Tasks"
   },
   system: {
     title: "Points Management System"
