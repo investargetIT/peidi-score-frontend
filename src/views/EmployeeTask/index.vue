@@ -110,7 +110,7 @@
           <div class="question-content">
             <!-- 答案区域 -->
             <div class="answer-section">
-              <div v-if="!isQuestionAnswered(question.id)" class="answer-form">
+              <div class="answer-form">
                 <div class="answer-label">
                   <label class="form-label">Your Answer</label>
                 </div>
@@ -175,62 +175,11 @@
                   </el-upload>
                 </div>
 
-                <!-- 提交按钮 -->
-                <div class="submit-section">
-                  <el-button
-                    type="primary"
-                    @click="submitAnswer(question.id)"
-                    :loading="submittingAnswers[question.id]"
-                    :disabled="isTaskOverdue"
-                    class="save-answer-btn"
-                  >
-                    Save Answer
-                  </el-button>
-                </div>
-              </div>
-
-              <!-- 已提交的答案显示 -->
-              <div v-else class="submitted-answer">
-                <div class="answer-label">
-                  <label class="form-label">Your Answer</label>
-                </div>
-
-                <!-- 已提交的答案内容 -->
-                <div class="submitted-answer-content">
-                  <div
-                    class="answer-display"
-                    v-html="getAnswerContent(question.id)"
-                  ></div>
-                </div>
-
-                <!-- 附件列表 -->
-                <div
-                  v-if="getSubmittedAttachments(question.id).length > 0"
-                  class="submitted-attachments"
-                >
-                  <div class="answer-label">
-                    <label class="form-label">Attachments</label>
-                  </div>
-                  <div class="attachment-list">
-                    <div
-                      v-for="attachment in getSubmittedAttachments(question.id)"
-                      :key="attachment.id"
-                      class="attachment-item"
-                    >
-                      <el-icon><Paperclip /></el-icon>
-                      <el-link
-                        :href="attachment.url"
-                        target="_blank"
-                        type="primary"
-                      >
-                        {{ attachment.name }}
-                      </el-link>
-                    </div>
-                  </div>
-                </div>
-
                 <!-- 提交信息 -->
-                <div class="submission-info-card">
+                <div
+                  v-if="isQuestionAnswered(question.id)"
+                  class="submission-info-card"
+                >
                   <div class="submission-inline-grid">
                     <div class="submission-inline-item">
                       <p class="submission-label">Submitted at:</p>
@@ -253,11 +202,12 @@
                   </div>
                 </div>
 
-                <!-- 已提交答案的操作栏 -->
-                <div class="submitted-answer-actions">
+                <!-- 提交按钮 -->
+                <div class="submit-section">
                   <el-button
                     type="primary"
-                    size="default"
+                    @click="submitAnswer(question.id)"
+                    :loading="submittingAnswers[question.id]"
                     :disabled="isTaskOverdue"
                     class="save-answer-btn"
                   >
@@ -449,6 +399,10 @@ const initializeQuestions = async () => {
             reviewedAt: null,
             reviewComment: null
           };
+
+          // 回填到临时编辑数据中
+          tempAnswers.value[item.questionKey] = item.content;
+          tempAttachments.value[item.questionKey] = item.attachments || [];
         }
       });
     } catch (error) {
@@ -585,6 +539,8 @@ const formatDate = date => {
 
 // 检查是否过期
 const isTaskOverdue = computed(() => {
+  // todo,后续调整，临时放开
+  return false;
   return computedTaskStatus.value === "overdue";
 });
 
@@ -743,13 +699,14 @@ const submitAnswer = async questionId => {
     };
 
     console.log("Saving all answers data:", saveData);
+    console.log(allAnswersData);
 
     // 调用API保存所有数据
     // await updateQaConfig(saveData);
 
     // 模拟API调用
 
-    await updateQaConfig(saveData);
+    // await updateQaConfig(saveData);
     // 更新本地答案数据
     answers.value[questionId] = {
       content: tempAnswers.value[questionId],
