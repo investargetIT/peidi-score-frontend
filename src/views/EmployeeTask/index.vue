@@ -388,9 +388,13 @@ const initializeQuestions = async () => {
 
       // 恢复答案数据
       qaData.forEach(item => {
-        if (item.isAnswered && item.content) {
+        // 检查是否有内容或附件
+        const hasContent = item.content && item.content.trim().length > 0;
+        const hasAttachments = item.attachments && item.attachments.length > 0;
+
+        if (item.isAnswered && (hasContent || hasAttachments)) {
           answers.value[item.questionKey] = {
-            content: item.content,
+            content: item.content || "",
             attachments: item.attachments || [],
             submittedAt: item.submittedAt
               ? new Date(item.submittedAt)
@@ -401,7 +405,7 @@ const initializeQuestions = async () => {
           };
 
           // 回填到临时编辑数据中
-          tempAnswers.value[item.questionKey] = item.content;
+          tempAnswers.value[item.questionKey] = item.content || "";
           tempAttachments.value[item.questionKey] = item.attachments || [];
         }
       });
@@ -447,17 +451,7 @@ const initializeSaveQuestions = async randomQuestions => {
 const questions = ref([]);
 
 // 答案数据
-const answers = ref({
-  // 示例答案数据，实际使用时应该为空对象或从API获取
-  // 'beginner-1': {
-  //   content: "我是John Doe，很高兴加入佩蒂股份。我选择加入这家公司是因为...",
-  //   attachments: [],
-  //   submittedAt: new Date("2024-01-10T10:30:00"),
-  //   reviewStatus: "pending", // 'pending', 'approved', 'rejected'
-  //   reviewedAt: null,
-  //   reviewComment: null
-  // }
-});
+const answers = ref({});
 
 // 临时答案数据（编辑中）
 const tempAnswers = ref({});
@@ -466,7 +460,20 @@ const submittingAnswers = ref({});
 
 // 计算属性
 const totalQuestions = computed(() => questions.value.length);
-const completedQuestions = computed(() => Object.keys(answers.value).length);
+const completedQuestions = computed(() => {
+  return Object.values(answers.value).filter(answer => {
+    if (!answer) return false;
+
+    // 检查是否有内容
+    const hasContent = answer.content && answer.content.trim().length > 0;
+
+    // 检查是否有附件
+    const hasAttachments = answer.attachments && answer.attachments.length > 0;
+
+    // 有内容或有附件都算完成
+    return hasContent || hasAttachments;
+  }).length;
+});
 
 // 计算截止日期：validDate + validPeriod
 const dueDate = computed(() => {
@@ -613,7 +620,17 @@ const getAnswerStatusText = status => {
 
 // 问题相关方法
 const isQuestionAnswered = questionId => {
-  return !!answers.value[questionId];
+  const answer = answers.value[questionId];
+  if (!answer) return false;
+
+  // 检查是否有内容
+  const hasContent = answer.content && answer.content.trim().length > 0;
+
+  // 检查是否有附件
+  const hasAttachments = answer.attachments && answer.attachments.length > 0;
+
+  // 有内容或有附件都算完成
+  return hasContent || hasAttachments;
 };
 
 const getAnswerStatus = questionId => {
@@ -674,16 +691,35 @@ const submitAnswer = async questionId => {
         questionTitle: question.title,
         difficulty: question.difficulty,
         content: tempAnswer || existingAnswer?.content || "",
-        createTime: new Date().toISOString(),
+        submittedAt: new Date().toISOString(),
         attachments:
           tempAttachment.length > 0
             ? tempAttachment
             : existingAnswer?.attachments || [],
-        isAnswered: !!(tempAnswer || existingAnswer?.content),
-        submittedAt: existingAnswer?.submittedAt || null,
+        isAnswered: !!(
+          (tempAnswer && tempAnswer.trim().length > 0) ||
+          (existingAnswer?.content &&
+            existingAnswer.content.trim().length > 0) ||
+          (tempAttachment && tempAttachment.length > 0) ||
+          (existingAnswer?.attachments && existingAnswer.attachments.length > 0)
+        ),
         reviewStatus: existingAnswer?.reviewStatus || "pending"
       };
     });
+
+    // 计算实际完成的问题数量
+    const actualCompletedQuestions = allAnswersData.filter(item => {
+      if (!item.isAnswered) return false;
+
+      // 检查是否有内容
+      const hasContent = item.content && item.content.trim().length > 0;
+
+      // 检查是否有附件
+      const hasAttachments = item.attachments && item.attachments.length > 0;
+
+      // 有内容或有附件都算完成
+      return hasContent || hasAttachments;
+    }).length;
 
     // 准备保存的数据
     const saveData = {
@@ -692,8 +728,7 @@ const submitAnswer = async questionId => {
       remark: JSON.stringify({
         validPeriod,
         totalQuestions: totalQuestions.value,
-        completedQuestions: allAnswersData.filter(item => item.isAnswered)
-          .length
+        completedQuestions: actualCompletedQuestions
       }),
       hasReview: false
     };
@@ -704,12 +739,12 @@ const submitAnswer = async questionId => {
     // 调用API保存所有数据
     // await updateQaConfig(saveData);
 
-    // 模拟API调用
+    await updateQaConfig(saveData);
 
-    // await updateQaConfig(saveData);
     // 更新本地答案数据
+    const answerContent = tempAnswers.value[questionId] || "";
     answers.value[questionId] = {
-      content: tempAnswers.value[questionId],
+      content: answerContent,
       attachments: tempAttachments.value[questionId] || [],
       submittedAt: new Date(),
       reviewStatus: "pending",
@@ -717,11 +752,19 @@ const submitAnswer = async questionId => {
       reviewComment: null
     };
 
-    // 清空当前问题的临时数据
-    tempAnswers.value[questionId] = "";
-    tempAttachments.value[questionId] = [];
+    // 保持临时数据，不清空，让用户可以继续编辑
+    // tempAnswers.value[questionId] = "";
+    // tempAttachments.value[questionId] = [];
 
     ElMessage.success("答案保存成功");
+
+    // 打印更新后的完成状态用于调试
+    console.log(
+      "Updated completed questions:",
+      completedQuestions.value,
+      "/",
+      totalQuestions.value
+    );
     if (!curQaInfo.value || Object.keys(curQaInfo.value).length === 0) {
       window.location.reload();
     }
