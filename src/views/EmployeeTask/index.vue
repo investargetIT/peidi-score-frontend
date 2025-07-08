@@ -96,10 +96,6 @@
 
           <!-- 问题内容 -->
           <div class="question-content">
-            <div v-if="question.description" class="question-description">
-              <p>{{ question.description }}</p>
-            </div>
-
             <!-- 答案区域 -->
             <div class="answer-section">
               <div v-if="!isQuestionAnswered(question.id)" class="answer-form">
@@ -303,37 +299,27 @@ const questions = ref([
     id: "q1",
     title:
       "Company Introduction: Please introduce yourself and explain why you chose to join our company",
-    description:
-      "This is a beginner level question to help us understand your background and motivation.",
     difficulty: "beginner"
   },
   {
     id: "q2",
     title:
       "Project Experience: Describe a challenging project you have worked on",
-    description:
-      "Please provide details about the project, your role, and the challenges you faced.",
     difficulty: "intermediate"
   },
   {
     id: "q3",
     title: "Technical Skills: Explain your expertise in your field",
-    description:
-      "This is an advanced question to assess your technical knowledge.",
     difficulty: "advanced"
   },
   {
     id: "q4",
     title: "Future Goals: What are your career aspirations?",
-    description:
-      "Tell us about your long-term career goals and how this role fits into your plans.",
     difficulty: "intermediate"
   },
   {
     id: "q5",
     title: "Team Collaboration: How do you handle conflicts in a team?",
-    description:
-      "Describe your approach to resolving conflicts and working effectively with others.",
     difficulty: "beginner"
   }
 ]);
