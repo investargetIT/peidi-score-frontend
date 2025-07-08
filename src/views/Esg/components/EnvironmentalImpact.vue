@@ -512,7 +512,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.valueChainEnergySavingPractice"
+                v-model="formData.energySavingPractice"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -553,7 +553,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.valueChainEnergySavingPractice"
+                v-model="formData.cleanProductionMeasures"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -631,7 +631,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.valueChainEnergySavingPractice"
+                v-model="formData.carbonEmissionDigitalPlatform"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -646,7 +646,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.valueChainEnergySavingPractice"
+                v-model="formData.carbonReductionProjectInvestment"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -660,7 +660,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.valueChainEnergySavingPractice"
+                v-model="formData.carbonOffsetProjectParticipation"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -675,7 +675,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.valueChainEnergySavingPractice"
+                v-model="formData.carbonOffsetProjectInvestmentAmount"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -713,7 +713,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.lowCarbonProductRAndD"
+                v-model="formData.greenFinancePractice"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -791,7 +791,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.envAssessmentIncentive"
+                v-model="formData.climateChangeActivities"
                 type="textarea"
                 :rows="4"
                 placeholder="参加《联合国气候变化框架公约》第二十七次缔约方大会（COP27）'基于自然的解决方案推动气候和生物多样性协同治理'边会，介绍中国石油推进气候变化应对与生物多样性保护协同治理的创新实践。     ——《中国石油2022年环境、社会及管治报告》"
@@ -1047,7 +1047,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.envViolationPenalty"
+                v-model="formData.envEmergencyManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="公司为提高突发环境事件应对能力,预防突发环境事件及其造成的损害,建立了突发环境事件应急预案,并报保护局进行备案,确保事件发生时能够迅速、有序、高效地进行应急处置。     ——《一鸣食品2023年ESG报告》"
@@ -1063,7 +1063,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.envTrainingPublicity"
+                v-model="formData.envEmergencyTraining"
                 type="textarea"
                 :rows="4"
                 placeholder="公司为提高突发环境事件应对能力,预防突发环境事件及其造成的损害,建立了突发环境事件应急预案,并报保护局进行备案,确保事件发生时能够迅速、有序、高效地进行应急处置。     ——《一鸣食品2023年ESG报告》"
@@ -1848,7 +1848,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.electricityConsumption"
+                  v-model="formData.renewableEnergyUsage"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1928,7 +1928,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.energySavingAmount"
+                  v-model="formData.productServiceEnergyReduction"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1964,7 +1964,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.waterIntake"
+                v-model="formData.waterResourceInteraction"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利构建了涵盖'决策层 -   组织层 - 执行层'的水资源管理架构，在董事会层面设立董事会战略与可持续发展委员会，委 员会由八名董事组成（包括两名独立董事）   ，伊利集团董事长兼总裁潘刚担任委员会主任委员。董事会战略与可持续发展   委员会主要负责对长期发展战略规划进行研究并提出建议、指导可持续发展工作、审阅公司年度可持续发展工作计划（包   含可持续发展战略、水资源管理等）及执行情况，督促公司可持续发展计划的实施等。董事会战略与可持续发展委员会下设可持续发展管理办公室，负责伊利集团可持续发展（包含水资源管理）工作的战略监   督及管理并向董事会战略与可持续发展委员会进行定期汇报。水资源的日常管理、项目推动、技术支持和指导由伊利集团   安全生产管理部负责，并每季度向公司可持续发展管理办公室进行汇报。     ——《伊利股份2023年可持续发展报告》"
@@ -2228,7 +2228,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.wasteReductionTargets"
                 type="textarea"
                 :rows="4"
                 placeholder="2在国家碳达峰、碳中和目标行动指引下，梅花生物坚持技术与管理并重的原则，持续降低产品能源消耗。基于绿色生物合成制造的可持续发展理念，我们鼓励全体员工对节约能源、减少碳排放提出合理化建议，对提出合理化建议实施后获得显著成效的，按规定对建议人给予奖励。同时，公司董事会战略委员会定期监督气候变化相关目标及指标的完成情况，并进行定期绩效考核，确保相关部门遵守设定的目标。报告期内，我们实现了年度的二氧化碳减排目标。     ——《梅花生物2023年度ESG报告》"
@@ -2269,7 +2269,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.pollutionControlOrganization"
                 type="textarea"
                 :rows="4"
               />
@@ -2284,7 +2284,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.pollutionControlPolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="我们制定了《废气管理规范》《固体废弃物管理规范》《污水处理站安全运行标准化》等管理制度，推行清洁生产，改善工业污染源产生的废水、废气和固体废弃物排放情况，尽可能减少或消除自身运营对环境的影响。——《双汇发展2023年ESG报告》"
@@ -2300,7 +2300,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.emissionMonitoringPermit"
                 type="textarea"
                 :rows="4"
                 placeholder="光明乳业严格遵循污染防治相关法律法规，新建项目严格履行了环评、'三同时'制度，在废气、废水、噪声、固体废弃物、环境污染隐患排查等多个方面进行严格把控，确保各项污染物合规处理，确保达标排放17家工厂全部实施排污许可管理，  全部环保设施运行正常。按照许可证规定的监测频次对各类污染物实施监测，按期提交排污许可证执行报告，主动公开环境信息。     ——《光明乳业2023年可持续发展报告》"
@@ -2904,7 +2904,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.biodiversityOperatingAreas"
                 type="textarea"
                 :rows="4"
                 placeholder="如《水井坊环境方针》所承诺，我们不对物种、栖息地、生物多样性造成持久破坏。在保护生物多样性方面，我们遵守各项法律法规，响应全球生物多样性框架、联合国可持续发展目标、《濒危野生动植物种国际贸易公约（CITES）》等国际倡议。我们承诺在全价值链环节，包括原材料采购、生产运营等，持续减少生态足 迹，致力于达成'无净损失'（No net loss, NNL）。我们承诺净零毁林，不参与开发法定生态保护区，不将具有高度生态保护价值的区域及其周边地区用于生产运营，避免对受威胁和受保护物种造成负面影响，禁止濒危野生动植物贸易（包括但不限于 CITES 所列濒危物种——《水井坊2023ESG报告》"
@@ -2965,7 +2965,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.biodiversityPolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="公司遵循母公司丰益国际的 NDPE（即'不毁林开荒'不开垦泥炭地'不剥削劳工'）政策，高度重视生物多样性保护及森林保护。我们在《环境政策》和《生物多样性保护政策》中要求公司包含供应链在运营时，按照国际和国家标准来实施生物多样性保护，尽量减少对动植物及生态环境的影响。同时，我们积极保护、恢复和促进可持续利用陆地生态系统，将生物多样性考量纳入项目的全生命周期，助力构建生态环保命运共同体，致力于最大限度实现人与自然资源和谐共生。 ——《金龙鱼2023可持续发展报告》"
@@ -2981,7 +2981,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.biodiversityMitigation"
+                v-model="formData.biodiversityRiskManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="对于生产运营过程中对生物多样性产生的潜在影响，采用'分级减缓管理'（Mitigation hierarchy approach）进行评估和应对，即避免（Avoid）、最小化（Minimise）、修复（Restore）和补偿（Offset）。——《水井坊2023ESG报告》"
@@ -3264,7 +3264,24 @@ const formData = ref({
   circularEconomyInitiatives: "", // 循环经济倡议
   fairTrade: "", // 公平贸易
   capacityBuildingSupport: "", // 能力建设支持
-  rightsAttachmentFileList: [] // 附件上传 (供应商/承包商权益保护)
+  rightsAttachmentFileList: [], // 附件上传 (供应商/承包商权益保护)
+
+  // 新增字段 - 解决重复字段问题
+  energySavingPractice: "", // 节能减排实践
+  cleanProductionMeasures: "", // 清洁生产举措
+  carbonEmissionDigitalPlatform: "", // 碳排放数字化平台
+  carbonReductionProjectInvestment: "", // 减碳项目投入数量及金额
+  carbonOffsetProjectParticipation: "", // 参与/交易碳抵消项目
+  carbonOffsetProjectInvestmentAmount: "", // 碳抵消项目数量及投入
+  greenFinancePractice: "", // 绿色投融资实践
+  climateChangeActivities: "", // 参加/开展气候变化活动、论坛
+  productServiceEnergyReduction: "", // 降低产品和服务的能源需求
+  waterResourceInteraction: "", // 组织与水（作为共有资源）的相互影响
+  pollutionControlOrganization: "", // 监管与执行组织架构（治污减排）
+  pollutionControlPolicy: "", // 政策制度（治污减排）
+  emissionMonitoringPermit: "", // 排放监测与排污许可
+  envEmergencyManagement: "", // 环保预警及应急管理机制
+  envEmergencyTraining: "" // 应急培训、应急演练
 });
 
 // 文件上传处理
