@@ -333,8 +333,6 @@ const fetchEnumTypeList = () => {
 };
 
 const handlePreview = file => {
-  console.log("===点击预览===");
-  console.log(file);
   if (file.response?.code !== 200) return;
   getFileDownLoadPath({
     objectName: file.response.data
@@ -656,7 +654,7 @@ const submitAnswer = async questionId => {
     // 准备保存的数据
     const saveData = {
       userId: id,
-      answers: allAnswersData,
+      qa: JSON.stringify(allAnswersData),
       remark: JSON.stringify({
         validPeriod,
         totalQuestions: totalQuestions.value,
@@ -672,8 +670,8 @@ const submitAnswer = async questionId => {
     // await updateQaConfig(saveData);
 
     // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 1000));
 
+    await updateQaConfig(saveData);
     // 更新本地答案数据
     answers.value[questionId] = {
       content: tempAnswers.value[questionId],
@@ -689,6 +687,9 @@ const submitAnswer = async questionId => {
     tempAttachments.value[questionId] = [];
 
     ElMessage.success("答案保存成功");
+    if (!curDaInfo) {
+      window.location.reload();
+    }
   } catch (error) {
     console.error("保存失败:", error);
     ElMessage.error("保存失败，请重试");
@@ -720,7 +721,7 @@ onMounted(() => {
 /* 移动端适配 */
 @media (width <= 768px) {
   .employee-task-container {
-    padding: 0 20px;
+    padding: 20px 20px 0;
   }
 
   .task-header {
@@ -806,7 +807,7 @@ onMounted(() => {
 }
 
 .employee-task-container {
-  padding: 0 40px;
+  padding: 24px 40px 0;
 }
 
 .task-header {
