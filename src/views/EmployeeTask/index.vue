@@ -561,8 +561,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
-
 /* 移动端适配 */
 @media (width <= 768px) {
   .task-header {
@@ -672,8 +670,10 @@ onMounted(() => {
 
 .question-card .el-card {
   background-color: #fafafa;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #bbf7d0;
   border-radius: 8px;
+
+  /* background-color: rgb(240 253 244 / 0.3); */
 }
 
 .question-card .el-card__header {
