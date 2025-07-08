@@ -286,7 +286,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.vocEmissions"
+                  v-model="formData.ghgEmissionIntensity"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -342,7 +342,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.ghgReductionAmount"
+                v-model="formData.ghgEmissionsByCategory"
                 type="textarea"
                 :rows="4"
               />
@@ -372,7 +372,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.ghgReductionAmount"
+                v-model="formData.productCarbonFootprint"
                 type="textarea"
                 :rows="6"
                 placeholder="双汇发展在推进节能减碳的过程中，于报告期内参照《温室气体核算体系：企业核算与报告准则》《温室气体核算体系：企业价值链（范围三）核算与报告标准》，采用运营控制法，组织开展了上下游以及自身运营活动核心环节的温室气体排放现状盘查工作。我们全面梳理了肉制品加工、养殖、采购、包装制造、物流运输、零售经营等主营及配套服务温室气体清单，新增生猪、家禽畜养过程中的甲烷排放源。通过碳盘查，我们全面、准确地把握价值链中的能耗种类及其碳排放分布，为科学规划减排目标和实施路径夯实基础。报告期内，双汇发展的温室气体排放总量（范围一+范围二）为1,196,832.53吨二氧化碳当量，其中，范围一的排放量为443,838.17吨二氧化碳当量；范围二的排放量为752,994.36吨二氧化碳当量。范围三排放是企业价值链温室气体排放的重要组成部分，报告期内我们首次核算了双汇发展价值链上的温室气体排放，其中外购商品和服务、已售产品的使用、已售产品的加工占我们范围三排放的90%以上。范围三的排放量为18,139,397.38吨二氧化碳当量。     ——《双汇发展2023年ESG报告》"
@@ -413,7 +413,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.esgReviewAssessment"
+                v-model="formData.carbonReductionTechnology"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -430,7 +430,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.lowCarbonProductRAndD"
+                v-model="formData.carbonReductionIndustryApplication"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -1473,7 +1473,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.resourceUseEfficiencyGoalCompletion"
                 type="textarea"
                 :rows="4"
                 placeholder="中航重机顺利完成2022   年资源使用工作，例如水资源管理方面万元增加值用水量下降16%，能源管理方面非化石能源消费比重达20%等。     ——《中航重机2022年ESG报告》"
@@ -1510,7 +1510,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.resourceUseOrganizationStructure"
                 type="textarea"
                 :rows="4"
                 placeholder="公司严格按照'党政同责、一岗双责'要求，坚持'三管三必须'原则，建立了资源节约与生态环境保护责任制体系。公司及各下属企业均成立了资源节约与生态环境保护领导小组，各级部门协调配合，形成共促绿色高质量发展合力。公司承担     管理责任，负责监督、指导、协调和服务工作；各下属企业承担直接责任，负责具体落实生态环境保护相关工作。     ——《国投中鲁2023年度ESG报告》"
@@ -1526,7 +1526,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.resourceUsePolicySystem"
                 type="textarea"
                 :rows="4"
                 placeholder="国投中鲁贯彻执行《中华人民共和国节约能源法》等国家与地方相关法律法规与标准，持续开展节能减排技改，加强全过     程管控，强化监督考核，有效提升能源利用效率。同时，在生产和物流环节，积极提高清洁能源利用水平，降低对传统能     源的依赖，降低碳排放，推动节能工作提质增效。     ——《国投鲁中2023年度ESG报告》"
@@ -1542,7 +1542,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.energyManagementSystemCertification"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年，伊利共 46 家工厂通过 ISO 50001:2018 能源管理体系认证，较 2022 年增加 27.8 %，全面提升能源管理水平。     ——《伊利股份2023年可持续发展报告》"
@@ -1628,7 +1628,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.heatConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1646,7 +1646,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.steamConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1664,7 +1664,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.coalConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1736,7 +1736,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.lubricantConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1754,7 +1754,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.dieselConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1772,7 +1772,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.gasolineConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1828,7 +1828,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.renewableEnergyUsage"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1848,7 +1848,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.electricityConsumption"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -1928,7 +1928,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.lngConsumption"
+                  v-model="formData.energySavingAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2031,7 +2031,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.waterSavingMeasures"
                 type="textarea"
                 :rows="4"
                 placeholder="水资源作为乳品行业不可或缺的资源,   在公司的生产运营中承担着重要的角色。公司遵循《中华人民共和国水法》等法律法规, 加强公 司用水管理,贯彻落实国家节水行动。公司不断加大节水改造力度,   建成投用(智慧节水)互联平台, 改造了均质机冷却水回用系统、杀菌机蒸汽冷凝水回用系统、CIP   清洗水二次回用系统,有效降低了水费、排污费支出，实现节水减排。     ——《一鸣食品2023年ESG报告》"
@@ -2097,7 +2097,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.materialEfficiencyMeasures"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利致力于为消费者提供可持续的产品，从原料阶段关注其可持续性，积极推行绿色采购。我们制定并发布原材料可持续 采购政策，鼓励优先采购具有可持续认证的原材料、持续加强原材料溯源工作；制定《可再生农业及基地管理方案》。
@@ -2114,7 +2114,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.packagingOptimization"
                 type="textarea"
                 :rows="4"
                 placeholder="通过现场审核的方式定期监控上游果蔬制品基地的水源、土壤、化肥及农药使用等信息，并向农户提供可再生农业相关技术 培训，减少化肥使用对生态环境的影响，持续降低供应链毁林风险，改善供应链的环境影响。
@@ -2214,7 +2214,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.wasteReductionMeasures"
                 type="textarea"
                 :rows="4"
                 placeholder="伊利制定《环境保护可持续发展目标体系》，形成以碳排放量为一级目标，综   合能耗及水、电、气、汽、冷等使用量为二、三级目标的完整体系，实现目标 的有效支撑。     ——《伊利股份2023年可持续发展报告》"
@@ -2496,7 +2496,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.wasteWaterTreatmentMeasures"
                 type="textarea"
                 :rows="4"
                 placeholder="废水治理是公司及生产型子公司污染源治理工作的重点及难点。公司确保废水达标排放，不断提高废水回用比例，减少新水用量。公司工厂污染物可生化性能好，采用厌氧好氧工艺法处理。处理后的污水排入城镇下水道。污水排放指标优于国家、地方标准。     ——《光明乳业2023年可持续发展报告"
@@ -2512,7 +2512,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.wasteWaterDischargeTotal"
                 type="textarea"
                 :rows="4"
               />
@@ -2527,7 +2527,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.waterPollutants"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年，一鸣食品氨氮排放量为3.55吨。     ——《一鸣食品2023年ESG报告》"
@@ -2543,7 +2543,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.wasteWaterDischargeIntensity"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年，一鸣食品废水化学需氧量排放量为24.4吨。     ——《一鸣食品2023年ESG报告》"
@@ -2557,7 +2557,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.fairTrade"
+                v-model="formData.wasteWaterRecyclingRate"
                 type="textarea"
                 :rows="4"
               />
@@ -2600,7 +2600,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.nonHazardousWasteTotal"
+                  v-model="formData.hazardousWasteTotal"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2618,7 +2618,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.socialStandardNewSupplierRate"
+                  v-model="formData.nonHazardousWasteTotal"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -2653,7 +2653,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.wasteDisposalMethods"
                 type="textarea"
                 :rows="6"
                 placeholder="双汇发展的屠宰和养殖业务均产生有害废弃物、一般固体废物和动物粪便三类固体废弃物。我们的排放物主要来源于生产和养殖环节。在生产运营过程中，双汇发展不断改进生产工艺与设施，优化排放物处理处置方式，从设施和管理两个方面降低污染物排放浓度。双汇发展亦注重养殖过程中的排放物产生的环境影响，开展通过优化饲料肉料比、饲料添加剂的相关研究，减少饲料消耗，从源头减少粪污产生，力求实现粪污减量化的目标。在常规处理方式18的基础上，我们开展专项研究推进养殖业的粪污处理工作，与第三方能源公司合作使用鸡粪制备生物质天然气，通过定向优先使用生物质天然气、价格优惠的方式，实现粪污资源化利用。报告期内，西华基地合作项目已10月份投入运行，日处理鸡粪400吨，日产天然气1万m³，后续将继续扩大产能，未来计划将合作项目拓展至阜新基地。我们于本年度将养殖业猪粪、鸡粪，及产生加工业务的滞销品、废品等纳入定量目标，报告期内，双汇发展养殖端所产生的猪粪和鸡粪已100%实现循环利用。2023年实现回收利用的废弃物1,439,813.9   吨，处置废弃物6,349.2吨。     ——《双汇发展2023年ESG报告》"
@@ -2693,7 +2693,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.hazardousWasteManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="洽洽食品安环部制定《危险废物管理制度》《供应链运营中心'三废'合规处理规定》等制   度，搭建以公司主要负责人为领导核心，各部门主管为坚实支柱的污染物管理网络，实现 对污染物的全面掌控和有效治理。     ——《恰恰食品2023年ESG报告》"
@@ -2709,7 +2709,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.wasteReductionTargets"
                 type="textarea"
                 :rows="4"
                 placeholder="不断压实主体责任，聚焦滤泥、堆场和粉尘、恶臭逸散区域，持续开展综合治理，     通过飞行检查、环保核查、生态环境绩效评价等方式，持续提升生态环保绩效。     ——《中粮糖业2023ESG报告》"
@@ -2725,7 +2725,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.circularEconomyPractices"
                 type="textarea"
                 :rows="4"
                 placeholder="双汇发展的屠宰和养殖业务均产生有害废弃物、一般固体废物和动物粪便三类固体废弃物。我们的排放物主要来源于生产和养殖环节。
@@ -2742,7 +2742,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.circularEconomyInitiatives"
                 type="textarea"
                 :rows="4"
                 placeholder="在生产运营过程中，双汇发展不断改进生产工艺与设施，优化排放物处理处置方式，从设施和管理两个方面降低污染物排放浓度。双汇发展亦注重养殖过程中的排放物产生的环境影响，开展通过优化饲料肉料比、饲料添加剂的相关研究，减少饲料消耗，从源头减少粪污产生，力求实现粪污减量化的目标。在常规处理方式18的基础上，我们开展专项研究推进养殖业的粪污处理工作，与第三方能源公司合作使用鸡粪制备生物质天然气，通过定向优先使用生物质天然气、价格优惠的方式，实现粪污资源化利用。报告期内，西华基地合作项目10月份投入运行，日处理鸡粪400吨，日产天然气1万m³，后续将继续扩大产能，未来计划将合作项目拓展至阜新基地。我们于本年度将养殖业猪粪、鸡粪，及产生加工业务的滞销品、废品等纳入定量目标，报告期内，双汇发展养殖端所产生的猪粪和鸡粪已100%实现循环利用。——《双汇发展2023年ESG报告》"
@@ -2808,7 +2808,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.greenSupplyChain"
                 type="textarea"
                 :rows="4"
                 placeholder="西红柿作物是'用水大户'，生长全过程每亩需用水 460 余方。西红柿公司引进国际先进节水技术，采用'膜下双滴灌'，将水精确地输送到西红柿根部周围 35 厘米处。到采收季节，引导农户提前停水，既节约了宝贵的水资源，又提高了西红柿固形物含量，降低了青果率和烂果率。 ——《中粮糖业2023年环境、社会及治理报告》"
@@ -2845,7 +2845,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.biodiversityPolicy"
                 type="textarea"
                 :rows="4"
                 placeholder="公司充分认识到生物多样性对于维持地球生态平衡具有关键作用 . 保护生物多样性也是实现可持续发展的重要保障 . 我们积极响应联 合国《生物多样性公约》以及中国政府《关于进-步加强生物多样性保护的意见》.致力于推动生物多样性保护和生态可持续发展。我们承诺不在任何生态红线禁止开发区域内进行生产经营活动 . 公司的工厂和经营场所均经过环境影响评价 . 充分评估其对生态环境 的影响.对项目建设期和运营期各个阶段的生态保护要求做出规定.最大限度降低运营过程对生态环境的影响。 ——《一鸣食品2023年ESG报告》"
@@ -2859,7 +2859,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.resourceUseEfficiencyGoalStatus"
+                v-model="formData.waterRiskManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="为首个签署联合国《企业与生物多样性承诺书》 的中国企业，伊利坚持人与自然和谐共生，通过'伊利家园行动'在生物多样 性保护方面进行了诸多探索与实践，连续 6 年发布《生物多样性保护报告》，详细阐述其每年在生物多样性方面的目标完成情况。 ——《伊利股份2023年可持续发展报告》"
@@ -3175,10 +3175,14 @@ const formData = ref({
   scope1GhgEmissions: "", // 范围1温室气体排放量
   scope2GhgEmissions: "", // 范围2温室气体排放量
   scope3GhgEmissions: "", // 范围3温室气体排放量
+  ghgEmissionIntensity: "", // 温室气体排放强度
   noxEmissionsAmount: "", // 氮氧化物（NOx）排放量
   soxEmissionsAmount: "", // 硫氧化物（SOx）排放量
   popEmissions: "", // 持久性有机污染物（POP）排放量
   vocEmissions: "", // 挥发性有机化合物（VOC）排放量
+  hapEmissions: "", // 危害性空气污染物（HAP）排放量
+  pmEmissions: "", // 颗粒物质（PM）排放量
+  odsEmissions: "", // 臭氧消耗物质（ODS）排放量
   nonHazardousWasteTotal: "", // 无害废物排放总量
   wasteTransferredFromDisposal: "", // 从处置中转移的废弃物
   envGoalCompletionStatus: "", // 年度目标完成情况
@@ -3189,6 +3193,77 @@ const formData = ref({
   envViolationPenalty: "", // 环保违法违规事件与处罚
   ghgVerification: "", // 温室气体排放核查
   ghgReductionAmount: "", // 温室气体减排量
+  ghgEmissionsByCategory: "", // 按分类的温室气体排放情况
+  productCarbonFootprint: "", // 产品碳足迹
+  carbonReductionTechnology: "", // 减碳技术研发
+  carbonReductionIndustryApplication: "", // 减碳技术行业应用
+  envProtectionGoals: "", // 环境保护目标、理念与承诺
+  envHonors: "", // 荣誉及奖项
+  envTrainingPublicity: "", // 公司环保宣贯、培训次数及覆盖人数
+  envProductionPractice: "", // 生产环保实践
+  envMonitoringActivities: "", // 环境监测活动
+  envProjects: "", // 环保项目
+  envMajorIncidentsCount: "", // 突发重大环境事件起数
+  envImpactAssessmentProjectCount: "", // 开展环境影响评估的项目数
+  envImpactMgmtActions: "", // 环境影响管理措施
+  greenOfficePolicy: "", // 绿色办公政策
+  resourceUseEfficiencyGoalStatus: "", // 资源使用效益目标、方针及承诺
+  resourceUseEfficiencyGoalCompletion: "", // 资源使用效益目标完成情况
+  resourceUseOrganizationStructure: "", // 执行组织架构
+  resourceUsePolicySystem: "", // 政策与制度
+  energyManagementSystemCertification: "", // 能源管理体系认证
+  wasteStorage: "", // 废弃物存放
+  wasteTransport: "", // 废弃物运送
+  biodiversityPolicy: "", // 生物多样性政策
+  biodiversityMajorImpact: "", // 活动、产品和服务对生物多样性的重大影响
+  biodiversityMitigation: "", // 生物多样性影响缓解措施
+  biodiversityMgmtOrg: "", // 监管与执行组织架构
+  biodiversityProtectedAreas: "", // 运营或项目地附近建设生物多样性保护区数量和保护举措
+  biodiversitySoilMonitoring: "", // 土壤环境监测
+  electricityConsumption: "", // 电力消耗
+  lngConsumption: "", // 液化天然气
+  naturalGasConsumption: "", // 天然气
+  fuelOilConsumption: "", // 燃料油
+  lpgConsumption: "", // 液化石油气
+  otherPetroleumProductsConsumption: "", // 其它石油制品
+  heatConsumption: "", // 热力
+  steamConsumption: "", // 蒸汽
+  coalConsumption: "", // 煤炭
+  lubricantConsumption: "", // 润滑油
+  dieselConsumption: "", // 柴油
+  gasolineConsumption: "", // 汽油
+  externalEnergyConsumption: "", // 外购能源消耗
+  energySavingAmount: "", // 减少能源消耗量
+  energyIntensity: "", // 能源强度
+  renewableEnergyUsage: "", // 可再生能源使用情况
+  waterIntake: "", // 取水
+  waterConsumption: "", // 耗水
+  waterRecycling: "", // 中水回用
+  waterSavingMeasures: "", // 节水措施
+  waterRiskManagement: "", // 水资源风险管理
+  waterDischargeStandards: "", // 废水排放标准
+  waterQualityMonitoring: "", // 水质监测
+  materialTotalWeightOrVolume: "", // 所用物料的重量或体积
+  recycledMaterialUsage: "", // 所使用的回收再利用的物料
+  recycledProductAndPackaging: "", // 回收的产品及包装材料
+  circularEconomyPractices: "", // 循环经济实践
+  greenSupplyChain: "", // 绿色供应链
+  materialEfficiencyMeasures: "", // 物料效率措施
+  packagingOptimization: "", // 包装优化
+  wasteReductionMeasures: "", // 废物减少措施
+  socialStandardNewSupplierRate: "", // 社会标准新供应商比例
+  hazardousWasteTotal: "", // 有害废物排放总量
+  wasteWaterDischargeTotal: "", // 废水排放总量
+  wasteWaterDischargeIntensity: "", // 废水排放强度
+  waterPollutants: "", // 水污染物
+  wasteWaterTreatmentMeasures: "", // 废水处理措施
+  wasteWaterRecyclingRate: "", // 废水回收利用率
+  wasteDisposalMethods: "", // 废弃物处置方式
+  wasteReductionTargets: "", // 废物减少目标
+  hazardousWasteManagement: "", // 有害废物管理
+  circularEconomyInitiatives: "", // 循环经济倡议
+  fairTrade: "", // 公平贸易
+  capacityBuildingSupport: "", // 能力建设支持
   rightsAttachmentFileList: [] // 附件上传 (供应商/承包商权益保护)
 });
 
