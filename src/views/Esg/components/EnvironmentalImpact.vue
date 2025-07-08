@@ -3222,7 +3222,6 @@ const formData = ref({
   climateRiskIdentificationResponse: "", // 气候风险识别与应对
   climateTransitionPlan: "", // 气候转型计划
   esgTrainingSystem: "", // 供应商ESG培训体系
-  trainingAttachmentFileList: [], // 附件上传 (宣贯及培训)
   esgTrainingCount: "", // 开展供应商ESG培训次数
   esgTrainingParticipationRate: "", // 供应商参与ESG培训百分比
   sustainableProcurementRate: "", // 公司内部通过可持续采购培训的采购员比例
@@ -3350,20 +3349,7 @@ const formData = ref({
   carbonReductionTechAttachmentFileList: [], // 减碳技术研发附件
   lowCarbonProductRAndDAttachmentFileList: [], // 低/零碳产品研发附件
   cleanProductionMeasuresAttachmentFileList: [], // 清洁生产举措附件
-  carbonEmissionsPlatformAttachmentFileList: [], // 碳排放数字化平台附件
-  carbonReductionProjectAttachmentFileList: [], // 减碳项目投入附件
-  carbonOffsetProjectAttachmentFileList: [], // 碳抵消项目附件
-  greenFinancePracticeAttachmentFileList: [], // 绿色投融资实践附件
-  climateCooperationAttachmentFileList: [], // 气候合作项目附件
-  energyManagementAttachmentFileList: [], // 能源管理附件
-  renewableEnergyAttachmentFileList: [], // 可再生能源附件
   energySavingMeasuresAttachmentFileList: [], // 节能实践附件
-  waterMgmtAttachmentFileList: [], // 水资源管理附件
-  wasteWaterTreatmentAttachmentFileList: [], // 废水处理附件
-  circularEconomyAttachmentFileList: [], // 循环经济附件
-  biodiversityProtectionAttachmentFileList: [], // 生物多样性保护附件
-  pollutionControlAttachmentFileList: [], // 污染控制附件
-  envProtectionAttachmentFileList: [], // 环境保护附件
 
   // 新增字段
   cleanProductionMeasures: "", // 清洁生产举措
