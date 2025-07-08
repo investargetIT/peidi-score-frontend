@@ -550,18 +550,18 @@ onMounted(() => {
 
 <style scoped>
 .task-header {
-  padding: 32px 40px;
+  padding: 0;
   margin-bottom: 32px;
-  color: white;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16px;
+  color: inherit;
+  background: none;
+  border-radius: 0;
 }
 
 .task-title {
   margin: 0 0 16px;
-  font-size: 32px;
-  font-weight: bold;
-  color: white;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .task-meta {
@@ -576,7 +576,7 @@ onMounted(() => {
   gap: 8px;
   align-items: center;
   font-size: 14px;
-  color: rgb(255 255 255 / 90%);
+  color: #6b7280;
 }
 
 .completion-alert {
@@ -885,7 +885,7 @@ onMounted(() => {
 
 @media (width <= 768px) {
   .task-header {
-    padding: 24px 20px;
+    padding: 0;
   }
 
   .task-title {
