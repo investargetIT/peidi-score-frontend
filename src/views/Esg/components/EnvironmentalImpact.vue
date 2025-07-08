@@ -268,7 +268,7 @@
               </template>
               <div class="textContainer">
                 <el-input
-                  v-model="formData.vocEmissions"
+                  v-model="formData.totalGhgEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
@@ -3045,7 +3045,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.biodiversityMitigation"
+                v-model="formData.biodiversityRiskManagement"
                 type="textarea"
                 :rows="4"
                 placeholder="对于生产运营过程中对生物多样性产生的潜在影响，采用'分级减缓管理'（Mitigation hierarchy approach）进行评估和应对，即避免（Avoid）、最小化（Minimise）、修复（Restore）和补偿（Offset）。——《水井坊2023ESG报告》"
@@ -3243,6 +3243,7 @@ const formData = ref({
   scope1GhgEmissions: "", // 范围1温室气体排放量
   scope2GhgEmissions: "", // 范围2温室气体排放量
   scope3GhgEmissions: "", // 范围3温室气体排放量
+  totalGhgEmissions: "", // 温室气体排放总量
   ghgEmissionIntensity: "", // 温室气体排放强度
   noxEmissionsAmount: "", // 氮氧化物（NOx）排放量
   soxEmissionsAmount: "", // 硫氧化物（SOx）排放量
@@ -3284,6 +3285,7 @@ const formData = ref({
   wasteTransport: "", // 废弃物运送
   biodiversityPolicy: "", // 生物多样性政策
   biodiversityMajorImpact: "", // 活动、产品和服务对生物多样性的重大影响
+  biodiversityRiskManagement: "", // 生物多样性风险管理
   biodiversityMitigation: "", // 生物多样性影响缓解措施
   biodiversityMgmtOrg: "", // 监管与执行组织架构
   biodiversityProtectedAreas: "", // 运营或项目地附近建设生物多样性保护区数量和保护举措
