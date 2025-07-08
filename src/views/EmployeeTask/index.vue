@@ -575,11 +575,6 @@ const handleAttachmentRemove = (questionId, file) => {
 
 // 提交答案
 const submitAnswer = async questionId => {
-  if (!canSubmitAnswer(questionId)) {
-    ElMessage.warning("请先填写答案内容");
-    return;
-  }
-
   submittingAnswers.value[questionId] = true;
 
   try {
@@ -617,12 +612,7 @@ const submitAnswer = async questionId => {
         completedQuestions: allAnswersData.filter(item => item.isAnswered)
           .length
       },
-      answers: allAnswersData,
-      currentAnswer: {
-        questionKey: questionId,
-        content: tempAnswers.value[questionId],
-        attachments: tempAttachments.value[questionId] || []
-      }
+      answers: allAnswersData
     };
 
     console.log("Saving all answers data:", saveData);
@@ -648,12 +638,6 @@ const submitAnswer = async questionId => {
     tempAttachments.value[questionId] = [];
 
     ElMessage.success("答案保存成功");
-
-    // 检查是否所有问题都已回答
-    const completedCount = Object.keys(answers.value).length;
-    if (completedCount === totalQuestions.value) {
-      ElMessage.info("所有问题已完成");
-    }
   } catch (error) {
     console.error("保存失败:", error);
     ElMessage.error("保存失败，请重试");
