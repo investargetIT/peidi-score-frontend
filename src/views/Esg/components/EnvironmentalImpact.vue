@@ -525,7 +525,7 @@
                 </div>
               </template>
               <el-input
-                v-model="formData.valueChainEnergySavingPractice"
+                v-model="formData.energySavingPractice"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
@@ -3353,6 +3353,7 @@ const formData = ref({
 
   // 新增字段
   cleanProductionMeasures: "", // 清洁生产举措
+  energySavingPractice: "", // 节能减排实践
   carbonEmissionDigitalPlatform: "", // 碳排放数字化平台
   carbonReductionProjectInvestment: "", // 减碳项目投入数量及金额
   carbonOffsetProjectParticipation: "", // 参与/交易碳抵消项目
