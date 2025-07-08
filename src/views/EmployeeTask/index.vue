@@ -65,7 +65,9 @@
           <template #header>
             <div class="question-header">
               <div class="question-info">
-                <span class="question-number">{{ question.key }}</span>
+                <span class="question-number">{{
+                  `question${index + 1}`
+                }}</span>
                 <el-tag
                   :type="getDifficultyType(question.difficulty)"
                   size="small"
@@ -265,6 +267,8 @@ import {
 import { storageLocal } from "@pureadmin/utils";
 import { useI18n } from "vue-i18n";
 import { TaskLevelList } from "./constant";
+import { getQaList, updateQaConfig, getQaDetail } from "@/api/task";
+import { getEnumTypeList } from "@/api/pmApi.ts";
 
 const { t } = useI18n();
 
@@ -275,6 +279,36 @@ const taskStatus = ref("in_progress"); // 'in_progress', 'completed', 'approved'
 const currentQuestionId = ref(null);
 const completingTask = ref(false);
 const uploadUrl = ref("/api/upload");
+const { id } = storageLocal()?.getItem("dataSource") || {};
+const curDaInfo = ref({});
+const validDate = ref("");
+const validPeriod = ref("");
+
+const fetchDataConfig = () => {
+  getQaDetail({
+    userId: id
+  }).then(res => {
+    console.log(res);
+    if (res?.code === 200) {
+      curDaInfo.value = res?.data;
+    }
+  });
+};
+const fetchEnumTypeList = () => {
+  getEnumTypeList({ type: "qaDate" }).then(res => {
+    if (res?.code === 200) {
+      validDate.value = res?.data;
+    }
+  });
+  getEnumTypeList({ type: "qaPeriod" }).then(res => {
+    if (res?.code === 200) {
+      validPeriod.value = res?.data;
+    }
+  });
+};
+
+fetchDataConfig();
+fetchEnumTypeList();
 
 // 随机抽取问题的逻辑
 const generateRandomQuestions = () => {
