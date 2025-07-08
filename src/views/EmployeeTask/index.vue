@@ -124,8 +124,10 @@
                     <label class="form-label">Attachments</label>
                   </div>
                   <el-upload
+                    accept=".jpg,.png,.jpeg,.gif,.pdf"
                     class="upload-demo"
                     :action="uploadUrl"
+                    :on-preview="handlePreview"
                     :on-success="
                       (response, file) =>
                         handleAttachmentSuccess(question.id, response, file)
@@ -137,6 +139,9 @@
                     multiple
                     :show-file-list="true"
                     drag
+                    :headers="{
+                      Authorization: formatToken(getToken().accessToken)
+                    }"
                   >
                     <div class="upload-dragger-content">
                       <el-icon class="upload-icon">
@@ -251,6 +256,9 @@
       </div>
     </div>
   </div>
+  <el-dialog v-model="dialogVisible">
+    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+  </el-dialog>
 </template>
 
 <script setup>
@@ -266,8 +274,15 @@ import {
 import { storageLocal } from "@pureadmin/utils";
 import { useI18n } from "vue-i18n";
 import { TaskLevelList } from "./constant";
+import { formatToken, getToken } from "@/utils/auth.ts";
 import { getQaList, updateQaConfig, getQaDetail } from "@/api/task";
 import { getEnumTypeList } from "@/api/pmApi.ts";
+import {
+  getEsgRuleDetail,
+  updateEsgConfig,
+  baseUrlApi,
+  getFileDownLoadPath
+} from "@/api/esg";
 
 const { t } = useI18n();
 
@@ -277,12 +292,14 @@ const dueDate = ref(new Date("2024-02-10"));
 const taskStatus = ref("in_progress"); // 'in_progress', 'completed', 'approved', 'overdue'
 const currentQuestionId = ref(null);
 const completingTask = ref(false);
-const uploadUrl = ref("/api/upload");
+const uploadUrl = baseUrlApi("/qa/upload");
 const { id } = storageLocal()?.getItem("dataSource") || {};
 const { hired_date } = storageLocal()?.getItem("ddUserInfo") || {};
 const curDaInfo = ref({});
 const validDate = ref("");
 const validPeriod = ref("");
+const dialogImageUrl = ref("");
+const dialogVisible = ref(false);
 
 const fetchDataConfig = () => {
   getQaDetail({
@@ -305,6 +322,31 @@ const fetchEnumTypeList = () => {
       validPeriod.value = res?.data?.[0]?.value || "";
     }
   });
+};
+
+const handlePreview = file => {
+  console.log("===点击预览===");
+  console.log(file);
+  if (file.response?.code !== 200) return;
+  getFileDownLoadPath({
+    objectName: file.response.data
+  })
+    .then(res => {
+      const { code, msg, data } = res;
+      if (code === 200) {
+        if (file.raw.type.includes("image")) {
+          dialogImageUrl.value = res.data;
+          dialogVisible.value = true;
+        } else {
+          window.open(res.data, "_blank");
+        }
+      } else {
+        message("图片预览失败--" + msg, { type: "error" });
+      }
+    })
+    .catch(err => {
+      message("图片预览失败", { type: "error" });
+    });
 };
 
 fetchDataConfig();
@@ -510,14 +552,13 @@ const canSubmitAnswer = questionId => {
 
 // 附件相关方法
 const handleAttachmentSuccess = (questionId, response, file) => {
+  console.log("===附件上传成功===");
+  console.log(response);
+  console.log(file);
   if (!tempAttachments.value[questionId]) {
     tempAttachments.value[questionId] = [];
   }
-  tempAttachments.value[questionId].push({
-    id: Date.now(),
-    name: file.name,
-    url: response.url || "#"
-  });
+  tempAttachments.value[questionId].push(file);
   ElMessage.success("文件上传成功");
 };
 
@@ -623,42 +664,20 @@ const submitAnswer = async questionId => {
 
 // 生命周期
 onMounted(() => {
-  // 初始化数据
-  console.log("Employee Task page loaded");
-  console.log("Generated questions:", questions.value);
-  console.log(
-    "Selected difficulty level:",
-    questions.value.length > 0 ? questions.value[0].difficulty : "none"
-  );
-  console.log("Question count:", questions.value.length);
-
-  // 日期比较调试信息
-  console.log("Date comparison debug:");
-  console.log("hired_date (timestamp):", hired_date);
-  console.log("validDate (string):", validDate.value);
-
-  if (hired_date && validDate.value) {
-    const hiredDateObj = new Date(hired_date);
-    const validDateObj = new Date(validDate.value);
-    console.log("hired_date converted:", hiredDateObj);
-    console.log("validDate converted:", validDateObj);
-    console.log("hired_date > validDate:", hiredDateObj > validDateObj);
-    console.log("shouldShowEmptyState:", shouldShowEmptyState.value);
-  }
-
   // 为测试目的，添加一个示例答案（使用第一个问题的key）
-  if (questions.value.length > 0 && !shouldShowEmptyState.value) {
-    const firstQuestionKey = questions.value[0].key;
-    answers.value[firstQuestionKey] = {
-      content: "这是一个示例答案，展示已提交的状态。",
-      attachments: [],
-      submittedAt: new Date("2024-01-10T10:30:00"),
-      reviewStatus: "pending",
-      reviewedAt: null,
-      reviewComment: null
-    };
-    console.log("Added sample answer for question:", firstQuestionKey);
-  }
+  // todo,后续放开测试
+  // if (questions.value.length > 0 && !shouldShowEmptyState.value) {
+  //   const firstQuestionKey = questions.value[0].key;
+  //   answers.value[firstQuestionKey] = {
+  //     content: "这是一个示例答案，展示已提交的状态。",
+  //     attachments: [],
+  //     submittedAt: new Date("2024-01-10T10:30:00"),
+  //     reviewStatus: "pending",
+  //     reviewedAt: null,
+  //     reviewComment: null
+  //   };
+  //   console.log("Added sample answer for question:", firstQuestionKey);
+  // }
 });
 </script>
 
