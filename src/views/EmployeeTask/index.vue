@@ -208,6 +208,17 @@
                       {{ getReviewComments(question.id) }}
                     </el-descriptions-item>
                   </el-descriptions>
+
+                  <!-- 已提交答案的操作栏 -->
+                  <div class="submitted-answer-actions">
+                    <el-button
+                      type="primary"
+                      size="default"
+                      class="save-answer-btn"
+                    >
+                      Save Answer
+                    </el-button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -583,26 +594,50 @@ onMounted(() => {
 }
 
 .question-card .el-card {
+  background-color: #fafafa;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
 }
 
 .question-card .el-card__header {
   padding: 16px 20px;
+  background-color: transparent;
   border-bottom: 1px solid #f0f0f0;
 }
 
 .question-card .el-card__body {
   padding: 16px 20px;
+  background-color: transparent;
 }
 
 .answered-card {
-  background-color: #f0f9ff;
-  border-color: #67c23a;
+  background-color: #f0fdf4;
+  border-color: #10b981;
+}
+
+.answered-card .el-card {
+  background-color: #f0fdf4;
+  border-color: #10b981;
+  border-width: 2px;
+}
+
+.answered-card .el-card__header {
+  background-color: transparent;
+}
+
+.answered-card .el-card__body {
+  background-color: transparent;
 }
 
 .current-card {
-  border-color: #409eff;
-  box-shadow: 0 0 0 2px rgb(64 158 255 / 20%);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgb(59 130 246 / 20%);
+}
+
+.current-card .el-card {
+  background-color: #eff6ff;
+  border-color: #3b82f6;
+  border-width: 2px;
 }
 
 .question-header {
@@ -656,6 +691,10 @@ onMounted(() => {
   color: #64748b;
 }
 
+.answered-card .question-description {
+  color: #059669;
+}
+
 .answer-section h4 {
   margin-bottom: 8px;
   font-size: 16px;
@@ -685,12 +724,37 @@ onMounted(() => {
 .submit-section {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
+  padding-top: 16px;
+  margin-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.submit-section .el-button {
+  min-width: 120px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.submit-section .el-button--primary {
+  background-color: #409eff;
+  border-color: #409eff;
+}
+
+.submit-section .el-button--primary:hover {
+  background-color: #66b1ff;
+  border-color: #66b1ff;
+}
+
+.submit-section .el-button--primary:disabled {
+  background-color: #a0cfff;
+  border-color: #a0cfff;
 }
 
 .submitted-answer {
   padding: 12px;
-  background-color: #f8f9fa;
+  background-color: transparent;
   border-radius: 6px;
 }
 
@@ -805,6 +869,20 @@ onMounted(() => {
   margin-top: 0;
 }
 
+.submitted-answer-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.save-answer-btn {
+  min-width: 120px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
 @media (width <= 768px) {
   .task-header {
     padding: 24px 20px;
@@ -866,6 +944,27 @@ onMounted(() => {
 
   .upload-hint {
     font-size: 11px;
+  }
+
+  .submit-section {
+    padding-top: 12px;
+    margin-top: 16px;
+  }
+
+  .submit-section .el-button {
+    min-width: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+
+  .submitted-answer-actions {
+    margin-top: 10px;
+  }
+
+  .save-answer-btn {
+    min-width: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
   }
 
   .complete-task-section {
