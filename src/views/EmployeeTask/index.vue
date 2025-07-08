@@ -35,16 +35,15 @@
     <!-- 任务问题列表 -->
     <div class="questions-container">
       <!-- 空状态展示 -->
-      <div v-if="questions.length === 0" class="empty-state">
+      <div v-if="shouldShowEmptyState" class="empty-state">
         <div class="empty-content">
           <el-icon class="empty-icon">
-            <Document />
+            <Calendar v-if="shouldShowEmptyState" />
+            <Document v-else />
           </el-icon>
-          <h3 class="empty-title">No Questions Available</h3>
-          <p class="empty-description">
-            There are currently no questions assigned to this task. Please check
-            back later or contact your administrator.
-          </p>
+          <h3 class="empty-title">
+            {{ "No Questions Available" }}
+          </h3>
         </div>
       </div>
 
@@ -374,6 +373,22 @@ const submittingAnswers = ref({});
 const totalQuestions = computed(() => questions.value.length);
 const completedQuestions = computed(() => Object.keys(answers.value).length);
 
+// 日期比较逻辑
+const shouldShowEmptyState = computed(() => {
+  if (!hired_date || !validDate.value) {
+    return false; // 如果任一日期不存在，不显示空状态
+  }
+
+  // 将hired_date时间戳转换为Date对象
+  const hiredDateObj = new Date(hired_date);
+
+  // 将validDate字符串转换为Date对象
+  const validDateObj = new Date(validDate.value);
+
+  // 比较日期：如果入职日期大于有效日期，则显示空状态
+  return hiredDateObj > validDateObj;
+});
+
 // 工具函数
 const formatDate = date => {
   return new Date(date).toLocaleDateString("en-US", {
@@ -566,8 +581,22 @@ onMounted(() => {
   );
   console.log("Question count:", questions.value.length);
 
+  // 日期比较调试信息
+  console.log("Date comparison debug:");
+  console.log("hired_date (timestamp):", hired_date);
+  console.log("validDate (string):", validDate.value);
+
+  if (hired_date && validDate.value) {
+    const hiredDateObj = new Date(hired_date);
+    const validDateObj = new Date(validDate.value);
+    console.log("hired_date converted:", hiredDateObj);
+    console.log("validDate converted:", validDateObj);
+    console.log("hired_date > validDate:", hiredDateObj > validDateObj);
+    console.log("shouldShowEmptyState:", shouldShowEmptyState.value);
+  }
+
   // 为测试目的，添加一个示例答案（使用第一个问题的key）
-  if (questions.value.length > 0) {
+  if (questions.value.length > 0 && !shouldShowEmptyState.value) {
     const firstQuestionKey = questions.value[0].key;
     answers.value[firstQuestionKey] = {
       content: "这是一个示例答案，展示已提交的状态。",
@@ -1055,5 +1084,23 @@ onMounted(() => {
   font-size: 14px;
   line-height: 1.5;
   color: #6b7280;
+}
+
+.date-info {
+  padding: 12px;
+  margin-top: 16px;
+  background: #f9fafb;
+  border-left: 3px solid #f59e0b;
+  border-radius: 6px;
+}
+
+.date-info p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #374151;
+}
+
+.date-info strong {
+  color: #1f2937;
 }
 </style>
