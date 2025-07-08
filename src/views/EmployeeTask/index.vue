@@ -89,34 +89,17 @@
               <div v-if="!isQuestionAnswered(question.id)" class="answer-form">
                 <h4>Your Answer</h4>
 
-                <!-- 富文本编辑器 -->
-                <div class="editor-container">
-                  <div class="editor-toolbar">
-                    <el-button-group size="small">
-                      <el-button @click="toggleBold(question.id)"
-                        ><strong>B</strong></el-button
-                      >
-                      <el-button @click="toggleItalic(question.id)"
-                        ><em>I</em></el-button
-                      >
-                      <el-button
-                        :icon="ListIcon"
-                        @click="toggleList(question.id)"
-                        >List</el-button
-                      >
-                      <el-button
-                        :icon="LinkIcon"
-                        @click="insertLink(question.id)"
-                        >Link</el-button
-                      >
-                    </el-button-group>
-                  </div>
-                  <div
-                    class="editor-content"
-                    :contenteditable="true"
-                    @input="updateAnswer(question.id, $event)"
-                    :data-placeholder="'请输入您的答案...'"
-                  ></div>
+                <!-- 答案输入框 -->
+                <div class="answer-input-container">
+                  <el-input
+                    v-model="tempAnswers[question.id]"
+                    type="textarea"
+                    :rows="6"
+                    placeholder="请输入您的答案..."
+                    resize="vertical"
+                    show-word-limit
+                    maxlength="2000"
+                  />
                 </div>
 
                 <!-- 附件上传 -->
@@ -135,16 +118,24 @@
                     :file-list="getAttachments(question.id)"
                     multiple
                     :show-file-list="true"
+                    drag
                   >
-                    <el-button size="small" type="primary">
-                      <el-icon class="el-icon--left"><Upload /></el-icon>
-                      Click to upload
-                    </el-button>
-                    <template #tip>
-                      <div class="el-upload__tip">
-                        jpg/png files with a size less than 500kb
+                    <div class="upload-dragger-content">
+                      <el-icon class="upload-icon">
+                        <Upload />
+                      </el-icon>
+                      <div class="upload-text">
+                        <p>Drag and drop files here, or click to select</p>
+                        <p class="upload-hint">Max files: 3, Max size: 5MB</p>
                       </div>
-                    </template>
+                      <el-button
+                        type="primary"
+                        size="small"
+                        class="select-files-btn"
+                      >
+                        Select Files
+                      </el-button>
+                    </div>
                   </el-upload>
                 </div>
 
@@ -247,14 +238,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import {
-  Calendar,
-  Check,
-  Upload,
-  Paperclip,
-  List as ListIcon,
-  Link as LinkIcon
-} from "@element-plus/icons-vue";
+import { Calendar, Check, Upload, Paperclip } from "@element-plus/icons-vue";
 import { storageLocal } from "@pureadmin/utils";
 import { useI18n } from "vue-i18n";
 
@@ -456,34 +440,6 @@ const canSubmitAnswer = questionId => {
   return tempAnswer && tempAnswer.trim().length > 0;
 };
 
-// 编辑器相关方法
-const updateAnswer = (questionId, event) => {
-  const content = event.target.innerHTML;
-  if (!tempAnswers.value[questionId]) {
-    tempAnswers.value[questionId] = "";
-  }
-  tempAnswers.value[questionId] = content;
-};
-
-const toggleBold = questionId => {
-  document.execCommand("bold", false, null);
-};
-
-const toggleItalic = questionId => {
-  document.execCommand("italic", false, null);
-};
-
-const toggleList = questionId => {
-  document.execCommand("insertUnorderedList", false, null);
-};
-
-const insertLink = questionId => {
-  const url = prompt("Enter URL:");
-  if (url) {
-    document.execCommand("createLink", false, url);
-  }
-};
-
 // 附件相关方法
 const handleAttachmentSuccess = (questionId, response, file) => {
   if (!tempAttachments.value[questionId]) {
@@ -619,11 +575,24 @@ onMounted(() => {
 .questions-container {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
 }
 
 .question-card {
   width: 100%;
+}
+
+.question-card .el-card {
+  border-radius: 8px;
+}
+
+.question-card .el-card__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.question-card .el-card__body {
+  padding: 16px 20px;
 }
 
 .answered-card {
@@ -639,28 +608,29 @@ onMounted(() => {
 .question-header {
   display: flex;
   align-items: flex-start;
-  justify-content: between;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
 .question-info {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
 .question-number {
+  margin-right: 8px;
   font-size: 16px;
   font-weight: 600;
 }
 
 .difficulty-tag {
-  margin-left: 8px;
+  margin-left: 0;
 }
 
 .status-tag {
-  margin-left: 4px;
+  margin-left: 0;
 }
 
 .completed-icon {
@@ -670,103 +640,94 @@ onMounted(() => {
 .question-title {
   margin: 0;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4;
   color: #6b7280;
 }
 
 .question-content {
-  margin-top: 16px;
+  margin-top: 12px;
 }
 
 .question-description {
-  padding: 12px;
-  margin-bottom: 16px;
+  padding: 8px 0;
+  margin-bottom: 12px;
   font-size: 14px;
+  line-height: 1.5;
   color: #64748b;
-  background-color: #f8fafc;
-  border-radius: 6px;
 }
 
 .answer-section h4 {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-size: 16px;
   font-weight: 600;
 }
 
-.editor-container {
-  margin-bottom: 16px;
+.answer-input-container {
+  margin-bottom: 12px;
 }
 
-.editor-toolbar {
-  margin-bottom: 8px;
-}
-
-.editor-content {
-  min-height: 120px;
-  padding: 12px;
+.answer-input-container .el-textarea__inner {
   font-size: 14px;
   line-height: 1.5;
-  background-color: #fff;
-  border: 1px solid #dcdfe6;
   border-radius: 4px;
 }
 
-.editor-content:focus {
-  border-color: #409eff;
-  outline: none;
-}
-
-.editor-content[contenteditable]:empty::before {
-  color: #c0c4cc;
-  content: attr(data-placeholder);
-}
-
 .attachments-section {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+}
+
+.attachments-section h4 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .submit-section {
   display: flex;
   justify-content: flex-end;
+  margin-top: 16px;
 }
 
 .submitted-answer {
-  padding: 16px;
+  padding: 12px;
   background-color: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .answer-content {
   min-height: 60px;
-  padding: 12px;
-  margin-bottom: 16px;
+  padding: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  line-height: 1.5;
   background-color: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 4px;
 }
 
 .submitted-attachments {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .attachment-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .attachment-item {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
-  padding: 8px;
+  padding: 6px 8px;
+  font-size: 14px;
   background-color: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 4px;
 }
 
 .submission-info {
-  margin-top: 16px;
+  margin-top: 12px;
 }
 
 .complete-task-section {
@@ -778,7 +739,70 @@ onMounted(() => {
 }
 
 .upload-demo {
+  margin-bottom: 0;
+}
+
+.upload-demo .el-upload {
+  width: 100%;
+}
+
+.upload-demo .el-upload-dragger {
+  width: 100%;
+  height: auto;
+  background-color: #fafafa;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.upload-demo .el-upload-dragger:hover {
+  background-color: #f5f7fa;
+  border-color: #409eff;
+}
+
+.upload-demo .el-upload__tip {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #999;
+}
+
+.upload-dragger-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+}
+
+.upload-icon {
   margin-bottom: 16px;
+  font-size: 48px;
+  color: #c0c4cc;
+}
+
+.upload-text {
+  margin-bottom: 16px;
+  color: #606266;
+  text-align: center;
+}
+
+.upload-text p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.upload-text p:first-child {
+  margin-bottom: 4px;
+}
+
+.upload-hint {
+  font-size: 12px;
+  color: #909399;
+}
+
+.select-files-btn {
+  margin-top: 0;
 }
 
 @media (width <= 768px) {
@@ -797,7 +821,51 @@ onMounted(() => {
   }
 
   .questions-container {
-    gap: 24px;
+    gap: 20px;
+  }
+
+  .question-card .el-card__header {
+    padding: 12px 16px;
+  }
+
+  .question-card .el-card__body {
+    padding: 12px 16px;
+  }
+
+  .question-info {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .question-number {
+    margin-right: 0;
+    margin-bottom: 4px;
+  }
+
+  .answer-input-container .el-textarea__inner {
+    font-size: 13px;
+  }
+
+  .upload-dragger-content {
+    padding: 20px 15px;
+  }
+
+  .upload-icon {
+    margin-bottom: 12px;
+    font-size: 36px;
+  }
+
+  .upload-text {
+    margin-bottom: 12px;
+  }
+
+  .upload-text p {
+    font-size: 13px;
+  }
+
+  .upload-hint {
+    font-size: 11px;
   }
 
   .complete-task-section {
