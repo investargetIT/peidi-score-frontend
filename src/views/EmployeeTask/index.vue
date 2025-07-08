@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="employee-task-container">
     <!-- 页面头部 -->
     <div class="task-header">
       <h1 class="task-title">{{ `Employee Task - ${employeeName}` }}</h1>
@@ -666,8 +666,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+
 /* 移动端适配 */
 @media (width <= 768px) {
+  .employee-task-container {
+    padding: 0 20px;
+  }
+
   .task-header {
     padding: 0;
   }
@@ -748,6 +754,10 @@ onMounted(() => {
     padding: 0 16px;
     font-size: 13px;
   }
+}
+
+.employee-task-container {
+  padding: 0 40px;
 }
 
 .task-header {
@@ -1157,4 +1167,6 @@ onMounted(() => {
 .date-info strong {
   color: #1f2937;
 }
+
+/* 页面容器样式 */
 </style>

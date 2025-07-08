@@ -67,7 +67,7 @@ export const isAdmin = () => {
 const routes = [
   {
     path: "/history",
-    name: "historyLayout",
+    name: "history",
     redirect: "/history/index",
     component: Layout,
     meta: {
@@ -90,7 +90,7 @@ const routes = [
   },
   {
     path: "/score",
-    name: "scoreLayout",
+    name: "score",
     redirect: "/scoreRank/index",
     component: Layout,
     meta: {
@@ -116,7 +116,7 @@ const routes = [
 if (isAdmin()) {
   routes.push({
     path: "/monitor",
-    name: "monitorLayout",
+    name: "monitor",
     redirect: "/monitor/index",
     component: Layout,
     meta: {
@@ -165,7 +165,7 @@ if (isAdmin()) {
 }
 routes.push({
   path: "/esg",
-  name: "esgLayout",
+  name: "esg",
   hidden: true,
   redirect: "/esg/index",
   component: Layout,
@@ -191,7 +191,7 @@ routes.push({
 
 routes.push({
   path: "/task",
-  name: "taskLayout",
+  name: "task",
   redirect: "/task/index",
   component: Layout,
   meta: {
