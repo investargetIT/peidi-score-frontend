@@ -32,6 +32,17 @@
       class="completion-alert"
     />
 
+    <!-- 过期提示 -->
+    <el-alert
+      v-if="isTaskOverdue"
+      title="Task Overdue"
+      description="This task has exceeded its due date. You can no longer edit your answers or upload attachments."
+      type="warning"
+      :closable="false"
+      show-icon
+      class="overdue-alert"
+    />
+
     <!-- 任务问题列表 -->
     <div class="questions-container">
       <!-- 空状态展示 -->
@@ -114,6 +125,7 @@
                     resize="vertical"
                     show-word-limit
                     maxlength="2000"
+                    :disabled="isTaskOverdue"
                     class="answer-textarea"
                   />
                 </div>
@@ -139,6 +151,7 @@
                     multiple
                     :show-file-list="true"
                     drag
+                    :disabled="isTaskOverdue"
                     :headers="{
                       Authorization: formatToken(getToken().accessToken)
                     }"
@@ -168,6 +181,7 @@
                     type="primary"
                     @click="submitAnswer(question.id)"
                     :loading="submittingAnswers[question.id]"
+                    :disabled="isTaskOverdue"
                     class="save-answer-btn"
                   >
                     Save Answer
@@ -244,6 +258,7 @@
                   <el-button
                     type="primary"
                     size="default"
+                    :disabled="isTaskOverdue"
                     class="save-answer-btn"
                   >
                     Save Answer
@@ -568,6 +583,11 @@ const formatDate = date => {
   });
 };
 
+// 检查是否过期
+const isTaskOverdue = computed(() => {
+  return computedTaskStatus.value === "overdue";
+});
+
 const formatDateTime = date => {
   if (!date) return "";
   return new Date(date).toLocaleString("en-US", {
@@ -656,32 +676,12 @@ const getSubmissionTime = questionId => {
   return answers.value[questionId]?.submittedAt;
 };
 
-const getReviewTime = questionId => {
-  return answers.value[questionId]?.reviewedAt;
-};
-
-const getReviewComment = questionId => {
-  return answers.value[questionId]?.reviewComment;
-};
-
-const getReviewComments = questionId => {
-  return answers.value[questionId]?.reviewComment;
-};
-
 const getAttachments = questionId => {
   return tempAttachments.value[questionId] || [];
 };
 
-const canSubmitAnswer = questionId => {
-  const tempAnswer = tempAnswers.value[questionId];
-  return tempAnswer && tempAnswer.trim().length > 0;
-};
-
 // 附件相关方法
 const handleAttachmentSuccess = (questionId, response, file) => {
-  console.log("===附件上传成功===");
-  console.log(response);
-  console.log(file);
   if (!tempAttachments.value[questionId]) {
     tempAttachments.value[questionId] = [];
   }
@@ -842,6 +842,11 @@ const submitAnswer = async questionId => {
     padding: 8px 16px;
   }
 
+  .save-answer-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   .submission-inline-grid {
     grid-template-columns: 1fr;
     gap: 12px;
@@ -902,7 +907,7 @@ const submitAnswer = async questionId => {
   color: #6b7280;
 }
 
-.completion-alert {
+.overdue-alert {
   margin-bottom: 32px;
 }
 
@@ -1059,6 +1064,13 @@ const submitAnswer = async questionId => {
   box-shadow: 0 0 0 3px rgb(59 130 246 / 10%);
 }
 
+.answer-textarea :deep(.el-textarea__inner:disabled) {
+  color: #9ca3af;
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+  border-color: #d1d5db;
+}
+
 .submitted-answer-content {
   margin-bottom: 24px;
 }
@@ -1090,6 +1102,17 @@ const submitAnswer = async questionId => {
 .upload-demo :deep(.el-upload-dragger):hover {
   background: #f8fafc;
   border-color: #3b82f6;
+}
+
+.upload-demo :deep(.el-upload-dragger.is-disabled) {
+  cursor: not-allowed;
+  background: #f5f5f5;
+  border-color: #d1d5db;
+}
+
+.upload-demo :deep(.el-upload-dragger.is-disabled):hover {
+  background: #f5f5f5;
+  border-color: #d1d5db;
 }
 
 .upload-dragger-content {
@@ -1150,6 +1173,11 @@ const submitAnswer = async questionId => {
   font-size: 14px;
   font-weight: 500;
   border-radius: 6px;
+}
+
+.save-answer-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 /* 已提交答案样式 */
