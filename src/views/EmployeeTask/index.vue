@@ -34,7 +34,23 @@
 
     <!-- 任务问题列表 -->
     <div class="questions-container">
+      <!-- 空状态展示 -->
+      <div v-if="questions.length === 0" class="empty-state">
+        <div class="empty-content">
+          <el-icon class="empty-icon">
+            <Document />
+          </el-icon>
+          <h3 class="empty-title">No Questions Available</h3>
+          <p class="empty-description">
+            There are currently no questions assigned to this task. Please check
+            back later or contact your administrator.
+          </p>
+        </div>
+      </div>
+
+      <!-- 问题卡片列表 -->
       <div
+        v-else
         v-for="(question, index) in questions"
         :key="question.id"
         class="question-card"
@@ -261,7 +277,13 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { Calendar, Check, Upload, Paperclip } from "@element-plus/icons-vue";
+import {
+  Calendar,
+  Check,
+  Upload,
+  Paperclip,
+  Document
+} from "@element-plus/icons-vue";
 import { storageLocal } from "@pureadmin/utils";
 import { useI18n } from "vue-i18n";
 
@@ -622,6 +644,26 @@ onMounted(() => {
     grid-template-columns: 1fr;
     gap: 12px;
   }
+
+  .empty-state {
+    min-height: 160px;
+    margin-top: 16px;
+  }
+
+  .empty-icon {
+    margin-bottom: 12px;
+    font-size: 36px;
+  }
+
+  .empty-title {
+    margin-bottom: 6px;
+    font-size: 16px;
+  }
+
+  .empty-description {
+    padding: 0 16px;
+    font-size: 13px;
+  }
 }
 
 .task-header {
@@ -971,5 +1013,41 @@ onMounted(() => {
   justify-content: flex-end;
   padding-top: 16px;
   border-top: 1px solid #e5e7eb;
+}
+
+/* 空状态样式 */
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px; /* Adjust as needed */
+  margin-top: 24px;
+  background-color: #f9fafb;
+  border: 1px dashed #e5e7eb;
+  border-radius: 8px;
+}
+
+.empty-content {
+  color: #9ca3af;
+  text-align: center;
+}
+
+.empty-icon {
+  margin-bottom: 16px;
+  font-size: 48px;
+  color: #9ca3af;
+}
+
+.empty-title {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.empty-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6b7280;
 }
 </style>
