@@ -34,8 +34,8 @@
     <!-- 过期提示 -->
     <el-alert
       v-if="isTaskOverdue"
-      title="Task Overdue"
-      description="This task has exceeded its due date. You can no longer edit your answers or upload attachments."
+      title="任务已过期"
+      description="任务已过期，无法编辑。"
       type="warning"
       :closable="false"
       show-icon
@@ -527,8 +527,8 @@ const shouldShowEmptyState = computed(() => {
   // 将validDate字符串转换为Date对象
   const validDateObj = new Date(validDate.value);
 
-  // 比较日期：如果入职日期大于有效日期，则显示空状态
-  // todo,本地开发，临时放开
+  // 比较日期：如果入职日期小于有效日期，则显示空状态
+  // hireDate > qaDate， 新员工，需要填写回答
   return hiredDateObj < validDateObj;
 });
 
@@ -543,8 +543,6 @@ const formatDate = date => {
 
 // 检查是否过期
 const isTaskOverdue = computed(() => {
-  // todo,后续调整，临时放开
-  return false;
   return computedTaskStatus.value === "overdue";
 });
 
