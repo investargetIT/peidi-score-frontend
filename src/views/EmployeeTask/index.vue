@@ -120,7 +120,7 @@
                     v-model="tempAnswers[question.id]"
                     type="textarea"
                     :rows="6"
-                    placeholder="Your Answer"
+                    placeholder="你的回答"
                     resize="vertical"
                     show-word-limit
                     maxlength="2000"
@@ -251,7 +251,7 @@ import {
 const { t } = useI18n();
 
 // 基础数据
-const taskStatus = ref("in_progress"); // 'in_progress', 'completed', 'approved', 'overdue'
+const taskStatus = ref("进行中"); // '进行中', '已完成', '已审核', '已过期'
 const currentQuestionId = ref(null);
 const completingTask = ref(false);
 const uploadUrl = baseUrlApi("/qa/upload");
