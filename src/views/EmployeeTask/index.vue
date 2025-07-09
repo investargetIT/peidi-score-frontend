@@ -534,7 +534,7 @@ const shouldShowEmptyState = computed(() => {
 
 // 工具函数
 const formatDate = date => {
-  return new Date(date).toLocaleDateString("en-US", {
+  return new Date(date).toLocaleDateString("zh-CN", {
     year: "numeric",
     month: "long",
     day: "numeric"
