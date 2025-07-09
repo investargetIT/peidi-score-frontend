@@ -446,7 +446,6 @@ const initializeSaveQuestions = async randomQuestions => {
   };
 
   await updateQaConfig(saveData);
-  console.log("问题初始化保存成功");
 };
 
 // 问题数据
