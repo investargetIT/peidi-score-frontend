@@ -2,11 +2,11 @@
   <div class="employee-task-container">
     <!-- 页面头部 -->
     <div class="task-header">
-      <h1 class="task-title">{{ `Employee Task - ${employeeName}` }}</h1>
+      <h1 class="task-title">{{ `员工任务 - ${employeeName}` }}</h1>
       <div class="task-meta">
         <div class="meta-item">
           <el-icon><Calendar /></el-icon>
-          <span>Due Date: {{ formatDate(dueDate) }}</span>
+          <span>截止时间: {{ formatDate(dueDate) }}</span>
         </div>
         <div class="meta-item">
           <el-tag :type="getStatusType(computedTaskStatus)" size="large">
@@ -15,9 +15,8 @@
         </div>
         <div class="meta-item">
           <span
-            >Progress: {{ completedQuestions }}/{{ totalQuestions }} questions
-            completed</span
-          >
+            >进度: 已完成 {{ completedQuestions }}/{{ totalQuestions }} 道题目
+          </span>
         </div>
       </div>
     </div>
@@ -25,7 +24,7 @@
     <!-- 完成提示 -->
     <el-alert
       v-if="computedTaskStatus === 'completed'"
-      title="Congratulations! You have completed all tasks."
+      title="恭喜! 您已完成所有任务。"
       type="success"
       :closable="false"
       show-icon
@@ -75,9 +74,7 @@
           <template #header>
             <div class="question-header">
               <div class="question-info">
-                <span class="question-number">{{
-                  `question${index + 1}`
-                }}</span>
+                <span class="question-number">{{ `题目${index + 1}` }}</span>
                 <el-tag
                   :type="getDifficultyType(question.difficulty)"
                   size="small"
@@ -112,7 +109,7 @@
             <div class="answer-section">
               <div class="answer-form">
                 <div class="answer-label">
-                  <label class="form-label">Your Answer</label>
+                  <label class="form-label">您的回答</label>
                 </div>
 
                 <!-- 答案输入框 -->
@@ -133,7 +130,7 @@
                 <!-- 附件上传 -->
                 <div class="attachments-section">
                   <div class="answer-label">
-                    <label class="form-label">Attachments</label>
+                    <label class="form-label">附件</label>
                   </div>
                   <el-upload
                     accept=".jpg,.png,.jpeg,.gif,.pdf"
@@ -162,14 +159,14 @@
                         <Upload />
                       </el-icon>
                       <div class="upload-text">
-                        <p>Drag and drop files here, or click to select</p>
+                        <p>拖拽文件到此处，或点击选择文件</p>
                       </div>
                       <el-button
                         type="default"
                         size="small"
                         class="select-files-btn"
                       >
-                        Select Files
+                        选择文件
                       </el-button>
                     </div>
                   </el-upload>
@@ -182,13 +179,13 @@
                 >
                   <div class="submission-inline-grid">
                     <div class="submission-inline-item">
-                      <p class="submission-label">Submitted at:</p>
+                      <p class="submission-label">提交时间:</p>
                       <p class="submission-value">
                         {{ formatDateTime(getSubmissionTime(question.id)) }}
                       </p>
                     </div>
                     <div class="submission-inline-item">
-                      <p class="submission-label">Review Status:</p>
+                      <p class="submission-label">审核状态:</p>
                       <el-tag
                         :type="
                           getAnswerStatusType(getAnswerStatus(question.id))
@@ -211,7 +208,7 @@
                     :disabled="isTaskOverdue"
                     class="save-answer-btn"
                   >
-                    Save Answer
+                    保存答案
                   </el-button>
                 </div>
               </div>
@@ -593,9 +590,9 @@ const getDifficultyType = difficulty => {
 
 const getDifficultyText = difficulty => {
   const texts = {
-    beginner: "Beginner",
-    intermediate: "Intermediate",
-    advanced: "Advanced"
+    beginner: "初级",
+    intermediate: "中级",
+    advanced: "高级"
   };
   return texts[difficulty] || difficulty;
 };
@@ -611,9 +608,9 @@ const getAnswerStatusType = status => {
 
 const getAnswerStatusText = status => {
   const texts = {
-    pending: "Pending Review",
-    approved: "Approved",
-    rejected: "Rejected"
+    pending: "待审核",
+    approved: "已审核",
+    rejected: "已驳回"
   };
   return texts[status] || status;
 };
