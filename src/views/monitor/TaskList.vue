@@ -183,7 +183,7 @@
                 stroke-linejoin="round"
                 class="lucide lucide-check h-4 w-4"
               >
-                <path d="M20 6 9 17l-5-5"></path>
+                <path d="M20 6 9 17 4 12"></path>
               </svg>
               审核通过
             </button>
@@ -192,6 +192,200 @@
       </el-table-column>
     </el-table>
   </el-card>
+
+  <!-- 任务详情弹窗 -->
+  <el-dialog
+    v-model="isTaskDialogOpen"
+    :title="selectedTask ? `${selectedTask.fullName} - 任务详情` : '任务详情'"
+    width="80%"
+    :close-on-click-modal="false"
+    class="task-detail-dialog"
+  >
+    <div v-if="selectedTask" class="task-detail-content">
+      <!-- 任务信息 -->
+      <div class="task-info-grid">
+        <div class="info-item">
+          <p class="info-label">状态</p>
+          <div
+            v-if="getStatusText(selectedTask.remark) === '已完成'"
+            class="status-badge completed"
+          >
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>已完成</span>
+          </div>
+          <div
+            v-else-if="getStatusText(selectedTask.remark) === '进行中'"
+            class="status-badge in-progress"
+          >
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>进行中</span>
+          </div>
+          <div v-else class="status-badge pending">
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>待开始</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <p class="info-label">截止日期</p>
+          <p class="info-value">{{ getDueDate(selectedTask.remark) }}</p>
+        </div>
+        <div class="info-item">
+          <p class="info-label">进度</p>
+          <p class="info-value">
+            {{ getProgressText(selectedTask.remark) }} 已完成
+          </p>
+        </div>
+      </div>
+
+      <!-- 审核状态提示 -->
+      <div v-if="selectedTask.hasReview" class="approval-notice">
+        <div class="approval-header">
+          <svg
+            class="approval-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span class="approval-title">任务已审核</span>
+        </div>
+        <div class="approval-details">
+          <p>审核人员: 管理员</p>
+          <p>审核时间: {{ new Date().toLocaleString("zh-CN") }}</p>
+        </div>
+      </div>
+
+      <!-- 题目和答案 -->
+      <div class="questions-section">
+        <h3 class="questions-title">题目与答案</h3>
+        <div class="questions-list">
+          <div
+            v-for="(question, index) in getQuestions(selectedTask.qa)"
+            :key="index"
+            class="question-card"
+          >
+            <div class="question-header">
+              <div class="question-info">
+                <div class="question-number-row">
+                  <span class="question-number">题目 {{ index + 1 }}</span>
+                  <span class="difficulty-badge">中等</span>
+                  <svg
+                    v-if="question.answered"
+                    class="answered-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </div>
+                <p class="question-title">{{ question.title }}</p>
+              </div>
+            </div>
+            <div class="question-content">
+              <div v-if="question.answered" class="answer-section">
+                <div class="answer-content">
+                  <p class="answer-label">答案:</p>
+                  <div class="answer-text" v-html="question.answer"></div>
+                </div>
+                <div
+                  v-if="question.attachments && question.attachments.length > 0"
+                  class="attachments-section"
+                >
+                  <p class="attachments-label">附件:</p>
+                  <div class="attachments-list">
+                    <div
+                      v-for="attachment in question.attachments"
+                      :key="attachment.id"
+                      class="attachment-item"
+                    >
+                      <span class="attachment-icon">📎</span>
+                      <a
+                        :href="attachment.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="attachment-link"
+                      >
+                        {{ attachment.name }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="submission-info">
+                  <div class="submission-item">
+                    <p class="submission-label">提交时间:</p>
+                    <p class="submission-value">
+                      {{ question.submittedAt || "2023年6月8日 14:30" }}
+                    </p>
+                  </div>
+                  <div class="submission-item">
+                    <p class="submission-label">审核状态:</p>
+                    <span class="review-status pending">待审核</span>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="no-answer">
+                <p class="no-answer-text">尚未回答</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 整体审核按钮 -->
+      <div v-if="canApproveTask(selectedTask)" class="approve-section">
+        <el-button
+          type="success"
+          size="large"
+          @click="handleTaskApproval"
+          class="approve-button"
+        >
+          <svg
+            class="approve-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          审核通过任务
+        </el-button>
+      </div>
+    </div>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -199,10 +393,13 @@ import { getQaList } from "@/api/task";
 import { ref } from "vue";
 
 const exchangeList = ref([]);
+const isTaskDialogOpen = ref(false);
+const selectedTask = ref(null);
 
 const handleShowDetails = row => {
+  selectedTask.value = row;
+  isTaskDialogOpen.value = true;
   console.log("查看", row);
-  console.log(row);
 };
 
 const getQaListData = () => {
@@ -211,6 +408,25 @@ const getQaListData = () => {
       exchangeList.value = res.data;
     }
   });
+};
+
+// 解析题目数据
+const getQuestions = qaString => {
+  try {
+    const qaArray = JSON.parse(qaString);
+    return qaArray.map((item, index) => ({
+      id: index + 1,
+      title: item.question || `题目 ${index + 1}`,
+      answered: item.answer && item.answer.trim() !== "",
+      answer: item.answer || "",
+      attachments: item.attachments || [],
+      submittedAt: item.submittedAt || "2023年6月8日 14:30",
+      difficulty: "medium"
+    }));
+  } catch (error) {
+    console.error("解析题目数据失败:", error);
+    return [];
+  }
 };
 
 // 解析remark数据获取截止时间
@@ -258,6 +474,27 @@ const getStatusType = remark => {
     return "info";
   } catch (error) {
     return "info";
+  }
+};
+
+// 判断是否可以审核任务
+const canApproveTask = task => {
+  try {
+    const remarkData = JSON.parse(task.remark);
+    const { totalQuestions = 0, completedQuestions = 0 } = remarkData;
+    return completedQuestions === totalQuestions && !task.hasReview;
+  } catch (error) {
+    return false;
+  }
+};
+
+// 处理任务审核
+const handleTaskApproval = () => {
+  if (selectedTask.value) {
+    // TODO: 实现审核逻辑
+    console.log("审核任务:", selectedTask.value);
+    selectedTask.value.hasReview = true;
+    isTaskDialogOpen.value = false;
   }
 };
 
@@ -459,5 +696,323 @@ getQaListData();
   font-size: 12px;
   color: #666;
   white-space: nowrap;
+}
+
+/* 任务详情弹窗样式 */
+.task-detail-dialog {
+  max-height: 90vh;
+}
+
+.task-detail-content {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.task-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  margin-bottom: 24px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.info-value {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.status-badge {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+.status-badge.completed {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.status-badge.in-progress {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.status-badge.pending {
+  color: #374151;
+  background: #f3f4f6;
+}
+
+.status-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.approval-notice {
+  padding: 16px;
+  margin-bottom: 24px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+}
+
+.approval-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.approval-icon {
+  width: 20px;
+  height: 20px;
+  color: #16a34a;
+}
+
+.approval-title {
+  font-weight: 600;
+  color: #166534;
+}
+
+.approval-details {
+  font-size: 14px;
+  color: #15803d;
+}
+
+.approval-details p {
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.questions-section {
+  margin-bottom: 24px;
+}
+
+.questions-title {
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.question-card {
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.question-card.answered {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.question-header {
+  padding: 16px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.question-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.question-number-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.question-number {
+  font-weight: 500;
+  color: #374151;
+}
+
+.difficulty-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #92400e;
+  background: #fbbf24;
+  border-radius: 4px;
+}
+
+.answered-icon {
+  width: 16px;
+  height: 16px;
+  color: #16a34a;
+}
+
+.question-title {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.question-content {
+  padding: 16px;
+}
+
+.answer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.answer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.answer-label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.answer-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #111827;
+}
+
+.attachments-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attachments-label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.attachments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.attachment-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.attachment-icon {
+  font-size: 14px;
+}
+
+.attachment-link {
+  font-size: 14px;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.attachment-link:hover {
+  text-decoration: underline;
+}
+
+.submission-info {
+  display: flex;
+  gap: 20px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.submission-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.submission-label {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.submission-value {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.review-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 12px;
+}
+
+.review-status.pending {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.no-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.no-answer-text {
+  margin: 0;
+  font-size: 14px;
+  font-style: italic;
+  color: #6b7280;
+}
+
+.approve-section {
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.approve-button {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.approve-icon {
+  width: 20px;
+  height: 20px;
 }
 </style>
