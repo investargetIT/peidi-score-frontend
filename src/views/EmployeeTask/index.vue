@@ -723,7 +723,8 @@ const submitAnswer = async questionId => {
       userId: id,
       qa: JSON.stringify(allAnswersData),
       remark: JSON.stringify({
-        validPeriod,
+        validPeriod: validPeriod.value,
+        dueDate: formatDate(dueDate.value),
         totalQuestions: totalQuestions.value,
         completedQuestions: actualCompletedQuestions
       }),
