@@ -226,7 +226,7 @@
         <div class="info-item">
           <p class="info-label">状态</p>
           <div
-            v-if="getStatusText(selectedTask.remark) === '已完成'"
+            v-if="selectedTask.hasReview"
             class="status-badge-compact completed"
           >
             <svg
@@ -236,26 +236,10 @@
               stroke="currentColor"
               stroke-width="2"
             >
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
-            <span>已完成</span>
-          </div>
-          <div
-            v-else-if="getStatusText(selectedTask.remark) === '进行中'"
-            class="status-badge-compact in-progress"
-          >
-            <svg
-              class="status-icon-compact"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            <span>进行中</span>
+            <span>已审核</span>
           </div>
           <div v-else class="status-badge-compact pending">
             <svg
@@ -268,7 +252,7 @@
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
-            <span>待开始</span>
+            <span>待审核</span>
           </div>
         </div>
         <div class="info-item">
