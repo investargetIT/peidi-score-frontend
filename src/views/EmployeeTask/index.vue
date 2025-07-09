@@ -325,39 +325,42 @@ fetchEnumTypeList();
 
 // 随机抽取问题的逻辑
 const generateRandomQuestions = () => {
-  // 随机选择一个难度级别
-  const levels = ["Beginner", "Intermediate", "Advanced"];
-  const selectedLevel = levels[Math.floor(Math.random() * levels.length)];
-
   let questionsToGenerate = [];
-  let questionCount = 0;
 
-  // 根据选择的级别确定抽取数量
-  switch (selectedLevel) {
-    case "Beginner":
-      questionCount = 3;
-      break;
-    case "Intermediate":
-      questionCount = 1;
-      break;
-    case "Advanced":
-      questionCount = 1;
-      break;
-  }
+  // 定义每个难度级别的抽取数量
+  const levelConfig = [
+    { level: "Beginner", count: 3 },
+    { level: "Intermediate", count: 1 },
+    { level: "Advanced", count: 1 }
+  ];
 
-  // 从对应级别的问题列表中随机抽取
-  const availableQuestions = TaskLevelList[selectedLevel];
-  const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
-  const selectedQuestions = shuffled.slice(0, questionCount);
+  // 遍历每个难度级别，按要求抽取题目
+  levelConfig.forEach(({ level, count }) => {
+    const availableQuestions = TaskLevelList[level];
 
-  // 生成问题对象
-  questionsToGenerate = selectedQuestions.map((question, index) => ({
-    id: question.key,
-    title: question.text,
-    difficulty: selectedLevel.toLowerCase(),
-    key: question.key
-  }));
+    if (availableQuestions && availableQuestions.length > 0) {
+      // 随机打乱题目顺序
+      const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
 
+      // 抽取指定数量的题目（如果可用题目少于需要数量，则全部抽取）
+      const selectedQuestions = shuffled.slice(
+        0,
+        Math.min(count, shuffled.length)
+      );
+
+      // 生成问题对象并添加到结果数组
+      const levelQuestions = selectedQuestions.map((question, index) => ({
+        id: question.key,
+        title: question.text,
+        difficulty: level.toLowerCase(),
+        key: question.key
+      }));
+
+      questionsToGenerate.push(...levelQuestions);
+    }
+  });
+
+  // 保持题目按难度级别顺序排列（初级 -> 中级 -> 高级）
   return questionsToGenerate;
 };
 
