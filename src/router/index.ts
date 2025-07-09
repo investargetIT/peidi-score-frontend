@@ -67,7 +67,7 @@ export const isAdmin = () => {
 const routes = [
   {
     path: "/history",
-    name: "history",
+    name: "HistoryLayout",
     redirect: "/history/index",
     component: Layout,
     meta: {
@@ -90,7 +90,7 @@ const routes = [
   },
   {
     path: "/score",
-    name: "score",
+    name: "ScoreLayout",
     redirect: "/scoreRank/index",
     component: Layout,
     meta: {
@@ -116,7 +116,7 @@ const routes = [
 if (isAdmin()) {
   routes.push({
     path: "/monitor",
-    name: "monitor",
+    name: "MonitorLayout",
     redirect: "/monitor/index",
     component: Layout,
     meta: {
@@ -137,35 +137,10 @@ if (isAdmin()) {
       }
     ]
   });
-  // routes.push({
-  //   path: "/esg",
-  //   name: "esg",
-  //   hidden: true,
-  //   redirect: "/esg/index",
-  //   component: Layout,
-  //   meta: {
-  //     icon: "flowbite:address-book-outline",
-  //     title: "menu.esg",
-  //     rank: 0
-  //   },
-  //   children: [
-  //     {
-  //       path: "/esg/index",
-  //       name: "esg",
-  //       component: () => import("@/views/esg/index.vue"),
-  //       meta: {
-  //         title: "menu.esg",
-  //         showParent: false,
-  //         icon: "flowbite:address-book-outline",
-  //         hidden: true
-  //       }
-  //     }
-  //   ]
-  // });
 }
 routes.push({
   path: "/esg",
-  name: "esg",
+  name: "EsgLayout",
   hidden: true,
   redirect: "/esg/index",
   component: Layout,
@@ -191,7 +166,7 @@ routes.push({
 
 routes.push({
   path: "/task",
-  name: "task",
+  name: "TaskLayout",
   redirect: "/task/index",
   component: Layout,
   meta: {
