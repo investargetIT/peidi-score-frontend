@@ -292,13 +292,15 @@
           <div
             v-for="(question, index) in getQuestions(selectedTask.qa)"
             :key="index"
-            class="question-card"
+            :class="['question-card', { answered: question.answered }]"
           >
             <div class="question-header">
               <div class="question-info">
                 <div class="question-number-row">
                   <span class="question-number">题目 {{ index + 1 }}</span>
-                  <span class="difficulty-badge">中等</span>
+                  <span class="difficulty-badge">{{
+                    getDifficultyText(question.difficulty)
+                  }}</span>
                   <svg
                     v-if="question.answered"
                     class="answered-icon"
@@ -318,7 +320,7 @@
               <div v-if="question.answered" class="answer-section">
                 <div class="answer-content">
                   <p class="answer-label">答案:</p>
-                  <div class="answer-text" v-html="question.answer"></div>
+                  <div class="answer-text" v-html="question.content"></div>
                 </div>
                 <div
                   v-if="question.attachments && question.attachments.length > 0"
@@ -328,18 +330,16 @@
                   <div class="attachments-list">
                     <div
                       v-for="attachment in question.attachments"
-                      :key="attachment.id"
+                      :key="attachment.uid || attachment.name"
                       class="attachment-item"
                     >
                       <span class="attachment-icon">📎</span>
-                      <a
-                        :href="attachment.url"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        @click="handleAttachmentClick(attachment)"
                         class="attachment-link"
                       >
                         {{ attachment.name }}
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -347,12 +347,14 @@
                   <div class="submission-item">
                     <p class="submission-label">提交时间:</p>
                     <p class="submission-value">
-                      {{ question.submittedAt || "2023年6月8日 14:30" }}
+                      {{ formatSubmissionTime(question.submittedAt) }}
                     </p>
                   </div>
                   <div class="submission-item">
                     <p class="submission-label">审核状态:</p>
-                    <span class="review-status pending">待审核</span>
+                    <span :class="['review-status', question.reviewStatus]">{{
+                      getReviewStatusText(question.reviewStatus)
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -415,13 +417,15 @@ const getQuestions = qaString => {
   try {
     const qaArray = JSON.parse(qaString);
     return qaArray.map((item, index) => ({
-      id: index + 1,
-      title: item.question || `题目 ${index + 1}`,
-      answered: item.answer && item.answer.trim() !== "",
-      answer: item.answer || "",
+      id: item.questionId,
+      title: item.questionTitle,
+      difficulty: item.difficulty,
+      key: item.questionKey,
+      answered: item.isAnswered,
+      content: item.content || "",
       attachments: item.attachments || [],
-      submittedAt: item.submittedAt || "2023年6月8日 14:30",
-      difficulty: "medium"
+      submittedAt: item.submittedAt,
+      reviewStatus: item.reviewStatus || "pending"
     }));
   } catch (error) {
     console.error("解析题目数据失败:", error);
@@ -488,6 +492,38 @@ const canApproveTask = task => {
   }
 };
 
+// 获取难度级别文本
+const getDifficultyText = difficulty => {
+  const difficultyMap = {
+    beginner: "初级",
+    intermediate: "中级",
+    advanced: "高级"
+  };
+  return difficultyMap[difficulty] || difficulty;
+};
+
+// 获取审核状态文本
+const getReviewStatusText = status => {
+  const statusMap = {
+    pending: "待审核",
+    approved: "已审核",
+    rejected: "已驳回"
+  };
+  return statusMap[status] || status;
+};
+
+// 格式化提交时间
+const formatSubmissionTime = submittedAt => {
+  if (!submittedAt) return "未提交";
+  return new Date(submittedAt).toLocaleString("zh-CN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+};
+
 // 处理任务审核
 const handleTaskApproval = () => {
   if (selectedTask.value) {
@@ -550,6 +586,28 @@ const getProgressText = remark => {
     return `${completedQuestions}/${totalQuestions}`;
   } catch (error) {
     return "0/0";
+  }
+};
+
+// 处理附件预览/下载
+const handleAttachmentClick = async attachment => {
+  if (attachment.response && attachment.response.data) {
+    try {
+      // 这里应该调用getFileDownLoadPath API
+      // const res = await getFileDownLoadPath({ objectName: attachment.response.data });
+      // if (res.code === 200) {
+      //   window.open(res.data, "_blank");
+      // }
+      console.log("预览附件:", attachment);
+      // 临时提示用户
+      alert(
+        `预览附件: ${attachment.name}\n文件路径: ${attachment.response.data}`
+      );
+    } catch (error) {
+      console.error("预览附件失败:", error);
+    }
+  } else {
+    alert("附件信息不完整，无法预览");
   }
 };
 
@@ -936,9 +994,13 @@ getQaListData();
 }
 
 .attachment-link {
+  padding: 0;
   font-size: 14px;
   color: #2563eb;
   text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .attachment-link:hover {
@@ -982,6 +1044,16 @@ getQaListData();
 .review-status.pending {
   color: #92400e;
   background: #fef3c7;
+}
+
+.review-status.approved {
+  color: #16a34a;
+  background: #d1fae5;
+}
+
+.review-status.rejected {
+  color: #991b1b;
+  background: #fef2f2;
 }
 
 .no-answer {
