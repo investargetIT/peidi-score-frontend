@@ -110,6 +110,29 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "/task",
+    name: "TaskLayout",
+    redirect: "/task/index",
+    component: Layout,
+    meta: {
+      icon: "flowbite:address-book-outline",
+      title: "menu.task",
+      rank: 0
+    },
+    children: [
+      {
+        path: "/task/index",
+        name: "task",
+        component: () => import("@/views/employeeTask/index.vue"),
+        meta: {
+          title: "menu.task",
+          showParent: false,
+          icon: "flowbite:address-book-outline"
+        }
+      }
+    ]
   }
 ];
 
@@ -163,30 +186,6 @@ if (isAdmin()) {
 //     }
 //   ]
 // });
-
-routes.push({
-  path: "/task",
-  name: "TaskLayout",
-  redirect: "/task/index",
-  component: Layout,
-  meta: {
-    icon: "flowbite:address-book-outline",
-    title: "menu.task",
-    rank: 0
-  },
-  children: [
-    {
-      path: "/task/index",
-      name: "task",
-      component: () => import("@/views/EmployeeTask/index.vue"),
-      meta: {
-        title: "menu.task",
-        showParent: false,
-        icon: "flowbite:address-book-outline"
-      }
-    }
-  ]
-});
 
 Object.keys(modules).forEach(key => {
   routes.push(modules[key].default);

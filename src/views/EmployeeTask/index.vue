@@ -1,385 +1,389 @@
 <template>
-  <div class="employee-task-container">
-    <!-- 页面头部 -->
-    <div class="task-header">
-      <h1 class="task-title">{{ `员工任务 - ${employeeName}` }}</h1>
-      <div class="task-meta">
-        <div class="meta-item">
-          <el-icon><Calendar /></el-icon>
-          <span>截止时间: {{ formatDate(dueDate) }}</span>
-        </div>
-        <div class="meta-item">
-          <el-tag :type="getStatusType(computedTaskStatus)" size="large">
-            {{ getStatusText(computedTaskStatus) }}
-          </el-tag>
-        </div>
-      </div>
-    </div>
-
-    <!-- 完成提示 -->
-    <el-alert
-      v-if="isAllQuestionsCompleted"
-      title="恭喜! 您已完成所有任务。"
-      type="success"
-      :closable="false"
-      show-icon
-      class="completion-alert"
-    />
-
-    <!-- 过期提示 -->
-    <el-alert
-      v-if="isTaskOverdue"
-      title="任务已过期"
-      description="任务已过期，无法编辑。"
-      type="warning"
-      :closable="false"
-      show-icon
-      class="overdue-alert"
-    />
-
-    <!-- 任务问题列表 -->
-    <div class="questions-container">
-      <!-- 难度级别统计卡片 -->
-      <div class="difficulty-stats-cards">
-        <div class="stats-card beginner-card">
-          <div class="stats-header">
-            <div class="stats-icon">
-              <el-icon size="24"><Trophy /></el-icon>
-            </div>
-            <div class="stats-info">
-              <h3 class="stats-title">初级题目</h3>
-              <div class="stats-meta">
-                <el-tag type="success" size="small">简单</el-tag>
-              </div>
-            </div>
+  <div>
+    <div class="employee-task-container">
+      <!-- 页面头部 -->
+      <div class="task-header">
+        <h1 class="task-title">{{ `员工任务 - ${employeeName}` }}</h1>
+        <div class="task-meta">
+          <div class="meta-item">
+            <el-icon><Calendar /></el-icon>
+            <span>截止时间: {{ formatDate(dueDate) }}</span>
           </div>
-          <div class="stats-content">
-            <div class="stats-number">
-              {{ beginnerStats.completed }}/{{ beginnerStats.total }}
-            </div>
-            <div class="stats-description">
-              已完成 {{ beginnerStats.completed }} 道，共
-              {{ beginnerStats.total }} 道
-            </div>
-          </div>
-          <div class="stats-progress">
-            <el-progress
-              :percentage="beginnerStats.percentage"
-              :stroke-width="6"
-              :show-text="false"
-              color="#67C23A"
-            />
-          </div>
-          <!-- 题目列表 -->
-          <div class="question-list">
-            <div
-              v-for="(question, index) in beginnerQuestions"
-              :key="question.id"
-              class="question-item"
-              :class="{ completed: isQuestionAnswered(question.id) }"
-            >
-              <div class="question-item-header">
-                <span class="question-index">{{ index + 1 }}</span>
-                <span class="question-title-short">{{ question.title }}</span>
-                <el-icon
-                  v-if="isQuestionAnswered(question.id)"
-                  class="completed-icon"
-                  color="#67C23A"
-                  size="16"
-                >
-                  <Check />
-                </el-icon>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="stats-card intermediate-card">
-          <div class="stats-header">
-            <div class="stats-icon">
-              <el-icon size="24"><Star /></el-icon>
-            </div>
-            <div class="stats-info">
-              <h3 class="stats-title">中级题目</h3>
-              <div class="stats-meta">
-                <el-tag type="warning" size="small">中等</el-tag>
-              </div>
-            </div>
-          </div>
-          <div class="stats-content">
-            <div class="stats-number">
-              {{ intermediateStats.completed }}/{{ intermediateStats.total }}
-            </div>
-            <div class="stats-description">
-              已完成 {{ intermediateStats.completed }} 道，共
-              {{ intermediateStats.total }} 道
-            </div>
-          </div>
-          <div class="stats-progress">
-            <el-progress
-              :percentage="intermediateStats.percentage"
-              :stroke-width="6"
-              :show-text="false"
-              color="#E6A23C"
-            />
-          </div>
-          <!-- 题目列表 -->
-          <div class="question-list">
-            <div
-              v-for="(question, index) in intermediateQuestions"
-              :key="question.id"
-              class="question-item"
-              :class="{ completed: isQuestionAnswered(question.id) }"
-            >
-              <div class="question-item-header">
-                <span class="question-index">{{ index + 1 }}</span>
-                <span class="question-title-short">{{ question.title }}</span>
-                <el-icon
-                  v-if="isQuestionAnswered(question.id)"
-                  class="completed-icon"
-                  color="#E6A23C"
-                  size="16"
-                >
-                  <Check />
-                </el-icon>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="stats-card advanced-card">
-          <div class="stats-header">
-            <div class="stats-icon">
-              <el-icon size="24"><Medal /></el-icon>
-            </div>
-            <div class="stats-info">
-              <h3 class="stats-title">高级题目</h3>
-              <div class="stats-meta">
-                <el-tag type="danger" size="small">困难</el-tag>
-              </div>
-            </div>
-          </div>
-          <div class="stats-content">
-            <div class="stats-number">
-              {{ advancedStats.completed }}/{{ advancedStats.total }}
-            </div>
-            <div class="stats-description">
-              已完成 {{ advancedStats.completed }} 道，共
-              {{ advancedStats.total }} 道
-            </div>
-          </div>
-          <div class="stats-progress">
-            <el-progress
-              :percentage="advancedStats.percentage"
-              :stroke-width="6"
-              :show-text="false"
-              color="#F56C6C"
-            />
-          </div>
-          <!-- 题目列表 -->
-          <div class="question-list">
-            <div
-              v-for="(question, index) in advancedQuestions"
-              :key="question.id"
-              class="question-item"
-              :class="{ completed: isQuestionAnswered(question.id) }"
-            >
-              <div class="question-item-header">
-                <span class="question-index">{{ index + 1 }}</span>
-                <span class="question-title-short">{{ question.title }}</span>
-                <el-icon
-                  v-if="isQuestionAnswered(question.id)"
-                  class="completed-icon"
-                  color="#F56C6C"
-                  size="16"
-                >
-                  <Check />
-                </el-icon>
-              </div>
-            </div>
+          <div class="meta-item">
+            <el-tag :type="getStatusType(computedTaskStatus)" size="large">
+              {{ getStatusText(computedTaskStatus) }}
+            </el-tag>
           </div>
         </div>
       </div>
 
-      <!-- 空状态展示 -->
-      <div v-if="shouldShowEmptyState" class="empty-state">
-        <div class="empty-content">
-          <el-icon class="empty-icon">
-            <Calendar v-if="shouldShowEmptyState" />
-            <Document v-else />
-          </el-icon>
-          <h3 class="empty-title">
-            {{
-              "此功能专供“萌新”使用，职场“大佬”们请绕行~ 您已毕业，无需回新手村啦！"
-            }}
-          </h3>
-        </div>
-      </div>
+      <!-- 完成提示 -->
+      <el-alert
+        v-if="isAllQuestionsCompleted"
+        title="恭喜! 您已完成所有任务。"
+        type="success"
+        :closable="false"
+        show-icon
+        class="completion-alert"
+      />
 
-      <!-- 问题卡片列表 -->
-      <div
-        v-else
-        v-for="(question, index) in questions"
-        :key="question.id"
-        class="question-card"
-      >
-        <el-card
-          :class="{
-            'answered-card': isQuestionAnswered(question.id),
-            'current-card': currentQuestionId === question.id
-          }"
-          shadow="hover"
-        >
-          <template #header>
-            <div class="question-header">
-              <div class="question-info">
-                <span class="question-number">{{ `题目${index + 1}` }}</span>
-                <el-tag
-                  :type="getDifficultyType(question.difficulty)"
-                  size="small"
-                  class="difficulty-tag"
-                >
-                  {{ getDifficultyText(question.difficulty) }}
-                </el-tag>
-                <el-tag
-                  v-if="getAnswerStatus(question.id)"
-                  :type="getAnswerStatusType(getAnswerStatus(question.id))"
-                  size="small"
-                  class="status-tag"
-                >
-                  {{ getAnswerStatusText(getAnswerStatus(question.id)) }}
-                </el-tag>
+      <!-- 过期提示 -->
+      <el-alert
+        v-if="isTaskOverdue"
+        title="任务已过期"
+        description="任务已过期，无法编辑。"
+        type="warning"
+        :closable="false"
+        show-icon
+        class="overdue-alert"
+      />
+
+      <!-- 任务问题列表 -->
+      <div class="questions-container">
+        <!-- 难度级别统计卡片 -->
+        <div class="difficulty-stats-cards">
+          <div class="stats-card beginner-card">
+            <div class="stats-header">
+              <div class="stats-icon">
+                <el-icon size="24"><Trophy /></el-icon>
               </div>
-              <el-icon
-                v-if="isQuestionAnswered(question.id)"
+              <div class="stats-info">
+                <h3 class="stats-title">初级题目</h3>
+                <div class="stats-meta">
+                  <el-tag type="success" size="small">简单</el-tag>
+                </div>
+              </div>
+            </div>
+            <div class="stats-content">
+              <div class="stats-number">
+                {{ beginnerStats.completed }}/{{ beginnerStats.total }}
+              </div>
+              <div class="stats-description">
+                已完成 {{ beginnerStats.completed }} 道，共
+                {{ beginnerStats.total }} 道
+              </div>
+            </div>
+            <div class="stats-progress">
+              <el-progress
+                :percentage="beginnerStats.percentage"
+                :stroke-width="6"
+                :show-text="false"
                 color="#67C23A"
-                size="20"
-                class="completed-icon"
-              >
-                <Check />
-              </el-icon>
+              />
             </div>
-            <p class="question-title">{{ question.title }}</p>
-          </template>
-
-          <!-- 问题内容 -->
-          <div class="question-content">
-            <!-- 答案区域 -->
-            <div class="answer-section">
-              <div class="answer-form">
-                <div class="answer-label">
-                  <label class="form-label">您的回答</label>
-                </div>
-
-                <!-- 答案输入框 -->
-                <div class="answer-input-container">
-                  <el-input
-                    v-model="tempAnswers[question.id]"
-                    type="textarea"
-                    :rows="6"
-                    placeholder="你的回答"
-                    resize="vertical"
-                    show-word-limit
-                    maxlength="2000"
-                    :disabled="isTaskOverdue"
-                    class="answer-textarea"
-                  />
-                </div>
-
-                <!-- 附件上传 -->
-                <div class="attachments-section">
-                  <div class="answer-label">
-                    <label class="form-label">附件</label>
-                  </div>
-                  <el-upload
-                    accept=".jpg,.png,.jpeg,.gif,.pdf"
-                    class="upload-demo"
-                    :action="uploadUrl"
-                    :on-preview="handlePreview"
-                    :on-success="
-                      (response, file) =>
-                        handleAttachmentSuccess(question.id, response, file)
-                    "
-                    :on-remove="
-                      file => handleAttachmentRemove(question.id, file)
-                    "
-                    :file-list="getAttachments(question.id)"
-                    multiple
-                    :show-file-list="true"
-                    drag
-                    :disabled="isTaskOverdue"
-                    :headers="{
-                      Authorization: formatToken(getToken().accessToken)
-                    }"
-                    :before-upload="beforeUpload"
+            <!-- 题目列表 -->
+            <div class="question-list">
+              <div
+                v-for="(question, index) in beginnerQuestions"
+                :key="question.id"
+                class="question-item"
+                :class="{ completed: isQuestionAnswered(question.id) }"
+              >
+                <div class="question-item-header">
+                  <span class="question-index">{{ index + 1 }}</span>
+                  <span class="question-title-short">{{ question.title }}</span>
+                  <el-icon
+                    v-if="isQuestionAnswered(question.id)"
+                    class="completed-icon"
+                    color="#67C23A"
+                    size="16"
                   >
-                    <div class="upload-dragger-content">
-                      <el-icon class="upload-icon">
-                        <Upload />
-                      </el-icon>
-                      <div class="upload-text">
-                        <p>拖拽文件到此处，或点击选择文件</p>
-                      </div>
-                      <el-button
-                        type="default"
-                        size="small"
-                        class="select-files-btn"
-                      >
-                        选择文件
-                      </el-button>
-                    </div>
-                  </el-upload>
-                </div>
-
-                <!-- 提交信息 -->
-                <div
-                  v-if="isQuestionAnswered(question.id)"
-                  class="submission-info-card"
-                >
-                  <div class="submission-inline-grid">
-                    <div class="submission-inline-item">
-                      <p class="submission-label">提交时间:</p>
-                      <p class="submission-value">
-                        {{ formatDateTime(getSubmissionTime(question.id)) }}
-                      </p>
-                    </div>
-                    <div class="submission-inline-item">
-                      <p class="submission-label">审核状态:</p>
-                      <el-tag
-                        :type="
-                          getAnswerStatusType(getAnswerStatus(question.id))
-                        "
-                        size="small"
-                        class="status-tag"
-                      >
-                        {{ getAnswerStatusText(getAnswerStatus(question.id)) }}
-                      </el-tag>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- 提交按钮 -->
-                <div class="submit-section">
-                  <el-button
-                    type="primary"
-                    @click="submitAnswer(question.id)"
-                    :loading="submittingAnswers[question.id]"
-                    :disabled="isTaskOverdue"
-                    class="save-answer-btn"
-                  >
-                    保存答案
-                  </el-button>
+                    <Check />
+                  </el-icon>
                 </div>
               </div>
             </div>
           </div>
-        </el-card>
+
+          <div class="stats-card intermediate-card">
+            <div class="stats-header">
+              <div class="stats-icon">
+                <el-icon size="24"><Star /></el-icon>
+              </div>
+              <div class="stats-info">
+                <h3 class="stats-title">中级题目</h3>
+                <div class="stats-meta">
+                  <el-tag type="warning" size="small">中等</el-tag>
+                </div>
+              </div>
+            </div>
+            <div class="stats-content">
+              <div class="stats-number">
+                {{ intermediateStats.completed }}/{{ intermediateStats.total }}
+              </div>
+              <div class="stats-description">
+                已完成 {{ intermediateStats.completed }} 道，共
+                {{ intermediateStats.total }} 道
+              </div>
+            </div>
+            <div class="stats-progress">
+              <el-progress
+                :percentage="intermediateStats.percentage"
+                :stroke-width="6"
+                :show-text="false"
+                color="#E6A23C"
+              />
+            </div>
+            <!-- 题目列表 -->
+            <div class="question-list">
+              <div
+                v-for="(question, index) in intermediateQuestions"
+                :key="question.id"
+                class="question-item"
+                :class="{ completed: isQuestionAnswered(question.id) }"
+              >
+                <div class="question-item-header">
+                  <span class="question-index">{{ index + 1 }}</span>
+                  <span class="question-title-short">{{ question.title }}</span>
+                  <el-icon
+                    v-if="isQuestionAnswered(question.id)"
+                    class="completed-icon"
+                    color="#E6A23C"
+                    size="16"
+                  >
+                    <Check />
+                  </el-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-card advanced-card">
+            <div class="stats-header">
+              <div class="stats-icon">
+                <el-icon size="24"><Medal /></el-icon>
+              </div>
+              <div class="stats-info">
+                <h3 class="stats-title">高级题目</h3>
+                <div class="stats-meta">
+                  <el-tag type="danger" size="small">困难</el-tag>
+                </div>
+              </div>
+            </div>
+            <div class="stats-content">
+              <div class="stats-number">
+                {{ advancedStats.completed }}/{{ advancedStats.total }}
+              </div>
+              <div class="stats-description">
+                已完成 {{ advancedStats.completed }} 道，共
+                {{ advancedStats.total }} 道
+              </div>
+            </div>
+            <div class="stats-progress">
+              <el-progress
+                :percentage="advancedStats.percentage"
+                :stroke-width="6"
+                :show-text="false"
+                color="#F56C6C"
+              />
+            </div>
+            <!-- 题目列表 -->
+            <div class="question-list">
+              <div
+                v-for="(question, index) in advancedQuestions"
+                :key="question.id"
+                class="question-item"
+                :class="{ completed: isQuestionAnswered(question.id) }"
+              >
+                <div class="question-item-header">
+                  <span class="question-index">{{ index + 1 }}</span>
+                  <span class="question-title-short">{{ question.title }}</span>
+                  <el-icon
+                    v-if="isQuestionAnswered(question.id)"
+                    class="completed-icon"
+                    color="#F56C6C"
+                    size="16"
+                  >
+                    <Check />
+                  </el-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 空状态展示 -->
+        <div v-if="shouldShowEmptyState" class="empty-state">
+          <div class="empty-content">
+            <el-icon class="empty-icon">
+              <Calendar v-if="shouldShowEmptyState" />
+              <Document v-else />
+            </el-icon>
+            <h3 class="empty-title">
+              {{
+                "此功能专供“萌新”使用，职场“大佬”们请绕行~ 您已毕业，无需回新手村啦！"
+              }}
+            </h3>
+          </div>
+        </div>
+
+        <!-- 问题卡片列表 -->
+        <div
+          v-else
+          v-for="(question, index) in questions"
+          :key="question.id"
+          class="question-card"
+        >
+          <el-card
+            :class="{
+              'answered-card': isQuestionAnswered(question.id),
+              'current-card': currentQuestionId === question.id
+            }"
+            shadow="hover"
+          >
+            <template #header>
+              <div class="question-header">
+                <div class="question-info">
+                  <span class="question-number">{{ `题目${index + 1}` }}</span>
+                  <el-tag
+                    :type="getDifficultyType(question.difficulty)"
+                    size="small"
+                    class="difficulty-tag"
+                  >
+                    {{ getDifficultyText(question.difficulty) }}
+                  </el-tag>
+                  <el-tag
+                    v-if="getAnswerStatus(question.id)"
+                    :type="getAnswerStatusType(getAnswerStatus(question.id))"
+                    size="small"
+                    class="status-tag"
+                  >
+                    {{ getAnswerStatusText(getAnswerStatus(question.id)) }}
+                  </el-tag>
+                </div>
+                <el-icon
+                  v-if="isQuestionAnswered(question.id)"
+                  color="#67C23A"
+                  size="20"
+                  class="completed-icon"
+                >
+                  <Check />
+                </el-icon>
+              </div>
+              <p class="question-title">{{ question.title }}</p>
+            </template>
+
+            <!-- 问题内容 -->
+            <div class="question-content">
+              <!-- 答案区域 -->
+              <div class="answer-section">
+                <div class="answer-form">
+                  <div class="answer-label">
+                    <label class="form-label">您的回答</label>
+                  </div>
+
+                  <!-- 答案输入框 -->
+                  <div class="answer-input-container">
+                    <el-input
+                      v-model="tempAnswers[question.id]"
+                      type="textarea"
+                      :rows="6"
+                      placeholder="你的回答"
+                      resize="vertical"
+                      show-word-limit
+                      maxlength="2000"
+                      :disabled="isTaskOverdue"
+                      class="answer-textarea"
+                    />
+                  </div>
+
+                  <!-- 附件上传 -->
+                  <div class="attachments-section">
+                    <div class="answer-label">
+                      <label class="form-label">附件</label>
+                    </div>
+                    <el-upload
+                      accept=".jpg,.png,.jpeg,.gif,.pdf"
+                      class="upload-demo"
+                      :action="uploadUrl"
+                      :on-preview="handlePreview"
+                      :on-success="
+                        (response, file) =>
+                          handleAttachmentSuccess(question.id, response, file)
+                      "
+                      :on-remove="
+                        file => handleAttachmentRemove(question.id, file)
+                      "
+                      :file-list="getAttachments(question.id)"
+                      multiple
+                      :show-file-list="true"
+                      drag
+                      :disabled="isTaskOverdue"
+                      :headers="{
+                        Authorization: formatToken(getToken().accessToken)
+                      }"
+                      :before-upload="beforeUpload"
+                    >
+                      <div class="upload-dragger-content">
+                        <el-icon class="upload-icon">
+                          <Upload />
+                        </el-icon>
+                        <div class="upload-text">
+                          <p>拖拽文件到此处，或点击选择文件</p>
+                        </div>
+                        <el-button
+                          type="default"
+                          size="small"
+                          class="select-files-btn"
+                        >
+                          选择文件
+                        </el-button>
+                      </div>
+                    </el-upload>
+                  </div>
+
+                  <!-- 提交信息 -->
+                  <div
+                    v-if="isQuestionAnswered(question.id)"
+                    class="submission-info-card"
+                  >
+                    <div class="submission-inline-grid">
+                      <div class="submission-inline-item">
+                        <p class="submission-label">提交时间:</p>
+                        <p class="submission-value">
+                          {{ formatDateTime(getSubmissionTime(question.id)) }}
+                        </p>
+                      </div>
+                      <div class="submission-inline-item">
+                        <p class="submission-label">审核状态:</p>
+                        <el-tag
+                          :type="
+                            getAnswerStatusType(getAnswerStatus(question.id))
+                          "
+                          size="small"
+                          class="status-tag"
+                        >
+                          {{
+                            getAnswerStatusText(getAnswerStatus(question.id))
+                          }}
+                        </el-tag>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 提交按钮 -->
+                  <div class="submit-section">
+                    <el-button
+                      type="primary"
+                      @click="submitAnswer(question.id)"
+                      :loading="submittingAnswers[question.id]"
+                      :disabled="isTaskOverdue"
+                      class="save-answer-btn"
+                    >
+                      保存答案
+                    </el-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </el-card>
+        </div>
       </div>
     </div>
+    <el-dialog v-model="dialogVisible">
+      <img w-full :src="dialogImageUrl" alt="Preview Image" />
+    </el-dialog>
   </div>
-  <el-dialog v-model="dialogVisible">
-    <img w-full :src="dialogImageUrl" alt="Preview Image" />
-  </el-dialog>
 </template>
 
 <script setup>
