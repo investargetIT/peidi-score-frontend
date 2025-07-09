@@ -1,6 +1,6 @@
 <template>
   <el-card class="exchange-history-card">
-    <div class="exchange-title">兑换历史</div>
+    <div class="exchange-title">员工任务</div>
     <el-table
       :data="exchangeList"
       class="exchange-table no-border-table"
@@ -15,11 +15,11 @@
             text-align: center;
           "
         >
-          请先选择一名员工以查看其兑换历史
+          暂无数据
         </div>
       </template>
-      <el-table-column prop="date" label="兑换日期" width="180" />
-      <el-table-column label="物品名称" min-width="220">
+      <el-table-column prop="date" label="员工" />
+      <el-table-column label="截止时间">
         <template #default="scope">
           <div class="item-cell">
             <el-avatar
@@ -31,8 +31,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="points" label="积分花费" width="120" />
-      <el-table-column prop="status" label="状态" width="120">
+      <el-table-column prop="status" label="状态">
         <template #default="scope">
           <el-tag
             v-if="scope.row.status === '已完成'"
@@ -41,6 +40,18 @@
             >已完成</el-tag
           >
           <el-tag v-else type="info" effect="dark">已发货</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="status" label="操作">
+        <template #default="scope">
+          <el-space>
+            <el-button type="primary" @click="handleView(scope.row)"
+              >查看</el-button
+            >
+            <el-button type="primary" @click="handleView(scope.row)"
+              >审核通过</el-button
+            >
+          </el-space>
         </template>
       </el-table-column>
     </el-table>
