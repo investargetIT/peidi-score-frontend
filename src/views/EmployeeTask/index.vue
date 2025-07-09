@@ -52,7 +52,9 @@
             <Document v-else />
           </el-icon>
           <h3 class="empty-title">
-            {{ "当前没有可回答的题目" }}
+            {{
+              "此功能专供“萌新”使用，职场“大佬”们请绕行~ 您已毕业，无需回新手村啦！"
+            }}
           </h3>
         </div>
       </div>
@@ -487,7 +489,9 @@ const dueDate = computed(() => {
   }
 
   // 计算截止日期 = validDate + validPeriod天
-  const calculatedDueDate = new Date(baseDate);
+  // const calculatedDueDate = new Date(baseDate);
+  // 将hired_date时间戳转换为Date对象
+  const calculatedDueDate = new Date(hired_date);
   calculatedDueDate.setDate(baseDate.getDate() + periodDays);
 
   return calculatedDueDate;
