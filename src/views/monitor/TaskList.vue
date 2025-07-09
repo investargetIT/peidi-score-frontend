@@ -128,6 +128,21 @@
           </el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="进度">
+        <template #default="scope">
+          <div class="progress-container">
+            <el-progress
+              :percentage="getProgressPercentage(scope.row.remark)"
+              :status="getProgressStatus(scope.row.remark)"
+              :stroke-width="8"
+              :show-text="false"
+            />
+            <div class="progress-text">
+              {{ getProgressText(scope.row.remark) }}
+            </div>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
           <button
@@ -233,6 +248,49 @@ const handleView = row => {
 const handleApprove = row => {
   console.log("审核通过", row);
   // TODO: 实现审核通过功能
+};
+
+// 获取进度百分比
+const getProgressPercentage = remark => {
+  try {
+    const remarkData = JSON.parse(remark);
+    const { totalQuestions = 0, completedQuestions = 0 } = remarkData;
+
+    if (totalQuestions === 0) return 0;
+    return Math.round((completedQuestions / totalQuestions) * 100);
+  } catch (error) {
+    return 0;
+  }
+};
+
+// 获取进度状态
+const getProgressStatus = remark => {
+  try {
+    const remarkData = JSON.parse(remark);
+    const { totalQuestions = 0, completedQuestions = 0 } = remarkData;
+
+    if (completedQuestions === 0) {
+      return ""; // 待开始 - 默认灰色
+    } else if (completedQuestions < totalQuestions) {
+      return ""; // 进行中 - 默认蓝色
+    } else if (completedQuestions === totalQuestions) {
+      return "success"; // 已完成 - 绿色
+    }
+    return "";
+  } catch (error) {
+    return "";
+  }
+};
+
+// 获取进度文本
+const getProgressText = remark => {
+  try {
+    const remarkData = JSON.parse(remark);
+    const { totalQuestions = 0, completedQuestions = 0 } = remarkData;
+    return `${completedQuestions}/${totalQuestions}`;
+  } catch (error) {
+    return "0/0";
+  }
 };
 
 getQaListData();
@@ -358,5 +416,25 @@ getQaListData();
 
 .ml-1 {
   margin-left: 0.25rem;
+}
+
+/* 进度条样式 */
+.progress-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  max-width: 250px;
+}
+
+.progress-container :deep(.el-progress) {
+  flex: 1;
+}
+
+.progress-text {
+  min-width: 30px;
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
 }
 </style>
