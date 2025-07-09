@@ -32,30 +32,124 @@
       </el-table-column>
       <el-table-column label="截止时间">
         <template #default="scope">
-          <span>{{ getDueDate(scope.row.remark) }}</span>
+          <div class="flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-gray-500"
+            >
+              <path d="M8 2v4"></path>
+              <path d="M16 2v4"></path>
+              <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+              <path d="M3 10h18"></path>
+            </svg>
+            <span>{{ getDueDate(scope.row.remark) }}</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="状态">
         <template #default="scope">
-          <el-tag :type="getStatusType(scope.row.remark)" effect="dark">
+          <!-- 已完成状态使用自定义样式 -->
+          <div
+            v-if="getStatusText(scope.row.remark) === '已完成'"
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-blue-100 text-blue-800"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="ml-1">已完成</span>
+          </div>
+          <!-- 进行中状态使用自定义样式 -->
+          <div
+            v-else-if="getStatusText(scope.row.remark) === '进行中'"
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-yellow-100 text-yellow-800"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="ml-1">进行中</span>
+          </div>
+          <!-- 待开始状态使用自定义样式 -->
+          <div
+            v-else-if="getStatusText(scope.row.remark) === '待开始'"
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-gray-100 text-gray-800"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="ml-1">待开始</span>
+          </div>
+          <!-- 其他状态使用原有的 el-tag -->
+          <el-tag v-else :type="getStatusType(scope.row.remark)" effect="dark">
             {{ getStatusText(scope.row.remark) }}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-space>
-            <el-button type="primary" @click="handleView(scope.row)">
-              查看
-            </el-button>
-            <el-button
-              type="success"
-              @click="handleApprove(scope.row)"
-              :disabled="getStatusText(scope.row.remark) !== '已完成'"
+          <button
+            @click="handleShowDetails(scope.row)"
+            class="inline-flex items-center justify-center text-gray-600 hover:text-blue-600 transition-colors p-1 bg-transparent border-none outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="w-4 h-4"
             >
-              审核通过
-            </el-button>
-          </el-space>
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,6 +161,11 @@ import { getQaList } from "@/api/task";
 import { ref } from "vue";
 
 const exchangeList = ref([]);
+
+const handleShowDetails = row => {
+  console.log("查看", row);
+  console.log(row);
+};
 
 const getQaListData = () => {
   getQaList().then(res => {
@@ -176,5 +275,88 @@ getQaListData();
 
 .no-border-table ::v-deep tr {
   background: #fff;
+}
+
+/* 自定义状态样式 */
+.inline-flex {
+  display: inline-flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.px-2\.5 {
+  padding-right: 0.625rem;
+  padding-left: 0.625rem;
+}
+
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.transition-colors {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+}
+
+.border-transparent {
+  border-color: transparent;
+}
+
+.bg-blue-100 {
+  background-color: rgb(219 234 254);
+}
+
+.text-blue-800 {
+  color: rgb(30 64 175);
+}
+
+.bg-yellow-100 {
+  background-color: rgb(254 249 195);
+}
+
+.text-yellow-800 {
+  color: rgb(133 77 14);
+}
+
+.bg-gray-100 {
+  background-color: rgb(243 244 246);
+}
+
+.text-gray-800 {
+  color: rgb(31 41 55);
+}
+
+.h-4 {
+  height: 1rem;
+}
+
+.w-4 {
+  width: 1rem;
+}
+
+.ml-1 {
+  margin-left: 0.25rem;
 }
 </style>
