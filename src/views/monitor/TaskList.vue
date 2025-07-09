@@ -56,10 +56,32 @@
       </el-table-column>
       <el-table-column label="状态">
         <template #default="scope">
-          <!-- 已完成状态使用自定义样式 -->
+          <!-- 已审核状态 -->
           <div
-            v-if="getStatusText(scope.row.remark) === '已完成'"
-            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-blue-100 text-blue-800"
+            v-if="scope.row.hasReview"
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-green-100 text-green-800"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span class="ml-1">已审核</span>
+          </div>
+          <!-- 待审核状态 -->
+          <div
+            v-else
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-orange-100 text-orange-800"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -76,56 +98,8 @@
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
-            <span class="ml-1">已完成</span>
+            <span class="ml-1">待审核</span>
           </div>
-          <!-- 进行中状态使用自定义样式 -->
-          <div
-            v-else-if="getStatusText(scope.row.remark) === '进行中'"
-            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-yellow-100 text-yellow-800"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="h-4 w-4"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            <span class="ml-1">进行中</span>
-          </div>
-          <!-- 待开始状态使用自定义样式 -->
-          <div
-            v-else-if="getStatusText(scope.row.remark) === '待开始'"
-            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-gray-100 text-gray-800"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="h-4 w-4"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            <span class="ml-1">待开始</span>
-          </div>
-          <!-- 其他状态使用原有的 el-tag -->
-          <el-tag v-else :type="getStatusType(scope.row.remark)" effect="dark">
-            {{ getStatusText(scope.row.remark) }}
-          </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="进度">
@@ -168,7 +142,7 @@
               查看详情
             </button>
             <button
-              v-if="!scope.row.hasReview"
+              v-if="canApproveTask(scope.row)"
               @click="handleApprove(scope.row)"
               class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-green-600 hover:bg-green-700"
             >
@@ -376,7 +350,7 @@
       <!-- 整体审核按钮 -->
       <div
         class="flex justify-center pt-4 border-t"
-        v-if="!selectedTask.hasReview"
+        v-if="canApproveTask(selectedTask)"
       >
         <button
           @click="handleTaskApproval"
@@ -532,16 +506,6 @@ const getDifficultyType = difficulty => {
     advanced: "danger"
   };
   return difficultyMap[difficulty] || "info";
-};
-
-// 获取审核状态文本
-const getReviewStatusText = status => {
-  const statusMap = {
-    pending: "待审核",
-    approved: "已审核",
-    rejected: "已驳回"
-  };
-  return statusMap[status] || status;
 };
 
 // 格式化提交时间
@@ -833,6 +797,22 @@ getQaListData();
 
 .text-gray-800 {
   color: #1f2937;
+}
+
+.bg-green-100 {
+  background-color: #dcfce7;
+}
+
+.text-green-800 {
+  color: #166534;
+}
+
+.bg-orange-100 {
+  background-color: #fed7aa;
+}
+
+.text-orange-800 {
+  color: #9a3412;
 }
 
 .h-4 {
