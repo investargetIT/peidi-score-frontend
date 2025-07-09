@@ -605,9 +605,44 @@ const handleView = row => {
 };
 
 // 审核通过操作
-const handleApprove = row => {
-  console.log("审核通过", row);
-  // TODO: 实现审核通过功能
+const handleApprove = async row => {
+  if (!row) return;
+
+  try {
+    // 解析当前任务的qa数据
+    const qaData = JSON.parse(row.qa || "[]");
+
+    // 更新所有问题的审核状态为"approved"
+    const updatedQaData = qaData.map(question => ({
+      ...question,
+      reviewStatus: "approved",
+      reviewedAt: new Date().toISOString()
+    }));
+
+    // 解析remark数据
+    const remarkData = JSON.parse(row.remark || "{}");
+
+    // 准备保存的数据
+    const saveData = {
+      userId: row.userId,
+      qa: JSON.stringify(updatedQaData),
+      remark: JSON.stringify({
+        ...remarkData,
+        reviewDate: new Date().toISOString()
+      }),
+      hasReview: true,
+      id: row.id
+    };
+
+    // 调用API更新数据
+    await updateQaConfig(saveData);
+
+    ElMessage.success("审核通过成功");
+    getQaListData();
+  } catch (error) {
+    console.error("审核失败:", error);
+    ElMessage.error("审核失败，请重试");
+  }
 };
 
 // 获取进度百分比
