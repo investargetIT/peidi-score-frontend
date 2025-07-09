@@ -475,7 +475,6 @@ const completedQuestions = computed(() => {
 // 计算截止日期：validDate + validPeriod
 const dueDate = computed(() => {
   if (!validDate.value || !validPeriod.value) {
-    console.log("Missing validDate or validPeriod, using current date");
     return new Date(); // 如果没有有效数据，返回当前日期
   }
 
@@ -491,14 +490,6 @@ const dueDate = computed(() => {
   const calculatedDueDate = new Date(baseDate);
   calculatedDueDate.setDate(baseDate.getDate() + periodDays);
 
-  console.log("Calculated dueDate:", {
-    validDate: validDate.value,
-    validPeriod: validPeriod.value,
-    baseDate: baseDate,
-    periodDays: periodDays,
-    calculatedDueDate: calculatedDueDate
-  });
-
   return calculatedDueDate;
 });
 
@@ -509,7 +500,7 @@ const computedTaskStatus = computed(() => {
 
   // 如果当前时间超过截止日期，且任务还未完成，则标记为过期
   if (now > due && taskStatus.value === "in_progress") {
-    return "overdue";
+    return "已过期";
   }
 
   return taskStatus.value;
@@ -543,7 +534,7 @@ const formatDate = date => {
 
 // 检查是否过期
 const isTaskOverdue = computed(() => {
-  return computedTaskStatus.value === "overdue";
+  return computedTaskStatus.value === "已过期";
 });
 
 const formatDateTime = date => {
@@ -630,14 +621,6 @@ const isQuestionAnswered = questionId => {
 
 const getAnswerStatus = questionId => {
   return answers.value[questionId]?.reviewStatus || null;
-};
-
-const getAnswerContent = questionId => {
-  return answers.value[questionId]?.content || "";
-};
-
-const getSubmittedAttachments = questionId => {
-  return answers.value[questionId]?.attachments || [];
 };
 
 const getSubmissionTime = questionId => {
@@ -976,23 +959,36 @@ const submitAnswer = async questionId => {
 .question-info {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
 }
 
 .question-number {
+  display: inline-flex;
+  align-items: center;
   padding: 4px 8px;
-  margin-right: 8px;
   font-family: Monaco, Menlo, "Ubuntu Mono", monospace;
   font-size: 14px;
   font-weight: 600;
+  line-height: 1;
   color: #374151;
   background: #f3f4f6;
   border-radius: 4px;
 }
 
 .difficulty-tag {
+  display: inline-flex;
+  align-items: center;
   margin-left: 0;
+  line-height: 1;
+}
+
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-left: 0;
+  line-height: 1;
 }
 
 .completed-icon {
@@ -1235,11 +1231,6 @@ const submitAnswer = async questionId => {
   margin: 0;
   font-size: 14px;
   color: #374151;
-}
-
-.status-tag {
-  align-self: flex-start;
-  margin-left: 0;
 }
 
 /* 已提交答案操作栏 */
