@@ -373,24 +373,27 @@
       </div>
 
       <!-- 整体审核按钮 -->
-      <div v-if="canApproveTask(selectedTask)" class="approve-section">
-        <el-button
-          type="success"
-          size="large"
+      <div class="flex justify-center pt-4 border-t">
+        <button
           @click="handleTaskApproval"
-          class="approve-button"
+          class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground h-11 rounded-md px-8 bg-green-600 hover:bg-green-700"
         >
           <svg
-            class="approve-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-check h-5 w-5 mr-2"
           >
-            <polyline points="20 6 9 17 4 12"></polyline>
+            <path d="M20 6 9 17l-5-5"></path>
           </svg>
-          审核通过任务
-        </el-button>
+          审核通过
+        </button>
       </div>
     </div>
   </el-dialog>
@@ -1176,22 +1179,92 @@ getQaListData();
   color: #6b7280;
 }
 
-.approve-section {
+/* 审核按钮样式 */
+.flex {
   display: flex;
+}
+
+.justify-center {
   justify-content: center;
-  padding-top: 24px;
+}
+
+.pt-4 {
+  padding-top: 1rem;
+}
+
+.border-t {
   border-top: 1px solid #e5e7eb;
 }
 
-.approve-button {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
+.gap-2 {
+  gap: 0.5rem;
 }
 
-.approve-icon {
-  width: 20px;
-  height: 20px;
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.h-11 {
+  height: 2.75rem;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.px-8 {
+  padding-right: 2rem;
+  padding-left: 2rem;
+}
+
+.bg-green-600 {
+  background-color: #059669;
+}
+
+.hover\:bg-green-700:hover {
+  background-color: #047857;
+}
+
+.text-primary-foreground {
+  color: #fff;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+.w-5 {
+  width: 1.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.focus-visible\:outline-hidden:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-visible\:ring-2:focus-visible {
+  box-shadow: 0 0 0 2px rgb(59 130 246 / 50%);
+}
+
+.disabled\:pointer-events-none:disabled {
+  pointer-events: none;
+}
+
+.disabled\:opacity-50:disabled {
+  opacity: 0.5;
 }
 
 /* 图片预览弹窗样式 */
