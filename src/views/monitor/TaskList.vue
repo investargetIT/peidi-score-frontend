@@ -306,9 +306,13 @@
               <div class="question-info">
                 <div class="question-number-row">
                   <span class="question-number">题目 {{ index + 1 }}</span>
-                  <span class="difficulty-badge">{{
-                    getDifficultyText(question.difficulty)
-                  }}</span>
+                  <el-tag
+                    :type="getDifficultyType(question.difficulty)"
+                    size="small"
+                    class="difficulty-tag"
+                  >
+                    {{ getDifficultyText(question.difficulty) }}
+                  </el-tag>
                   <svg
                     v-if="question.answered"
                     class="answered-icon"
@@ -502,6 +506,16 @@ const getDifficultyText = difficulty => {
     advanced: "高级"
   };
   return difficultyMap[difficulty] || difficulty;
+};
+
+// 获取难度标签类型
+const getDifficultyType = difficulty => {
+  const difficultyMap = {
+    beginner: "success",
+    intermediate: "warning",
+    advanced: "danger"
+  };
+  return difficultyMap[difficulty] || "info";
 };
 
 // 获取审核状态文本
@@ -989,14 +1003,8 @@ getQaListData();
   color: #374151;
 }
 
-.difficulty-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 6px;
-  font-size: 10px;
+.difficulty-tag {
   font-weight: 500;
-  color: #92400e;
-  background: #fbbf24;
   border-radius: 4px;
 }
 
