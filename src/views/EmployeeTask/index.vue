@@ -52,7 +52,7 @@
             <Document v-else />
           </el-icon>
           <h3 class="empty-title">
-            {{ "No Questions Available" }}
+            {{ "当前没有可回答的题目" }}
           </h3>
         </div>
       </div>
@@ -550,7 +550,7 @@ const isTaskOverdue = computed(() => {
 
 const formatDateTime = date => {
   if (!date) return "";
-  return new Date(date).toLocaleString("en-US", {
+  return new Date(date).toLocaleString("zh-CN", {
     year: "numeric",
     month: "short",
     day: "numeric",
