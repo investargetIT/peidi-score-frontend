@@ -168,6 +168,7 @@
               查看详情
             </button>
             <button
+              v-if="!scope.row.hasReview"
               @click="handleApprove(scope.row)"
               class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-green-600 hover:bg-green-700"
             >
@@ -373,7 +374,10 @@
       </div>
 
       <!-- 整体审核按钮 -->
-      <div class="flex justify-center pt-4 border-t">
+      <div
+        class="flex justify-center pt-4 border-t"
+        v-if="!selectedTask.hasReview"
+      >
         <button
           @click="handleTaskApproval"
           class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground h-11 rounded-md px-8 bg-green-600 hover:bg-green-700"
