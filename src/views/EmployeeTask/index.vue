@@ -44,6 +44,168 @@
 
     <!-- 任务问题列表 -->
     <div class="questions-container">
+      <!-- 难度级别统计卡片 -->
+      <div class="difficulty-stats-cards">
+        <div class="stats-card beginner-card">
+          <div class="stats-header">
+            <div class="stats-icon">
+              <el-icon size="24"><Trophy /></el-icon>
+            </div>
+            <div class="stats-info">
+              <h3 class="stats-title">初级题目</h3>
+              <div class="stats-meta">
+                <el-tag type="success" size="small">简单</el-tag>
+              </div>
+            </div>
+          </div>
+          <div class="stats-content">
+            <div class="stats-number">
+              {{ beginnerStats.completed }}/{{ beginnerStats.total }}
+            </div>
+            <div class="stats-description">
+              已完成 {{ beginnerStats.completed }} 道，共
+              {{ beginnerStats.total }} 道
+            </div>
+          </div>
+          <div class="stats-progress">
+            <el-progress
+              :percentage="beginnerStats.percentage"
+              :stroke-width="6"
+              :show-text="false"
+              color="#67C23A"
+            />
+          </div>
+          <!-- 题目列表 -->
+          <div class="question-list">
+            <div
+              v-for="(question, index) in beginnerQuestions"
+              :key="question.id"
+              class="question-item"
+              :class="{ completed: isQuestionAnswered(question.id) }"
+            >
+              <div class="question-item-header">
+                <span class="question-index">{{ index + 1 }}</span>
+                <span class="question-title-short">{{ question.title }}</span>
+                <el-icon
+                  v-if="isQuestionAnswered(question.id)"
+                  class="completed-icon"
+                  color="#67C23A"
+                  size="16"
+                >
+                  <Check />
+                </el-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-card intermediate-card">
+          <div class="stats-header">
+            <div class="stats-icon">
+              <el-icon size="24"><Star /></el-icon>
+            </div>
+            <div class="stats-info">
+              <h3 class="stats-title">中级题目</h3>
+              <div class="stats-meta">
+                <el-tag type="warning" size="small">中等</el-tag>
+              </div>
+            </div>
+          </div>
+          <div class="stats-content">
+            <div class="stats-number">
+              {{ intermediateStats.completed }}/{{ intermediateStats.total }}
+            </div>
+            <div class="stats-description">
+              已完成 {{ intermediateStats.completed }} 道，共
+              {{ intermediateStats.total }} 道
+            </div>
+          </div>
+          <div class="stats-progress">
+            <el-progress
+              :percentage="intermediateStats.percentage"
+              :stroke-width="6"
+              :show-text="false"
+              color="#E6A23C"
+            />
+          </div>
+          <!-- 题目列表 -->
+          <div class="question-list">
+            <div
+              v-for="(question, index) in intermediateQuestions"
+              :key="question.id"
+              class="question-item"
+              :class="{ completed: isQuestionAnswered(question.id) }"
+            >
+              <div class="question-item-header">
+                <span class="question-index">{{ index + 1 }}</span>
+                <span class="question-title-short">{{ question.title }}</span>
+                <el-icon
+                  v-if="isQuestionAnswered(question.id)"
+                  class="completed-icon"
+                  color="#E6A23C"
+                  size="16"
+                >
+                  <Check />
+                </el-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-card advanced-card">
+          <div class="stats-header">
+            <div class="stats-icon">
+              <el-icon size="24"><Medal /></el-icon>
+            </div>
+            <div class="stats-info">
+              <h3 class="stats-title">高级题目</h3>
+              <div class="stats-meta">
+                <el-tag type="danger" size="small">困难</el-tag>
+              </div>
+            </div>
+          </div>
+          <div class="stats-content">
+            <div class="stats-number">
+              {{ advancedStats.completed }}/{{ advancedStats.total }}
+            </div>
+            <div class="stats-description">
+              已完成 {{ advancedStats.completed }} 道，共
+              {{ advancedStats.total }} 道
+            </div>
+          </div>
+          <div class="stats-progress">
+            <el-progress
+              :percentage="advancedStats.percentage"
+              :stroke-width="6"
+              :show-text="false"
+              color="#F56C6C"
+            />
+          </div>
+          <!-- 题目列表 -->
+          <div class="question-list">
+            <div
+              v-for="(question, index) in advancedQuestions"
+              :key="question.id"
+              class="question-item"
+              :class="{ completed: isQuestionAnswered(question.id) }"
+            >
+              <div class="question-item-header">
+                <span class="question-index">{{ index + 1 }}</span>
+                <span class="question-title-short">{{ question.title }}</span>
+                <el-icon
+                  v-if="isQuestionAnswered(question.id)"
+                  class="completed-icon"
+                  color="#F56C6C"
+                  size="16"
+                >
+                  <Check />
+                </el-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 空状态展示 -->
       <div v-if="shouldShowEmptyState" class="empty-state">
         <div class="empty-content">
@@ -233,7 +395,10 @@ import {
   Check,
   Upload,
   Paperclip,
-  Document
+  Document,
+  Trophy,
+  Star,
+  Medal
 } from "@element-plus/icons-vue";
 import { storageLocal } from "@pureadmin/utils";
 import { useI18n } from "vue-i18n";
@@ -474,6 +639,66 @@ const completedQuestions = computed(() => {
     // 有内容或有附件都算完成
     return hasContent || hasAttachments;
   }).length;
+});
+
+// 难度级别统计
+const beginnerStats = computed(() => {
+  const beginnerQuestions = questions.value.filter(
+    q => q.difficulty === "beginner"
+  );
+  const completedBeginner = beginnerQuestions.filter(q =>
+    isQuestionAnswered(q.id)
+  ).length;
+  const total = beginnerQuestions.length;
+  return {
+    total,
+    completed: completedBeginner,
+    percentage: total > 0 ? Math.round((completedBeginner / total) * 100) : 0
+  };
+});
+
+const intermediateStats = computed(() => {
+  const intermediateQuestions = questions.value.filter(
+    q => q.difficulty === "intermediate"
+  );
+  const completedIntermediate = intermediateQuestions.filter(q =>
+    isQuestionAnswered(q.id)
+  ).length;
+  const total = intermediateQuestions.length;
+  return {
+    total,
+    completed: completedIntermediate,
+    percentage:
+      total > 0 ? Math.round((completedIntermediate / total) * 100) : 0
+  };
+});
+
+const advancedStats = computed(() => {
+  const advancedQuestions = questions.value.filter(
+    q => q.difficulty === "advanced"
+  );
+  const completedAdvanced = advancedQuestions.filter(q =>
+    isQuestionAnswered(q.id)
+  ).length;
+  const total = advancedQuestions.length;
+  return {
+    total,
+    completed: completedAdvanced,
+    percentage: total > 0 ? Math.round((completedAdvanced / total) * 100) : 0
+  };
+});
+
+// 按难度级别分组的题目列表
+const beginnerQuestions = computed(() => {
+  return questions.value.filter(q => q.difficulty === "beginner");
+});
+
+const intermediateQuestions = computed(() => {
+  return questions.value.filter(q => q.difficulty === "intermediate");
+});
+
+const advancedQuestions = computed(() => {
+  return questions.value.filter(q => q.difficulty === "advanced");
 });
 
 // 计算截止日期：validDate + validPeriod
@@ -722,20 +947,29 @@ const submitAnswer = async questionId => {
     console.log(allAnswersData);
 
     // 调用API保存所有数据
-    // await updateQaConfig(saveData);
-
     await updateQaConfig(saveData);
 
-    // 更新本地答案数据
-    const answerContent = tempAnswers.value[questionId] || "";
-    answers.value[questionId] = {
-      content: answerContent,
-      attachments: tempAttachments.value[questionId] || [],
-      submittedAt: new Date(),
-      reviewStatus: "pending",
-      reviewedAt: null,
-      reviewComment: null
-    };
+    // 更新所有问题的本地答案数据，确保统计卡片能够正确更新
+    allAnswersData.forEach(item => {
+      const questionKey = item.questionKey;
+      const hasContent = item.content && item.content.trim().length > 0;
+      const hasAttachments = item.attachments && item.attachments.length > 0;
+
+      if (hasContent || hasAttachments) {
+        // 更新answers数据，用于统计卡片计算
+        answers.value[questionKey] = {
+          content: item.content,
+          attachments: item.attachments,
+          submittedAt: new Date(item.submittedAt),
+          reviewStatus: item.reviewStatus,
+          reviewedAt: null,
+          reviewComment: null
+        };
+      } else {
+        // 如果没有内容和附件，则清除答案数据
+        delete answers.value[questionKey];
+      }
+    });
 
     // 保持临时数据，不清空，让用户可以继续编辑
     // tempAnswers.value[questionId] = "";
@@ -750,6 +984,12 @@ const submitAnswer = async questionId => {
       "/",
       totalQuestions.value
     );
+    console.log("Updated difficulty stats:", {
+      beginner: beginnerStats.value,
+      intermediate: intermediateStats.value,
+      advanced: advancedStats.value
+    });
+
     if (!curQaInfo.value || Object.keys(curQaInfo.value).length === 0) {
       window.location.reload();
     }
@@ -856,6 +1096,58 @@ const submitAnswer = async questionId => {
     padding: 0 16px;
     font-size: 13px;
   }
+
+  .difficulty-stats-cards {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stats-card {
+    padding: 16px;
+  }
+
+  .stats-header {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .stats-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .stats-title {
+    font-size: 14px;
+  }
+
+  .stats-number {
+    font-size: 24px;
+  }
+
+  .stats-description {
+    font-size: 12px;
+  }
+
+  .question-list {
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+
+  .question-item {
+    padding: 6px 8px;
+    margin-bottom: 6px;
+  }
+
+  .question-index {
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+  }
+
+  .question-title-short {
+    font-size: 12px;
+  }
 }
 
 .employee-task-container {
@@ -894,6 +1186,208 @@ const submitAnswer = async questionId => {
 
 .overdue-alert {
   margin-bottom: 32px;
+}
+
+/* 难度级别统计卡片样式 */
+.difficulty-stats-cards {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.stats-card {
+  flex: 1;
+  min-width: 0;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+  transform: translateY(-2px);
+}
+
+.beginner-card {
+  border-left: 4px solid #67c23a;
+}
+
+.intermediate-card {
+  border-left: 4px solid #e6a23c;
+}
+
+.advanced-card {
+  border-left: 4px solid #f56c6c;
+}
+
+.stats-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.stats-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+}
+
+.beginner-card .stats-icon {
+  color: #67c23a;
+  background: rgb(103 194 58 / 10%);
+}
+
+.intermediate-card .stats-icon {
+  color: #e6a23c;
+  background: rgb(230 162 60 / 10%);
+}
+
+.advanced-card .stats-icon {
+  color: #f56c6c;
+  background: rgb(245 108 108 / 10%);
+}
+
+.stats-info {
+  flex: 1;
+}
+
+.stats-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.stats-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.stats-content {
+  margin-bottom: 16px;
+}
+
+.stats-number {
+  margin-bottom: 4px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.stats-description {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.stats-progress {
+  margin-top: 12px;
+}
+
+/* 题目列表样式 */
+.question-list {
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.question-item {
+  min-height: 40px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: #fafafa;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.question-item:hover {
+  background: #f5f5f5;
+}
+
+.question-item.completed {
+  background: rgb(103 194 58 / 8%);
+  border-left: 3px solid #67c23a;
+}
+
+.beginner-card .question-item.completed {
+  background: rgb(103 194 58 / 8%);
+  border-left: 3px solid #67c23a;
+}
+
+.intermediate-card .question-item.completed {
+  background: rgb(230 162 60 / 8%);
+  border-left: 3px solid #e6a23c;
+}
+
+.advanced-card .question-item.completed {
+  background: rgb(245 108 108 / 8%);
+  border-left: 3px solid #f56c6c;
+}
+
+.question-item-header {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.question-index {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  background: #e5e7eb;
+  border-radius: 50%;
+}
+
+.question-item.completed .question-index {
+  color: #fff;
+  background: #67c23a;
+}
+
+.intermediate-card .question-item.completed .question-index {
+  background: #e6a23c;
+}
+
+.advanced-card .question-item.completed .question-index {
+  background: #f56c6c;
+}
+
+.question-title-short {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #374151;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+.question-item.completed .question-title-short {
+  color: #059669;
+}
+
+.intermediate-card .question-item.completed .question-title-short {
+  color: #d97706;
+}
+
+.advanced-card .question-item.completed .question-title-short {
+  color: #dc2626;
+}
+
+.question-item .completed-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .questions-container {
