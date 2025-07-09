@@ -47,6 +47,13 @@
           />
         </transition>
       </el-tab-pane>
+      <el-tab-pane :label="t('monitor.task')" name="task">
+        <transition name="fade-transform" mode="out-in">
+          <div v-if="activeTab === 'task'" key="task">
+            <TaskList />
+          </div>
+        </transition>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -58,6 +65,7 @@ import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
 import ExchangeHistory from "./ExchangeHistory.vue";
 import HistoryScore from "./HistoryScore.vue";
+import TaskList from "./TaskList.vue";
 import avatarImg from "@/assets/login/avatar.svg";
 import { getUserList, getFileDownLoadPath } from "@/api/pmApi.ts";
 

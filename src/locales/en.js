@@ -78,7 +78,8 @@ export default {
     enterReason: "Please enter score",
     otherReason: "Other",
     onlyInteger: "Please enter an integer",
-    selectedCount: "Current selected employees"
+    selectedCount: "Current selected employees",
+    task: "Tasks"
   },
   navbar: {
     updateProfile: "Update Profile",

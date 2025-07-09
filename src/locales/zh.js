@@ -76,7 +76,8 @@ export default {
     otherReason: "其他",
     otherReasonPlaceholder: "请输入积分",
     onlyInteger: "请输入整数",
-    selectedCount: "当前选中的员工"
+    selectedCount: "当前选中的员工",
+    task: "任务列表"
   },
   navbar: {
     updateProfile: "更新资料",
