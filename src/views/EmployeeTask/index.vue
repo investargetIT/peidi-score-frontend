@@ -18,7 +18,7 @@
 
     <!-- 完成提示 -->
     <el-alert
-      v-if="computedTaskStatus === 'completed'"
+      v-if="isAllQuestionsCompleted"
       title="恭喜! 您已完成所有任务。"
       type="success"
       :closable="false"
@@ -763,6 +763,14 @@ const isTaskOverdue = computed(() => {
   return computedTaskStatus.value === "已过期";
 });
 
+// 检查是否所有问题都已完成
+const isAllQuestionsCompleted = computed(() => {
+  return (
+    totalQuestions.value > 0 &&
+    completedQuestions.value === totalQuestions.value
+  );
+});
+
 const formatDateTime = date => {
   if (!date) return "";
   return new Date(date).toLocaleString("zh-CN", {
@@ -1177,6 +1185,10 @@ const submitAnswer = async questionId => {
   align-items: center;
   font-size: 14px;
   color: #6b7280;
+}
+
+.completion-alert {
+  margin-bottom: 32px;
 }
 
 .overdue-alert {
