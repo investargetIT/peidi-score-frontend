@@ -1,8 +1,44 @@
 <template>
   <el-card class="exchange-history-card">
     <div class="exchange-title">员工任务</div>
+    <el-form :model="searchForm" inline>
+      <el-form-item label="员工" prop="fullName">
+        <el-select
+          style="width: 240px"
+          v-model="searchForm.fullName"
+          clearable
+          placeholder="请选择员工"
+        >
+          <el-option
+            v-for="item in userList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="状态" prop="hasReview">
+        <el-select
+          style="width: 240px"
+          v-model="searchForm.hasReview"
+          clearable
+          placeholder="请选择状态"
+        >
+          <el-option
+            v-for="item in statusList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
+        <el-button @click="handleReset">重置</el-button>
+      </el-form-item>
+    </el-form>
     <el-table
-      :data="exchangeList"
+      :data="filteredExchangeList"
       class="exchange-table no-border-table"
       header-row-class-name="exchange-header"
     >
@@ -248,7 +284,7 @@
       </div>
 
       <!-- 审核状态提示 -->
-      <div v-if="selectedTask.hasReview" class="approval-notice">
+      <!-- <div v-if="selectedTask.hasReview" class="approval-notice">
         <div class="approval-header">
           <svg
             class="approval-icon"
@@ -266,7 +302,7 @@
           <p>审核人员: 管理员</p>
           <p>审核时间: {{ new Date().toLocaleString("zh-CN") }}</p>
         </div>
-      </div>
+      </div> -->
 
       <!-- 题目和答案 -->
       <div class="questions-section">
@@ -386,13 +422,29 @@
 import { getQaList, updateQaConfig } from "@/api/task";
 import { getFileDownLoadPath } from "@/api/esg";
 import { ElMessage } from "element-plus";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const exchangeList = ref([]);
+const filteredExchangeList = ref([]);
 const isTaskDialogOpen = ref(false);
 const selectedTask = ref(null);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
+const userList = ref([]);
+const statusList = ref([
+  {
+    label: "待审核",
+    value: false
+  },
+  {
+    label: "已审核",
+    value: true
+  }
+]);
+const searchForm = ref({
+  fullName: "",
+  hasReview: ""
+});
 
 const handleShowDetails = row => {
   selectedTask.value = row;
@@ -404,8 +456,51 @@ const getQaListData = () => {
   getQaList().then(res => {
     if (res.code === 200) {
       exchangeList.value = res.data;
+      // 获取用户列表
+      const users = [...new Set(res.data.map(item => item.fullName))];
+      userList.value = users.map(user => ({
+        label: user,
+        value: user
+      }));
+      // 应用筛选
+      applyFilters();
     }
   });
+};
+
+// 应用筛选逻辑
+const applyFilters = () => {
+  let filtered = [...exchangeList.value];
+
+  // 按员工筛选
+  if (searchForm.value.fullName) {
+    filtered = filtered.filter(
+      item => item.fullName === searchForm.value.fullName
+    );
+  }
+
+  // 按审核状态筛选
+  if (searchForm.value.hasReview !== "") {
+    filtered = filtered.filter(
+      item => item.hasReview === searchForm.value.hasReview
+    );
+  }
+
+  filteredExchangeList.value = filtered;
+};
+
+// 搜索功能
+const handleSearch = () => {
+  applyFilters();
+};
+
+// 重置功能
+const handleReset = () => {
+  searchForm.value = {
+    fullName: "",
+    hasReview: ""
+  };
+  applyFilters();
 };
 
 // 解析题目数据
@@ -686,7 +781,10 @@ const handleAttachmentClick = async attachment => {
   }
 };
 
-getQaListData();
+// 组件加载时初始化数据
+onMounted(() => {
+  getQaListData();
+});
 </script>
 
 <style scoped>
@@ -715,6 +813,10 @@ getQaListData();
 .item-cell {
   display: flex;
   align-items: center;
+}
+
+.el-form-item__label {
+  justify-content: flex-start;
 }
 
 .no-border-table ::v-deep .el-table__cell,
