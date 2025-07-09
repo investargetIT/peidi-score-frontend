@@ -394,15 +394,24 @@
       </div>
     </div>
   </el-dialog>
+
+  <!-- 附件预览弹窗 -->
+  <el-dialog v-model="dialogVisible" title="图片预览">
+    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+  </el-dialog>
 </template>
 
 <script setup>
 import { getQaList } from "@/api/task";
+import { getFileDownLoadPath } from "@/api/esg";
+import { ElMessage } from "element-plus";
 import { ref } from "vue";
 
 const exchangeList = ref([]);
 const isTaskDialogOpen = ref(false);
 const selectedTask = ref(null);
+const dialogImageUrl = ref("");
+const dialogVisible = ref(false);
 
 const handleShowDetails = row => {
   selectedTask.value = row;
@@ -607,23 +616,35 @@ const getProgressText = remark => {
 
 // 处理附件预览/下载
 const handleAttachmentClick = async attachment => {
-  if (attachment.response && attachment.response.data) {
+  if (attachment.response && attachment.response.code === 200) {
     try {
-      // 这里应该调用getFileDownLoadPath API
-      // const res = await getFileDownLoadPath({ objectName: attachment.response.data });
-      // if (res.code === 200) {
-      //   window.open(res.data, "_blank");
-      // }
-      console.log("预览附件:", attachment);
-      // 临时提示用户
-      alert(
-        `预览附件: ${attachment.name}\n文件路径: ${attachment.response.data}`
-      );
+      const res = await getFileDownLoadPath({
+        objectName: attachment.response.data
+      });
+
+      if (res.code === 200) {
+        // 判断是否为图片文件
+        const isImage =
+          attachment.raw?.type?.includes("image") ||
+          /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(attachment.name);
+
+        if (isImage) {
+          // 图片文件：在弹窗中预览
+          dialogImageUrl.value = res.data;
+          dialogVisible.value = true;
+        } else {
+          // 非图片文件：在新窗口打开
+          window.open(res.data, "_blank");
+        }
+      } else {
+        ElMessage.error("文件预览失败：" + res.msg);
+      }
     } catch (error) {
       console.error("预览附件失败:", error);
+      ElMessage.error("文件预览失败");
     }
   } else {
-    alert("附件信息不完整，无法预览");
+    ElMessage.error("附件信息不完整，无法预览");
   }
 };
 
@@ -1171,5 +1192,19 @@ getQaListData();
 .approve-icon {
   width: 20px;
   height: 20px;
+}
+
+/* 图片预览弹窗样式 */
+.el-dialog img {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.el-dialog .el-dialog__body {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
 </style>
