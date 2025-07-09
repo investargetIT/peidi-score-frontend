@@ -196,11 +196,19 @@
   <!-- 任务详情弹窗 -->
   <el-dialog
     v-model="isTaskDialogOpen"
-    :title="selectedTask ? `${selectedTask.fullName} - 任务详情` : '任务详情'"
     width="80%"
     :close-on-click-modal="false"
     class="task-detail-dialog"
   >
+    <template #header>
+      <div class="dialog-header">
+        <div class="dialog-title-container">
+          <h2 class="dialog-title">
+            员工任务 - {{ selectedTask?.fullName || "" }}
+          </h2>
+        </div>
+      </div>
+    </template>
     <div v-if="selectedTask" class="task-detail-content">
       <!-- 任务信息 -->
       <div class="task-info-grid">
@@ -208,10 +216,10 @@
           <p class="info-label">状态</p>
           <div
             v-if="getStatusText(selectedTask.remark) === '已完成'"
-            class="status-badge completed"
+            class="status-badge-compact completed"
           >
             <svg
-              class="status-icon"
+              class="status-icon-compact"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -224,10 +232,10 @@
           </div>
           <div
             v-else-if="getStatusText(selectedTask.remark) === '进行中'"
-            class="status-badge in-progress"
+            class="status-badge-compact in-progress"
           >
             <svg
-              class="status-icon"
+              class="status-icon-compact"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -238,9 +246,9 @@
             </svg>
             <span>进行中</span>
           </div>
-          <div v-else class="status-badge pending">
+          <div v-else class="status-badge-compact pending">
             <svg
-              class="status-icon"
+              class="status-icon-compact"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -349,12 +357,6 @@
                     <p class="submission-value">
                       {{ formatSubmissionTime(question.submittedAt) }}
                     </p>
-                  </div>
-                  <div class="submission-item">
-                    <p class="submission-label">审核状态:</p>
-                    <span :class="['review-status', question.reviewStatus]">{{
-                      getReviewStatusText(question.reviewStatus)
-                    }}</span>
                   </div>
                 </div>
               </div>
@@ -615,6 +617,14 @@ getQaListData();
 </script>
 
 <style scoped>
+
+
+@media (width >= 640px) {
+  .dialog-title-container {
+    text-align: left;
+  }
+}
+
 .exchange-history-card {
   padding: 32px 32px 24px;
   border-radius: 16px;
@@ -670,6 +680,10 @@ getQaListData();
   border-width: 1px;
 }
 
+.border-transparent {
+  border-color: transparent;
+}
+
 .px-2\.5 {
   padding-right: 0.625rem;
   padding-left: 0.625rem;
@@ -696,32 +710,28 @@ getQaListData();
     text-decoration-color, fill, stroke;
 }
 
-.border-transparent {
-  border-color: transparent;
-}
-
 .bg-blue-100 {
-  background-color: rgb(219 234 254);
+  background-color: #dbeafe;
 }
 
 .text-blue-800 {
-  color: rgb(30 64 175);
+  color: #1e40af;
 }
 
 .bg-yellow-100 {
-  background-color: rgb(254 249 195);
+  background-color: #fef3c7;
 }
 
 .text-yellow-800 {
-  color: rgb(133 77 14);
+  color: #92400e;
 }
 
 .bg-gray-100 {
-  background-color: rgb(243 244 246);
+  background-color: #f3f4f6;
 }
 
 .text-gray-800 {
-  color: rgb(31 41 55);
+  color: #1f2937;
 }
 
 .h-4 {
@@ -734,6 +744,27 @@ getQaListData();
 
 .ml-1 {
   margin-left: 0.25rem;
+}
+
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus\:ring-2:focus {
+  box-shadow: 0 0 0 2px rgb(59 130 246 / 50%);
+}
+
+.focus\:ring-ring:focus {
+  --tw-ring-color: #3b82f6;
+}
+
+.focus\:ring-offset-2:focus {
+  --tw-ring-offset-width: 2px;
+}
+
+.hover\:bg-primary\/80:hover {
+  background-color: rgb(59 130 246 / 80%);
 }
 
 /* 进度条样式 */
@@ -761,6 +792,27 @@ getQaListData();
   max-height: 90vh;
 }
 
+.dialog-header {
+  padding: 0;
+  margin: 0;
+}
+
+.dialog-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.dialog-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
 .task-detail-content {
   max-height: 70vh;
   overflow-y: auto;
@@ -772,7 +824,6 @@ getQaListData();
   gap: 20px;
   padding: 20px;
   margin-bottom: 24px;
-  background: #f8f9fa;
   border-radius: 8px;
 }
 
@@ -823,6 +874,40 @@ getQaListData();
 .status-icon {
   width: 14px;
   height: 14px;
+}
+
+/* 紧凑状态标签样式 */
+.status-badge-compact {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  width: fit-content;
+  max-width: 100px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+.status-badge-compact.completed {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.status-badge-compact.in-progress {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.status-badge-compact.pending {
+  color: #374151;
+  background: #f3f4f6;
+}
+
+.status-icon-compact {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
 }
 
 .approval-notice {
