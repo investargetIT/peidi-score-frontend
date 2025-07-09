@@ -617,14 +617,6 @@ getQaListData();
 </script>
 
 <style scoped>
-
-
-@media (width >= 640px) {
-  .dialog-title-container {
-    text-align: left;
-  }
-}
-
 .exchange-history-card {
   padding: 32px 32px 24px;
   border-radius: 16px;
@@ -801,7 +793,7 @@ getQaListData();
   display: flex;
   flex-direction: column;
   gap: 6px;
-  text-align: center;
+  text-align: left;
 }
 
 .dialog-title {
@@ -1009,8 +1001,8 @@ getQaListData();
 }
 
 .answered-icon {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   color: #16a34a;
 }
 
