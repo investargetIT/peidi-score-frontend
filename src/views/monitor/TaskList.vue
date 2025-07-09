@@ -405,7 +405,7 @@
 </template>
 
 <script setup>
-import { getQaList } from "@/api/task";
+import { getQaList, updateQaConfig } from "@/api/task";
 import { getFileDownLoadPath } from "@/api/esg";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
@@ -553,12 +553,44 @@ const formatSubmissionTime = submittedAt => {
 };
 
 // 处理任务审核
-const handleTaskApproval = () => {
-  if (selectedTask.value) {
-    // TODO: 实现审核逻辑
-    console.log("审核任务:", selectedTask.value);
-    selectedTask.value.hasReview = true;
+const handleTaskApproval = async () => {
+  if (!selectedTask.value) return;
+
+  try {
+    // 解析当前任务的qa数据
+    const qaData = JSON.parse(selectedTask.value.qa || "[]");
+
+    // 更新所有问题的审核状态为"approved"
+    const updatedQaData = qaData.map(question => ({
+      ...question,
+      reviewStatus: "approved",
+      reviewedAt: new Date().toISOString()
+    }));
+
+    // 解析remark数据
+    const remarkData = JSON.parse(selectedTask.value.remark || "{}");
+
+    // 准备保存的数据
+    const saveData = {
+      userId: selectedTask.value.userId,
+      qa: JSON.stringify(updatedQaData),
+      remark: JSON.stringify({
+        ...remarkData,
+        reviewDate: new Date().toISOString()
+      }),
+      hasReview: true,
+      id: selectedTask.value.id
+    };
+
+    // 调用API更新数据
+    await updateQaConfig(saveData);
+
+    ElMessage.success("审核通过成功");
     isTaskDialogOpen.value = false;
+    getQaListData();
+  } catch (error) {
+    console.error("审核失败:", error);
+    ElMessage.error("审核失败，请重试");
   }
 };
 
