@@ -13,11 +13,6 @@
             {{ getStatusText(computedTaskStatus) }}
           </el-tag>
         </div>
-        <div class="meta-item">
-          <span
-            >进度: 已完成 {{ completedQuestions }}/{{ totalQuestions }} 道题目
-          </span>
-        </div>
       </div>
     </div>
 
