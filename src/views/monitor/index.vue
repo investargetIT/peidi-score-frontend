@@ -11,7 +11,7 @@
           <div v-if="activeTab === 'manage'" key="manage">
             <div class="main-content">
               <EmployeeList
-                :employees="filteredEmployees"
+                :employees="employees"
                 :avatarUrls="avatarUrls"
                 v-model:search="search"
                 :selected="selectedEmployee"
@@ -78,12 +78,7 @@ const selectedEmployeeList = ref([]);
 const employees = ref([]);
 const backEmployees = ref([]);
 const avatarUrls = ref({});
-const filteredEmployees = computed(() => {
-  if (!search.value) return employees.value;
-  return employees.value.filter(e =>
-    e.name.toLowerCase().includes(search.value.toLowerCase())
-  );
-});
+// 移除重复的过滤逻辑，让子组件自己处理过滤
 function selectEmployee(emp) {
   // 只高亮，不影响多选
   selectedEmployee.value = emp;
@@ -94,15 +89,11 @@ function handleTabClick() {
 
 // 多选与高亮联动
 watch(selectedEmployeeIds, ids => {
-  console.log("=== index.vue 监听 selectedEmployeeIds===");
-  console.log(ids);
   if (ids.length === 1) {
-    selectedEmployee.value = filteredEmployees.value.find(
-      emp => emp.id === ids[0]
-    );
+    selectedEmployee.value = employees.value.find(emp => emp.id === ids[0]);
   } else if (ids.length > 1) {
     // 多选时高亮第一个
-    const emps = filteredEmployees.value.filter(emp => ids.includes(emp.id));
+    const emps = employees.value.filter(emp => ids.includes(emp.id));
     selectedEmployee.value = emps[0] || null;
   } else {
     selectedEmployee.value = null;

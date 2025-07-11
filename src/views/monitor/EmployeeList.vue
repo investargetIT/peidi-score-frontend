@@ -64,7 +64,15 @@ const emit = defineEmits(["update:search", "select", "update:modelValue"]);
 const searchValue = ref(props.search || "");
 const checkedIds = ref(props.modelValue || []);
 
-watch(searchValue, val => emit("update:search", val));
+watch(searchValue, val => {
+  emit("update:search", val);
+  // 当搜索框清空时，清空选中数据
+  if (!val || val.trim() === "") {
+    checkedIds.value = [];
+    emit("update:modelValue", []);
+    emit("select", null);
+  }
+});
 watch(
   () => props.modelValue,
   val => {
@@ -77,9 +85,10 @@ watch(
 );
 
 const filteredEmployees = computed(() => {
-  if (!searchValue.value) return props.employees || [];
-  return (props.employees || []).filter(emp =>
-    emp.name?.toLowerCase().includes(searchValue.value.toLowerCase())
+  const searchTerm = searchValue.value?.toLowerCase() || "";
+  if (!searchTerm) return props.employees || [];
+  return (props.employees || []).filter(
+    emp => emp.name && emp.name.toLowerCase().includes(searchTerm)
   );
 });
 
