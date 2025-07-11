@@ -1013,7 +1013,7 @@ const submitAnswer = async questionId => {
 
 <style scoped>
 /* 移动端适配 */
-@media (width <= 768px) {
+@media screen and (width <= 768px) {
   .employee-task-container {
     padding: 20px 20px 0;
   }
@@ -1105,12 +1105,15 @@ const submitAnswer = async questionId => {
   }
 
   .difficulty-stats-cards {
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 24px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
   }
 
   .stats-card {
+    flex: none !important;
+    width: 100% !important;
     padding: 16px;
   }
 
@@ -1154,6 +1157,19 @@ const submitAnswer = async questionId => {
 
   .question-title-short {
     font-size: 12px;
+  }
+}
+
+/* 额外的移动端适配 - 平板和小屏幕 */
+@media screen and (width <= 1024px) {
+  .difficulty-stats-cards {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .stats-card {
+    flex: none !important;
+    width: 100% !important;
   }
 }
 
