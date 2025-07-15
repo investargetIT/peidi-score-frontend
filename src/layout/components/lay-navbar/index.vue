@@ -133,8 +133,6 @@ const fetchCurUserInfo = () => {
     userId: id
   }).then(res => {
     if (res?.code === 200) {
-      console.log("===当前用户信息==");
-      console.log(res.data);
       // 初始化用户配置信息
       if (!res?.data) {
         initUserInfo();
