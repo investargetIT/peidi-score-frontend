@@ -738,15 +738,49 @@ const computedTaskStatus = computed(() => {
 
 // 日期比较逻辑
 const shouldShowEmptyState = computed(() => {
+  console.log("hired_date", hired_date);
+  console.log("validDate.value", validDate.value);
   if (!hired_date || !validDate.value) {
     return false; // 如果任一日期不存在，不显示空状态
   }
 
   // 将hired_date时间戳转换为Date对象
-  const hiredDateObj = new Date(hired_date);
+  // 检查是否为秒级时间戳（长度为10位），如果是则转换为毫秒
+  let hiredTimestamp = hired_date;
+
+  // 确保时间戳是数字类型
+  if (typeof hiredTimestamp === "string") {
+    hiredTimestamp = parseInt(hiredTimestamp, 10);
+  }
+
+  // 检查是否为秒级时间戳（长度为10位），如果是则转换为毫秒
+  if (hiredTimestamp.toString().length === 10) {
+    hiredTimestamp = hiredTimestamp * 1000;
+  }
+
+  const hiredDateObj = new Date(hiredTimestamp);
 
   // 将validDate字符串转换为Date对象
   const validDateObj = new Date(validDate.value);
+
+  console.log("原始 hired_date:", hired_date, "类型:", typeof hired_date);
+  console.log(
+    "处理后 hiredTimestamp:",
+    hiredTimestamp,
+    "类型:",
+    typeof hiredTimestamp
+  );
+  console.log("hiredDateObj:", hiredDateObj);
+  console.log("validDateObj:", validDateObj);
+  console.log("hiredDateObj.getTime():", hiredDateObj.getTime());
+  console.log("validDateObj.getTime():", validDateObj.getTime());
+  console.log("hiredDateObj < validDateObj:", hiredDateObj < validDateObj);
+
+  // 检查日期对象是否有效
+  if (isNaN(hiredDateObj.getTime()) || isNaN(validDateObj.getTime())) {
+    console.error("Invalid date objects:", { hiredDateObj, validDateObj });
+    return false;
+  }
 
   // 比较日期：如果入职日期小于有效日期，则显示空状态
   // hireDate > qaDate， 新员工，需要填写回答
