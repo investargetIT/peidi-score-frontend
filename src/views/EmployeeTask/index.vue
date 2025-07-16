@@ -4,7 +4,7 @@
       <!-- 页面头部 -->
       <div class="task-header">
         <h1 class="task-title">{{ `员工任务 - ${employeeName}` }}</h1>
-        <div class="task-meta">
+        <div class="task-meta" v-if="!shouldShowEmptyState">
           <div class="meta-item">
             <el-icon><Calendar /></el-icon>
             <span>截止时间: {{ formatDate(dueDate) }}</span>
@@ -41,7 +41,7 @@
       <!-- 任务问题列表 -->
       <div class="questions-container">
         <!-- 难度级别统计卡片 -->
-        <div class="difficulty-stats-cards">
+        <div class="difficulty-stats-cards" v-if="!shouldShowEmptyState">
           <div class="stats-card beginner-card">
             <div class="stats-header">
               <div class="stats-icon">
