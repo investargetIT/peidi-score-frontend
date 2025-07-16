@@ -68,14 +68,35 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                   "dataSource",
                   JSON.stringify({ ...data, userEmail: ruleForm.username })
                 );
-                // 获取枚举类型列表
-                getEnumTypeList({ type: "adminUser" }).then(enumRes => {
-                  if (enumRes.success) {
-                    localStorage.setItem(
-                      "adminUserEnum",
-                      JSON.stringify(enumRes.data)
-                    );
-                    // 获取后端路由并跳转
+                // 使用 Promise.all 并行获取多个枚举类型列表
+                Promise.all([
+                  getEnumTypeList({ type: "adminUser" }),
+                  getEnumTypeList({ type: "esg" })
+                ])
+                  .then(([adminUserRes, esgRes]) => {
+                    // 处理 adminUser 枚举结果
+                    if (adminUserRes.success) {
+                      localStorage.setItem(
+                        "adminUserEnum",
+                        JSON.stringify(adminUserRes.data)
+                      );
+                    } else {
+                      message("获取管理员列表失败", { type: "error" });
+                      return;
+                    }
+
+                    // 处理 esg 枚举结果
+                    if (esgRes.success) {
+                      localStorage.setItem(
+                        "esgEnum",
+                        JSON.stringify(esgRes.data)
+                      );
+                    } else {
+                      message("获取ESG枚举列表失败", { type: "error" });
+                      return;
+                    }
+
+                    // 所有枚举数据获取成功后，进行路由跳转
                     if (route.query.tabName == "worker") {
                       return initRouter().then(() => {
                         router.push({
@@ -90,10 +111,11 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                         });
                       });
                     }
-                  } else {
-                    message("获取管理员列表失败", { type: "error" });
-                  }
-                });
+                  })
+                  .catch(error => {
+                    console.error("获取枚举类型列表失败:", error);
+                    message("获取枚举类型列表失败", { type: "error" });
+                  });
               } else {
                 message("获取用户数据失败", { type: "error" });
               }

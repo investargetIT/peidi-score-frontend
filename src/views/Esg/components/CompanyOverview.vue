@@ -583,9 +583,6 @@ To carry out."
                 accept=".jpg,.jpeg,.png,.webp"
               >
                 <el-button type="primary" :icon="Upload">上传附件</el-button>
-                <template #tip>
-                  <div class="el-upload__tip">如有图片请上传</div>
-                </template>
               </el-upload>
             </el-form-item>
           </el-form>
