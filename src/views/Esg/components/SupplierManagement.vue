@@ -768,7 +768,8 @@ const handleSave = () => {
   // 自定义保存逻辑
   const sendConfig = {
     content: JSON.stringify(formData.value),
-    type: props.activeTab
+    type: props.activeTab,
+    year: new Date().getFullYear()
   };
 
   updateEsgConfig(sendConfig).then(res => {
