@@ -387,7 +387,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, nextTick } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import {
   Calendar,
@@ -438,7 +438,7 @@ const beforeUpload = file => {
 };
 
 const fetchDataConfig = () => {
-  getQaDetail({
+  return getQaDetail({
     userId: id
   }).then(res => {
     console.log(res);
@@ -448,17 +448,26 @@ const fetchDataConfig = () => {
     initializeQuestions();
   });
 };
-const fetchEnumTypeList = () => {
-  getEnumTypeList({ type: "qaDate" }).then(res => {
-    if (res?.code === 200) {
-      validDate.value = res?.data?.[0]?.value || "";
+
+const fetchEnumTypeList = async () => {
+  try {
+    // 并行获取两个配置
+    const [dateRes, periodRes] = await Promise.all([
+      getEnumTypeList({ type: "qaDate" }),
+      getEnumTypeList({ type: "qaPeriod" })
+    ]);
+
+    if (dateRes?.code === 200) {
+      validDate.value = dateRes?.data?.[0]?.value || "";
     }
-  });
-  getEnumTypeList({ type: "qaPeriod" }).then(res => {
-    if (res?.code === 200) {
-      validPeriod.value = res?.data?.[0]?.value || "";
+
+    if (periodRes?.code === 200) {
+      validPeriod.value = periodRes?.data?.[0]?.value || "";
     }
-  });
+  } catch (error) {
+    console.error("获取配置数据失败:", error);
+    throw error;
+  }
 };
 
 const handlePreview = file => {
@@ -484,8 +493,30 @@ const handlePreview = file => {
     });
 };
 
-fetchDataConfig();
-fetchEnumTypeList();
+// 初始化逻辑：先获取配置数据，再根据shouldShowEmptyState决定是否获取问答数据
+const initializeApp = async () => {
+  try {
+    // 首先获取配置数据（validDate 和 validPeriod）
+    await fetchEnumTypeList();
+
+    // 等待一个tick确保响应式数据更新完成
+    await nextTick();
+
+    // 检查是否需要显示空状态
+    if (!shouldShowEmptyState.value) {
+      // 只有在不显示空状态时才获取问答数据
+      await fetchDataConfig();
+    } else {
+      console.log("显示空状态，跳过问答数据获取");
+    }
+  } catch (error) {
+    console.error("初始化失败:", error);
+    ElMessage.error("页面初始化失败，请刷新重试");
+  }
+};
+
+// 启动初始化
+initializeApp();
 
 // 随机抽取问题的逻辑
 const generateRandomQuestions = () => {
