@@ -66,15 +66,9 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         }
       }
 
-      // 构建新的 username: ruleForm.username & mobile
-      const combinedUsername = ruleForm.username
-        ? `${ruleForm.username}&${mobile}`
-        : `&${mobile}`;
-      console.log("combinedUsername:", combinedUsername);
-
       useUserStoreHook()
         .loginByUsername({
-          username: combinedUsername,
+          username: ruleForm.username,
           password: ruleForm.password
         })
         .then(res => {
@@ -170,7 +164,7 @@ const ddLogin = () => {
             if (org_email) {
               console.log("使用邮箱注册，ddEmail:", org_email);
               ddUserEmail = org_email;
-              ruleForm.username = ddUserEmail;
+              ruleForm.username = `${ddUserEmail}&${mobile}`;
               ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
 
               // 使用邮箱注册，添加标识
@@ -183,7 +177,7 @@ const ddLogin = () => {
               });
             } else if (mobile) {
               console.log("使用手机号注册，mobile:", mobile);
-              ruleForm.username = mobile;
+              ruleForm.username = `&{mobile}`;
               ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
 
               // 使用手机号注册，添加标识
