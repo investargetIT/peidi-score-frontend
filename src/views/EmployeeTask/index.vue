@@ -746,10 +746,18 @@ const dueDate = computed(() => {
   }
 
   // 计算截止日期 = validDate + validPeriod天
-  // const calculatedDueDate = new Date(baseDate);
-  // 将hired_date时间戳转换为Date对象
-  const calculatedDueDate = new Date(hired_date);
-  calculatedDueDate.setDate(baseDate.getDate() + periodDays);
+  // 使用更安全的日期计算方法
+  const calculatedDueDate = new Date(baseDate);
+  // 使用 setTime() 方法添加毫秒数，避免 setDate() 的问题
+  calculatedDueDate.setTime(
+    calculatedDueDate.getTime() + periodDays * 24 * 60 * 60 * 1000
+  );
+
+  console.log("baseDate:", baseDate);
+  console.log("periodDays:", periodDays, "天");
+  console.log("添加的毫秒数:", periodDays * 24 * 60 * 60 * 1000);
+  console.log("calculatedDueDate:", calculatedDueDate);
+  console.log("hired_date:", hired_date);
 
   return calculatedDueDate;
 });
