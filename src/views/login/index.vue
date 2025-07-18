@@ -13,7 +13,7 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 import { initDingH5RemoteDebug } from "dingtalk-h5-remote-debug";
-import { getUserInfo, register } from "../../api/user";
+import { getUserInfo, register, registerMobile } from "../../api/user";
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
@@ -52,9 +52,29 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       loading.value = true;
+      const tempInfo = localStorage.getItem("ddUserInfo");
+
+      // 从 ddUserInfo 中获取 mobile 数据
+      let mobile = "";
+      if (tempInfo) {
+        try {
+          const ddUserInfo = JSON.parse(tempInfo);
+          mobile = ddUserInfo.mobile || "";
+          console.log("mobile from ddUserInfo:", mobile);
+        } catch (error) {
+          console.error("解析 ddUserInfo 失败:", error);
+        }
+      }
+
+      // 构建新的 username: ruleForm.username & mobile
+      const combinedUsername = ruleForm.username
+        ? `${ruleForm.username}&${mobile}`
+        : `&${mobile}`;
+      console.log("combinedUsername:", combinedUsername);
+
       useUserStoreHook()
         .loginByUsername({
-          username: ruleForm.username,
+          username: combinedUsername,
           password: ruleForm.password
         })
         .then(res => {
@@ -144,13 +164,16 @@ const ddLogin = () => {
             const { data: ddUserInfo } = res;
             console.log("ddUserInfo", ddUserInfo);
             localStorage.setItem("ddUserInfo", JSON.stringify(ddUserInfo));
-            const { org_email, name, userid } = ddUserInfo;
+            const { org_email, name, userid, mobile } = ddUserInfo;
+
+            // 判断是否存在邮箱，决定使用邮箱注册还是手机号注册
             if (org_email) {
-              console.log("ddEmail", org_email);
+              console.log("使用邮箱注册，ddEmail:", org_email);
               ddUserEmail = org_email;
-              // 获取到钉钉用户企业邮箱，调用注册接口
               ruleForm.username = ddUserEmail;
               ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
+
+              // 使用邮箱注册，添加标识
               return register({
                 email: org_email,
                 emailCode: "",
@@ -158,10 +181,26 @@ const ddLogin = () => {
                 username: name,
                 dingId: userid
               });
-            } else {
-              message("获取钉钉用户企业邮箱失败：" + JSON.stringify(res), {
-                type: "error"
+            } else if (mobile) {
+              console.log("使用手机号注册，mobile:", mobile);
+              ruleForm.username = mobile;
+              ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
+
+              // 使用手机号注册，添加标识
+              return registerMobile({
+                mobile,
+                mobileCode: "",
+                password: DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD,
+                username: name,
+                dingId: userid
               });
+            } else {
+              message(
+                "获取钉钉用户邮箱和手机号都失败：" + JSON.stringify(res),
+                {
+                  type: "error"
+                }
+              );
             }
           } else {
             message("用户注册失败：" + JSON.stringify(res), { type: "error" });
@@ -169,15 +208,37 @@ const ddLogin = () => {
         })
         .then(res => {
           if (res) {
-            if (
-              res.success ||
-              (res.code === 100100002 &&
-                res.msg === "EMAIL_ACCOUNT_ALREADY_EXIST")
-            ) {
+            // 获取当前用户信息来判断注册类型
+            const ddUserInfo = JSON.parse(
+              localStorage.getItem("ddUserInfo") || "{}"
+            );
+            const isEmailRegistration = !!ddUserInfo.org_email;
+
+            let registrationSuccess = false;
+
+            if (isEmailRegistration) {
+              // 邮箱注册的判断条件
+              registrationSuccess =
+                res.success ||
+                (res.code === 100100002 &&
+                  res.msg === "EMAIL_ACCOUNT_ALREADY_EXIST");
+              console.log("邮箱注册结果:", res);
+            } else {
+              // 手机号注册的判断条件
+              registrationSuccess =
+                res.success ||
+                (res.code === 100100003 &&
+                  res.msg === "PHONE_ACCOUNT_ALREADY_EXIST");
+              console.log("手机号注册结果:", res);
+            }
+
+            if (registrationSuccess) {
               // 注册成功，调用登录接口
+              console.log("注册成功，开始登录");
               onLogin(ruleFormRef.value);
             } else {
-              message("用户注册失败：" + JSON.stringify(res), {
+              const registrationType = isEmailRegistration ? "邮箱" : "手机号";
+              message(`${registrationType}注册失败：` + JSON.stringify(res), {
                 type: "error"
               });
             }

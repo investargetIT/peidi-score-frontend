@@ -80,6 +80,12 @@ export const register = data => {
   );
 };
 
+export const registerMobile = data => {
+  return http.request("post", `https://user.peidigroup.cn/user/sms-register`, {
+    data
+  });
+};
+
 /** 刷新`token` */
 export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>("post", "/refresh-token", { data });
