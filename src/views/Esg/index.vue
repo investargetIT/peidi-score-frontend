@@ -3,8 +3,8 @@
     <!-- 顶部导航标签 -->
     <el-tabs v-model="activeTab" class="esg-tabs">
       <el-tab-pane label="公司概况" name="company-overview" />
-      <el-tab-pane label="ESG管理" name="esg-management" />
       <el-tab-pane label="公司治理" name="corporate-governance" />
+      <el-tab-pane label="ESG管理" name="esg-management" />
       <el-tab-pane label="产业发展与运营" name="business-operations" />
       <el-tab-pane label="质量与食品安全管理" name="quality-food-safety" />
       <el-tab-pane label="供应链管理" name="supplier-management" />
