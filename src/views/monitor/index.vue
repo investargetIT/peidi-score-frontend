@@ -11,7 +11,7 @@
           <div v-if="activeTab === 'manage'" key="manage">
             <div class="main-content">
               <EmployeeList
-                :employees="filteredEmployees"
+                :employees="employees"
                 :avatarUrls="avatarUrls"
                 v-model:search="search"
                 :selected="selectedEmployee"
@@ -47,6 +47,13 @@
           />
         </transition>
       </el-tab-pane>
+      <el-tab-pane :label="t('monitor.task')" name="task">
+        <transition name="fade-transform" mode="out-in">
+          <div v-if="activeTab === 'task'" key="task">
+            <TaskList />
+          </div>
+        </transition>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -58,6 +65,7 @@ import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
 import ExchangeHistory from "./ExchangeHistory.vue";
 import HistoryScore from "./HistoryScore.vue";
+import TaskList from "./TaskList.vue";
 import avatarImg from "@/assets/login/avatar.svg";
 import { getUserList, getFileDownLoadPath } from "@/api/pmApi.ts";
 
@@ -70,12 +78,7 @@ const selectedEmployeeList = ref([]);
 const employees = ref([]);
 const backEmployees = ref([]);
 const avatarUrls = ref({});
-const filteredEmployees = computed(() => {
-  if (!search.value) return employees.value;
-  return employees.value.filter(e =>
-    e.name.toLowerCase().includes(search.value.toLowerCase())
-  );
-});
+// 移除重复的过滤逻辑，让子组件自己处理过滤
 function selectEmployee(emp) {
   // 只高亮，不影响多选
   selectedEmployee.value = emp;
@@ -86,15 +89,11 @@ function handleTabClick() {
 
 // 多选与高亮联动
 watch(selectedEmployeeIds, ids => {
-  console.log("=== index.vue 监听 selectedEmployeeIds===");
-  console.log(ids);
   if (ids.length === 1) {
-    selectedEmployee.value = filteredEmployees.value.find(
-      emp => emp.id === ids[0]
-    );
+    selectedEmployee.value = employees.value.find(emp => emp.id === ids[0]);
   } else if (ids.length > 1) {
     // 多选时高亮第一个
-    const emps = filteredEmployees.value.filter(emp => ids.includes(emp.id));
+    const emps = employees.value.filter(emp => ids.includes(emp.id));
     selectedEmployee.value = emps[0] || null;
   } else {
     selectedEmployee.value = null;
@@ -131,19 +130,32 @@ const fetchUserListData = async () => {
 
 const getPreviewUrl = async (file, userId) => {
   if (!file) return "";
+
   try {
-    const fileInfo = JSON.parse(file) || [];
-    const res = await getFileDownLoadPath({
-      objectName: fileInfo?.[0]?.response?.data
-    });
-    if (res.code === 200) {
-      avatarUrls.value[userId] = res.data;
-      return res.data;
+    // 尝试作为JSON字符串解析
+    const parsed = JSON.parse(file);
+
+    // 确保解析后是数组格式
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      // 处理数组格式，提取objectName
+      const objectName = parsed[0]?.response?.data || parsed[0]?.name;
+      if (objectName) {
+        const res = await getFileDownLoadPath({
+          objectName: objectName
+        });
+        if (res.code === 200) {
+          avatarUrls.value[userId] = res.data;
+          return res.data;
+        }
+      }
     }
+
     return "";
-  } catch (err) {
-    console.error("Failed to get preview URL:", err);
-    return "";
+  } catch (error) {
+    // 如果JSON.parse失败，说明是单纯的字符串，直接返回使用
+    console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
+    avatarUrls.value[userId] = file;
+    return file;
   }
 };
 

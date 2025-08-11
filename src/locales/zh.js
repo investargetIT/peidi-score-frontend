@@ -5,7 +5,9 @@ export default {
     pointshistory: "积分历史",
     pointsrank: "积分排行榜",
     adminboard: "管理员仪表板",
-    dashboard: "仪表盘"
+    dashboard: "仪表盘",
+    esg: "ESG",
+    task: "任务"
   },
   system: {
     title: "积分管理系统"
@@ -74,7 +76,8 @@ export default {
     otherReason: "其他",
     otherReasonPlaceholder: "请输入积分",
     onlyInteger: "请输入整数",
-    selectedCount: "当前选中的员工"
+    selectedCount: "当前选中的员工",
+    task: "任务管理"
   },
   navbar: {
     updateProfile: "更新资料",

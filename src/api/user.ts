@@ -64,7 +64,7 @@ export const getJsApi = params => {
 export const getUserInfo = code => {
   return http.request(
     "get",
-    `https://api.peidigroup.cn/oms/ding/userInfo?code=${code}`,
+    `https://user.peidigroup.cn/ding/userInfo?code=${code}`,
     {}
   );
 };
@@ -78,6 +78,12 @@ export const register = data => {
       data
     }
   );
+};
+
+export const registerMobile = data => {
+  return http.request("post", `https://user.peidigroup.cn/user/sms-register`, {
+    data
+  });
 };
 
 /** 刷新`token` */

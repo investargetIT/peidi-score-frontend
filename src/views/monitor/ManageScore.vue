@@ -160,6 +160,11 @@ const otherRuleMap = {
   chairman: "【业绩突破类】-【重大贡献】-董事长特别提名奖",
   manager: "【业绩突破类】-【重大贡献】-总经理特别提名奖",
   company: "【业绩突破类】-【重大贡献】-公司重大贡献",
+  personal: "【日常管理类】-【年度评优】-评优个人奖",
+  team: "【日常管理类】-【年度评优】-评优团队奖",
+  certificate: "【日常管理类】-【技能提升】-岗位专业证书考取",
+  special: "【日常管理类】-【技能提升】-公司需要特种证照考取",
+  teacher: "【日常管理类】-【技能提升】-技能传授/带教",
   other: "【其他】"
 };
 
@@ -239,11 +244,11 @@ const onDialogConfirm = async () => {
         const prevId = props.employee?.id;
         const newEmp = list.find(e => e && e.id === prevId);
         // emit("setSelectedEmployee", { ...newEmp });
-        emit("update:modelValue", checkedIds.value);
+        emit("update:modelValue", []);
       } else {
         // 多个用户时，清空选择
         // emit("setSelectedEmployee", null);
-        emit("update:modelValue", checkedIds.value);
+        emit("update:modelValue", []);
       }
     } else {
       // 找不到时清空状态

@@ -63,11 +63,25 @@ export const isAdmin = () => {
   return adminUserEnum.some(item => item.value === curDDUserInfo?.userid);
 };
 
+export const isEsgAdmin = () => {
+  const esgEnum = JSON.parse(localStorage.getItem("esgEnum") || "[]");
+  console.log("esgEnum", esgEnum);
+  const curDDUserInfo = JSON.parse(localStorage.getItem("ddUserInfo") || "{}");
+  console.log("curDDUserInfo", curDDUserInfo);
+  console.log(
+    "Checking esg admin: ",
+    curDDUserInfo?.userid,
+    "in",
+    esgEnum.map(item => item.value)
+  );
+  return esgEnum.some(item => item.value === curDDUserInfo?.userid);
+};
+
 /** 原始静态路由（未做任何处理） */
 const routes = [
   {
     path: "/history",
-    name: "history",
+    name: "HistoryLayout",
     redirect: "/history/index",
     component: Layout,
     meta: {
@@ -90,7 +104,7 @@ const routes = [
   },
   {
     path: "/score",
-    name: "score",
+    name: "ScoreLayout",
     redirect: "/scoreRank/index",
     component: Layout,
     meta: {
@@ -110,13 +124,64 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "/task",
+    name: "TaskLayout",
+    redirect: "/task/index",
+    component: Layout,
+    meta: {
+      icon: "flowbite:address-book-outline",
+      title: "menu.task",
+      rank: 0
+    },
+    children: [
+      {
+        path: "/task/index",
+        name: "task",
+        component: () => import("@/views/employeeTask/index.vue"),
+        meta: {
+          title: "menu.task",
+          showParent: false,
+          icon: "flowbite:address-book-outline"
+        }
+      }
+    ]
   }
 ];
 
+// ESG 管理员路由
+if (isEsgAdmin()) {
+  routes.push({
+    path: "/esg",
+    name: "EsgLayout",
+    redirect: "/esg/index",
+    component: Layout,
+    meta: {
+      icon: "ep:data-analysis",
+      title: "menu.esg",
+      rank: 0
+    },
+    children: [
+      {
+        path: "/esg/index",
+        name: "esg",
+        component: () => import("@/views/esg/index.vue"),
+        meta: {
+          title: "menu.esg",
+          showParent: false,
+          icon: "ep:data-analysis"
+        }
+      }
+    ]
+  });
+}
+
+// 系统管理员路由
 if (isAdmin()) {
   routes.push({
     path: "/monitor",
-    name: "monitor",
+    name: "MonitorLayout",
     redirect: "/monitor/index",
     component: Layout,
     meta: {

@@ -13,7 +13,7 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 import { initDingH5RemoteDebug } from "dingtalk-h5-remote-debug";
-import { getUserInfo, register } from "../../api/user";
+import { getUserInfo, register, registerMobile } from "../../api/user";
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
@@ -52,6 +52,20 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       loading.value = true;
+      const tempInfo = localStorage.getItem("ddUserInfo");
+
+      // 从 ddUserInfo 中获取 mobile 数据
+      let mobile = "";
+      if (tempInfo) {
+        try {
+          const ddUserInfo = JSON.parse(tempInfo);
+          mobile = ddUserInfo.mobile || "";
+          console.log("mobile from ddUserInfo:", mobile);
+        } catch (error) {
+          console.error("解析 ddUserInfo 失败:", error);
+        }
+      }
+
       useUserStoreHook()
         .loginByUsername({
           username: ruleForm.username,
@@ -68,14 +82,35 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                   "dataSource",
                   JSON.stringify({ ...data, userEmail: ruleForm.username })
                 );
-                // 获取枚举类型列表
-                getEnumTypeList({ type: "adminUser" }).then(enumRes => {
-                  if (enumRes.success) {
-                    localStorage.setItem(
-                      "adminUserEnum",
-                      JSON.stringify(enumRes.data)
-                    );
-                    // 获取后端路由并跳转
+                // 使用 Promise.all 并行获取多个枚举类型列表
+                Promise.all([
+                  getEnumTypeList({ type: "adminUser" }),
+                  getEnumTypeList({ type: "esg" })
+                ])
+                  .then(([adminUserRes, esgRes]) => {
+                    // 处理 adminUser 枚举结果
+                    if (adminUserRes.success) {
+                      localStorage.setItem(
+                        "adminUserEnum",
+                        JSON.stringify(adminUserRes.data)
+                      );
+                    } else {
+                      message("获取管理员列表失败", { type: "error" });
+                      return;
+                    }
+
+                    // 处理 esg 枚举结果
+                    if (esgRes.success) {
+                      localStorage.setItem(
+                        "esgEnum",
+                        JSON.stringify(esgRes.data)
+                      );
+                    } else {
+                      message("获取ESG枚举列表失败", { type: "error" });
+                      return;
+                    }
+
+                    // 所有枚举数据获取成功后，进行路由跳转
                     if (route.query.tabName == "worker") {
                       return initRouter().then(() => {
                         router.push({
@@ -90,10 +125,11 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                         });
                       });
                     }
-                  } else {
-                    message("获取管理员列表失败", { type: "error" });
-                  }
-                });
+                  })
+                  .catch(error => {
+                    console.error("获取枚举类型列表失败:", error);
+                    message("获取枚举类型列表失败", { type: "error" });
+                  });
               } else {
                 message("获取用户数据失败", { type: "error" });
               }
@@ -121,25 +157,44 @@ const ddLogin = () => {
           if (res.success) {
             const { data: ddUserInfo } = res;
             console.log("ddUserInfo", ddUserInfo);
-            // alert(JSON.stringify(ddUserInfo));
             localStorage.setItem("ddUserInfo", JSON.stringify(ddUserInfo));
-            const { org_email, name } = ddUserInfo;
+            const { org_email, name, userid, mobile } = ddUserInfo;
+
+            // 判断是否存在邮箱，决定使用邮箱注册还是手机号注册
             if (org_email) {
-              console.log("ddEmail", org_email);
+              console.log("使用邮箱注册，ddEmail:", org_email);
               ddUserEmail = org_email;
-              // 获取到钉钉用户企业邮箱，调用注册接口
-              ruleForm.username = ddUserEmail;
+              ruleForm.username = `${ddUserEmail}&${mobile}`;
               ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
+
+              // 使用邮箱注册，添加标识
               return register({
                 email: org_email,
                 emailCode: "",
                 password: DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD,
-                username: name
+                username: name,
+                dingId: userid
+              });
+            } else if (mobile) {
+              console.log("使用手机号注册，mobile:", mobile);
+              ruleForm.username = `&{mobile}`;
+              ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
+
+              // 使用手机号注册，添加标识
+              return registerMobile({
+                mobile,
+                mobileCode: "",
+                password: DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD,
+                username: name,
+                dingId: userid
               });
             } else {
-              message("获取钉钉用户企业邮箱失败：" + JSON.stringify(res), {
-                type: "error"
-              });
+              message(
+                "获取钉钉用户邮箱和手机号都失败：" + JSON.stringify(res),
+                {
+                  type: "error"
+                }
+              );
             }
           } else {
             message("用户注册失败：" + JSON.stringify(res), { type: "error" });
@@ -147,15 +202,37 @@ const ddLogin = () => {
         })
         .then(res => {
           if (res) {
-            if (
-              res.success ||
-              (res.code === 100100002 &&
-                res.msg === "EMAIL_ACCOUNT_ALREADY_EXIST")
-            ) {
+            // 获取当前用户信息来判断注册类型
+            const ddUserInfo = JSON.parse(
+              localStorage.getItem("ddUserInfo") || "{}"
+            );
+            const isEmailRegistration = !!ddUserInfo.org_email;
+
+            let registrationSuccess = false;
+
+            if (isEmailRegistration) {
+              // 邮箱注册的判断条件
+              registrationSuccess =
+                res.success ||
+                (res.code === 100100002 &&
+                  res.msg === "EMAIL_ACCOUNT_ALREADY_EXIST");
+              console.log("邮箱注册结果:", res);
+            } else {
+              // 手机号注册的判断条件
+              registrationSuccess =
+                res.success ||
+                (res.code === 100100003 &&
+                  res.msg === "PHONE_ACCOUNT_ALREADY_EXIST");
+              console.log("手机号注册结果:", res);
+            }
+
+            if (registrationSuccess) {
               // 注册成功，调用登录接口
+              console.log("注册成功，开始登录");
               onLogin(ruleFormRef.value);
             } else {
-              message("用户注册失败：" + JSON.stringify(res), {
+              const registrationType = isEmailRegistration ? "邮箱" : "手机号";
+              message(`${registrationType}注册失败：` + JSON.stringify(res), {
                 type: "error"
               });
             }
@@ -170,7 +247,8 @@ const ddLogin = () => {
                 userId: storageLocal()?.getItem("dataSource")?.id,
                 fullName: storageLocal()?.getItem("ddUserInfo")?.name,
                 email: storageLocal()?.getItem("ddUserInfo")?.org_email,
-                hireDateStr: storageLocal()?.getItem("ddUserInfo")?.hired_date
+                hireDateStr: storageLocal()?.getItem("ddUserInfo")?.hired_date,
+                avatarUrl: storageLocal()?.getItem("ddUserInfo")?.avatar
               }).then(res => {
                 if (res?.success) {
                   localStorage.setItem(
