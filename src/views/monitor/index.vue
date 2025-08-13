@@ -38,14 +38,12 @@
         </transition>
       </el-tab-pane> -->
       <el-tab-pane :label="t('monitor.history')" name="history">
-        <transition name="fade-transform" mode="out-in">
-          <HistoryScore
-            v-if="activeTab === 'history'"
-            :selected="selectedEmployee"
-            :t="t"
-            :activeTab="activeTab"
-          />
-        </transition>
+        <HistoryScore
+          v-if="activeTab === 'history'"
+          :selected="selectedEmployee"
+          :t="t"
+          :activeTab="activeTab"
+        />
       </el-tab-pane>
       <el-tab-pane :label="t('monitor.task')" name="task">
         <transition name="fade-transform" mode="out-in">
@@ -173,9 +171,11 @@ defineExpose({
   flex-direction: column;
   height: 100vh;
   padding: 24px;
+  overflow-y: auto;
 }
 
 .monitor-tabs {
+  flex-shrink: 0;
   padding: 0;
   margin-bottom: 32px;
   background: #f5f6f7;
@@ -239,13 +239,23 @@ defineExpose({
   display: none !important;
 }
 
+/* 确保tabs内容区域能够正常显示 */
+.el-tabs__content {
+  overflow: visible !important;
+}
+
+.el-tab-pane {
+  overflow: visible !important;
+}
+
 .main-content {
   display: flex;
   gap: 32px;
   align-items: stretch;
-  height: 600px;
+
+  /* height: 600px; */
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .employee-list {

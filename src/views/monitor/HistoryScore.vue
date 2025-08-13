@@ -5,6 +5,7 @@
       :data="scoreHistoryList"
       class="exchange-table no-border-table"
       header-row-class-name="exchange-header"
+      style="width: 100%"
     >
       <template #empty>
         <div
@@ -125,7 +126,9 @@ fetchHistoryList();
 <style scoped>
 .exchange-history-card {
   padding: 32px 32px 24px;
+  background: #fff;
   border-radius: 16px;
+  box-shadow: 0 2px 8px 0 #e5e6eb;
 }
 
 .exchange-title {
