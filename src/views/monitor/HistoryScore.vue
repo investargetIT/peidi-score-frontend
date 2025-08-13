@@ -66,7 +66,7 @@ const scoreHistoryList = ref([]);
 import dayjs from "dayjs";
 const pagination = ref({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 500,
   total: 0
 });
 const props = defineProps({
