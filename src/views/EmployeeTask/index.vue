@@ -731,33 +731,53 @@ const advancedQuestions = computed(() => {
   return questions.value.filter(q => q.difficulty === "advanced");
 });
 
-// 计算截止日期：validDate + validPeriod
+// 计算截止日期：hired_date + validPeriod
 const dueDate = computed(() => {
-  if (!validDate.value || !validPeriod.value) {
+  if (!hired_date || !validPeriod.value) {
     return new Date(); // 如果没有有效数据，返回当前日期
   }
 
-  const baseDate = new Date(validDate.value);
+  // 将hired_date时间戳转换为Date对象
+  // 检查是否为秒级时间戳（长度为10位），如果是则转换为毫秒
+  let hiredTimestamp = hired_date;
+
+  // 确保时间戳是数字类型
+  if (typeof hiredTimestamp === "string") {
+    hiredTimestamp = parseInt(hiredTimestamp, 10);
+  }
+
+  // 检查是否为秒级时间戳（长度为10位），如果是则转换为毫秒
+  if (hiredTimestamp.toString().length === 10) {
+    hiredTimestamp = hiredTimestamp * 1000;
+  }
+
+  const hiredDateObj = new Date(hiredTimestamp);
   const periodDays = parseInt(validPeriod.value, 10);
 
   if (isNaN(periodDays)) {
-    console.log("Invalid validPeriod, using base date");
-    return baseDate; // 如果周期不是有效数字，返回基础日期
+    console.log("Invalid validPeriod, using hired date");
+    return hiredDateObj; // 如果周期不是有效数字，返回入职日期
   }
 
-  // 计算截止日期 = validDate + validPeriod天
-  // 使用更安全的日期计算方法
-  const calculatedDueDate = new Date(baseDate);
+  // 检查日期对象是否有效
+  if (isNaN(hiredDateObj.getTime())) {
+    console.error("Invalid hired date object:", hiredDateObj);
+    return new Date(); // 如果入职日期无效，返回当前日期
+  }
+
+  // 计算截止日期 = hired_date + validPeriod天
+  const calculatedDueDate = new Date(hiredDateObj);
   // 使用 setTime() 方法添加毫秒数，避免 setDate() 的问题
   calculatedDueDate.setTime(
     calculatedDueDate.getTime() + periodDays * 24 * 60 * 60 * 1000
   );
 
-  console.log("baseDate:", baseDate);
+  console.log("hired_date:", hired_date);
+  console.log("处理后 hiredTimestamp:", hiredTimestamp);
+  console.log("hiredDateObj:", hiredDateObj);
   console.log("periodDays:", periodDays, "天");
   console.log("添加的毫秒数:", periodDays * 24 * 60 * 60 * 1000);
   console.log("calculatedDueDate:", calculatedDueDate);
-  console.log("hired_date:", hired_date);
 
   return calculatedDueDate;
 });
