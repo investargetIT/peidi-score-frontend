@@ -13,7 +13,12 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 import { initDingH5RemoteDebug } from "dingtalk-h5-remote-debug";
-import { getUserInfo, register, registerMobile } from "../../api/user";
+import {
+  getUserInfo,
+  register,
+  registerMobile,
+  getUserSite
+} from "../../api/user";
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
@@ -41,11 +46,18 @@ const { dataTheme, overallStyle, dataThemeChange } = useDataThemeChange();
 dataThemeChange(overallStyle.value);
 const { title } = useNav();
 initDingH5RemoteDebug();
+const siteList = ref([
+  // {
+  //   label: "杭州",
+  //   value: "hangzhou"
+  // }
+]);
 const ruleForm = reactive({
   // username: "taijp@peidibrand.com",
   // password: "Aa123456"
   username: "",
-  password: ""
+  password: "",
+  site: ""
 });
 const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -69,7 +81,8 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       useUserStoreHook()
         .loginByUsername({
           username: ruleForm.username,
-          password: ruleForm.password
+          password: ruleForm.password,
+          site: ruleForm.site
         })
         .then(res => {
           if (res.success) {
@@ -164,7 +177,7 @@ const ddLogin = () => {
             if (org_email) {
               console.log("使用邮箱注册，ddEmail:", org_email);
               ddUserEmail = org_email;
-              ruleForm.username = `${ddUserEmail}&${mobile}`;
+              ruleForm.username = `${ddUserEmail}`;
               ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
 
               // 使用邮箱注册，添加标识
@@ -173,11 +186,12 @@ const ddLogin = () => {
                 emailCode: "",
                 password: DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD,
                 username: name,
-                dingId: userid
+                dingId: userid,
+                mobile: mobile
               });
             } else if (mobile) {
               console.log("使用手机号注册，mobile:", mobile);
-              ruleForm.username = `&{mobile}`;
+              ruleForm.username = `${mobile}`;
               ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
 
               // 使用手机号注册，添加标识
@@ -286,6 +300,15 @@ function onkeypress({ code }: KeyboardEvent) {
 
 onMounted(() => {
   window.document.addEventListener("keypress", onkeypress);
+
+  // 获取基地信息
+  getUserSite().then(res => {
+    if (res.success) {
+      const { data } = res;
+      console.log("siteList", data);
+      siteList.value = data;
+    }
+  });
 });
 
 onBeforeUnmount(() => {
@@ -355,6 +378,24 @@ onBeforeUnmount(() => {
               </el-form-item>
             </Motion>
 
+            <Motion :delay="150">
+              <el-form-item prop="site">
+                <el-select v-model="ruleForm.site" clearable placeholder="基地">
+                  <template #prefix>
+                    <el-icon size="14" style="margin-right: 2px">
+                      <LocationFilled />
+                    </el-icon>
+                  </template>
+                  <el-option
+                    v-for="item in siteList"
+                    :key="item.id"
+                    :label="item.siteName"
+                    :value="item.id"
+                  />
+                </el-select>
+              </el-form-item>
+            </Motion>
+
             <Motion :delay="250">
               <el-button
                 class="w-full mt-4"
@@ -380,5 +421,13 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 :deep(.el-input-group__append, .el-input-group__prepend) {
   padding: 0;
+}
+
+:deep(.el-select__wrapper) {
+  padding: 1px 15px;
+
+  span {
+    font-size: 14px;
+  }
 }
 </style>

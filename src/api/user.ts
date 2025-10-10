@@ -69,6 +69,11 @@ export const getUserInfo = code => {
   );
 };
 
+// 获取基地信息
+export const getUserSite = () => {
+  return http.request("get", `https://user.peidigroup.cn/user/site`, {});
+};
+
 // 注册
 export const register = data => {
   return http.request(
