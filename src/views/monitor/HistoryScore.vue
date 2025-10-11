@@ -5,6 +5,7 @@
       :data="scoreHistoryList"
       class="exchange-table no-border-table"
       header-row-class-name="exchange-header"
+      style="width: 100%"
     >
       <template #empty>
         <div
@@ -66,7 +67,7 @@ const scoreHistoryList = ref([]);
 import dayjs from "dayjs";
 const pagination = ref({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 500,
   total: 0
 });
 const props = defineProps({
@@ -125,7 +126,9 @@ fetchHistoryList();
 <style scoped>
 .exchange-history-card {
   padding: 32px 32px 24px;
+  background: #fff;
   border-radius: 16px;
+  box-shadow: 0 2px 8px 0 #e5e6eb;
 }
 
 .exchange-title {
