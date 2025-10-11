@@ -272,11 +272,11 @@ Wind评级"
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="管理体系" name="management-system">
+      <el-collapse-item title="安全生产管理体系" name="management-system">
         <template #title>
           <div class="collapse-title">
             <span
-              >管理体系
+              >安全生产管理体系
               <EsgTooltip content="Wind评级、GRI 403" />
             </span>
             <el-icon class="collapse-icon"></el-icon>
@@ -343,11 +343,11 @@ Wind评级"
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="管理实践" name="management-practice">
+      <el-collapse-item title="安全生产管理实践" name="management-practice">
         <template #title>
           <div class="collapse-title">
             <span
-              >管理实践
+              >安全生产管理实践
               <EsgTooltip content="Wind评级、GRI 403" />
             </span>
             <el-icon class="collapse-icon"></el-icon>

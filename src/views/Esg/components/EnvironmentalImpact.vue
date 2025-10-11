@@ -2287,7 +2287,7 @@
             <el-form-item label="年度目标完成情况">
               <template #label>
                 <div>
-                  <span> 取水 </span>
+                  <span> 年度目标完成情况 </span>
                   <EsgTooltip content="报告期内公司目标完成情况" />
                 </div>
               </template>

@@ -60,11 +60,11 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="战略与目标" name="strategy-goals">
+      <el-collapse-item title="科技创新-战略与目标" name="strategy-goals">
         <template #title>
           <div class="collapse-title">
             <span
-              >战略与目标
+              >科技创新-战略与目标
               <EsgTooltip
                 content="交易所可持续发展报告指<br/>
 Wind评级"
@@ -120,11 +120,11 @@ Wind评级"
         </div>
       </el-collapse-item>
       <!-- 其他折叠项 -->
-      <el-collapse-item title="体系及策略" name="system-strategy">
+      <el-collapse-item title="科技创新-体系及策略" name="system-strategy">
         <template #title>
           <div class="collapse-title">
             <span
-              >体系及策略
+              >科技创新-体系及策略
               <EsgTooltip
                 content="交易所可持续发展报告指引<br/>
 Wind评级"
@@ -236,10 +236,10 @@ Wind评级"
         </div>
       </el-collapse-item>
 
-      <el-collapse-item title="成果与荣誉" name="achievements-honors">
+      <el-collapse-item title="科技创新-成果与荣誉" name="achievements-honors">
         <template #title>
           <div class="collapse-title">
-            <span>成果与荣誉 </span>
+            <span>科技创新-成果与荣誉 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -416,7 +416,7 @@ Wind评级"
       <el-collapse-item title="合作机制" name="cooperation-mechanism">
         <template #title>
           <div class="collapse-title">
-            <span>协会成员资格 </span>
+            <span>合作机制 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
@@ -542,10 +542,10 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="管理体系" name="management-system">
+      <el-collapse-item title="知识产权保护-管理体系" name="management-system">
         <template #title>
           <div class="collapse-title">
-            <span> 管理体系 </span>
+            <span> 知识产权保护-管理体系 </span>
             <el-icon class="collapse-icon"></el-icon>
           </div>
         </template>
