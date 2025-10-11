@@ -296,7 +296,7 @@ fetchCurUserInfo();
           </el-form-item>
           <el-form-item :label="t('navbar.hiredDate')">
             <span>{{
-              hired_date ? dayjs(hired_date).format("YYYY-MM-DD") : "-"
+              hired_date ? dayjs(Number(hired_date)).format("YYYY-MM-DD") : "-"
             }}</span>
           </el-form-item>
           <el-form-item :label="t('navbar.longTermPoints')">

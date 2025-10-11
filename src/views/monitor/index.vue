@@ -110,6 +110,12 @@ const fetchUserListData = async () => {
         ...item,
         name: item.fullName
       }));
+
+      // 根据当前选中的员工ID更新选中状态
+      selectedEmployee.value = employees.value.find(
+        emp => emp.id === selectedEmployee.value?.id
+      );
+
       backEmployees.value = employees.value;
       // 并行预加载所有头像
       const avatarPromises = res.data.records
