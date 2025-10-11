@@ -248,7 +248,7 @@ const onDialogConfirm = async () => {
       } else {
         // 多个用户时，清空选择
         // emit("setSelectedEmployee", null);
-        // emit("update:modelValue", []);
+        emit("update:modelValue", []);
       }
     } else {
       // 找不到时清空状态

@@ -68,9 +68,9 @@ watch(searchValue, val => {
   emit("update:search", val);
   // 当搜索框清空时，清空选中数据
   if (!val || val.trim() === "") {
-    checkedIds.value = [];
-    emit("update:modelValue", []);
-    emit("select", null);
+    // checkedIds.value = [];
+    // emit("update:modelValue", []);
+    // emit("select", null);
   }
 });
 watch(
