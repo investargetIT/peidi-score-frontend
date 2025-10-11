@@ -667,14 +667,11 @@ Wind评级"
                   />
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.patentTotalCount"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
-                />
-                <span>项</span>
-              </div>
+              <el-input
+                v-model="formData.patentTotalCount"
+                type="textarea"
+                :rows="1"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -685,14 +682,11 @@ Wind评级"
                   />
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.patentNewTypeCount"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
-                />
-                <span>项</span>
-              </div>
+              <el-input
+                v-model="formData.patentNewTypeCount"
+                type="textarea"
+                :rows="1"
+              />
             </el-form-item>
           </el-form>
         </div>

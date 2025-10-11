@@ -1859,14 +1859,11 @@ Wind评级"
                   <EsgTooltip content="职工代表大会的内容和年度召开次数" />
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.employeeRepresentativeMeetingCount"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>次</span>
-              </div>
+              <el-input
+                v-model="formData.employeeRepresentativeMeetingCount"
+                type="textarea"
+                :rows="4"
+              />
             </el-form-item>
             <el-form-item label="员工满意度与敬业度调查">
               <template #label>

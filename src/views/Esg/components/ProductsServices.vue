@@ -718,14 +718,11 @@ Wind评级"
                   />
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.productRecallCount"
-                  :formatter="onlyPositiveInteger"
-                  :parser="onlyPositiveInteger"
-                />
-                <span>次</span>
-              </div>
+              <el-input
+                v-model="formData.productRecallCount"
+                type="textarea"
+                :rows="6"
+              />
             </el-form-item>
           </el-form>
         </div>

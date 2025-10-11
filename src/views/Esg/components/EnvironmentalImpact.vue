@@ -1667,14 +1667,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.electricityConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>千瓦时</span>
-              </div>
+              <el-input
+                v-model="formData.electricityConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1685,14 +1683,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.heatConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吉焦</span>
-              </div>
+              <el-input
+                v-model="formData.heatConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1703,14 +1699,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.steamConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.steamConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1721,14 +1715,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.coalConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.coalConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1739,14 +1731,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.lngConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.lngConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1757,14 +1747,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.naturalGasConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.naturalGasConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1775,14 +1763,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.fuelOilConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.fuelOilConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1793,14 +1779,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.lubricantConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.lubricantConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1811,14 +1795,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.dieselConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.dieselConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1829,14 +1811,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.gasolineConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.gasolineConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1847,14 +1827,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.lpgConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.lpgConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1865,14 +1843,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.otherPetroleumProductsConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.otherPetroleumProductsConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1885,14 +1861,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.renewableEnergyUsage"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.renewableEnergyUsage"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1905,14 +1879,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.organizationInternalEnergyConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.organizationInternalEnergyConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1925,14 +1897,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.externalEnergyConsumption"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.externalEnergyConsumption"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1945,14 +1915,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.energySavingMeasures"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.energySavingMeasures"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1965,14 +1933,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.energyIntensity"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.energyIntensity"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
             <el-form-item>
               <template #label>
@@ -1985,14 +1951,12 @@
                   </span>
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.energySavingAmount"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨标准煤</span>
-              </div>
+              <el-input
+                v-model="formData.energySavingAmount"
+                type="textarea"
+                :rows="1"
+                placeholder="单位：千瓦时或吨标准煤、%"
+              />
             </el-form-item>
           </el-form>
         </div>
@@ -2662,14 +2626,11 @@
                   />
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.hazardousWasteTotal"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨/CNY</span>
-              </div>
+              <el-input
+                v-model="formData.hazardousWasteTotal"
+                type="textarea"
+                :rows="4"
+              />
             </el-form-item>
             <el-form-item label="无害废物排放总量">
               <template #label>
@@ -2680,14 +2641,11 @@
                   />
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.nonHazardousWasteTotal"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨/CNY</span>
-              </div>
+              <el-input
+                v-model="formData.nonHazardousWasteTotal"
+                type="textarea"
+                :rows="4"
+              />
             </el-form-item>
             <el-form-item label="从处置中转移的废弃物">
               <template #label>
@@ -2698,14 +2656,11 @@
                   />
                 </div>
               </template>
-              <div class="textContainer">
-                <el-input
-                  v-model="formData.wasteTransferredFromDisposal"
-                  :formatter="onlyPositiveNumber"
-                  :parser="onlyPositiveNumber"
-                />
-                <span>吨/CNY</span>
-              </div>
+              <el-input
+                v-model="formData.wasteTransferredFromDisposal"
+                type="textarea"
+                :rows="4"
+              />
             </el-form-item>
             <el-form-item label="进入处置的废弃物">
               <template #label>
@@ -2719,7 +2674,7 @@
               <el-input
                 v-model="formData.wasteDisposalMethods"
                 type="textarea"
-                :rows="6"
+                :rows="4"
                 placeholder="双汇发展的屠宰和养殖业务均产生有害废弃物、一般固体废物和动物粪便三类固体废弃物。我们的排放物主要来源于生产和养殖环节。在生产运营过程中，双汇发展不断改进生产工艺与设施，优化排放物处理处置方式，从设施和管理两个方面降低污染物排放浓度。双汇发展亦注重养殖过程中的排放物产生的环境影响，开展通过优化饲料肉料比、饲料添加剂的相关研究，减少饲料消耗，从源头减少粪污产生，力求实现粪污减量化的目标。在常规处理方式18的基础上，我们开展专项研究推进养殖业的粪污处理工作，与第三方能源公司合作使用鸡粪制备生物质天然气，通过定向优先使用生物质天然气、价格优惠的方式，实现粪污资源化利用。报告期内，西华基地合作项目已10月份投入运行，日处理鸡粪400吨，日产天然气1万m³，后续将继续扩大产能，未来计划将合作项目拓展至阜新基地。我们于本年度将养殖业猪粪、鸡粪，及产生加工业务的滞销品、废品等纳入定量目标，报告期内，双汇发展养殖端所产生的猪粪和鸡粪已100%实现循环利用。2023年实现回收利用的废弃物1,439,813.9   吨，处置废弃物6,349.2吨。     ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
