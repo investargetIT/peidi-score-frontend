@@ -316,7 +316,7 @@
                   />
                 </div>
               </template>
-              <div class="textContainer">
+              <!-- <div class="textContainer">
                 <div class="textAlignStyle">
                   <span>离职员工总数</span>
                   <el-input
@@ -337,7 +337,12 @@
                   />
                   <span>%</span>
                 </div>
-              </div>
+              </div> -->
+              <el-input
+                v-model="formData.turnoverCountByAgeGroupTextarea"
+                type="textarea"
+                :rows="6"
+              />
             </el-form-item>
             <el-form-item style="margin-bottom: 35px">
               <template #label>
@@ -348,7 +353,7 @@
                   />
                 </div>
               </template>
-              <div class="textContainer">
+              <!-- <div class="textContainer">
                 <div class="textAlignStyle">
                   <span>离职员工总数</span>
                   <el-input
@@ -369,7 +374,12 @@
                   />
                   <span>%</span>
                 </div>
-              </div>
+              </div> -->
+              <el-input
+                v-model="formData.turnoverCountByGenderTextarea"
+                type="textarea"
+                :rows="6"
+              />
             </el-form-item>
             <el-form-item style="margin-bottom: 35px">
               <template #label>
@@ -380,7 +390,7 @@
                   />
                 </div>
               </template>
-              <div class="textContainer">
+              <!-- <div class="textContainer">
                 <div class="textAlignStyle">
                   <span>离职员工总数</span>
                   <el-input
@@ -401,7 +411,12 @@
                   />
                   <span>%</span>
                 </div>
-              </div>
+              </div> -->
+              <el-input
+                v-model="formData.turnoverCountByRegionTextarea"
+                type="textarea"
+                :rows="6"
+              />
             </el-form-item>
           </el-form>
         </div>
@@ -1467,13 +1482,35 @@ Wind评级"
                   />
                 </div>
               </template>
-              <div class="textContainer">
+              <!-- <div class="textContainer">
                 <el-input
                   v-model="formData.avgTrainingHoursByGender"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
                 <span>小时</span>
+              </div> -->
+              <div class="textContainer">
+                <div class="textAlignStyle">
+                  <span>女性</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.avgTrainingHoursByGenderFemale"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
+                  />
+                  <span>小时</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>男性</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.avgTrainingHoursByGenderMale"
+                    :formatter="onlyPositiveNumber"
+                    :parser="onlyPositiveNumber"
+                  />
+                  <span>小时</span>
+                </div>
               </div>
             </el-form-item>
             <el-form-item>
@@ -1647,13 +1684,35 @@ Wind评级"
                   />
                 </div>
               </template>
-              <div class="textContainer">
+              <!-- <div class="textContainer">
                 <el-input
                   v-model="formData.trainingPassRateByGender"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
+              </div> -->
+              <div class="textContainer">
+                <div class="textAlignStyle">
+                  <span>女性</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.trainingPassRateByGenderFemale"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
+                  />
+                  <span>小时</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>男性</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.trainingPassRateByGenderMale"
+                    :formatter="onlyPositiveNumber"
+                    :parser="onlyPositiveNumber"
+                  />
+                  <span>小时</span>
+                </div>
               </div>
             </el-form-item>
             <el-form-item>
@@ -1665,13 +1724,45 @@ Wind评级"
                   />
                 </div>
               </template>
-              <div class="textContainer">
+              <!-- <div class="textContainer">
                 <el-input
                   v-model="formData.trainingPassRateByPosition"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
                 />
                 <span>%</span>
+              </div> -->
+              <div class="textContainer">
+                <div class="textAlignStyle">
+                  <span>中层管理人员</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.trainingPassRateByPositionMiddle"
+                    :formatter="onlyPositiveInteger"
+                    :parser="onlyPositiveInteger"
+                  />
+                  <span>%</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>高级管理人员</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.trainingPassRateByPositionSenior"
+                    :formatter="onlyPositiveNumber"
+                    :parser="onlyPositiveNumber"
+                  />
+                  <span>%</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>其他劳务关系人员</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.trainingPassRateByPositionOther"
+                    :formatter="onlyPositiveNumber"
+                    :parser="onlyPositiveNumber"
+                  />
+                  <span>%</span>
+                </div>
               </div>
             </el-form-item>
           </el-form>
@@ -2473,7 +2564,18 @@ const formData = ref({
   millionWorkHourLostTimeRate: "",
   millionWorkHourLTIR: "",
   millionWorkHourTRIR: "",
-  workInjuryCompensationAmount: ""
+  workInjuryCompensationAmount: "",
+
+  turnoverCountByAgeGroupTextarea: "",
+  turnoverCountByGenderTextarea: "",
+  turnoverCountByRegionTextarea: "",
+  avgTrainingHoursByGenderFemale: "",
+  avgTrainingHoursByGenderMale: "",
+  trainingPassRateByGenderFemale: "",
+  trainingPassRateByGenderMale: "",
+  trainingPassRateByPositionMiddle: "",
+  trainingPassRateByPositionSenior: "",
+  trainingPassRateByPositionOther: ""
 });
 
 // 文件上传处理

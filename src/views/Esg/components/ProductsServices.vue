@@ -145,16 +145,16 @@ Wind评级"
                 placeholder="双汇发展的下属生产企业按业务属性和需要获得和保有多个国际质量管理体系认证。报告期内，2家下属公司新增相关认证:汇佳味公司获得ISO 9001认证，食用油科技公司获得ISO 9001认证和HACCP认证。截止2023年底，本公司拥有的质量体系认证情况如下:双汇发展及其下属公司100%保有ISO 9001质量管理体系认证，共覆盖42家公司;涉及屠宰和肉制品加工的公司拥有HACCP危害分析与关键控制点体系认证，已覆盖17家公司;ISO 22000食品安全管理体系覆盖16家公司;我们亦根据国际客户的需求定向申请FSSC 22000食品安全管理体系认证，覆盖6家公司。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
-            <el-form-item label="附件上传" prop="honorsAndAwardsFileList">
+            <el-form-item label="附件上传" prop="certificationAndAuditFileList">
               <template #label>
                 <div>
                   <span> 附件上传 </span>
-                  <EsgTooltip content="上传图片" />
+                  <EsgTooltip content="上传认证与审验图片" />
                 </div>
               </template>
               <el-upload
                 class="upload-area"
-                v-model:file-list="formData.honorsAndAwardsFileList"
+                v-model:file-list="formData.certificationAndAuditFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 drag
@@ -184,6 +184,30 @@ Wind评级"
                 :rows="4"
                 placeholder="双汇发展秉持产品质量无小事，食品安全大如天的理念，致力于以自上而下的方式打造质量文化，通过每年组织开展系统性、专业性的质量培训，培养员工及合作伙伴的质量意识和技能，确保产品质量的持续提升。同时，我们每月组织工厂召开质量专题会，主要通报各工厂在质量管理方面存在的短板指标，督促相对排名靠后的工厂分析原因并及时反馈和进行必要整改，形成解决质量问题的长效机制。报告期内，我们举办劳动比赛、技术比武176场次，开展食品安全质量知识竞赛、安全生产知识竞赛56场次，有效提高职工实际岗位技能，加强员工团结协作融合。我们每年开展质量安全相关培训，2023年共开展5235次培训，参与培训468215人次，培训时长总计1224490时，员工培训覆盖率100%。——双汇发展2023年ESG报告"
               />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="trainingAndPromotionFileList">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传宣贯与培训图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.trainingAndPromotionFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -258,12 +282,66 @@ Wind评级"
                 <div>
                   <span> 荣誉及奖项</span>
                   <EsgTooltip
-                    content="报告期内公司在质量管理方面取得的成绩与荣誉"
+                    content="报告期内公司在质量管理方面取得的成绩与荣誉。"
                   />
                 </div>
               </template>
               <el-input
                 v-model="formData.honorsAndAwards"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="honorsAndAwardsFileList">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.honorsAndAwardsFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="重大事故">
+              <template #label>
+                <div>
+                  <span> 重大事故</span>
+                  <EsgTooltip
+                    content="描述公司发生的产品和服务相关的安全与质量重大责任事故，包括事件性质（如行政处罚等）、造成的影响及损害涉及的金额、采取的应对措施及进展（如有）。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.majorIncidents"
+                type="textarea"
+                :rows="4"
+              />
+            </el-form-item>
+            <el-form-item label="健康与安全">
+              <template #label>
+                <div>
+                  <span> 健康与安全</span>
+                  <EsgTooltip
+                    content="描述公司对产品的安全性进行评估和改善的举措、以及相关产品所占的比例、产品违反健康/安全法律法规的情况。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.healthAndSafety"
                 type="textarea"
                 :rows="4"
               />
@@ -431,6 +509,46 @@ Wind评级"
                 type="textarea"
                 :rows="4"
                 placeholder="2023年各单位共进行各类应急演练1,287场次，累计参加应急演练人员19万余人次。 ——《双汇发展2023年ESG报告》"
+              />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="emergencyManagementFileList">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.emergencyManagementFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="装备安全管理">
+              <template #label>
+                <div>
+                  <span> 装备安全管理 </span>
+                  <EsgTooltip
+                    content="公司为维护装备的使用安全而制定的措施、投入的金额、建立的预防机制等。"
+                  />
+                </div>
+              </template>
+              <el-input
+                v-model="formData.equipmentSafetyManagement"
+                type="textarea"
+                :rows="4"
+                placeholder="公司所属公司加装粉尘过滤设备，为了降低筛分场 所内的粉尘浓度，保护作业环境安全性，确保原辅 料车间的洁净度。设备安全投入23.2万元。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
           </el-form>
@@ -802,8 +920,12 @@ const formData = ref({
   customerComplaints: "", // 客户投诉
   customerSatisfaction: "", // 客户满意度
   productRecallProcedure: "", // 产品召回程序
-  productRecallCount: "" // 产品召回数量
+  productRecallCount: "", // 产品召回数量
   // ... (add any other fields as needed based on template usage)
+
+  trainingAndPromotionFileList: [], // 附件上传 (宣贯与培训)
+  certificationAndAuditFileList: [], // 附件上传 (认证与审验)
+  emergencyManagementFileList: [] // 附件上传 (安全应急事件管理)
 });
 
 // 文件上传处理
