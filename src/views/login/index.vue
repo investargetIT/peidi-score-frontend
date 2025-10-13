@@ -96,29 +96,6 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                   JSON.stringify({ ...data, userEmail: ruleForm.username })
                 );
 
-                // #region 入职时间逻辑 （如果用户没有入职时间，才去获取）
-                if (!storageLocal().getItem("ddUserInfo")?.hired_date) {
-                  getUserInfoData({ userId: data.id }).then(res => {
-                    if (res.success) {
-                      const { hireDate } = res.data;
-                      if (hireDate) {
-                        const hireDateTimestamp = new Date(hireDate).getTime();
-                        storageLocal().setItem("ddUserInfo", {
-                          ...(storageLocal().getItem("ddUserInfo") || {}),
-                          hired_date: hireDateTimestamp.toString()
-                        });
-                      } else {
-                        console.log("用户没有入职时间");
-                      }
-                      console.log("用户信息:", res.data);
-                    } else {
-                      message("获取用户信息失败", { type: "error" });
-                      return;
-                    }
-                  });
-                }
-                // #endregion
-
                 // 使用 Promise.all 并行获取多个枚举类型列表
                 Promise.all([
                   getEnumTypeList({ type: "adminUser" }),
@@ -280,6 +257,32 @@ const ddLogin = () => {
           if (res) {
             if (res.success) {
               localStorage.setItem("token", res.data);
+
+              // #region 入职时间逻辑 （如果用户没有入职时间，才去获取）
+              if (!storageLocal().getItem("ddUserInfo")?.hired_date) {
+                getUserInfoData({
+                  userId: storageLocal()?.getItem("dataSource")?.id
+                }).then(res => {
+                  if (res.success) {
+                    const { hireDate } = res.data;
+                    if (hireDate) {
+                      const hireDateTimestamp = new Date(hireDate).getTime();
+                      storageLocal().setItem("ddUserInfo", {
+                        ...(storageLocal().getItem("ddUserInfo") || {}),
+                        hired_date: hireDateTimestamp.toString()
+                      });
+                    } else {
+                      console.log("用户没有入职时间");
+                    }
+                    console.log("用户信息:", res.data);
+                  } else {
+                    message("获取用户信息失败", { type: "error" });
+                    return;
+                  }
+                });
+              }
+              // #endregion
+
               // 初始化用户配置
               updateUserInfo({
                 userId: storageLocal()?.getItem("dataSource")?.id,
