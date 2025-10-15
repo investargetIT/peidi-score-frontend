@@ -271,6 +271,9 @@ const ddLogin = () => {
                         ...(storageLocal().getItem("ddUserInfo") || {}),
                         hired_date: hireDateTimestamp.toString()
                       });
+
+                      // 初始化用户配置
+                      initUserInfo();
                     } else {
                       console.log("用户没有入职时间");
                     }
@@ -280,26 +283,12 @@ const ddLogin = () => {
                     return;
                   }
                 });
+              } else {
+                // 初始化用户配置
+                initUserInfo();
               }
               // #endregion
 
-              // 初始化用户配置
-              updateUserInfo({
-                userId: storageLocal()?.getItem("dataSource")?.id,
-                fullName: storageLocal()?.getItem("ddUserInfo")?.name,
-                email: storageLocal()?.getItem("ddUserInfo")?.org_email,
-                hireDateStr: storageLocal()?.getItem("ddUserInfo")?.hired_date,
-                avatarUrl: storageLocal()?.getItem("ddUserInfo")?.avatar
-              }).then(res => {
-                if (res?.success) {
-                  localStorage.setItem(
-                    "userInfo",
-                    JSON.stringify({
-                      ...res?.data
-                    })
-                  );
-                }
-              });
               // 登录成功，跳转到指定页面
               const urlParams = new URL(window.location.href).searchParams;
               window.location.href = urlParams.get("redirect") || "/";
@@ -317,6 +306,26 @@ const ddLogin = () => {
 };
 
 ddLogin();
+
+function initUserInfo() {
+  // 初始化用户配置
+  updateUserInfo({
+    userId: storageLocal()?.getItem("dataSource")?.id,
+    fullName: storageLocal()?.getItem("ddUserInfo")?.name,
+    email: storageLocal()?.getItem("ddUserInfo")?.org_email,
+    hireDateStr: storageLocal()?.getItem("ddUserInfo")?.hired_date,
+    avatarUrl: storageLocal()?.getItem("ddUserInfo")?.avatar
+  }).then(res => {
+    if (res?.success) {
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          ...res?.data
+        })
+      );
+    }
+  });
+}
 
 /** 使用公共函数，避免`removeEventListener`失效 */
 function onkeypress({ code }: KeyboardEvent) {
