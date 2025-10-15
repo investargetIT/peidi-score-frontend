@@ -66,7 +66,8 @@ export const isAdmin = () => {
 export const isEsgAdmin = () => {
   const esgEnum = JSON.parse(localStorage.getItem("esgEnum") || "[]");
   console.log("esgEnum", esgEnum);
-  const curDDUserInfo = JSON.parse(localStorage.getItem("ddUserInfo") || "{}");
+  // const curDDUserInfo = JSON.parse(localStorage.getItem("ddUserInfo") || "{}");
+  const curDDUserInfo = JSON.parse(localStorage.getItem("esgUserInfo") || "{}");
   console.log("curDDUserInfo", curDDUserInfo);
   console.log(
     "Checking esg admin: ",

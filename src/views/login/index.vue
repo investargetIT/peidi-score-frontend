@@ -25,7 +25,7 @@ import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
 import * as dd from "dingtalk-jsapi";
 import { useRoute } from "vue-router";
-import { getUserDataSourceApi } from "@/api/user";
+import { getUserDataSourceApi, getUserCheck } from "@/api/user";
 import { updateUserInfo, getEnumTypeList, getUserInfoData } from "@/api/pmApi";
 import { storageLocal } from "@pureadmin/utils";
 const route = useRoute();
@@ -59,7 +59,10 @@ const ruleForm = reactive({
   password: "",
   site: ""
 });
-const onLogin = async (formEl: FormInstance | undefined) => {
+const onLogin = async (
+  formEl: FormInstance | undefined,
+  isDingTalkLogin: boolean = true
+) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -148,6 +151,17 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                 message("获取用户数据失败", { type: "error" });
               }
             });
+
+            //#region ESG权限逻辑
+            getUserCheck(res?.data).then(res =>
+              localStorage.setItem(
+                "esgUserInfo",
+                JSON.stringify({
+                  userid: res?.data?.id
+                })
+              )
+            );
+            //#endregion
           } else {
             message("登录失败", { type: "error" });
           }
@@ -330,7 +344,7 @@ function initUserInfo() {
 /** 使用公共函数，避免`removeEventListener`失效 */
 function onkeypress({ code }: KeyboardEvent) {
   if (["Enter", "NumpadEnter"].includes(code)) {
-    onLogin(ruleFormRef.value);
+    onLogin(ruleFormRef.value, false);
   }
 }
 
@@ -438,7 +452,7 @@ onBeforeUnmount(() => {
                 size="default"
                 type="primary"
                 :loading="loading"
-                @click="onLogin(ruleFormRef)"
+                @click="onLogin(ruleFormRef, false)"
               >
                 登录
               </el-button>
