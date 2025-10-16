@@ -78,6 +78,14 @@ export const isEsgAdmin = () => {
   return esgEnum.some(item => item.value === curDDUserInfo?.userid);
 };
 
+export const isSiteHangzhou = () => {
+  const esgUserInfo = JSON.parse(localStorage.getItem("esgUserInfo") || "{}");
+  if (esgUserInfo?.site === "3") {
+    return true;
+  }
+  return false;
+};
+
 /** 原始静态路由（未做任何处理） */
 const routes = [
   {
@@ -125,8 +133,35 @@ const routes = [
         }
       }
     ]
-  },
-  {
+  }
+  // {
+  //   path: "/task",
+  //   name: "TaskLayout",
+  //   redirect: "/task/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "flowbite:address-book-outline",
+  //     title: "menu.task",
+  //     rank: 0
+  //   },
+  //   children: [
+  //     {
+  //       path: "/task/index",
+  //       name: "task",
+  //       component: () => import("@/views/employeeTask/index.vue"),
+  //       meta: {
+  //         title: "menu.task",
+  //         showParent: false,
+  //         icon: "flowbite:address-book-outline"
+  //       }
+  //     }
+  //   ]
+  // }
+];
+
+//
+if (isSiteHangzhou()) {
+  routes.push({
     path: "/task",
     name: "TaskLayout",
     redirect: "/task/index",
@@ -148,8 +183,8 @@ const routes = [
         }
       }
     ]
-  }
-];
+  });
+}
 
 // ESG 管理员路由
 if (isEsgAdmin()) {

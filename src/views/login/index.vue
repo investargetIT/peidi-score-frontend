@@ -157,7 +157,8 @@ const onLogin = async (
               localStorage.setItem(
                 "esgUserInfo",
                 JSON.stringify({
-                  userid: res?.data?.id
+                  userid: res?.data?.id,
+                  site: res?.data?.dataSource
                 })
               )
             );

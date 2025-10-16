@@ -38,7 +38,10 @@ const { userAvatar } = useNav();
 const curUserInfo = ref({});
 const curUserAvatar = ref("");
 
-const { name } = storageLocal()?.getItem("ddUserInfo") || {};
+const name =
+  storageLocal()?.getItem("ddUserInfo")?.name ||
+  storageLocal()?.getItem("dataSource")?.username ||
+  {};
 const activities = ref([]);
 
 const avatar = computed(() => {
