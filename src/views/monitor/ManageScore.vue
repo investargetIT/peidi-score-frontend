@@ -142,6 +142,7 @@ import { changeNumberFormat } from "@/utils/common";
 import { updateUseScore, getPointRuleList, addScoreAction } from "@/api/pmApi";
 import { ElMessage } from "element-plus";
 import Avatar from "@/assets/user.jpg";
+import { storageLocal } from "@pureadmin/utils";
 
 const { t } = useI18n();
 const pointRuleList = ref([]);
@@ -247,7 +248,8 @@ const onDialogConfirm = async () => {
     props.modelValue?.length === 1 ? [props.employee.userId] : tempArr;
   const res = await updateUseScore({
     userIds,
-    ruleId: curRuleId
+    ruleId: curRuleId,
+    updateUserId: storageLocal().getItem("dataSource")?.id || ""
   });
 
   if (res?.code === 200) {

@@ -142,7 +142,8 @@ const routes = [
     meta: {
       icon: "flowbite:address-book-outline",
       title: "menu.task",
-      rank: 0
+      rank: 0,
+      showLink: isSiteHangzhou()
     },
     children: [
       {
@@ -158,33 +159,6 @@ const routes = [
     ]
   }
 ];
-
-// ESG 是否是杭州基地，是则添加任务路由
-if (!isSiteHangzhou()) {
-  // routes.push({
-  //   path: "/task",
-  //   name: "TaskLayout",
-  //   redirect: "/task/index",
-  //   component: Layout,
-  //   meta: {
-  //     icon: "flowbite:address-book-outline",
-  //     title: "menu.task",
-  //     rank: 0
-  //   },
-  //   children: [
-  //     {
-  //       path: "/task/index",
-  //       name: "task",
-  //       component: () => import("@/views/employeeTask/index.vue"),
-  //       meta: {
-  //         title: "menu.task",
-  //         showParent: false,
-  //         icon: "flowbite:address-book-outline"
-  //       }
-  //     }
-  //   ]
-  // });
-}
 
 // ESG 管理员路由
 if (isEsgAdmin()) {

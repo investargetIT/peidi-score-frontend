@@ -38,6 +38,65 @@
         class="overdue-alert"
       />
 
+      <div style="margin-bottom: 25px">
+        <div class="question-card">
+          <el-card
+            :class="{
+              'answered-card': true,
+              'current-card': true
+            }"
+            shadow="hover"
+          >
+            <template #header>
+              <div class="question-header">
+                <div class="question-info">
+                  <span class="question-number">{{ `信息完善` }}</span>
+                </div>
+                <el-icon
+                  v-if="educationAnswer"
+                  color="#67C23A"
+                  size="20"
+                  class="completed-icon"
+                >
+                  <Check />
+                </el-icon>
+              </div>
+              <p class="question-title">完善学历信息，奖励学历积分</p>
+            </template>
+
+            <!-- 问题内容 -->
+            <div class="question-content">
+              <!-- 答案区域 -->
+              <div class="answer-section">
+                <div class="answer-form">
+                  <div class="answer-label">
+                    <label class="form-label">您的回答</label>
+                  </div>
+
+                  <!-- 答案输入框 -->
+                  <div class="answer-input-container">
+                    <el-select
+                      v-model="educationAnswer"
+                      placeholder="请选择您的学历"
+                      style="width: 240px"
+                      :disabled="isTaskOverdue"
+                      @change="handleEducationChange"
+                    >
+                      <el-option
+                        v-for="item in validEducation"
+                        :key="item.id"
+                        :label="item.value"
+                        :value="item.value"
+                      />
+                    </el-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </el-card>
+        </div>
+      </div>
+
       <!-- 任务问题列表 -->
       <div class="questions-container">
         <!-- 难度级别统计卡片 -->
@@ -425,8 +484,10 @@ const { hired_date, name: employeeName } =
 const curQaInfo = ref({});
 const validDate = ref("");
 const validPeriod = ref("");
+const validEducation = ref("");
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
+const educationAnswer = ref("");
 
 const beforeUpload = file => {
   const isLt10M = file.size / 1024 / 1024 < 2;
@@ -444,6 +505,7 @@ const fetchDataConfig = () => {
     console.log(res);
     if (res?.code === 200) {
       curQaInfo.value = res?.data;
+      educationAnswer.value = res?.data?.education || "";
     }
     initializeQuestions();
   });
@@ -451,10 +513,11 @@ const fetchDataConfig = () => {
 
 const fetchEnumTypeList = async () => {
   try {
-    // 并行获取两个配置
-    const [dateRes, periodRes] = await Promise.all([
+    // 并行获取三个配置
+    const [dateRes, periodRes, educationRes] = await Promise.all([
       getEnumTypeList({ type: "qaDate" }),
-      getEnumTypeList({ type: "qaPeriod" })
+      getEnumTypeList({ type: "qaPeriod" }),
+      getEnumTypeList({ type: "education" })
     ]);
 
     if (dateRes?.code === 200) {
@@ -463,6 +526,11 @@ const fetchEnumTypeList = async () => {
 
     if (periodRes?.code === 200) {
       validPeriod.value = periodRes?.data?.[0]?.value || "";
+    }
+
+    if (educationRes?.code === 200) {
+      console.log("educationRes", educationRes);
+      validEducation.value = educationRes?.data || "";
     }
   } catch (error) {
     console.error("获取配置数据失败:", error);
@@ -637,7 +705,8 @@ const initializeSaveQuestions = async randomQuestions => {
       totalQuestions: randomQuestions.length,
       completedQuestions: 0
     }),
-    hasReview: false
+    hasReview: false,
+    education: educationAnswer.value || ""
   };
 
   await updateQaConfig(saveData);
@@ -790,6 +859,13 @@ const computedTaskStatus = computed(() => {
   // 如果当前时间超过截止日期，且任务还未完成，则标记为过期
   if (now > due && taskStatus.value === "in_progress") {
     return "已过期";
+  }
+
+  if (
+    totalQuestions.value > 0 &&
+    completedQuestions.value === totalQuestions.value
+  ) {
+    taskStatus.value = "已完成";
   }
 
   return taskStatus.value;
@@ -1040,7 +1116,8 @@ const submitAnswer = async questionId => {
         totalQuestions: totalQuestions.value,
         completedQuestions: actualCompletedQuestions
       }),
-      hasReview: false
+      hasReview: false,
+      education: educationAnswer.value
     };
 
     console.log("Saving all answers data:", saveData);
@@ -1099,6 +1176,13 @@ const submitAnswer = async questionId => {
   } finally {
     submittingAnswers.value[questionId] = false;
   }
+};
+
+const handleEducationChange = () => {
+  updateQaConfig({
+    userId: id,
+    education: educationAnswer.value
+  });
 };
 
 // 生命周期

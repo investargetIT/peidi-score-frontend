@@ -265,6 +265,10 @@
             {{ getProgressText(selectedTask.remark) }} 已完成
           </p>
         </div>
+        <div class="info-item">
+          <p class="info-label">学历</p>
+          <p class="info-value">{{ selectedTask?.education || "" }}</p>
+        </div>
       </div>
 
       <!-- 审核状态提示 -->
