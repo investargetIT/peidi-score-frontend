@@ -26,5 +26,15 @@ export default [
         component: () => import("@/layout/redirect.vue")
       }
     ]
+  },
+  {
+    path: "/login_",
+    name: "login_",
+    component: () => import("@/views/login/index_.vue"),
+    hidden: true,
+    meta: {
+      rank: 103,
+      showLink: false // 方式4：自定义hideInMenu属性
+    }
   }
 ] satisfies Array<RouteConfigsTable>;
