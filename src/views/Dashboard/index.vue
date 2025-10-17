@@ -45,7 +45,7 @@ const name =
 const activities = ref([]);
 
 const avatar = computed(() => {
-  return curUserAvatar.value || userAvatar;
+  return curUserAvatar.value || userAvatar.value;
 });
 
 const fetchHistoryList = () => {

@@ -34,7 +34,7 @@
         />
         <el-avatar
           :size="40"
-          :src="avatarUrls[emp.id]"
+          :src="avatarUrls[emp.id] || Avatar"
           style="margin-right: 12px"
         />
         <div>
@@ -51,6 +51,7 @@
 <script setup>
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
+import Avatar from "@/assets/user.jpg";
 
 const { t } = useI18n();
 const props = defineProps({

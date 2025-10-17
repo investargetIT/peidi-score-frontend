@@ -79,7 +79,8 @@ export default {
     otherReason: "Other",
     onlyInteger: "Please enter an integer",
     selectedCount: "Current selected employees",
-    task: "Tasks"
+    task: "Tasks",
+    remark: "Remark"
   },
   navbar: {
     updateProfile: "Update Profile",

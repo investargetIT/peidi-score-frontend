@@ -96,7 +96,10 @@ const handleUpdate = () => {
       console.log("form表单数据==", form);
       updateUserInfo({
         userId: id,
-        avatarUrl: JSON.stringify(form.avatarUrlList)
+        avatarUrl:
+          JSON.stringify(form.avatarUrlList) === "[]"
+            ? ""
+            : JSON.stringify(form.avatarUrlList)
       }).then(res => {
         if (res?.code === 200) {
           showModifyDialog.value = false;

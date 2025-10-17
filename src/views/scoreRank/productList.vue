@@ -17,7 +17,7 @@
           <div class="flex gap-2 items-center">
             <el-avatar
               :size="32"
-              :src="avatarUrls[scope.row.id]"
+              :src="avatarUrls[scope.row.id] || Avatar"
               style="margin-right: 12px"
             />
             <span>{{ scope.row.fullName }}</span>
@@ -49,6 +49,7 @@ import { useI18n } from "vue-i18n";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import enUs from "element-plus/es/locale/lang/en";
 import { getScoreRankList, getFileDownLoadPath } from "@/api/pmApi.ts";
+import Avatar from "@/assets/user.jpg";
 
 const props = defineProps({
   pointType: {

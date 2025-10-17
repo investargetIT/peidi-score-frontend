@@ -6,7 +6,7 @@
         <div class="employee-info-card">
           <el-avatar
             :size="64"
-            :src="avatarUrls[employee.id] || defaultAvatar"
+            :src="avatarUrls[employee.id] || Avatar"
             class="employee-avatar"
           />
           <div class="employee-info-main">
@@ -95,6 +95,18 @@
               @input="validateReason"
             />
           </el-form-item>
+
+          <el-form-item
+            :label="t('monitor.remark')"
+            :error="reasonError"
+            style="margin-top: 16px"
+          >
+            <el-input
+              style="width: 240px"
+              v-model="ohterForm.remark"
+              :placeholder="t('monitor.remark')"
+            />
+          </el-form-item>
         </el-form>
       </template>
       <template v-else>
@@ -129,6 +141,8 @@ import { useI18n } from "vue-i18n";
 import { changeNumberFormat } from "@/utils/common";
 import { updateUseScore, getPointRuleList, addScoreAction } from "@/api/pmApi";
 import { ElMessage } from "element-plus";
+import Avatar from "@/assets/user.jpg";
+
 const { t } = useI18n();
 const pointRuleList = ref([]);
 
@@ -151,7 +165,8 @@ const form = ref({
 });
 
 const ohterForm = ref({
-  reasonValue: ""
+  reasonValue: "",
+  remark: ""
 });
 
 const dialogVisible = ref(false);
@@ -215,7 +230,7 @@ const onDialogConfirm = async () => {
   // 当选择类型为其他时，新增规则
   if (otherRuleMap[form.value.reason]) {
     const res = await addScoreAction({
-      actionName: otherRuleMap[form.value.reason],
+      actionName: otherRuleMap[form.value.reason] + ohterForm.value.remark,
       pointsChange: ohterForm.value.reasonValue
     });
     if (res?.code === 200) {
