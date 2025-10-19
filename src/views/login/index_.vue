@@ -8,30 +8,51 @@ import { storageLocal } from "@pureadmin/utils";
 import { getUserCheck, getUserDataSourceApi } from "../../api/user";
 import { getEnumTypeList } from "@/api/pmApi";
 import { CrossStorageClient } from "cross-storage";
-import { decrypt } from "./utils/cryptojs";
+import { decryptMessage, encryptMessage } from "./utils/cryptojs";
 
 const route = useRoute();
 const router = useRouter();
 
 const getKeyFromUrl = () => {
   const url = window.location.href;
-  const k1Match = url.match(/k1=([^&]+)/);
-  const k2Match = url.match(/k2=([^&]+)/);
-  const k1 = k1Match ? k1Match[1] : null;
-  const k2 = k2Match ? k2Match[1] : null;
-  console.log("k1", k1);
-  console.log("k2", k2);
-  return { k1, k2 };
+  const key1Match = url.match(/key1=([^&]+)/);
+  const key2Match = url.match(/key2=([^&]+)/);
+  const key3Match = url.match(/key3=([^&]+)/);
+  const key1 = key1Match ? key1Match[1] : null;
+  const key2 = key2Match ? key2Match[1] : null;
+  const key3 = key3Match ? key3Match[1] : null;
+  console.log("key1", key1);
+  console.log("key2", key2);
+  console.log("key3", key3);
+  return { key1, key2, key3 };
 };
 const queryKey = getKeyFromUrl();
 
 onMounted(() => {
-  let userInfo = storageLocal().getItem("peidi-userInfo");
-  console.log("userInfo", userInfo);
+  // let userInfo = storageLocal().getItem("peidi-userInfo");
+  // console.log("userInfo", userInfo);
+  let userInfo: { username: string; password: string; site?: string } | null =
+    storageLocal().getItem("peidi-userInfo") || null;
 
-  if (queryKey.k1 && queryKey.k2) {
-    const username = decrypt(queryKey.k1);
-    const password = decrypt(queryKey.k2);
+  console.log("queryKey", queryKey);
+
+  if (queryKey.key3) {
+    const isRemember = decryptMessage(queryKey.key3);
+    console.log("isRemember", isRemember);
+    if (isRemember === "true") {
+      storageLocal().setItem("peidi-userInfo", {
+        username: decryptMessage(queryKey.key1 || ""),
+        password: decryptMessage(queryKey.key2 || ""),
+        site: null
+      });
+    } else {
+      storageLocal().removeItem("peidi-userInfo");
+    }
+  }
+
+  if (queryKey.key1 && queryKey.key2) {
+    const username = decryptMessage(queryKey.key1);
+    const password = decryptMessage(queryKey.key2);
     userInfo = { username, password };
   }
   console.log("userInfo", userInfo);
@@ -55,7 +76,7 @@ onMounted(() => {
       .loginByUsername({
         username: userInfo?.username,
         password: userInfo?.password,
-        site: userInfo?.site
+        site: userInfo?.site || null
       })
       .then(res => {
         if (res.success) {
@@ -138,27 +159,25 @@ onMounted(() => {
         }
       });
   } else {
-    const storage = new CrossStorageClient(
-      `http://login.peidigroup.cn/hub.html`
-    );
-
-    storage
-      .onConnect()
-      .then(() => {
-        return storage.get("peidi-userInfo");
-      })
-      .then(res => {
-        console.log("peidi-userInfo", res); // 输出: value
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
+    // const storage = new CrossStorageClient(
+    //   `http://login.peidigroup.cn/hub.html`
+    // );
+    // storage
+    //   .onConnect()
+    //   .then(() => {
+    //     return storage.get("peidi-userInfo");
+    //   })
+    //   .then(res => {
+    //     console.log("peidi-userInfo", res); // 输出: value
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //   });
     if (process.env.NODE_ENV === "development") {
-      // window.location.href = `http://localhost:8849/#/login?source=${window.location.href}`;
-      window.location.href = `http://login.peidigroup.cn/#/login?source=${window.location.href}`;
+      // window.location.href = `http://localhost:8848/#/login?source=${encryptMessage(window.location.href)}`;
+      window.location.href = `http://login.peidigroup.cn/#/login?source=${encryptMessage(window.location.href)}`;
     } else {
-      window.location.href = `http://login.peidigroup.cn/#/login?source=${window.location.href}`;
+      window.location.href = `http://login.peidigroup.cn/#/login?source=${encryptMessage(window.location.href)}`;
     }
   }
 });
