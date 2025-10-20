@@ -18,7 +18,11 @@
     </el-tabs>
 
     <!-- 动态组件内容区域 -->
-    <component :is="currentComponent" :active-tab="activeTab" />
+    <component
+      :is="currentComponent"
+      :active-tab="activeTab"
+      :isEdit="hasEditPermission(activeTab)"
+    />
   </div>
 </template>
 
@@ -35,6 +39,7 @@ import OccupationalHealth from "./components/OccupationalHealth.vue";
 import SupplierManagement from "./components/SupplierManagement.vue";
 import CommunityWelfare from "./components/CommunityWelfare.vue";
 import ProductsServices from "./components/ProductsServices.vue";
+import { hasEditPermission } from "./utils";
 
 const { t } = useI18n();
 

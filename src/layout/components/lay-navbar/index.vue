@@ -35,7 +35,11 @@ const {
   toggleSideBar
 } = useNav();
 
-const { id } = storageLocal()?.getItem("dataSource") || {};
+const {
+  id,
+  username: nameFromDataSource,
+  userEmail: emailFromDataSource
+} = storageLocal()?.getItem("dataSource") || {};
 
 const { hired_date, name, email } = storageLocal()?.getItem("ddUserInfo") || {};
 
@@ -238,9 +242,9 @@ fetchCurUserInfo();
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
           <img :src="curUserAvatar || userAvatar" :style="avatarsStyle" />
-          <div v-if="name" class="userContainer">
-            <p class="dark:text-white">{{ name }}</p>
-            <p class="dark:text-white">{{ email }}</p>
+          <div v-if="name || nameFromDataSource" class="userContainer">
+            <p class="dark:text-white">{{ name || nameFromDataSource }}</p>
+            <p class="dark:text-white">{{ email || emailFromDataSource }}</p>
           </div>
         </span>
         <template #dropdown>
@@ -292,7 +296,7 @@ fetchCurUserInfo();
             </el-upload>
           </el-form-item>
           <el-form-item :label="t('navbar.name')">
-            <span>{{ name }}</span>
+            <span>{{ name || nameFromDataSource }}</span>
           </el-form-item>
           <el-form-item :label="t('navbar.email')">
             <span>{{ email }}</span>

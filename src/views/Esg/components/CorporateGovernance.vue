@@ -26,7 +26,12 @@
           </div>
           -->
 
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <!-- 定性描述 -->
             <el-form-item
               label="公司的组织架构，并说明公司最高管治机构及其委员会的构成"
@@ -91,7 +96,12 @@
           </div>
           -->
 
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item
               label="公司董事会构成名单"
               prop="boardCompositionFiles"
@@ -252,7 +262,12 @@
             >
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="董事会多元化声明">
               <template #label>
                 <div>
@@ -339,7 +354,12 @@
             <span class="description">公司总部详细地址及地理位置信息。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="董事培训">
               <template #label>
                 <div>
@@ -435,7 +455,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="董事会独立性声明">
               <template #label>
                 <div>
@@ -618,7 +643,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="董事会与委员会的提名与遴选">
               <template #label>
                 <div>
@@ -663,7 +693,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -863,7 +898,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -913,7 +953,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -995,7 +1040,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -1194,7 +1244,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -1284,7 +1339,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -1333,7 +1393,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="管理组织架构及职责">
               <template #label>
                 <div>
@@ -1429,7 +1494,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="商业道德理念或管理方针以及总体目标">
               <template #label>
                 <div>
@@ -1470,7 +1540,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="平等对待中小企业">
               <template #label>
                 <div>
@@ -1510,7 +1585,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="反腐廉洁组织架构及职责">
               <template #label>
                 <div>
@@ -1761,7 +1841,7 @@ Wind评级"
         <template #title>
           <div class="collapse-title">
             <span
-              >反贪污腐败
+              >反垄断与公平竞争
               <EsgTooltip
                 content="对应GRI标准: <br/>
 对应MSCI ESG指标: 公司治理-反竞争行为<br/>
@@ -1779,7 +1859,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="反垄断与公平竞争管理体系与制度">
               <template #label>
                 <div>
@@ -1933,7 +2018,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="针对违规违纪事件的处理制度">
               <template #label>
                 <div>
@@ -2015,7 +2105,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item
               label="包括股本架构改变、兼并重组、投资并购、制度修订等。"
             >
@@ -2049,7 +2144,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="公司治理类的荣誉认可、被纳入的指数">
               <template #label>
                 <div>
@@ -2100,6 +2200,10 @@ const props = defineProps({
   activeTab: {
     type: String,
     default: "company-overview"
+  },
+  isEdit: {
+    type: Boolean,
+    default: false
   }
 });
 

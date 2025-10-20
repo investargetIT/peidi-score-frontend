@@ -1,7 +1,11 @@
 <template>
   <div class="action-buttons">
     <el-button v-if="showCancel" @click="handleCancel">取消</el-button>
-    <el-button v-if="showSave" type="primary" @click="handleSave"
+    <el-button
+      v-if="showSave"
+      type="primary"
+      @click="handleSave"
+      :disabled="!isEdit"
       >保存</el-button
     >
     <el-button v-if="showSubmit" type="success" @click="handleSubmit"
@@ -24,6 +28,10 @@ const props = defineProps({
     default: true
   },
   showSubmit: {
+    type: Boolean,
+    default: false
+  },
+  isEdit: {
     type: Boolean,
     default: false
   }

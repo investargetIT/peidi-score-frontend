@@ -80,7 +80,7 @@ const cache = ref({
 const fetchAndCache = async (type: string) => {
   const res = await getScoreRankList({
     pageNo: 1,
-    pageSize: 1000, // 拉全量，分页在前端做
+    pageSize: 100000, // 拉全量，分页在前端做
     sortStr: JSON.stringify([{ sortName: type, sortType: "desc" }])
   });
   if (res?.data?.records) {

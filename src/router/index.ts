@@ -52,7 +52,8 @@ export const isAdmin = () => {
     localStorage.getItem("adminUserEnum") || "[]"
   );
   console.log("adminUserEnum", adminUserEnum);
-  const curDDUserInfo = JSON.parse(localStorage.getItem("ddUserInfo") || "{}");
+  // const curDDUserInfo = JSON.parse(localStorage.getItem("ddUserInfo") || "{}");
+  const curDDUserInfo = JSON.parse(localStorage.getItem("esgUserInfo") || "{}");
   console.log("curDDUserInfo", curDDUserInfo);
   console.log(
     "Checking admin: ",
@@ -75,7 +76,7 @@ export const isEsgAdmin = () => {
     "in",
     esgEnum.map(item => item.value)
   );
-  return esgEnum.some(item => item.value === curDDUserInfo?.userid);
+  return esgEnum.some(item => item.value.includes(curDDUserInfo?.userid));
 };
 
 export const isSiteHangzhou = () => {

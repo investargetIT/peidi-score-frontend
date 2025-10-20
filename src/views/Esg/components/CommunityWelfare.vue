@@ -24,7 +24,12 @@
           </div>
           -->
 
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <!-- 定性描述 -->
             <el-form-item>
               <template #label>
@@ -90,7 +95,12 @@
           </div>
           -->
 
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <!-- 定性描述 -->
             <el-form-item label="战略与目标">
               <template #label>
@@ -151,7 +161,12 @@
             >
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="打造品牌公益项目">
               <template #label>
                 <div>
@@ -224,7 +239,12 @@
             <span class="description">公司总部详细地址及地理位置信息。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="社区公益与志愿活动实践">
               <template #label>
                 <div>
@@ -332,7 +352,12 @@
             >
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="社区公益所获荣誉">
               <template #label>
                 <div>
@@ -400,7 +425,12 @@
             >
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="目标、方针及承诺；战略">
               <template #label>
                 <div>
@@ -556,6 +586,7 @@
       :show-submit="false"
       @cancel="handleCancel"
       @save="handleSave"
+      :isEdit="isEdit"
     />
   </div>
   <el-dialog v-model="dialogVisible">
@@ -584,6 +615,10 @@ const props = defineProps({
   activeTab: {
     type: String,
     default: "company-overview"
+  },
+  isEdit: {
+    type: Boolean,
+    default: false
   }
 });
 

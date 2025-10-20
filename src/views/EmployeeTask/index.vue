@@ -40,7 +40,7 @@
         class="overdue-alert"
       />
 
-      <div style="margin-bottom: 25px">
+      <div style="margin-bottom: 25px" v-if="!shouldShowEmptyState">
         <div class="question-card">
           <el-card
             :class="{
@@ -81,7 +81,7 @@
                       v-model="educationAnswer"
                       placeholder="请选择您的学历"
                       style="width: 240px"
-                      :disabled="isTaskOverdue"
+                      :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       @change="handleEducationChange"
                     >
                       <el-option
@@ -343,7 +343,7 @@
                       resize="vertical"
                       show-word-limit
                       maxlength="2000"
-                      :disabled="isTaskOverdue"
+                      :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       class="answer-textarea"
                     />
                   </div>
@@ -369,7 +369,7 @@
                       multiple
                       :show-file-list="true"
                       drag
-                      :disabled="isTaskOverdue"
+                      :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       :headers="{
                         Authorization: formatToken(getToken().accessToken)
                       }"
@@ -428,7 +428,7 @@
                       type="primary"
                       @click="submitAnswer(question.id)"
                       :loading="submittingAnswers[question.id]"
-                      :disabled="isTaskOverdue"
+                      :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       class="save-answer-btn"
                     >
                       保存答案
@@ -1063,6 +1063,11 @@ const handleAttachmentRemove = (questionId, file) => {
 
 // 提交答案
 const submitAnswer = async questionId => {
+  if (!educationAnswer.value) {
+    ElMessage.error("请完善学历信息");
+    return;
+  }
+
   submittingAnswers.value[questionId] = true;
 
   try {

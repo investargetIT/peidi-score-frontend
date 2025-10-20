@@ -40,7 +40,7 @@ export const baseUrlApi = (url: string, hasUi = true) => {
 
 // 开发环境下的接口地址
 const baseUrlApiDev = (url: string, hasUi = true) => {
-  // return baseUrlApi(url, hasUi);
+  return baseUrlApi(url, hasUi);
   return `http://12.18.1.12:8090/${hasUi ? "ui" : ""}${url}`;
 };
 

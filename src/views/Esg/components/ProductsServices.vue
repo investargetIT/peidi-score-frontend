@@ -18,7 +18,12 @@
           </div>
           -->
 
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <!-- 定性描述 -->
             <el-form-item label="目标、理念方针及承诺">
               <template #label>
@@ -76,7 +81,12 @@ Wind评级"
           </div>
           -->
 
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <!-- 定性描述 -->
             <el-form-item label="组织架构">
               <template #label>
@@ -236,7 +246,12 @@ Wind评级"
             >
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="活动与举措">
               <template #label>
                 <div>
@@ -367,7 +382,12 @@ Wind评级"
             <span class="description">公司总部详细地址及地理位置信息。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="安全生产价值理念与目标">
               <template #label>
                 <div>
@@ -438,7 +458,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="培训与宣导">
               <template #label>
                 <div>
@@ -574,7 +599,12 @@ Wind评级"
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="识别评估工作场所潜在危害和风险因素的程序">
               <template #label>
                 <div>
@@ -611,7 +641,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -683,7 +718,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -720,7 +760,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -757,7 +802,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -810,7 +860,12 @@ Wind评级"
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -880,6 +935,10 @@ const props = defineProps({
   activeTab: {
     type: String,
     default: "company-overview"
+  },
+  isEdit: {
+    type: Boolean,
+    default: false
   }
 });
 

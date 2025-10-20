@@ -24,7 +24,12 @@
           </div>
           -->
 
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <!-- 定性描述 -->
             <el-form-item label="气候变化目标与承诺">
               <template #label>
@@ -81,7 +86,12 @@
           </div>
           -->
 
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <!-- 定性描述 -->
             <el-form-item label="组织架构">
               <template #label>
@@ -196,7 +206,12 @@
           </div>
         </template>
         <div class="form-section">
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -405,7 +420,12 @@
             <span class="description">公司总部详细地址及地理位置信息。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="减碳技术研发">
               <template #label>
                 <div>
@@ -730,7 +750,12 @@
             <span class="description">各经营场所的地址及业务范围。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="绿色投融资实践">
               <template #label>
                 <div>
@@ -768,7 +793,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="加入气候变化倡议、组织">
               <template #label>
                 <div>
@@ -872,7 +902,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="环境保护目标、理念与承诺">
               <template #label>
                 <div>
@@ -924,7 +959,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="荣誉及奖项">
               <template #label>
                 <div>
@@ -1075,7 +1115,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="环保预警及应急管理机制">
               <template #label>
                 <div>
@@ -1194,7 +1239,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -1274,7 +1324,12 @@
           </div>
         </template>
         <div class="form-section">
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="突发重大环境事件起数">
               <template #label>
                 <div>
@@ -1308,7 +1363,12 @@
           </div>
         </template>
         <div class="form-section">
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -1466,7 +1526,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="绿色办公">
               <template #label>
                 <div>
@@ -1503,7 +1568,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="资源使用效益目标、方针及承诺">
               <template #label>
                 <div>
@@ -1553,7 +1623,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="执行组织架构">
               <template #label>
                 <div>
@@ -1654,7 +1729,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -1976,7 +2056,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="组织与水（作为共有资源）的相互影响">
               <template #label>
                 <div>
@@ -2043,7 +2128,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="资源节约实践">
               <template #label>
                 <div>
@@ -2114,7 +2204,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="原材料与包装材料管理体系与制度">
               <template #label>
                 <div>
@@ -2233,7 +2328,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="减排目标、方针与承诺">
               <template #label>
                 <div>
@@ -2286,7 +2386,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="监管与执行组织架构">
               <template #label>
                 <div>
@@ -2355,7 +2460,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item>
               <template #label>
                 <div>
@@ -2513,7 +2623,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="管理与排水相关的影响">
               <template #label>
                 <div>
@@ -2616,7 +2731,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="有害废物排放总量">
               <template #label>
                 <div>
@@ -2701,7 +2821,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="废弃物管理体系与制度">
               <template #label>
                 <div>
@@ -2816,7 +2941,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="助力生态文明建设">
               <template #label>
                 <div>
@@ -2853,7 +2983,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item label="生物多样性保护目标、方针与承诺">
               <template #label>
                 <div>
@@ -2907,7 +3042,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item
               style="margin-bottom: 50px"
               label="组织所拥有、租赁、在位于或邻近于保护区和保护区外生物多样性丰富区域管理的运营点"
@@ -3026,7 +3166,12 @@
             <span class="description">企业所有权结构和法律组织形式。</span>
           </div>
           -->
-          <el-form :model="formData" label-position="left" label-width="100px">
+          <el-form
+            :model="formData"
+            label-position="left"
+            label-width="100px"
+            :disabled="!isEdit"
+          >
             <el-form-item style="margin-bottom: 50px" label="投入资金">
               <template #label>
                 <div>
@@ -3158,6 +3303,10 @@ const props = defineProps({
   activeTab: {
     type: String,
     default: "company-overview"
+  },
+  isEdit: {
+    type: Boolean,
+    default: false
   }
 });
 

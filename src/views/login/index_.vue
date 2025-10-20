@@ -9,6 +9,7 @@ import { getUserCheck, getUserDataSourceApi } from "../../api/user";
 import { getEnumTypeList } from "@/api/pmApi";
 import { CrossStorageClient } from "cross-storage";
 import { decryptMessage, encryptMessage } from "./utils/cryptojs";
+import { getUserInfoData } from "../../api/pmApi";
 
 const route = useRoute();
 const router = useRouter();
@@ -82,6 +83,25 @@ onMounted(() => {
         if (res.success) {
           // 先获取用户数据源信息
           getUserDataSourceApi({ token: res.data }).then(userRes => {
+            //#region 非钉钉端参数
+            getUserInfoData({
+              userId: userRes?.data?.id
+            }).then(res => {
+              console.log("1111", res);
+              if (res?.code === 200) {
+                // 初始化用户配置信息 ddUserInfo
+                if (res?.data) {
+                  const { hireDate, email } = res?.data;
+                  storageLocal().setItem("ddUserInfo", {
+                    ...(storageLocal().getItem("ddUserInfo") || {}),
+                    hired_date: new Date(hireDate).getTime().toString(),
+                    email: email
+                  });
+                }
+              }
+            });
+            //#endregion
+
             console.log("res", userRes);
             if (userRes.success) {
               const { data } = userRes;
