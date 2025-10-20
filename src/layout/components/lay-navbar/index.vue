@@ -9,6 +9,7 @@ import LaySidebarTopCollapse from "../lay-sidebar/components/SidebarTopCollapse.
 
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
+import RiEditBoxLine from "@iconify-icons/ri/edit-box-line";
 import { emitter } from "@/utils/mitt.ts";
 import { storageLocal } from "@pureadmin/utils";
 import { ref, reactive, watch, computed } from "vue";
@@ -22,6 +23,7 @@ import {
 import { getUserInfoData, updateUserInfo } from "@/api/pmApi";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n";
+import { updateUserPassword } from "../../../api/user";
 
 const {
   layout,
@@ -200,6 +202,41 @@ function changeLang(lang: string) {
   localStorage.setItem("lang", lang);
 }
 fetchCurUserInfo();
+
+const showPasswordDialog = ref(false);
+const changePassword = () => {
+  showPasswordDialog.value = true;
+};
+const passwordFormRef = ref(null);
+const passwordForm = reactive({
+  oldPassword: "",
+  newPassword: "",
+  confirmPassword: ""
+});
+const handlePasswordUpdate = () => {
+  passwordFormRef.value.validate(valid => {
+    if (valid) {
+      console.log("passwordForm表单数据==", passwordForm);
+      if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+        ElMessage.error("两次输入密码不一致");
+        return;
+      }
+      updateUserPassword({
+        identifier: storageLocal().getItem("dataSource")?.id,
+        oldPassword: passwordForm.oldPassword,
+        newPassword: passwordForm.newPassword
+      }).then(res => {
+        if (res?.code === 200) {
+          ElMessage.success("修改密码成功");
+          passwordFormRef.value.resetFields();
+          showPasswordDialog.value = false;
+        } else {
+          ElMessage.error("修改密码失败" + res?.msg);
+        }
+      });
+    }
+  });
+};
 </script>
 
 <template>
@@ -252,6 +289,10 @@ fetchCurUserInfo();
             class="logout"
             :style="{ width: locale === 'en' ? '135px' : '' }"
           >
+            <el-dropdown-item @click="changePassword">
+              <IconifyIconOffline :icon="RiEditBoxLine" style="margin: 5px" />
+              {{ `修改密码` }}
+            </el-dropdown-item>
             <el-dropdown-item @click="modify">
               <IconifyIconOffline :icon="Setting" style="margin: 5px" />
               {{ t("navbar.updateProfile") }}
@@ -323,6 +364,43 @@ fetchCurUserInfo();
       </el-dialog>
       <el-dialog v-model="dialogVisible">
         <img w-full :src="dialogImageUrl" alt="Preview Image" />
+      </el-dialog>
+
+      <el-dialog v-model="showPasswordDialog" :title="'修改密码'" width="500">
+        <el-form
+          :model="passwordForm"
+          ref="passwordFormRef"
+          label-width="100px"
+        >
+          <el-form-item :label="'旧密码'" prop="oldPassword">
+            <el-input
+              v-model="passwordForm.oldPassword"
+              type="password"
+              show-password
+            />
+          </el-form-item>
+          <el-form-item :label="'新密码'" prop="newPassword">
+            <el-input
+              v-model="passwordForm.newPassword"
+              type="password"
+              show-password
+            />
+          </el-form-item>
+          <el-form-item :label="'确认新密码'" prop="confirmPassword">
+            <el-input
+              v-model="passwordForm.confirmPassword"
+              type="password"
+              show-password
+            />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button type="primary" @click="handlePasswordUpdate">
+              {{ `确定` }}
+            </el-button>
+          </div>
+        </template>
       </el-dialog>
     </div>
   </div>
