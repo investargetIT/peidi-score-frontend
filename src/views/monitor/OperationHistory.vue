@@ -1,6 +1,6 @@
 <template>
   <el-card class="exchange-history-card">
-    <div class="exchange-title">操作历史</div>
+    <div class="exchange-title">{{ t("monitor.operationHistory") }}</div>
     <el-table
       :data="scoreHistoryList"
       class="exchange-table no-border-table"
@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column
         prop="updateUserName"
-        :label="`被操作员工`"
+        :label="t('monitor.updateUserName')"
         align="center"
       />
       <el-table-column

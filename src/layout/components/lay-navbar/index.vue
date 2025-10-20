@@ -218,7 +218,7 @@ const handlePasswordUpdate = () => {
     if (valid) {
       console.log("passwordForm表单数据==", passwordForm);
       if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-        ElMessage.error("两次输入密码不一致");
+        ElMessage.error(t("navbar.passwordNotMatch"));
         return;
       }
       updateUserPassword({
@@ -227,11 +227,11 @@ const handlePasswordUpdate = () => {
         newPassword: passwordForm.newPassword
       }).then(res => {
         if (res?.code === 200) {
-          ElMessage.success("修改密码成功");
+          ElMessage.success(t("navbar.updateSuccess"));
           passwordFormRef.value.resetFields();
           showPasswordDialog.value = false;
         } else {
-          ElMessage.error("修改密码失败" + res?.msg);
+          ElMessage.error(t("navbar.updateFailed") + res?.msg);
         }
       });
     }
@@ -287,11 +287,11 @@ const handlePasswordUpdate = () => {
         <template #dropdown>
           <el-dropdown-menu
             class="logout"
-            :style="{ width: locale === 'en' ? '135px' : '' }"
+            :style="{ width: locale === 'en' ? '150px' : '' }"
           >
             <el-dropdown-item @click="changePassword">
               <IconifyIconOffline :icon="RiEditBoxLine" style="margin: 5px" />
-              {{ `修改密码` }}
+              {{ t("navbar.updatePassword") }}
             </el-dropdown-item>
             <el-dropdown-item @click="modify">
               <IconifyIconOffline :icon="Setting" style="margin: 5px" />
@@ -366,27 +366,34 @@ const handlePasswordUpdate = () => {
         <img w-full :src="dialogImageUrl" alt="Preview Image" />
       </el-dialog>
 
-      <el-dialog v-model="showPasswordDialog" :title="'修改密码'" width="500">
+      <el-dialog
+        v-model="showPasswordDialog"
+        :title="t('navbar.updatePassword')"
+        width="500"
+      >
         <el-form
           :model="passwordForm"
           ref="passwordFormRef"
-          label-width="100px"
+          :label-width="locale === 'en' ? '150px' : '100px'"
         >
-          <el-form-item :label="'旧密码'" prop="oldPassword">
+          <el-form-item :label="t('navbar.oldPassword')" prop="oldPassword">
             <el-input
               v-model="passwordForm.oldPassword"
               type="password"
               show-password
             />
           </el-form-item>
-          <el-form-item :label="'新密码'" prop="newPassword">
+          <el-form-item :label="t('navbar.newPassword')" prop="newPassword">
             <el-input
               v-model="passwordForm.newPassword"
               type="password"
               show-password
             />
           </el-form-item>
-          <el-form-item :label="'确认新密码'" prop="confirmPassword">
+          <el-form-item
+            :label="t('navbar.confirmPassword')"
+            prop="confirmPassword"
+          >
             <el-input
               v-model="passwordForm.confirmPassword"
               type="password"
@@ -397,7 +404,7 @@ const handlePasswordUpdate = () => {
         <template #footer>
           <div class="dialog-footer">
             <el-button type="primary" @click="handlePasswordUpdate">
-              {{ `确定` }}
+              {{ t("navbar.confirm") }}
             </el-button>
           </div>
         </template>

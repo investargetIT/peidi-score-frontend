@@ -45,7 +45,7 @@
           :activeTab="activeTab"
         />
       </el-tab-pane>
-      <el-tab-pane :label="'操作历史'" name="operation">
+      <el-tab-pane :label="t('monitor.operationHistory')" name="operation">
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'operation'" key="operation">
             <OperationHistory

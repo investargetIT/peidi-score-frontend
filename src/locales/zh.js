@@ -78,7 +78,9 @@ export default {
     onlyInteger: "请输入整数",
     selectedCount: "当前选中的员工",
     task: "任务管理",
-    remark: "备注"
+    remark: "备注",
+    operationHistory: "操作历史",
+    updateUserName: "被操作员工"
   },
   navbar: {
     updateProfile: "更新资料",
@@ -92,6 +94,14 @@ export default {
     redeemablePoints: "可兑换积分",
     upload: "点击上传",
     uploadTip:
-      "上传图片支持jpg、png、jpeg、gif格式,大小不超过10M，且最多上传1张。"
+      "上传图片支持jpg、png、jpeg、gif格式,大小不超过10M，且最多上传1张。",
+    updatePassword: "修改密码",
+    oldPassword: "旧密码",
+    newPassword: "新密码",
+    confirmPassword: "确认密码",
+    confirm: "确定",
+    passwordNotMatch: "两次输入密码不一致",
+    updateSuccess: "修改密码成功",
+    updateFailed: "修改密码失败"
   }
 };
