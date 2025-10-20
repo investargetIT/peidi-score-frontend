@@ -3,7 +3,9 @@
     <div class="employee-task-container">
       <!-- 页面头部 -->
       <div class="task-header">
-        <h1 class="task-title">{{ `员工任务 - ${employeeName}` }}</h1>
+        <h1 class="task-title">
+          {{ `员工任务 - ${employeeName || employeeNameFromDataSource}` }}
+        </h1>
         <div class="task-meta" v-if="!shouldShowEmptyState">
           <div class="meta-item">
             <el-icon><Calendar /></el-icon>
@@ -478,7 +480,8 @@ const taskStatus = ref("进行中"); // '进行中', '已完成', '已审核', '
 const currentQuestionId = ref(null);
 const completingTask = ref(false);
 const uploadUrl = baseUrlApi("/qa/upload");
-const { id } = storageLocal()?.getItem("dataSource") || {};
+const { id, username: employeeNameFromDataSource } =
+  storageLocal()?.getItem("dataSource") || {};
 const { hired_date, name: employeeName } =
   storageLocal()?.getItem("ddUserInfo") || {};
 const curQaInfo = ref({});

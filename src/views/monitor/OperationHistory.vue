@@ -36,6 +36,11 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="updateUserName"
+        :label="`被操作员工`"
+        align="center"
+      />
+      <el-table-column
         prop="recordTypeName"
         :label="t('history.type')"
         align="center"
@@ -82,7 +87,7 @@ const props = defineProps({
   }
 });
 
-const updateUserId = storageLocal().getItem("dataSource").id;
+const updateUserId = storageLocal().getItem("dataSource")?.id || "";
 
 const fetchHistoryList = () => {
   if (!updateUserId) {
