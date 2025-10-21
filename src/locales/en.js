@@ -104,6 +104,10 @@ export default {
     confirm: "Confirm",
     passwordNotMatch: "Passwords do not match",
     updateSuccess: "Password updated successfully",
-    updateFailed: "Password update failed"
+    updateFailed: "Password update failed",
+    pleaseEnterOldPassword: "Please enter old password",
+    pleaseEnterNewPassword: "Please enter new password",
+    confirmPasswordTip: "Please confirm new password",
+    passwordNotMatch: "Passwords do not match"
   }
 };

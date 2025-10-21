@@ -169,7 +169,8 @@ onMounted(() => {
               "esgUserInfo",
               JSON.stringify({
                 userid: res?.data?.id,
-                site: res?.data?.dataSource
+                site: res?.data?.dataSource,
+                dingId: res?.data?.dingId
               })
             )
           );

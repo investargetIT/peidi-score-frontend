@@ -30,6 +30,8 @@ import {
   removeToken,
   multipleTabsKey
 } from "@/utils/auth";
+import i18n from "@/plugins/i18n";
+const { t } = i18n.global;
 
 import pdIcon from "../assets/png/prodIcon.png";
 import priceIcon from "../assets/png/priceIcon.png";
@@ -96,7 +98,7 @@ const routes = [
     component: Layout,
     meta: {
       icon: "ep:document",
-      title: "menu.pointshistory",
+      title: t("menu.pointshistory"),
       rank: 0
     },
     children: [
@@ -105,7 +107,7 @@ const routes = [
         name: "history",
         component: () => import("@/views/history/index.vue"),
         meta: {
-          title: "menu.pointshistory",
+          title: t("menu.pointshistory"),
           showParent: false,
           icon: "ep:document"
         }
@@ -119,7 +121,7 @@ const routes = [
     component: Layout,
     meta: {
       icon: "ep:trophy",
-      title: "menu.pointsrank",
+      title: t("menu.pointsrank"),
       rank: 0
     },
     children: [
@@ -128,7 +130,7 @@ const routes = [
         name: "score",
         component: () => import("@/views/scoreRank/index.vue"),
         meta: {
-          title: "menu.pointsrank",
+          title: t("menu.pointsrank"),
           showParent: false,
           icon: "ep:trophy"
         }
@@ -142,7 +144,7 @@ const routes = [
     component: Layout,
     meta: {
       icon: "flowbite:address-book-outline",
-      title: "menu.task",
+      title: t("menu.task"),
       rank: 0,
       showLink: isSiteHangzhou()
     },
@@ -152,7 +154,7 @@ const routes = [
         name: "task",
         component: () => import("@/views/employeeTask/index.vue"),
         meta: {
-          title: "menu.task",
+          title: t("menu.task"),
           showParent: false,
           icon: "flowbite:address-book-outline"
         }
@@ -170,7 +172,7 @@ if (isEsgAdmin()) {
     component: Layout,
     meta: {
       icon: "ep:data-analysis",
-      title: "menu.esg",
+      title: t("menu.esg"),
       rank: 0
     },
     children: [
@@ -179,7 +181,7 @@ if (isEsgAdmin()) {
         name: "esg",
         component: () => import("@/views/esg/index.vue"),
         meta: {
-          title: "menu.esg",
+          title: t("menu.esg"),
           showParent: false,
           icon: "ep:data-analysis"
         }
@@ -197,7 +199,7 @@ if (isAdmin()) {
     component: Layout,
     meta: {
       icon: "ep:setting",
-      title: "menu.adminboard",
+      title: t("menu.adminboard"),
       rank: 0
     },
     children: [
@@ -206,7 +208,7 @@ if (isAdmin()) {
         name: "monitor",
         component: () => import("@/views/monitor/index.vue"),
         meta: {
-          title: "menu.adminboard",
+          title: t("menu.adminboard"),
           showParent: false,
           icon: "ep:setting"
         }

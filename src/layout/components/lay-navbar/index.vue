@@ -200,6 +200,7 @@ const currentLangLabel = computed(() =>
 function changeLang(lang: string) {
   locale.value = lang;
   localStorage.setItem("lang", lang);
+  window.location.reload(); // 为了解决切换语言后，菜单标题没有更新的问题
 }
 fetchCurUserInfo();
 
@@ -212,6 +213,34 @@ const passwordForm = reactive({
   oldPassword: "",
   newPassword: "",
   confirmPassword: ""
+});
+const validateConfirmPassword = (rule, value, callback) => {
+  if (value !== passwordForm.newPassword) {
+    callback(new Error(t("navbar.passwordNotMatch")));
+  } else {
+    callback();
+  }
+};
+const passwordRules = reactive({
+  oldPassword: [
+    {
+      required: true,
+      message: t("navbar.pleaseEnterOldPassword"),
+      trigger: "blur"
+    }
+  ],
+  // 新密码还需要和确认密码一致
+  newPassword: [
+    {
+      required: true,
+      message: t("navbar.pleaseEnterNewPassword"),
+      trigger: "blur"
+    }
+  ],
+  confirmPassword: [
+    { required: true, message: t("navbar.confirmPassword"), trigger: "blur" },
+    { required: true, validator: validateConfirmPassword, trigger: "blur" }
+  ]
 });
 const handlePasswordUpdate = () => {
   passwordFormRef.value.validate(valid => {
@@ -237,6 +266,13 @@ const handlePasswordUpdate = () => {
     }
   });
 };
+
+const isDingUser = computed(() => {
+  if (!!navigator.userAgent.includes("DingTalk")) return true;
+  const esgUserInfo = JSON.parse(localStorage.getItem("esgUserInfo"));
+  if (!!esgUserInfo?.dingId) return true;
+  return false;
+});
 </script>
 
 <template>
@@ -289,7 +325,7 @@ const handlePasswordUpdate = () => {
             class="logout"
             :style="{ width: locale === 'en' ? '150px' : '' }"
           >
-            <el-dropdown-item @click="changePassword">
+            <el-dropdown-item @click="changePassword" v-if="!isDingUser">
               <IconifyIconOffline :icon="RiEditBoxLine" style="margin: 5px" />
               {{ t("navbar.updatePassword") }}
             </el-dropdown-item>
@@ -311,6 +347,7 @@ const handlePasswordUpdate = () => {
         v-model="showModifyDialog"
         :title="t('navbar.userProfile')"
         width="500"
+        :close-on-click-modal="false"
       >
         <el-form :model="form" ref="formRef">
           <el-form-item :label="t('navbar.avatar')">
@@ -370,9 +407,12 @@ const handlePasswordUpdate = () => {
         v-model="showPasswordDialog"
         :title="t('navbar.updatePassword')"
         width="500"
+        @closed="passwordFormRef?.resetFields()"
+        :close-on-click-modal="false"
       >
         <el-form
           :model="passwordForm"
+          :rules="passwordRules"
           ref="passwordFormRef"
           :label-width="locale === 'en' ? '150px' : '100px'"
         >

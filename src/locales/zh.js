@@ -102,6 +102,10 @@ export default {
     confirm: "确定",
     passwordNotMatch: "两次输入密码不一致",
     updateSuccess: "修改密码成功",
-    updateFailed: "修改密码失败"
+    updateFailed: "修改密码失败",
+    pleaseEnterOldPassword: "请输入旧密码",
+    pleaseEnterNewPassword: "请输入新密码",
+    confirmPasswordTip: "请确认新密码",
+    passwordNotMatch: "两次输入密码不一致"
   }
 };
