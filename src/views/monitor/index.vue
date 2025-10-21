@@ -58,7 +58,11 @@
           </div>
         </transition>
       </el-tab-pane>
-      <el-tab-pane :label="t('monitor.task')" name="task">
+      <el-tab-pane
+        :label="t('monitor.task')"
+        name="task"
+        v-if="isSiteHangzhou()"
+      >
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'task'" key="task">
             <TaskList />
@@ -85,6 +89,7 @@ import {
 } from "@/api/pmApi.ts";
 import { storageLocal } from "@pureadmin/utils";
 import OperationHistory from "./OperationHistory.vue";
+import { isSiteHangzhou } from "@/router/index";
 
 const { t } = useI18n();
 const activeTab = ref("manage");

@@ -8,7 +8,7 @@
       name="viewport"
       content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0"
     />
-    <title>peidi-pms</title>
+    <title>peidi-eps</title>
     <link rel="icon" href="/logo.svg" />
     <!-- <script src="https://cdn.jsdelivr.net/npm/eruda"></script> -->
     <script>
@@ -22,8 +22,6 @@
   <body>
     <div id="app">
       <style>
-
-
         @keyframes load-animation {
           0%,
           80%,
@@ -144,6 +142,16 @@
       <!-- <div class="loader"></div> -->
       <div class="loader2"></div>
     </div>
+    <script>
+      // 用日期做一个唯一标识存入localStorage，用于判断是否是大版本更新，清空localStorage
+      const oldUniqueId = localStorage.getItem("peidi-uniqueId") || "";
+      const uniqueId = 202510211749; // 需要用户强制更新时就改变这个值
+      if (oldUniqueId != uniqueId) {
+        localStorage.clear();
+        localStorage.setItem("peidi-uniqueId", uniqueId);
+        window.location.reload();
+      }
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
