@@ -71,7 +71,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-import EmployeeList from "./EmployeeList.vue";
+import EmployeeList from "./EmployeeList_.vue";
 import ManageScore from "./ManageScore.vue";
 import ExchangeHistory from "./ExchangeHistory.vue";
 import HistoryScore from "./HistoryScore.vue";
@@ -98,6 +98,7 @@ const selectValue = ref("");
 // 移除重复的过滤逻辑，让子组件自己处理过滤
 function selectEmployee(emp) {
   // 只高亮，不影响多选
+  console.log("selectEmployee", emp);
   selectedEmployee.value = emp;
 }
 function handleTabClick() {
@@ -106,6 +107,7 @@ function handleTabClick() {
 
 // 多选与高亮联动
 watch(selectedEmployeeIds, ids => {
+  console.log("selectedEmployeeIds", ids);
   if (ids.length === 1) {
     selectedEmployee.value = employees.value.find(emp => emp.id === ids[0]);
   } else if (ids.length > 1) {
@@ -198,7 +200,7 @@ const getPreviewUrl = async (file, userId) => {
     return "";
   } catch (error) {
     // 如果JSON.parse失败，说明是单纯的字符串，直接返回使用
-    console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
+    // console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
     avatarUrls.value[userId] = file;
     return file;
   }

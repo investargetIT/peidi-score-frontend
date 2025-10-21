@@ -163,7 +163,7 @@ const fetchCurUserInfo = () => {
           }
         } catch (error) {
           // 如果JSON.parse失败，说明是单纯的字符串
-          console.log("avatarUrl是单纯字符串，直接使用:", res.data.avatarUrl);
+          // console.log("avatarUrl是单纯字符串，直接使用:", res.data.avatarUrl);
           // 直接使用字符串作为头像URL
           curUserAvatar.value = res.data.avatarUrl;
           storageLocal().setItem("curUserAvatar", res.data.avatarUrl);

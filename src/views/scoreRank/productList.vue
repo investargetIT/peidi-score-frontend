@@ -120,7 +120,7 @@ const getPreviewUrl = async (file, userId) => {
     return "";
   } catch (error) {
     // 如果JSON.parse失败，说明是单纯的字符串，直接返回使用
-    console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
+    // console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
     return file;
   }
 };

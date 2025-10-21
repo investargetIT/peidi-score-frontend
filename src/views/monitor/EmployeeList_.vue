@@ -3,9 +3,9 @@
     <div class="employee-title">{{ t("employee.title") }}</div>
     <div class="employee-toolbar">
       <el-checkbox
-        v-model="treeAllChecked"
-        :indeterminate="treeIsIndeterminate"
-        @change="treeHandleCheckAll"
+        v-model="allChecked"
+        :indeterminate="isIndeterminate"
+        @change="handleCheckAll"
         >{{ t("table.selectAll") }}</el-checkbox
       >
       <el-input
@@ -15,9 +15,8 @@
         clearable
       />
     </div>
-
     <div class="employee-items">
-      <!-- <div
+      <div
         v-for="(emp, idx) in filteredEmployees"
         :key="idx"
         :class="[
@@ -40,33 +39,11 @@
         />
         <div>
           <div class="employee-name">{{ emp.name }}</div>
-          <div class="employee-dept">
+          <!-- <div class="employee-dept">
             {{ t("employee.department") }}: {{ emp.dept }}
-          </div>
+          </div> -->
         </div>
-      </div> -->
-
-      <el-tree
-        style="max-width: 600px"
-        :data="treeFilteredEmployees"
-        :props="treeDefaultProps"
-        show-checkbox
-        @check-change="treeHandleClick"
-        ref="treeRef"
-        node-key="id"
-      >
-        <template #default="{ node, data }">
-          <div class="custom-tree-node">
-            <img
-              v-if="data.id"
-              :src="data.avatarUrl || Avatar"
-              style=" width: 20px;height: 20px; margin-right: 5px"
-            />
-            <span>{{ node.label }}</span>
-            <span v-if="data.id">{{ data.id }}</span>
-          </div>
-        </template>
-      </el-tree>
+      </div>
     </div>
   </el-card>
 </template>
@@ -75,6 +52,7 @@
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
+
 const { t } = useI18n();
 const props = defineProps({
   employees: Array,
@@ -86,143 +64,6 @@ const props = defineProps({
 const emit = defineEmits(["update:search", "select", "update:modelValue"]);
 const searchValue = ref(props.search || "");
 const checkedIds = ref(props.modelValue || []);
-
-//#region 新列表逻辑
-const treeRef = ref(null);
-
-const treeDefaultProps = {
-  children: "children",
-  label: "label"
-};
-const treeData = [
-  {
-    label: "基地",
-    children: [
-      {
-        label: "姓名",
-        avatarUrl:
-          "https://static-legacy.dingtalk.com/media/lQLPD3DkL2wiKqHNAXDNAXCwKvib1pgej0sGW_2GH3o8AA_368_368.png",
-        userId: "1926449443739598852"
-      }
-    ]
-  }
-];
-
-// 监听 props.employees 变化，遍历源数据，转换成 treeData 格式
-const treeEmployees = ref([]);
-watch(
-  () => props.employees,
-  (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-      // newVal.push({
-      //   avatarUrl: "",
-      //   name: "测试Name",
-      //   site: "测试Site",
-      //   userId: "1926449443739598852"
-      // });
-      const siteEmployees = newVal.reduce((acc, emp) => {
-        acc[emp.site] = acc[emp.site] || [];
-        acc[emp.site].push({
-          label: emp.name,
-          avatarUrl: emp.avatarUrl,
-          userId: emp.userId,
-          id: emp.id,
-          empdata: emp
-        });
-        return acc;
-      }, {});
-      //{佩蒂智创（杭州）宠物科技有限公司: Array(118), 测试Site: Array(1)} 转换成 [{label: "佩蒂智创（杭州）宠物科技有限公司", children: Array(118)}, {label: "测试Site", children: Array(1)}]
-      treeEmployees.value = Object.entries(siteEmployees).map(
-        ([site, children]) => ({
-          label: site,
-          children
-        })
-      );
-    }
-  }
-);
-
-const treeFilteredEmployees = computed(() => {
-  const searchTerm = searchValue.value?.toLowerCase() || "";
-  if (!searchTerm) return treeEmployees.value || [];
-  // 筛选 treeEmployees.value 中每个对象children数字里是否有label匹配到搜索内容, 如果有, 则留下
-  const tem = [];
-  treeEmployees.value.forEach(item => {
-    if (item.children && item.children.length > 0) {
-      const tem2 = item.children.filter(
-        child => child.label && child.label.toLowerCase().includes(searchTerm)
-      );
-      if (tem2.length > 0) {
-        tem.push({ ...item, children: tem2 });
-      }
-    }
-  });
-  return tem;
-});
-
-const treeAllChecked = computed({
-  get() {
-    return (
-      // 遍历 treeFilteredEmployees 判断 checkedIds.value 里是否包含 treeFilteredEmployees 里的每个 children 里的每个对象的 userId
-      // treeFilteredEmployees.value =  [{label: "佩蒂智创（杭州）宠物科技有限公司", children: Array(118)}, {label: "测试Site", children: Array(1)}]
-      treeFilteredEmployees.value.every(
-        item =>
-          item.children &&
-          item.children.every(child => checkedIds.value.includes(child.userId))
-      )
-    );
-  },
-  set(val) {
-    // console.log("treeAllChecked:", val);
-    // return;
-    if (val) {
-      // true
-      const checkedKeys = treeRef.value
-        .getCheckedKeys()
-        .filter(element => element !== undefined);
-      checkedIds.value = checkedKeys;
-    } else {
-      // checkedIds.value = checkedIds.value.filter(
-      //   id => !filteredEmployees.value.some(emp => emp.id === id)
-      // );
-    }
-    emit("update:modelValue", checkedIds.value);
-  }
-});
-
-function treeHandleCheckAll(val) {
-  // console.log("treeHandleCheckAll:", val);
-  treeAllChecked.value = val;
-}
-
-function treeHandleClick(emp) {
-  // console.log(emp);
-  const checkedKeys = treeRef.value
-    .getCheckedKeys()
-    .filter(element => element !== undefined);
-  console.log("checkedKeys:", checkedKeys);
-  checkedIds.value = checkedKeys;
-  // return;
-  // emit("select", emp);
-  // 如果未勾选则勾选，如果已勾选则取消勾选
-  // const index = checkedIds.value.indexOf(emp.id);
-  // if (index === -1) {
-  //   checkedIds.value = [...checkedIds.value, emp.id];
-  // } else {
-  //   checkedIds.value = checkedIds.value.filter(id => id !== emp.id);
-  // }
-  // 通知父组件更新
-  emit("update:modelValue", checkedIds.value);
-}
-
-const treeIsIndeterminate = computed(() => {
-  return;
-  const checkedCount = filteredEmployees.value.filter(emp =>
-    checkedIds.value.includes(emp.id)
-  ).length;
-  return checkedCount > 0 && checkedCount < filteredEmployees.value.length;
-});
-//#endregion
 
 watch(searchValue, val => {
   emit("update:search", val);
@@ -377,7 +218,6 @@ function handleClick(emp) {
 .employee-items {
   flex: 1;
   min-height: 0;
-  max-height: calc(100vh - 210px);
   padding-bottom: 60px;
   overflow-y: auto;
 }
@@ -404,15 +244,5 @@ function handleClick(emp) {
 .employee-dept {
   font-size: 14px;
   color: #888;
-}
-</style>
-
-<style scoped>
-.custom-tree-node {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  padding-right: 8px;
-  font-size: 14px;
 }
 </style>

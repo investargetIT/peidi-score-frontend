@@ -455,6 +455,8 @@ fetchPointRuleList();
 }
 
 .selected-names {
+  max-height: 465px;
+  overflow-y: auto;
   font-size: 16px;
   color: #666;
   text-align: center;
