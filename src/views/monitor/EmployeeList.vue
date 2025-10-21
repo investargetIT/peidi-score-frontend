@@ -2,12 +2,12 @@
   <el-card class="employee-list">
     <div class="employee-title">{{ t("employee.title") }}</div>
     <div class="employee-toolbar">
-      <el-checkbox
+      <!-- <el-checkbox
         v-model="treeAllChecked"
         :indeterminate="treeIsIndeterminate"
         @change="treeHandleCheckAll"
         >{{ t("table.selectAll") }}</el-checkbox
-      >
+      > -->
       <el-input
         v-model="searchValue"
         :placeholder="t('employee.searchPlaceholder')"
@@ -51,19 +51,20 @@
         :data="treeFilteredEmployees"
         :props="treeDefaultProps"
         show-checkbox
-        @check-change="treeHandleClick"
+        @check="treeHandleClick"
         ref="treeRef"
         node-key="id"
+        :default-checked-keys="checkedIds"
       >
         <template #default="{ node, data }">
           <div class="custom-tree-node">
             <img
               v-if="data.id"
               :src="data.avatarUrl || Avatar"
-              style=" width: 20px;height: 20px; margin-right: 5px"
+              style="width: 20px; height: 20px; margin-right: 5px"
             />
             <span>{{ node.label }}</span>
-            <span v-if="data.id">{{ data.id }}</span>
+            <!-- <span v-if="data.id">{{ data.id }}</span> -->
           </div>
         </template>
       </el-tree>
@@ -113,7 +114,7 @@ const treeEmployees = ref([]);
 watch(
   () => props.employees,
   (newVal, oldVal) => {
-    if (newVal !== oldVal) {
+    if (newVal) {
       // newVal.push({
       //   avatarUrl: "",
       //   name: "测试Name",
@@ -139,7 +140,8 @@ watch(
         })
       );
     }
-  }
+  },
+  { immediate: true }
 );
 
 const treeFilteredEmployees = computed(() => {
@@ -200,8 +202,22 @@ function treeHandleClick(emp) {
   const checkedKeys = treeRef.value
     .getCheckedKeys()
     .filter(element => element !== undefined);
-  console.log("checkedKeys:", checkedKeys);
-  checkedIds.value = checkedKeys;
+  // console.log("===========================================");
+  // console.log("checkedKeys:", checkedKeys);
+
+  // 会有问题，如果筛选后选了人，则不符合筛选条件的人但是已经选择的人也会被取消选择
+  // 遍历当前 checkedIds.value，如果在 treeFilteredEmployees.value 里的每个对象的children里都匹配不到，说明当前id是需要被保留的
+  // console.log("checkedIds.value:", checkedIds.value);
+  const keepIds = checkedIds.value.filter(
+    id =>
+      !treeFilteredEmployees.value.some(
+        item => item.children && item.children.some(child => child.id === id)
+      )
+  );
+  // console.log("keepIds:", keepIds);
+
+  checkedIds.value = [...checkedKeys, ...keepIds];
+
   // return;
   // emit("select", emp);
   // 如果未勾选则勾选，如果已勾选则取消勾选
@@ -213,6 +229,7 @@ function treeHandleClick(emp) {
   // }
   // 通知父组件更新
   emit("update:modelValue", checkedIds.value);
+  // console.log("checkedIds.value:", checkedIds.value);
 }
 
 const treeIsIndeterminate = computed(() => {
@@ -222,7 +239,6 @@ const treeIsIndeterminate = computed(() => {
   ).length;
   return checkedCount > 0 && checkedCount < filteredEmployees.value.length;
 });
-//#endregion
 
 watch(searchValue, val => {
   emit("update:search", val);
@@ -243,6 +259,7 @@ watch(
     checkedIds.value = val || [];
   }
 );
+//#endregion
 
 const filteredEmployees = computed(() => {
   const searchTerm = searchValue.value?.toLowerCase() || "";

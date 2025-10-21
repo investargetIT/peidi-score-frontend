@@ -17,7 +17,10 @@
           "
         >
           {{
-            !props?.selected?.userId
+            !(
+              props?.selected?.userId &&
+              props?.selectedEmployeeIds?.length === 1
+            )
               ? t("monitor.selectEmployeeFirst")
               : t("table.emptyText")
           }}
@@ -82,11 +85,18 @@ const props = defineProps({
   activeTab: {
     type: String,
     required: true
+  },
+  selectedEmployeeIds: {
+    type: Array,
+    default: () => []
   }
 });
 
 const fetchHistoryList = () => {
   if (!props?.selected?.userId) {
+    return;
+  }
+  if (props?.selectedEmployeeIds?.length !== 1) {
     return;
   }
   const commonInfo = {
