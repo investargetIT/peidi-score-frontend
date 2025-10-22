@@ -113,9 +113,10 @@ onMounted(() => {
               // 使用 Promise.all 并行获取多个枚举类型列表
               Promise.all([
                 getEnumTypeList({ type: "adminUser" }),
-                getEnumTypeList({ type: "esg" })
+                getEnumTypeList({ type: "esg" }),
+                getUserCheck(res?.data)
               ])
-                .then(([adminUserRes, esgRes]) => {
+                .then(([adminUserRes, esgRes, userCheckRes]) => {
                   // 处理 adminUser 枚举结果
                   if (adminUserRes.success) {
                     localStorage.setItem(
@@ -135,6 +136,24 @@ onMounted(() => {
                     );
                   } else {
                     message("获取ESG枚举列表失败", { type: "error" });
+                    return;
+                  }
+                  // ESG权限逻辑
+                  if (userCheckRes.success) {
+                    // 因为动态路由暂时无效，先检查是否存在esgUserInfo，如果不存在则在存入后刷新一次页面，因为权限配置基本不会变
+                    const isExist =
+                      localStorage.getItem("esgUserInfo") !== null;
+                    localStorage.setItem(
+                      "esgUserInfo",
+                      JSON.stringify({
+                        userid: userCheckRes?.data?.id,
+                        site: userCheckRes?.data?.dataSource,
+                        dingId: userCheckRes?.data?.dingId
+                      })
+                    );
+                    if (!isExist) window.location.reload();
+                  } else {
+                    message("获取用户检查失败", { type: "error" });
                     return;
                   }
 
@@ -164,20 +183,25 @@ onMounted(() => {
           });
 
           //#region ESG权限逻辑
-          getUserCheck(res?.data).then(res =>
-            localStorage.setItem(
-              "esgUserInfo",
-              JSON.stringify({
-                userid: res?.data?.id,
-                site: res?.data?.dataSource,
-                dingId: res?.data?.dingId
-              })
-            )
-          );
+          // getUserCheck(res?.data).then(res =>
+          //   localStorage.setItem(
+          //     "esgUserInfo",
+          //     JSON.stringify({
+          //       userid: res?.data?.id,
+          //       site: res?.data?.dataSource,
+          //       dingId: res?.data?.dingId
+          //     })
+          //   )
+          // );
           //#endregion
         } else {
           message("登录失败", { type: "error" });
         }
+      })
+      .catch(error => {
+        console.error("登录失败:", error);
+        message("登录失败", { type: "error" });
+        window.location.href = `http://login.peidigroup.cn/#/login?source=${encryptMessage(window.location.href)}`;
       });
   } else {
     // const storage = new CrossStorageClient(

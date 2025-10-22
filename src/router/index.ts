@@ -146,7 +146,7 @@ const routes = [
       icon: "flowbite:address-book-outline",
       title: t("menu.task"),
       rank: 3,
-      showLink: () => isSiteHangzhou()
+      showLink: isSiteHangzhou()
     },
     children: [
       {
@@ -170,7 +170,7 @@ const routes = [
       icon: "ep:setting",
       title: t("menu.adminboard"),
       rank: 999, // 管理员设置 最后显示
-      showLink: () => isAdmin()
+      showLink: isAdmin()
     },
     children: [
       {
@@ -194,7 +194,7 @@ const routes = [
       icon: "ep:data-analysis",
       title: t("menu.esg"),
       rank: 4,
-      showLink: () => isEsgAdmin()
+      showLink: isEsgAdmin()
     },
     children: [
       {

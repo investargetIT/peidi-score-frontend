@@ -268,7 +268,7 @@ const handlePasswordUpdate = () => {
 };
 
 const isDingUser = computed(() => {
-  if (!!navigator.userAgent.includes("DingTalk")) return true;
+  if (navigator.userAgent.includes("DingTalk")) return true;
   const esgUserInfo = JSON.parse(localStorage.getItem("esgUserInfo"));
   if (!!esgUserInfo?.dingId) return true;
   return false;
