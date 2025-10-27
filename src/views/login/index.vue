@@ -542,6 +542,13 @@ onBeforeUnmount(() => {
 }
 
 .pridi-loader2-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
   @keyframes loading-shake {
     0% {
       transform: rotate(-5deg);
@@ -575,13 +582,6 @@ onBeforeUnmount(() => {
       transform: rotate(0deg);
     }
   }
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
 
   .loader2 {
     width: 200px;
