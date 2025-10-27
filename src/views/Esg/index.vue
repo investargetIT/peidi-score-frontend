@@ -1,27 +1,52 @@
 <template>
   <div class="esg-management">
     <!-- 顶部导航标签 -->
-    <el-tabs v-model="activeTab" class="esg-tabs">
-      <el-tab-pane label="公司概况" name="company-overview" />
-      <el-tab-pane label="公司治理" name="corporate-governance" />
-      <el-tab-pane label="ESG管理" name="esg-management" />
-      <el-tab-pane label="产业发展与运营" name="business-operations" />
-      <el-tab-pane label="质量与食品安全管理" name="quality-food-safety" />
-      <el-tab-pane label="供应链管理" name="supplier-management" />
-      <el-tab-pane
-        label="信息安全与隐私保护"
-        name="information-security-privacy"
-      />
-      <el-tab-pane label="员工" name="employees" />
-      <el-tab-pane label="环境影响" name="environmental-impact" />
-      <el-tab-pane label="回馈社会" name="community-welfare" />
-    </el-tabs>
+    <div class="flex items-center justify-between">
+      <div class="mr-[10px]">
+        <el-select
+          v-model="yearValue"
+          placeholder="请选择年度"
+          style="width: 200px"
+          size="large"
+        >
+          <template #label="{ label, value }">
+            <span class="text-[14px]">年度: </span>
+            <span class="text-[16px] font-bold">{{ value }}</span>
+          </template>
+          <el-option
+            v-for="item in yearOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+      <div class="flex-1">
+        <el-tabs v-model="activeTab" class="esg-tabs">
+          <el-tab-pane label="公司概况" name="company-overview" />
+          <el-tab-pane label="公司治理" name="corporate-governance" />
+          <el-tab-pane label="ESG管理" name="esg-management" />
+          <el-tab-pane label="产业发展与运营" name="business-operations" />
+          <el-tab-pane label="质量与食品安全管理" name="quality-food-safety" />
+          <el-tab-pane label="供应链管理" name="supplier-management" />
+          <el-tab-pane
+            label="信息安全与隐私保护"
+            name="information-security-privacy"
+          />
+          <el-tab-pane label="员工" name="employees" />
+          <el-tab-pane label="环境影响" name="environmental-impact" />
+          <el-tab-pane label="回馈社会" name="community-welfare" />
+        </el-tabs>
+      </div>
+    </div>
 
     <!-- 动态组件内容区域 -->
+    <!-- :isEdit="hasEditPermission(activeTab)" -->
     <component
       :is="currentComponent"
       :active-tab="activeTab"
       :isEdit="hasEditPermission(activeTab)"
+      :year="yearValue"
     />
   </div>
 </template>
@@ -64,6 +89,37 @@ const componentMap = {
 const currentComponent = computed(() => {
   return componentMap[activeTab.value] || CompanyOverview;
 });
+
+//#region 年份选择
+// 默认为今年
+const yearValue = ref(new Date().getFullYear().toString());
+// const yearOptions = [
+//   {
+//     value: "2026",
+//     label: "2026"
+//   },
+//   {
+//     value: "2025",
+//     label: "2025"
+//   },
+//   {
+//     value: "2024",
+//     label: "2024"
+//   },
+//   {
+//     value: "2023",
+//     label: "2023"
+//   }
+// ];
+// 2025年之后10年 2025是写死的
+const yearOptions = [];
+for (let i = 0; i < 10; i++) {
+  yearOptions.push({
+    value: (2025 + i).toString(),
+    label: (2025 + i).toString()
+  });
+}
+//#endregion
 </script>
 
 <style scoped>
@@ -107,5 +163,9 @@ const currentComponent = computed(() => {
 .esg-tabs :deep(.el-tabs__item.is-active) {
   font-weight: 600;
   color: #409eff;
+}
+
+:deep(.el-select__wrapper) {
+  height: 50px;
 }
 </style>
