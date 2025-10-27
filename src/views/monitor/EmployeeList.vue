@@ -58,17 +58,28 @@
         check-on-click-leaf
       >
         <template #default="{ node, data }">
-          <div class="custom-tree-node">
-            <img
-              v-if="data.id"
-              :src="data.avatarUrl || Avatar"
-              style="width: 20px; height: 20px; margin-right: 5px"
-            />
-            <span>{{ node.label }}</span>
-            <p v-if="data.id" class="ml-[5px] text-[#9b9a9a] text-[12px] flex">
-              {{ `(${data.lifeTimePoints} / ${data.redeemablePoints})` }}
-            </p>
-          </div>
+          <el-tooltip
+            :content="`${node.label} (${data.lifeTimePoints} / ${data.redeemablePoints})`"
+            placement="top-start"
+            effect="dark"
+            :disabled="!data.id"
+            :show-after="800"
+          >
+            <div class="custom-tree-node">
+              <img
+                v-if="data.id"
+                :src="data.avatarUrl || Avatar"
+                style="width: 20px; height: 20px; margin-right: 5px"
+              />
+              <span>{{ node.label }}</span>
+              <p
+                v-if="data.id"
+                class="ml-[5px] text-[#9b9a9a] text-[12px] flex"
+              >
+                {{ `(${data.lifeTimePoints} / ${data.redeemablePoints})` }}
+              </p>
+            </div>
+          </el-tooltip>
         </template>
       </el-tree>
     </div>
@@ -125,6 +136,7 @@ watch(
       //   site: "测试Site",
       //   userId: "1926449443739598852"
       // });
+
       const siteEmployees = newVal.reduce((acc, emp) => {
         acc[emp.site] = acc[emp.site] || [];
         acc[emp.site].push({
@@ -139,12 +151,30 @@ watch(
         return acc;
       }, {});
       //{佩蒂智创（杭州）宠物科技有限公司: Array(118), 测试Site: Array(1)} 转换成 [{label: "佩蒂智创（杭州）宠物科技有限公司", children: Array(118)}, {label: "测试Site", children: Array(1)}]
-      treeEmployees.value = Object.entries(siteEmployees).map(
+      let temTreeEmployees = Object.entries(siteEmployees).map(
         ([site, children]) => ({
           label: site,
           children
         })
       );
+      // 对 temTreeEmployees 里的每个对象children 按 label 拼音首字母排序, 若label是空则放最后面
+      temTreeEmployees.forEach(item => {
+        if (item.children && item.children.length > 0) {
+          item.children.sort((a, b) => {
+            // 若label是空则放最后面
+            if (!a.label) return 1;
+            if (!b.label) return -1;
+            const nameA = a.label
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "");
+            const nameB = b.label
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "");
+            return nameA.localeCompare(nameB);
+          });
+        }
+      });
+      treeEmployees.value = temTreeEmployees;
     }
   },
   { immediate: true }
