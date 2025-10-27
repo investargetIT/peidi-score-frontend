@@ -9,6 +9,7 @@ import LaySidebarTopCollapse from "../lay-sidebar/components/SidebarTopCollapse.
 
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
+import RiEditBoxLine from "@iconify-icons/ri/edit-box-line";
 import { emitter } from "@/utils/mitt.ts";
 import { storageLocal } from "@pureadmin/utils";
 import { ref, reactive, watch, computed } from "vue";
@@ -22,6 +23,7 @@ import {
 import { getUserInfoData, updateUserInfo } from "@/api/pmApi";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n";
+import { updateUserPassword } from "../../../api/user";
 
 const {
   layout,
@@ -35,7 +37,11 @@ const {
   toggleSideBar
 } = useNav();
 
-const { id } = storageLocal()?.getItem("dataSource") || {};
+const {
+  id,
+  username: nameFromDataSource,
+  userEmail: emailFromDataSource
+} = storageLocal()?.getItem("dataSource") || {};
 
 const { hired_date, name, email } = storageLocal()?.getItem("ddUserInfo") || {};
 
@@ -96,7 +102,10 @@ const handleUpdate = () => {
       console.log("form表单数据==", form);
       updateUserInfo({
         userId: id,
-        avatarUrl: JSON.stringify(form.avatarUrlList)
+        avatarUrl:
+          JSON.stringify(form.avatarUrlList) === "[]"
+            ? ""
+            : JSON.stringify(form.avatarUrlList)
       }).then(res => {
         if (res?.code === 200) {
           showModifyDialog.value = false;
@@ -154,7 +163,7 @@ const fetchCurUserInfo = () => {
           }
         } catch (error) {
           // 如果JSON.parse失败，说明是单纯的字符串
-          console.log("avatarUrl是单纯字符串，直接使用:", res.data.avatarUrl);
+          // console.log("avatarUrl是单纯字符串，直接使用:", res.data.avatarUrl);
           // 直接使用字符串作为头像URL
           curUserAvatar.value = res.data.avatarUrl;
           storageLocal().setItem("curUserAvatar", res.data.avatarUrl);
@@ -191,8 +200,79 @@ const currentLangLabel = computed(() =>
 function changeLang(lang: string) {
   locale.value = lang;
   localStorage.setItem("lang", lang);
+  window.location.reload(); // 为了解决切换语言后，菜单标题没有更新的问题
 }
 fetchCurUserInfo();
+
+const showPasswordDialog = ref(false);
+const changePassword = () => {
+  showPasswordDialog.value = true;
+};
+const passwordFormRef = ref(null);
+const passwordForm = reactive({
+  oldPassword: "",
+  newPassword: "",
+  confirmPassword: ""
+});
+const validateConfirmPassword = (rule, value, callback) => {
+  if (value !== passwordForm.newPassword) {
+    callback(new Error(t("navbar.passwordNotMatch")));
+  } else {
+    callback();
+  }
+};
+const passwordRules = reactive({
+  oldPassword: [
+    {
+      required: true,
+      message: t("navbar.pleaseEnterOldPassword"),
+      trigger: "blur"
+    }
+  ],
+  // 新密码还需要和确认密码一致
+  newPassword: [
+    {
+      required: true,
+      message: t("navbar.pleaseEnterNewPassword"),
+      trigger: "blur"
+    }
+  ],
+  confirmPassword: [
+    { required: true, message: t("navbar.confirmPassword"), trigger: "blur" },
+    { required: true, validator: validateConfirmPassword, trigger: "blur" }
+  ]
+});
+const handlePasswordUpdate = () => {
+  passwordFormRef.value.validate(valid => {
+    if (valid) {
+      console.log("passwordForm表单数据==", passwordForm);
+      if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+        ElMessage.error(t("navbar.passwordNotMatch"));
+        return;
+      }
+      updateUserPassword({
+        identifier: storageLocal().getItem("dataSource")?.id,
+        oldPassword: passwordForm.oldPassword,
+        newPassword: passwordForm.newPassword
+      }).then(res => {
+        if (res?.code === 200) {
+          ElMessage.success(t("navbar.updateSuccess"));
+          passwordFormRef.value.resetFields();
+          showPasswordDialog.value = false;
+        } else {
+          ElMessage.error(t("navbar.updateFailed") + res?.msg);
+        }
+      });
+    }
+  });
+};
+
+const isDingUser = computed(() => {
+  if (navigator.userAgent.includes("DingTalk")) return true;
+  const esgUserInfo = JSON.parse(localStorage.getItem("esgUserInfo"));
+  if (!!esgUserInfo?.dingId) return true;
+  return false;
+});
 </script>
 
 <template>
@@ -235,16 +315,20 @@ fetchCurUserInfo();
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
           <img :src="curUserAvatar || userAvatar" :style="avatarsStyle" />
-          <div v-if="name" class="userContainer">
-            <p class="dark:text-white">{{ name }}</p>
-            <p class="dark:text-white">{{ email }}</p>
+          <div v-if="name || nameFromDataSource" class="userContainer">
+            <p class="dark:text-white">{{ name || nameFromDataSource }}</p>
+            <p class="dark:text-white">{{ email || emailFromDataSource }}</p>
           </div>
         </span>
         <template #dropdown>
           <el-dropdown-menu
             class="logout"
-            :style="{ width: locale === 'en' ? '135px' : '' }"
+            :style="{ width: locale === 'en' ? '150px' : '' }"
           >
+            <el-dropdown-item @click="changePassword" v-if="!isDingUser">
+              <IconifyIconOffline :icon="RiEditBoxLine" style="margin: 5px" />
+              {{ t("navbar.updatePassword") }}
+            </el-dropdown-item>
             <el-dropdown-item @click="modify">
               <IconifyIconOffline :icon="Setting" style="margin: 5px" />
               {{ t("navbar.updateProfile") }}
@@ -263,6 +347,7 @@ fetchCurUserInfo();
         v-model="showModifyDialog"
         :title="t('navbar.userProfile')"
         width="500"
+        :close-on-click-modal="false"
       >
         <el-form :model="form" ref="formRef">
           <el-form-item :label="t('navbar.avatar')">
@@ -289,7 +374,7 @@ fetchCurUserInfo();
             </el-upload>
           </el-form-item>
           <el-form-item :label="t('navbar.name')">
-            <span>{{ name }}</span>
+            <span>{{ name || nameFromDataSource }}</span>
           </el-form-item>
           <el-form-item :label="t('navbar.email')">
             <span>{{ email }}</span>
@@ -316,6 +401,53 @@ fetchCurUserInfo();
       </el-dialog>
       <el-dialog v-model="dialogVisible">
         <img w-full :src="dialogImageUrl" alt="Preview Image" />
+      </el-dialog>
+
+      <el-dialog
+        v-model="showPasswordDialog"
+        :title="t('navbar.updatePassword')"
+        width="500"
+        @closed="passwordFormRef?.resetFields()"
+        :close-on-click-modal="false"
+      >
+        <el-form
+          :model="passwordForm"
+          :rules="passwordRules"
+          ref="passwordFormRef"
+          :label-width="locale === 'en' ? '150px' : '100px'"
+        >
+          <el-form-item :label="t('navbar.oldPassword')" prop="oldPassword">
+            <el-input
+              v-model="passwordForm.oldPassword"
+              type="password"
+              show-password
+            />
+          </el-form-item>
+          <el-form-item :label="t('navbar.newPassword')" prop="newPassword">
+            <el-input
+              v-model="passwordForm.newPassword"
+              type="password"
+              show-password
+            />
+          </el-form-item>
+          <el-form-item
+            :label="t('navbar.confirmPassword')"
+            prop="confirmPassword"
+          >
+            <el-input
+              v-model="passwordForm.confirmPassword"
+              type="password"
+              show-password
+            />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button type="primary" @click="handlePasswordUpdate">
+              {{ t("navbar.confirm") }}
+            </el-button>
+          </div>
+        </template>
       </el-dialog>
     </div>
   </div>

@@ -30,6 +30,8 @@ import {
   removeToken,
   multipleTabsKey
 } from "@/utils/auth";
+import i18n from "@/plugins/i18n";
+const { t } = i18n.global;
 
 import pdIcon from "../assets/png/prodIcon.png";
 import priceIcon from "../assets/png/priceIcon.png";
@@ -52,7 +54,8 @@ export const isAdmin = () => {
     localStorage.getItem("adminUserEnum") || "[]"
   );
   console.log("adminUserEnum", adminUserEnum);
-  const curDDUserInfo = JSON.parse(localStorage.getItem("ddUserInfo") || "{}");
+  // const curDDUserInfo = JSON.parse(localStorage.getItem("ddUserInfo") || "{}");
+  const curDDUserInfo = JSON.parse(localStorage.getItem("esgUserInfo") || "{}");
   console.log("curDDUserInfo", curDDUserInfo);
   console.log(
     "Checking admin: ",
@@ -75,7 +78,15 @@ export const isEsgAdmin = () => {
     "in",
     esgEnum.map(item => item.value)
   );
-  return esgEnum.some(item => item.value === curDDUserInfo?.userid);
+  return esgEnum.some(item => item.value.includes(curDDUserInfo?.userid));
+};
+
+export const isSiteHangzhou = () => {
+  const esgUserInfo = JSON.parse(localStorage.getItem("esgUserInfo") || "{}");
+  if (esgUserInfo?.site === "3") {
+    return true;
+  }
+  return false;
 };
 
 /** 原始静态路由（未做任何处理） */
@@ -87,8 +98,8 @@ const routes = [
     component: Layout,
     meta: {
       icon: "ep:document",
-      title: "menu.pointshistory",
-      rank: 0
+      title: t("menu.pointshistory"),
+      rank: 1
     },
     children: [
       {
@@ -96,7 +107,7 @@ const routes = [
         name: "history",
         component: () => import("@/views/history/index.vue"),
         meta: {
-          title: "menu.pointshistory",
+          title: t("menu.pointshistory"),
           showParent: false,
           icon: "ep:document"
         }
@@ -110,8 +121,8 @@ const routes = [
     component: Layout,
     meta: {
       icon: "ep:trophy",
-      title: "menu.pointsrank",
-      rank: 0
+      title: t("menu.pointsrank"),
+      rank: 2
     },
     children: [
       {
@@ -119,7 +130,7 @@ const routes = [
         name: "score",
         component: () => import("@/views/scoreRank/index.vue"),
         meta: {
-          title: "menu.pointsrank",
+          title: t("menu.pointsrank"),
           showParent: false,
           icon: "ep:trophy"
         }
@@ -133,8 +144,9 @@ const routes = [
     component: Layout,
     meta: {
       icon: "flowbite:address-book-outline",
-      title: "menu.task",
-      rank: 0
+      title: t("menu.task"),
+      rank: 3,
+      showLink: isSiteHangzhou()
     },
     children: [
       {
@@ -142,53 +154,23 @@ const routes = [
         name: "task",
         component: () => import("@/views/employeeTask/index.vue"),
         meta: {
-          title: "menu.task",
+          title: t("menu.task"),
           showParent: false,
           icon: "flowbite:address-book-outline"
         }
       }
     ]
-  }
-];
-
-// ESG 管理员路由
-if (isEsgAdmin()) {
-  routes.push({
-    path: "/esg",
-    name: "EsgLayout",
-    redirect: "/esg/index",
-    component: Layout,
-    meta: {
-      icon: "ep:data-analysis",
-      title: "menu.esg",
-      rank: 0
-    },
-    children: [
-      {
-        path: "/esg/index",
-        name: "esg",
-        component: () => import("@/views/esg/index.vue"),
-        meta: {
-          title: "menu.esg",
-          showParent: false,
-          icon: "ep:data-analysis"
-        }
-      }
-    ]
-  });
-}
-
-// 系统管理员路由
-if (isAdmin()) {
-  routes.push({
+  },
+  {
     path: "/monitor",
     name: "MonitorLayout",
     redirect: "/monitor/index",
     component: Layout,
     meta: {
       icon: "ep:setting",
-      title: "menu.adminboard",
-      rank: 0
+      title: t("menu.adminboard"),
+      rank: 999, // 管理员设置 最后显示
+      showLink: isAdmin()
     },
     children: [
       {
@@ -196,14 +178,92 @@ if (isAdmin()) {
         name: "monitor",
         component: () => import("@/views/monitor/index.vue"),
         meta: {
-          title: "menu.adminboard",
+          title: t("menu.adminboard"),
           showParent: false,
           icon: "ep:setting"
         }
       }
     ]
-  });
-}
+  },
+  {
+    path: "/esg",
+    name: "EsgLayout",
+    redirect: "/esg/index",
+    component: Layout,
+    meta: {
+      icon: "ep:data-analysis",
+      title: t("menu.esg"),
+      rank: 4,
+      showLink: isEsgAdmin()
+    },
+    children: [
+      {
+        path: "/esg/index",
+        name: "esg",
+        component: () => import("@/views/esg/index.vue"),
+        meta: {
+          title: t("menu.esg"),
+          showParent: false,
+          icon: "ep:data-analysis"
+        }
+      }
+    ]
+  }
+];
+
+// ESG 管理员路由
+// if (isEsgAdmin()) {
+//   routes.push({
+//     path: "/esg",
+//     name: "EsgLayout",
+//     redirect: "/esg/index",
+//     component: Layout,
+//     meta: {
+//       icon: "ep:data-analysis",
+//       title: t("menu.esg"),
+//       rank: 0
+//     },
+//     children: [
+//       {
+//         path: "/esg/index",
+//         name: "esg",
+//         component: () => import("@/views/esg/index.vue"),
+//         meta: {
+//           title: t("menu.esg"),
+//           showParent: false,
+//           icon: "ep:data-analysis"
+//         }
+//       }
+//     ]
+//   });
+// }
+
+// 系统管理员路由
+// if (isAdmin()) {
+//   routes.push({
+//     path: "/monitor",
+//     name: "MonitorLayout",
+//     redirect: "/monitor/index",
+//     component: Layout,
+//     meta: {
+//       icon: "ep:setting",
+//       title: t("menu.adminboard"),
+//       rank: 0
+//     },
+//     children: [
+//       {
+//         path: "/monitor/index",
+//         name: "monitor",
+//         component: () => import("@/views/monitor/index.vue"),
+//         meta: {
+//           title: t("menu.adminboard"),
+//           showParent: false,
+//           icon: "ep:setting"
+//         }
+//       }
+//     ]
+//   });
+// }
 
 Object.keys(modules).forEach(key => {
   routes.push(modules[key].default);
@@ -261,7 +321,7 @@ export function resetRouter() {
 }
 
 /** 路由白名单 */
-const whiteList = ["/login"];
+const whiteList = ["/login", "/login_"];
 
 const { VITE_HIDE_HOME } = import.meta.env;
 

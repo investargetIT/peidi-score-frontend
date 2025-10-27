@@ -59,7 +59,7 @@
           <div class="flex gap-2 items-center">
             <el-avatar
               :size="32"
-              :src="scope.row.avatarUrl"
+              :src="scope.row.avatarUrl || Avatar"
               style="margin-right: 12px"
             />
             <span>{{ scope.row.fullName }}</span>
@@ -265,6 +265,10 @@
             {{ getProgressText(selectedTask.remark) }} 已完成
           </p>
         </div>
+        <div class="info-item">
+          <p class="info-label">学历</p>
+          <p class="info-value">{{ selectedTask?.education || "" }}</p>
+        </div>
       </div>
 
       <!-- 审核状态提示 -->
@@ -407,6 +411,7 @@ import { getQaList, updateQaConfig } from "@/api/task";
 import { getFileDownLoadPath } from "@/api/esg";
 import { ElMessage } from "element-plus";
 import { ref, onMounted } from "vue";
+import Avatar from "@/assets/user.jpg";
 
 const exchangeList = ref([]);
 const filteredExchangeList = ref([]);

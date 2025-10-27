@@ -1,6 +1,6 @@
 <template>
   <el-card class="exchange-history-card">
-    <div class="exchange-title">{{ t("monitor.history") }}</div>
+    <div class="exchange-title">{{ t("monitor.operationHistory") }}</div>
     <el-table
       :data="scoreHistoryList"
       class="exchange-table no-border-table"
@@ -16,14 +16,7 @@
             text-align: center;
           "
         >
-          {{
-            !(
-              props?.selected?.userId &&
-              props?.selectedEmployeeIds?.length === 1
-            )
-              ? t("monitor.selectEmployeeFirst")
-              : t("table.emptyText")
-          }}
+          {{ t("table.emptyText") }}
         </div>
       </template>
       <el-table-column
@@ -42,6 +35,11 @@
           </span>
         </template>
       </el-table-column>
+      <el-table-column
+        prop="updateUserName"
+        :label="t('monitor.updateUserName')"
+        align="center"
+      />
       <el-table-column
         prop="recordTypeName"
         :label="t('history.type')"
@@ -65,6 +63,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { storageLocal } from "@pureadmin/utils";
 import { getScoreHistoryList } from "@/api/pmApi.ts";
 const scoreHistoryList = ref([]);
 import dayjs from "dayjs";
@@ -85,18 +84,13 @@ const props = defineProps({
   activeTab: {
     type: String,
     required: true
-  },
-  selectedEmployeeIds: {
-    type: Array,
-    default: () => []
   }
 });
 
+const updateUserId = storageLocal().getItem("dataSource")?.id || "";
+
 const fetchHistoryList = () => {
-  if (!props?.selected?.userId) {
-    return;
-  }
-  if (props?.selectedEmployeeIds?.length !== 1) {
+  if (!updateUserId) {
     return;
   }
   const commonInfo = {
@@ -105,9 +99,9 @@ const fetchHistoryList = () => {
   };
   const searchArr = [];
   searchArr.push({
-    searchName: "userId",
+    searchName: "update_user_id",
     searchType: "equals",
-    searchValue: props.selected.userId
+    searchValue: updateUserId
   });
   commonInfo.searchStr = JSON.stringify(searchArr);
   getScoreHistoryList(commonInfo).then(res => {
@@ -121,9 +115,9 @@ const fetchHistoryList = () => {
 };
 
 watch(
-  () => [props.activeTab, props.selected && props.selected.userId],
-  ([tab, userId]) => {
-    if (tab === "history" && userId) {
+  () => [props.activeTab],
+  ([tab]) => {
+    if (tab === "operation") {
       fetchHistoryList();
     }
   },

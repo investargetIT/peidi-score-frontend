@@ -99,12 +99,44 @@ const onLogin = async (
                   JSON.stringify({ ...data, userEmail: ruleForm.username })
                 );
 
+                // #region 入职时间逻辑 （如果用户没有入职时间，才去获取）
+                if (!storageLocal().getItem("ddUserInfo")?.hired_date) {
+                  getUserInfoData({
+                    userId: storageLocal()?.getItem("dataSource")?.id
+                  }).then(res => {
+                    if (res.success) {
+                      const { hireDate } = res.data;
+                      if (hireDate) {
+                        const hireDateTimestamp = new Date(hireDate).getTime();
+                        storageLocal().setItem("ddUserInfo", {
+                          ...(storageLocal().getItem("ddUserInfo") || {}),
+                          hired_date: hireDateTimestamp.toString()
+                        });
+
+                        // 初始化用户配置
+                        initUserInfo();
+                      } else {
+                        console.log("用户没有入职时间");
+                      }
+                      console.log("用户信息:", res.data);
+                    } else {
+                      message("获取用户信息失败", { type: "error" });
+                      return;
+                    }
+                  });
+                } else {
+                  // 初始化用户配置
+                  initUserInfo();
+                }
+                // #endregion
+
                 // 使用 Promise.all 并行获取多个枚举类型列表
                 Promise.all([
                   getEnumTypeList({ type: "adminUser" }),
-                  getEnumTypeList({ type: "esg" })
+                  getEnumTypeList({ type: "esg" }),
+                  getUserCheck(res?.data)
                 ])
-                  .then(([adminUserRes, esgRes]) => {
+                  .then(([adminUserRes, esgRes, userCheckRes]) => {
                     // 处理 adminUser 枚举结果
                     if (adminUserRes.success) {
                       localStorage.setItem(
@@ -124,6 +156,25 @@ const onLogin = async (
                       );
                     } else {
                       message("获取ESG枚举列表失败", { type: "error" });
+                      return;
+                    }
+
+                    // ESG权限逻辑
+                    if (userCheckRes.success) {
+                      // 因为动态路由暂时无效，先检查是否存在esgUserInfo，如果不存在则在存入后刷新一次页面，因为权限配置基本不会变
+                      const isExist =
+                        localStorage.getItem("esgUserInfo") !== null;
+                      localStorage.setItem(
+                        "esgUserInfo",
+                        JSON.stringify({
+                          userid: userCheckRes?.data?.id,
+                          site: userCheckRes?.data?.dataSource,
+                          dingId: userCheckRes?.data?.dingId
+                        })
+                      );
+                      if (!isExist) window.location.reload();
+                    } else {
+                      message("获取用户检查失败", { type: "error" });
                       return;
                     }
 
@@ -153,14 +204,15 @@ const onLogin = async (
             });
 
             //#region ESG权限逻辑
-            getUserCheck(res?.data).then(res =>
-              localStorage.setItem(
-                "esgUserInfo",
-                JSON.stringify({
-                  userid: res?.data?.id
-                })
-              )
-            );
+            // getUserCheck(res?.data).then(res =>
+            //   localStorage.setItem(
+            //     "esgUserInfo",
+            //     JSON.stringify({
+            //       userid: res?.data?.id,
+            //       site: res?.data?.dataSource
+            //     })
+            //   )
+            // );
             //#endregion
           } else {
             message("登录失败", { type: "error" });
@@ -321,7 +373,7 @@ const ddLogin = () => {
 
 ddLogin();
 
-function initUserInfo() {
+const initUserInfo = () => {
   // 初始化用户配置
   updateUserInfo({
     userId: storageLocal()?.getItem("dataSource")?.id,
@@ -339,7 +391,7 @@ function initUserInfo() {
       );
     }
   });
-}
+};
 
 /** 使用公共函数，避免`removeEventListener`失效 */
 function onkeypress({ code }: KeyboardEvent) {
@@ -349,6 +401,11 @@ function onkeypress({ code }: KeyboardEvent) {
 }
 
 onMounted(() => {
+  // 不在钉钉环境下，跳转到新登录页
+  if (!navigator.userAgent.includes("DingTalk")) {
+    window.location.href = `${window.location.origin}/#/login_`;
+  }
+
   window.document.addEventListener("keypress", onkeypress);
 
   // 获取基地信息
@@ -367,7 +424,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="select-none">
+  <div class="select-none" v-show="false">
     <img :src="bg" class="wave" />
     <div class="flex-c absolute right-5 top-3">
       <!-- 主题 -->
@@ -462,6 +519,9 @@ onBeforeUnmount(() => {
       </div>
     </div>
   </div>
+  <div class="pridi-loader2-container">
+    <div class="loader2"></div>
+  </div>
 </template>
 
 <style scoped>
@@ -478,6 +538,60 @@ onBeforeUnmount(() => {
 
   span {
     font-size: 14px;
+  }
+}
+
+.pridi-loader2-container {
+  @keyframes loading-shake {
+    0% {
+      transform: rotate(-5deg);
+    }
+
+    15% {
+      transform: rotate(8deg);
+    }
+
+    30% {
+      transform: rotate(-7deg);
+    }
+
+    45% {
+      transform: rotate(6deg);
+    }
+
+    60% {
+      transform: rotate(-4deg);
+    }
+
+    75% {
+      transform: rotate(3deg);
+    }
+
+    90% {
+      transform: rotate(-2deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  .loader2 {
+    width: 200px;
+    height: 200px;
+    background-image: url("@/assets/login/loading.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transform-origin: center center;
+    animation: loading-shake 1.5s ease-in-out infinite;
   }
 }
 </style>

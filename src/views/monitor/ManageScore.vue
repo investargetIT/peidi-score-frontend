@@ -6,7 +6,7 @@
         <div class="employee-info-card">
           <el-avatar
             :size="64"
-            :src="avatarUrls[employee.id] || defaultAvatar"
+            :src="avatarUrls[employee.id] || Avatar"
             class="employee-avatar"
           />
           <div class="employee-info-main">
@@ -17,15 +17,15 @@
             <!-- <div class="employee-dept">{{ employee.dept }}</div> -->
             <div class="employee-scores">
               <div class="score-block">
-                <div class="score-label">{{ t("monitor.exchangeable") }}</div>
-                <div class="score-value">
-                  {{ changeNumberFormat(employee.redeemablePoints) }}
-                </div>
-              </div>
-              <div class="score-block">
                 <div class="score-label">{{ t("monitor.longTerm") }}</div>
                 <div class="score-value">
                   {{ changeNumberFormat(employee.lifeTimePoints) }}
+                </div>
+              </div>
+              <div class="score-block">
+                <div class="score-label">{{ t("monitor.exchangeable") }}</div>
+                <div class="score-value">
+                  {{ changeNumberFormat(employee.redeemablePoints) }}
                 </div>
               </div>
             </div>
@@ -95,6 +95,18 @@
               @input="validateReason"
             />
           </el-form-item>
+
+          <el-form-item
+            :label="t('monitor.remark')"
+            :error="reasonError"
+            style="margin-top: 16px"
+          >
+            <el-input
+              style="width: 240px"
+              v-model="ohterForm.remark"
+              :placeholder="t('monitor.remark')"
+            />
+          </el-form-item>
         </el-form>
       </template>
       <template v-else>
@@ -129,6 +141,9 @@ import { useI18n } from "vue-i18n";
 import { changeNumberFormat } from "@/utils/common";
 import { updateUseScore, getPointRuleList, addScoreAction } from "@/api/pmApi";
 import { ElMessage } from "element-plus";
+import Avatar from "@/assets/user.jpg";
+import { storageLocal } from "@pureadmin/utils";
+
 const { t } = useI18n();
 const pointRuleList = ref([]);
 
@@ -151,7 +166,8 @@ const form = ref({
 });
 
 const ohterForm = ref({
-  reasonValue: ""
+  reasonValue: "",
+  remark: ""
 });
 
 const dialogVisible = ref(false);
@@ -215,7 +231,7 @@ const onDialogConfirm = async () => {
   // 当选择类型为其他时，新增规则
   if (otherRuleMap[form.value.reason]) {
     const res = await addScoreAction({
-      actionName: otherRuleMap[form.value.reason],
+      actionName: otherRuleMap[form.value.reason] + ohterForm.value.remark,
       pointsChange: ohterForm.value.reasonValue
     });
     if (res?.code === 200) {
@@ -232,7 +248,8 @@ const onDialogConfirm = async () => {
     props.modelValue?.length === 1 ? [props.employee.userId] : tempArr;
   const res = await updateUseScore({
     userIds,
-    ruleId: curRuleId
+    ruleId: curRuleId,
+    updateUserId: storageLocal().getItem("dataSource")?.id || ""
   });
 
   if (res?.code === 200) {
@@ -438,6 +455,8 @@ fetchPointRuleList();
 }
 
 .selected-names {
+  max-height: 465px;
+  overflow-y: auto;
   font-size: 16px;
   color: #666;
   text-align: center;

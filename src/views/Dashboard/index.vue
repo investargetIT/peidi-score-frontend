@@ -3,14 +3,14 @@
     <DashboardHeader :username="name" :avatar="avatar" />
     <div class="score-cards">
       <ScoreCard
-        :title="t('dashboard.exchangeablePoints')"
-        :score="curUserInfo?.redeemablePoints"
-        :type="t('dashboard.exchangeablePoints')"
-      />
-      <ScoreCard
         :title="t('dashboard.longTermPoints')"
         :score="curUserInfo?.lifeTimePoints"
         :type="t('dashboard.longTermPoints')"
+      />
+      <ScoreCard
+        :title="t('dashboard.exchangeablePoints')"
+        :score="curUserInfo?.redeemablePoints"
+        :type="t('dashboard.exchangeablePoints')"
       />
     </div>
     <RecentActivity :activities="activities" />
@@ -38,11 +38,14 @@ const { userAvatar } = useNav();
 const curUserInfo = ref({});
 const curUserAvatar = ref("");
 
-const { name } = storageLocal()?.getItem("ddUserInfo") || {};
+const name =
+  storageLocal()?.getItem("ddUserInfo")?.name ||
+  storageLocal()?.getItem("dataSource")?.username ||
+  {};
 const activities = ref([]);
 
 const avatar = computed(() => {
-  return curUserAvatar.value || userAvatar;
+  return curUserAvatar.value || userAvatar.value;
 });
 
 const fetchHistoryList = () => {
@@ -97,7 +100,7 @@ const fetchCurUserInfo = () => {
             }
           } catch (error) {
             // 如果JSON.parse失败，说明是单纯的字符串
-            console.log("avatarUrl是单纯字符串，直接使用:", res.data.avatarUrl);
+            // console.log("avatarUrl是单纯字符串，直接使用:", res.data.avatarUrl);
             // 直接使用字符串作为头像URL
             curUserAvatar.value = res.data.avatarUrl;
             storageLocal().setItem("curUserAvatar", res.data.avatarUrl);

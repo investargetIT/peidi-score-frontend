@@ -3,7 +3,9 @@
     <div class="employee-task-container">
       <!-- 页面头部 -->
       <div class="task-header">
-        <h1 class="task-title">{{ `员工任务 - ${employeeName}` }}</h1>
+        <h1 class="task-title">
+          {{ `员工任务 - ${employeeName || employeeNameFromDataSource}` }}
+        </h1>
         <div class="task-meta" v-if="!shouldShowEmptyState">
           <div class="meta-item">
             <el-icon><Calendar /></el-icon>
@@ -37,6 +39,65 @@
         show-icon
         class="overdue-alert"
       />
+
+      <div style="margin-bottom: 25px" v-if="!shouldShowEmptyState">
+        <div class="question-card">
+          <el-card
+            :class="{
+              'answered-card': true,
+              'current-card': true
+            }"
+            shadow="hover"
+          >
+            <template #header>
+              <div class="question-header">
+                <div class="question-info">
+                  <span class="question-number">{{ `信息完善` }}</span>
+                </div>
+                <el-icon
+                  v-if="educationAnswer"
+                  color="#67C23A"
+                  size="20"
+                  class="completed-icon"
+                >
+                  <Check />
+                </el-icon>
+              </div>
+              <p class="question-title">完善学历信息，奖励学历积分</p>
+            </template>
+
+            <!-- 问题内容 -->
+            <div class="question-content">
+              <!-- 答案区域 -->
+              <div class="answer-section">
+                <div class="answer-form">
+                  <div class="answer-label">
+                    <label class="form-label">您的回答</label>
+                  </div>
+
+                  <!-- 答案输入框 -->
+                  <div class="answer-input-container">
+                    <el-select
+                      v-model="educationAnswer"
+                      placeholder="请选择您的学历"
+                      style="width: 240px"
+                      :disabled="isTaskOverdue || curQaInfo?.hasReview"
+                      @change="handleEducationChange"
+                    >
+                      <el-option
+                        v-for="item in validEducation"
+                        :key="item.id"
+                        :label="item.value"
+                        :value="item.value"
+                      />
+                    </el-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </el-card>
+        </div>
+      </div>
 
       <!-- 任务问题列表 -->
       <div class="questions-container">
@@ -282,7 +343,7 @@
                       resize="vertical"
                       show-word-limit
                       maxlength="2000"
-                      :disabled="isTaskOverdue"
+                      :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       class="answer-textarea"
                     />
                   </div>
@@ -308,7 +369,7 @@
                       multiple
                       :show-file-list="true"
                       drag
-                      :disabled="isTaskOverdue"
+                      :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       :headers="{
                         Authorization: formatToken(getToken().accessToken)
                       }"
@@ -367,7 +428,7 @@
                       type="primary"
                       @click="submitAnswer(question.id)"
                       :loading="submittingAnswers[question.id]"
-                      :disabled="isTaskOverdue"
+                      :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       class="save-answer-btn"
                     >
                       保存答案
@@ -419,14 +480,17 @@ const taskStatus = ref("进行中"); // '进行中', '已完成', '已审核', '
 const currentQuestionId = ref(null);
 const completingTask = ref(false);
 const uploadUrl = baseUrlApi("/qa/upload");
-const { id } = storageLocal()?.getItem("dataSource") || {};
+const { id, username: employeeNameFromDataSource } =
+  storageLocal()?.getItem("dataSource") || {};
 const { hired_date, name: employeeName } =
   storageLocal()?.getItem("ddUserInfo") || {};
 const curQaInfo = ref({});
 const validDate = ref("");
 const validPeriod = ref("");
+const validEducation = ref("");
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
+const educationAnswer = ref("");
 
 const beforeUpload = file => {
   const isLt10M = file.size / 1024 / 1024 < 2;
@@ -444,6 +508,7 @@ const fetchDataConfig = () => {
     console.log(res);
     if (res?.code === 200) {
       curQaInfo.value = res?.data;
+      educationAnswer.value = res?.data?.education || "";
     }
     initializeQuestions();
   });
@@ -451,10 +516,11 @@ const fetchDataConfig = () => {
 
 const fetchEnumTypeList = async () => {
   try {
-    // 并行获取两个配置
-    const [dateRes, periodRes] = await Promise.all([
+    // 并行获取三个配置
+    const [dateRes, periodRes, educationRes] = await Promise.all([
       getEnumTypeList({ type: "qaDate" }),
-      getEnumTypeList({ type: "qaPeriod" })
+      getEnumTypeList({ type: "qaPeriod" }),
+      getEnumTypeList({ type: "education" })
     ]);
 
     if (dateRes?.code === 200) {
@@ -463,6 +529,11 @@ const fetchEnumTypeList = async () => {
 
     if (periodRes?.code === 200) {
       validPeriod.value = periodRes?.data?.[0]?.value || "";
+    }
+
+    if (educationRes?.code === 200) {
+      console.log("educationRes", educationRes);
+      validEducation.value = educationRes?.data || "";
     }
   } catch (error) {
     console.error("获取配置数据失败:", error);
@@ -637,7 +708,8 @@ const initializeSaveQuestions = async randomQuestions => {
       totalQuestions: randomQuestions.length,
       completedQuestions: 0
     }),
-    hasReview: false
+    hasReview: false,
+    education: educationAnswer.value || ""
   };
 
   await updateQaConfig(saveData);
@@ -790,6 +862,13 @@ const computedTaskStatus = computed(() => {
   // 如果当前时间超过截止日期，且任务还未完成，则标记为过期
   if (now > due && taskStatus.value === "in_progress") {
     return "已过期";
+  }
+
+  if (
+    totalQuestions.value > 0 &&
+    completedQuestions.value === totalQuestions.value
+  ) {
+    taskStatus.value = "已完成";
   }
 
   return taskStatus.value;
@@ -984,6 +1063,11 @@ const handleAttachmentRemove = (questionId, file) => {
 
 // 提交答案
 const submitAnswer = async questionId => {
+  if (!educationAnswer.value) {
+    ElMessage.error("请完善学历信息");
+    return;
+  }
+
   submittingAnswers.value[questionId] = true;
 
   try {
@@ -1040,7 +1124,8 @@ const submitAnswer = async questionId => {
         totalQuestions: totalQuestions.value,
         completedQuestions: actualCompletedQuestions
       }),
-      hasReview: false
+      hasReview: false,
+      education: educationAnswer.value
     };
 
     console.log("Saving all answers data:", saveData);
@@ -1099,6 +1184,13 @@ const submitAnswer = async questionId => {
   } finally {
     submittingAnswers.value[questionId] = false;
   }
+};
+
+const handleEducationChange = () => {
+  updateQaConfig({
+    userId: id,
+    education: educationAnswer.value
+  });
 };
 
 // 生命周期

@@ -42,6 +42,12 @@ const baseUrlApi = (url: string, hasUi = true) => {
   return `https://api.peidigroup.cn/${hasUi ? "ui" : ""}${url}`;
 };
 
+// 开发环境下的接口地址
+const baseUrlApiDev = (url: string, hasUi = true) => {
+  return baseUrlApi(url, hasUi);
+  return `http://12.18.1.12:8090/${hasUi ? "ui" : ""}${url}`;
+};
+
 const commonUrlApi = (url: string) => `${"https://user.peidigroup.cn"}${url}`;
 
 // 获取业务单元
@@ -152,6 +158,11 @@ export const getUserInfoData = params => {
 
 // 获取积分历史信息
 export const getScoreHistoryList = params => {
+  if (process.env.NODE_ENV === "development") {
+    return http.request("get", baseUrlApiDev("/point/record/page"), {
+      params
+    });
+  }
   return http.request("get", baseUrlApi("/point/record/page"), {
     params
   });
@@ -166,6 +177,11 @@ export const getEnumTypeList = params => {
 
 // 获取积分排行榜信息
 export const getScoreRankList = params => {
+  if (process.env.NODE_ENV === "development") {
+    return http.request("get", baseUrlApiDev("/user/page"), {
+      params
+    });
+  }
   return http.request("get", baseUrlApi("/user/page"), {
     params
   });
@@ -173,6 +189,11 @@ export const getScoreRankList = params => {
 
 // 获取用户信息
 export const getUserList = params => {
+  if (process.env.NODE_ENV === "development") {
+    return http.request("get", baseUrlApiDev("/user/page"), {
+      params
+    });
+  }
   return http.request("get", baseUrlApi("/user/page"), {
     params
   });
@@ -180,6 +201,11 @@ export const getUserList = params => {
 
 // 调整用户积分
 export const updateUseScore = data => {
+  if (process.env.NODE_ENV === "development") {
+    return http.request("post", baseUrlApiDev("ui/point/point", false), {
+      data
+    });
+  }
   return http.request("post", baseUrlApi("ui/point/point", false), {
     data
   });

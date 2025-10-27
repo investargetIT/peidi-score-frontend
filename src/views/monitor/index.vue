@@ -11,6 +11,8 @@
           <div v-if="activeTab === 'manage'" key="manage">
             <div class="main-content">
               <EmployeeList
+                v-loading="loading"
+                :element-loading-text="t('monitor.dataLoading')"
                 :employees="employees"
                 :avatarUrls="avatarUrls"
                 v-model:search="search"
@@ -43,9 +45,26 @@
           :selected="selectedEmployee"
           :t="t"
           :activeTab="activeTab"
+          :selectedEmployeeIds="selectedEmployeeIds"
         />
       </el-tab-pane>
-      <el-tab-pane :label="t('monitor.task')" name="task">
+      <el-tab-pane :label="t('monitor.operationHistory')" name="operation">
+        <transition name="fade-transform" mode="out-in">
+          <div v-if="activeTab === 'operation'" key="operation">
+            <OperationHistory
+              v-if="activeTab === 'operation'"
+              :selected="selectedEmployee"
+              :t="t"
+              :activeTab="activeTab"
+            />
+          </div>
+        </transition>
+      </el-tab-pane>
+      <el-tab-pane
+        :label="t('monitor.task')"
+        name="task"
+        v-if="isSiteHangzhou()"
+      >
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'task'" key="task">
             <TaskList />
@@ -57,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
@@ -65,7 +84,16 @@ import ExchangeHistory from "./ExchangeHistory.vue";
 import HistoryScore from "./HistoryScore.vue";
 import TaskList from "./TaskList.vue";
 import avatarImg from "@/assets/login/avatar.svg";
-import { getUserList, getFileDownLoadPath } from "@/api/pmApi.ts";
+import {
+  getUserList,
+  getFileDownLoadPath,
+  getEnumTypeList
+} from "@/api/pmApi.ts";
+import { storageLocal } from "@pureadmin/utils";
+import OperationHistory from "./OperationHistory.vue";
+import { isSiteHangzhou } from "@/router/index";
+
+const loading = ref(true);
 
 const { t } = useI18n();
 const activeTab = ref("manage");
@@ -76,9 +104,11 @@ const selectedEmployeeList = ref([]);
 const employees = ref([]);
 const backEmployees = ref([]);
 const avatarUrls = ref({});
+const selectValue = ref("");
 // 移除重复的过滤逻辑，让子组件自己处理过滤
 function selectEmployee(emp) {
   // 只高亮，不影响多选
+  // console.log("selectEmployee", emp);
   selectedEmployee.value = emp;
 }
 function handleTabClick() {
@@ -87,6 +117,7 @@ function handleTabClick() {
 
 // 多选与高亮联动
 watch(selectedEmployeeIds, ids => {
+  // console.log("selectedEmployeeIds", ids);
   if (ids.length === 1) {
     selectedEmployee.value = employees.value.find(emp => emp.id === ids[0]);
   } else if (ids.length > 1) {
@@ -102,7 +133,14 @@ const fetchUserListData = async () => {
   try {
     const res = await getUserList({
       pageNo: 1,
-      pageSize: 10000
+      pageSize: 10000,
+      searchStr: JSON.stringify([
+        {
+          searchName: "data_source",
+          searchType: "equals",
+          searchValue: selectValue.value
+        }
+      ])
     });
 
     if (res?.code === 200) {
@@ -132,6 +170,21 @@ const fetchUserListData = async () => {
   }
 };
 
+const fetchSearchValue = async () => {
+  try {
+    const res = await getEnumTypeList({
+      type: storageLocal().getItem("dataSource")?.id + "Manage"
+    });
+
+    if (res?.code === 200) {
+      // 遍历枚举类型列表，拼接每个value值，用 &#& 分隔
+      selectValue.value = res?.data?.map(item => item.value).join("&#&") || "";
+    }
+  } catch (error) {
+    console.error("获取管理积分用户列表失败:", error);
+  }
+};
+
 const getPreviewUrl = async (file, userId) => {
   if (!file) return "";
 
@@ -157,13 +210,17 @@ const getPreviewUrl = async (file, userId) => {
     return "";
   } catch (error) {
     // 如果JSON.parse失败，说明是单纯的字符串，直接返回使用
-    console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
+    // console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
     avatarUrls.value[userId] = file;
     return file;
   }
 };
 
-fetchUserListData();
+onMounted(async () => {
+  await fetchSearchValue();
+  await fetchUserListData();
+  loading.value = false;
+});
 
 defineExpose({
   fetchUserListData

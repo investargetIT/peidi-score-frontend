@@ -17,7 +17,7 @@
           <div class="flex gap-2 items-center">
             <el-avatar
               :size="32"
-              :src="avatarUrls[scope.row.id]"
+              :src="avatarUrls[scope.row.id] || Avatar"
               style="margin-right: 12px"
             />
             <span>{{ scope.row.fullName }}</span>
@@ -49,6 +49,7 @@ import { useI18n } from "vue-i18n";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import enUs from "element-plus/es/locale/lang/en";
 import { getScoreRankList, getFileDownLoadPath } from "@/api/pmApi.ts";
+import Avatar from "@/assets/user.jpg";
 
 const props = defineProps({
   pointType: {
@@ -79,7 +80,7 @@ const cache = ref({
 const fetchAndCache = async (type: string) => {
   const res = await getScoreRankList({
     pageNo: 1,
-    pageSize: 1000, // 拉全量，分页在前端做
+    pageSize: 100000, // 拉全量，分页在前端做
     sortStr: JSON.stringify([{ sortName: type, sortType: "desc" }])
   });
   if (res?.data?.records) {
@@ -119,7 +120,7 @@ const getPreviewUrl = async (file, userId) => {
     return "";
   } catch (error) {
     // 如果JSON.parse失败，说明是单纯的字符串，直接返回使用
-    console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
+    // console.log(`用户${userId}的avatarUrl是单纯字符串，直接使用:`, file);
     return file;
   }
 };

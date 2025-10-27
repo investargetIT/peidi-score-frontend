@@ -99,6 +99,17 @@ export const registerMobile = data => {
   });
 };
 
+// 修改用户密码
+export const updateUserPassword = data => {
+  return http.request(
+    "post",
+    `https://user.peidigroup.cn/user/update-password`,
+    {
+      data
+    }
+  );
+};
+
 /** 刷新`token` */
 export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>("post", "/refresh-token", { data });

@@ -79,7 +79,11 @@ export default {
     otherReason: "Other",
     onlyInteger: "Please enter an integer",
     selectedCount: "Current selected employees",
-    task: "Tasks"
+    task: "Tasks",
+    remark: "Remark",
+    operationHistory: "Operation History",
+    updateUserName: "Updated Employee",
+    dataLoading: "Data loading..."
   },
   navbar: {
     updateProfile: "Update Profile",
@@ -93,6 +97,18 @@ export default {
     redeemablePoints: "Exchangeable Points",
     upload: "Upload",
     uploadTip:
-      "Supported formats: jpg, png, jpeg, gif. Max size: 10MB. Only 1 image allowed."
+      "Supported formats: jpg, png, jpeg, gif. Max size: 10MB. Only 1 image allowed.",
+    updatePassword: "Update Password",
+    oldPassword: "Old Password",
+    newPassword: "New Password",
+    confirmPassword: "Confirm Password",
+    confirm: "Confirm",
+    passwordNotMatch: "Passwords do not match",
+    updateSuccess: "Password updated successfully",
+    updateFailed: "Password update failed",
+    pleaseEnterOldPassword: "Please enter old password",
+    pleaseEnterNewPassword: "Please enter new password",
+    confirmPasswordTip: "Please confirm new password",
+    passwordNotMatch: "Passwords do not match"
   }
 };
