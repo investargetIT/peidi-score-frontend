@@ -55,6 +55,7 @@
         ref="treeRef"
         node-key="id"
         :default-checked-keys="checkedIds"
+        check-on-click-leaf
       >
         <template #default="{ node, data }">
           <div class="custom-tree-node">
@@ -64,7 +65,9 @@
               style="width: 20px; height: 20px; margin-right: 5px"
             />
             <span>{{ node.label }}</span>
-            <!-- <span v-if="data.id">{{ data.id }}</span> -->
+            <p v-if="data.id" class="ml-[5px] text-[#9b9a9a] text-[12px] flex">
+              {{ `(${data.lifeTimePoints} / ${data.redeemablePoints})` }}
+            </p>
           </div>
         </template>
       </el-tree>
@@ -76,6 +79,7 @@
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
+import { da } from "element-plus/es/locale/index.mjs";
 const { t } = useI18n();
 const props = defineProps({
   employees: Array,
@@ -128,7 +132,9 @@ watch(
           avatarUrl: emp.avatarUrl,
           userId: emp.userId,
           id: emp.id,
-          empdata: emp
+          empdata: emp,
+          redeemablePoints: emp.redeemablePoints,
+          lifeTimePoints: emp.lifeTimePoints
         });
         return acc;
       }, {});

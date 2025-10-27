@@ -3,14 +3,14 @@
     <DashboardHeader :username="name" :avatar="avatar" />
     <div class="score-cards">
       <ScoreCard
-        :title="t('dashboard.exchangeablePoints')"
-        :score="curUserInfo?.redeemablePoints"
-        :type="t('dashboard.exchangeablePoints')"
-      />
-      <ScoreCard
         :title="t('dashboard.longTermPoints')"
         :score="curUserInfo?.lifeTimePoints"
         :type="t('dashboard.longTermPoints')"
+      />
+      <ScoreCard
+        :title="t('dashboard.exchangeablePoints')"
+        :score="curUserInfo?.redeemablePoints"
+        :type="t('dashboard.exchangeablePoints')"
       />
     </div>
     <RecentActivity :activities="activities" />

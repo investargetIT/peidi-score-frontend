@@ -11,6 +11,8 @@
           <div v-if="activeTab === 'manage'" key="manage">
             <div class="main-content">
               <EmployeeList
+                v-loading="loading"
+                :element-loading-text="t('monitor.dataLoading')"
                 :employees="employees"
                 :avatarUrls="avatarUrls"
                 v-model:search="search"
@@ -90,6 +92,8 @@ import {
 import { storageLocal } from "@pureadmin/utils";
 import OperationHistory from "./OperationHistory.vue";
 import { isSiteHangzhou } from "@/router/index";
+
+const loading = ref(true);
 
 const { t } = useI18n();
 const activeTab = ref("manage");
@@ -215,6 +219,7 @@ const getPreviewUrl = async (file, userId) => {
 onMounted(async () => {
   await fetchSearchValue();
   await fetchUserListData();
+  loading.value = false;
 });
 
 defineExpose({

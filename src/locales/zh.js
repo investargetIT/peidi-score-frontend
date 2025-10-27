@@ -80,7 +80,8 @@ export default {
     task: "任务管理",
     remark: "备注",
     operationHistory: "操作历史",
-    updateUserName: "被操作员工"
+    updateUserName: "被操作员工",
+    dataLoading: "数据获取中..."
   },
   navbar: {
     updateProfile: "更新资料",

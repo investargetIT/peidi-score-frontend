@@ -17,15 +17,15 @@
             <!-- <div class="employee-dept">{{ employee.dept }}</div> -->
             <div class="employee-scores">
               <div class="score-block">
-                <div class="score-label">{{ t("monitor.exchangeable") }}</div>
-                <div class="score-value">
-                  {{ changeNumberFormat(employee.redeemablePoints) }}
-                </div>
-              </div>
-              <div class="score-block">
                 <div class="score-label">{{ t("monitor.longTerm") }}</div>
                 <div class="score-value">
                   {{ changeNumberFormat(employee.lifeTimePoints) }}
+                </div>
+              </div>
+              <div class="score-block">
+                <div class="score-label">{{ t("monitor.exchangeable") }}</div>
+                <div class="score-value">
+                  {{ changeNumberFormat(employee.redeemablePoints) }}
                 </div>
               </div>
             </div>

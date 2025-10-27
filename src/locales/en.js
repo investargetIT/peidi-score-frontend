@@ -82,7 +82,8 @@ export default {
     task: "Tasks",
     remark: "Remark",
     operationHistory: "Operation History",
-    updateUserName: "Updated Employee"
+    updateUserName: "Updated Employee",
+    dataLoading: "Data loading..."
   },
   navbar: {
     updateProfile: "Update Profile",
