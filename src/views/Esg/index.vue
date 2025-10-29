@@ -1,53 +1,63 @@
 <template>
-  <div class="esg-management">
-    <!-- 顶部导航标签 -->
-    <div class="flex items-center justify-between">
-      <div class="mr-[10px]">
-        <el-select
-          v-model="yearValue"
-          placeholder="请选择年度"
-          style="width: 200px"
-          size="large"
-        >
-          <template #label="{ label, value }">
-            <span class="text-[14px]">年度: </span>
-            <span class="text-[16px] font-bold">{{ value }}</span>
-          </template>
-          <el-option
-            v-for="item in yearOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </div>
-      <div class="flex-1">
-        <el-tabs v-model="activeTab" class="esg-tabs">
-          <el-tab-pane label="公司概况" name="company-overview" />
-          <el-tab-pane label="公司治理" name="corporate-governance" />
-          <el-tab-pane label="ESG管理" name="esg-management" />
-          <el-tab-pane label="产业发展与运营" name="business-operations" />
-          <el-tab-pane label="质量与食品安全管理" name="quality-food-safety" />
-          <el-tab-pane label="供应链管理" name="supplier-management" />
-          <el-tab-pane
-            label="信息安全与隐私保护"
-            name="information-security-privacy"
-          />
-          <el-tab-pane label="员工" name="employees" />
-          <el-tab-pane label="环境影响" name="environmental-impact" />
-          <el-tab-pane label="回馈社会" name="community-welfare" />
-        </el-tabs>
-      </div>
-    </div>
-
-    <!-- 动态组件内容区域 -->
-    <!-- :isEdit="hasEditPermission(activeTab)" -->
-    <component
-      :is="currentComponent"
-      :active-tab="activeTab"
-      :isEdit="hasEditPermission(activeTab)"
-      :year="yearValue"
+  <div class="w-[100%] h-[100%]">
+    <YearCard
+      :yearOptions="yearOptions"
+      :submit="handleYearSubmit"
+      v-show="showYearCard"
     />
+    <div class="esg-management" v-show="!showYearCard">
+      <!-- 顶部导航标签 -->
+      <div class="flex items-center justify-between">
+        <div class="mr-[10px]">
+          <el-select
+            v-model="yearValue"
+            placeholder="请选择年度"
+            style="width: 200px"
+            size="large"
+          >
+            <template #label="{ label, value }">
+              <span class="text-[14px]">年度: </span>
+              <span class="text-[16px] font-bold">{{ value }}</span>
+            </template>
+            <el-option
+              v-for="item in yearOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </div>
+        <div class="flex-1">
+          <el-tabs v-model="activeTab" class="esg-tabs">
+            <el-tab-pane label="公司概况" name="company-overview" />
+            <el-tab-pane label="公司治理" name="corporate-governance" />
+            <el-tab-pane label="ESG管理" name="esg-management" />
+            <el-tab-pane label="产业发展与运营" name="business-operations" />
+            <el-tab-pane
+              label="质量与食品安全管理"
+              name="quality-food-safety"
+            />
+            <el-tab-pane label="供应链管理" name="supplier-management" />
+            <el-tab-pane
+              label="信息安全与隐私保护"
+              name="information-security-privacy"
+            />
+            <el-tab-pane label="员工" name="employees" />
+            <el-tab-pane label="环境影响" name="environmental-impact" />
+            <el-tab-pane label="回馈社会" name="community-welfare" />
+          </el-tabs>
+        </div>
+      </div>
+
+      <!-- 动态组件内容区域 -->
+      <!-- :isEdit="hasEditPermission(activeTab)" -->
+      <component
+        :is="currentComponent"
+        :active-tab="activeTab"
+        :isEdit="hasEditPermission(activeTab)"
+        :year="yearValue"
+      />
+    </div>
   </div>
 </template>
 
@@ -65,6 +75,7 @@ import SupplierManagement from "./components/SupplierManagement.vue";
 import CommunityWelfare from "./components/CommunityWelfare.vue";
 import ProductsServices from "./components/ProductsServices.vue";
 import { hasEditPermission } from "./utils";
+import YearCard from "./yearCard.vue";
 
 const { t } = useI18n();
 
@@ -119,6 +130,16 @@ for (let i = 0; i < 10; i++) {
     label: (2025 + i).toString()
   });
 }
+//#endregion
+
+//#region 首次选择年份
+// 首次遮罩层
+const showYearCard = ref(true);
+const handleYearSubmit = year => {
+  yearValue.value = year;
+  // 隐藏遮罩层
+  showYearCard.value = false;
+};
 //#endregion
 </script>
 
