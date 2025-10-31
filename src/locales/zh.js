@@ -81,7 +81,12 @@ export default {
     remark: "备注",
     operationHistory: "操作历史",
     updateUserName: "被操作员工",
-    dataLoading: "数据获取中..."
+    dataLoading: "数据获取中...",
+    leave: "离职",
+    confirmLeave: "确认当前选中员工离职吗？",
+    confirmLeaveTitle: "离职确认",
+    leaveSuccess: "离职成功",
+    leaveFailed: "离职失败"
   },
   navbar: {
     updateProfile: "更新资料",

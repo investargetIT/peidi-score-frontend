@@ -1,6 +1,17 @@
 <template>
   <el-card class="employee-list">
-    <div class="employee-title">{{ t("employee.title") }}</div>
+    <div class="employee-title">
+      <div class="flex items-center justify-between">
+        <p>{{ t("employee.title") }}</p>
+        <el-button
+          type="danger"
+          size="small"
+          :icon="Delete"
+          @click="handleResign"
+          >{{ t("monitor.leave") }}</el-button
+        >
+      </div>
+    </div>
     <div class="employee-toolbar">
       <!-- <el-checkbox
         v-model="treeAllChecked"
@@ -91,6 +102,7 @@ import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
 import { da } from "element-plus/es/locale/index.mjs";
+import { Delete } from "@element-plus/icons-vue";
 const { t } = useI18n();
 const props = defineProps({
   employees: Array,
@@ -99,7 +111,12 @@ const props = defineProps({
   search: String,
   modelValue: Array // 选中id数组
 });
-const emit = defineEmits(["update:search", "select", "update:modelValue"]);
+const emit = defineEmits([
+  "update:search",
+  "select",
+  "update:modelValue",
+  "resign"
+]);
 const searchValue = ref(props.search || "");
 const checkedIds = ref(props.modelValue || []);
 
@@ -378,6 +395,11 @@ function handleClick(emp) {
   }
   // 通知父组件更新
   emit("update:modelValue", checkedIds.value);
+}
+
+// 处理离职逻辑
+function handleResign() {
+  emit("resign");
 }
 </script>
 

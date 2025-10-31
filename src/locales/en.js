@@ -83,7 +83,12 @@ export default {
     remark: "Remark",
     operationHistory: "Operation History",
     updateUserName: "Updated Employee",
-    dataLoading: "Data loading..."
+    dataLoading: "Data loading...",
+    leave: "Leave",
+    confirmLeave: "Are you sure you want to leave this employee?",
+    confirmLeaveTitle: "Leave Confirmation",
+    leaveSuccess: "Leave successful",
+    leaveFailed: "Leave failed"
   },
   navbar: {
     updateProfile: "Update Profile",

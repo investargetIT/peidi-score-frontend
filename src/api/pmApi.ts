@@ -156,6 +156,13 @@ export const getUserInfoData = params => {
   });
 };
 
+// 用户离职
+export const deleteUser = data => {
+  return http.request("post", baseUrlApi("ui/user/delete", false), {
+    data: JSON.stringify(data)
+  });
+};
+
 // 获取积分历史信息
 export const getScoreHistoryList = params => {
   if (process.env.NODE_ENV === "development") {
