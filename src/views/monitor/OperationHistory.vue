@@ -5,6 +5,7 @@
       :data="scoreHistoryList"
       class="exchange-table no-border-table"
       header-row-class-name="exchange-header"
+      max-height="65vh"
       style="width: 100%"
     >
       <template #empty>

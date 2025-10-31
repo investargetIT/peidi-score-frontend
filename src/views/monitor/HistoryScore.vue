@@ -5,6 +5,7 @@
       :data="scoreHistoryList"
       class="exchange-table no-border-table"
       header-row-class-name="exchange-header"
+      max-height="65vh"
       style="width: 100%"
     >
       <template #empty>
@@ -115,7 +116,7 @@ const fetchHistoryList = () => {
     const products = res.data.records.map(product => ({
       ...product
     }));
-    scoreHistoryList.value = products;
+    scoreHistoryList.value = products.reverse();
     pagination.value.total = res.data.total;
   });
 };
