@@ -1,6 +1,8 @@
 <template>
   <div class="mt-3 rounded-sm">
     <el-table
+      v-loading="loading"
+      :element-loading-text="t('monitor.dataLoading')"
       :data="tableData"
       style="width: 100%"
       :empty-text="t('table.emptyText')"
@@ -62,6 +64,7 @@ const props = defineProps({
   }
 });
 
+const loading = ref(true);
 const { t } = useI18n();
 const tableData = ref([]);
 const pagination = ref({
@@ -152,6 +155,7 @@ onMounted(async () => {
   await fetchAndCache(props.pointTypeMap["exchangeablePoints"]);
   await fetchAndCache(props.pointTypeMap["lifeTimePoints"]);
   updateTableData();
+  loading.value = false;
 });
 
 const pointColumnLabel = computed(() => {

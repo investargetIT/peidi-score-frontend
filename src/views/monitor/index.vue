@@ -19,6 +19,7 @@
                 :selected="selectedEmployee"
                 v-model="selectedEmployeeIds"
                 @select="selectEmployee"
+                @resign="resignEmployee"
               />
               <ManageScore
                 :employee="selectedEmployee"
@@ -87,11 +88,13 @@ import avatarImg from "@/assets/login/avatar.svg";
 import {
   getUserList,
   getFileDownLoadPath,
-  getEnumTypeList
+  getEnumTypeList,
+  deleteUser
 } from "@/api/pmApi.ts";
 import { storageLocal } from "@pureadmin/utils";
 import OperationHistory from "./OperationHistory.vue";
 import { isSiteHangzhou } from "@/router/index";
+import { ElMessageBox, ElMessage } from "element-plus";
 
 const loading = ref(true);
 
@@ -114,6 +117,59 @@ function selectEmployee(emp) {
 function handleTabClick() {
   // 可扩展tab切换逻辑
 }
+
+//#region 离职逻辑
+function resignEmployee() {
+  // 处理离职逻辑
+  console.log("resignEmployee", selectedEmployeeIds.value);
+  // console.log(
+  //   "selectedEmployeeIds",
+  //   // 将selectedEmployeeIds数组里的id转换成employees对应id数据的userId
+  //   selectedEmployeeIds.value.map(id => {
+  //     const emp = employees.value.find(emp => emp.id === id);
+  //     return emp?.userId || null;
+  //   })
+  // );
+  ElMessageBox.confirm(
+    t("monitor.confirmLeave"),
+    `❗${t("monitor.confirmLeaveTitle")}`,
+    {
+      type: "warning",
+      showCancelButton: false,
+      confirmButtonClass: "el-button--danger"
+    }
+  ).then(() => {
+    deleteUser(
+      // 将selectedEmployeeIds数组里的id转换成employees对应id数据的userId
+      selectedEmployeeIds.value.map(id => {
+        const emp = employees.value.find(emp => emp.id === id);
+        return emp?.userId || null;
+      })
+    )
+      .then(res => {
+        if (res?.code === 200) {
+          ElMessage({
+            type: "success",
+            message: t("monitor.leaveSuccess")
+          });
+          // 刷新员工列表
+          fetchUserListData();
+        } else {
+          ElMessage({
+            type: "error",
+            message: t("monitor.leaveFailed")
+          });
+        }
+      })
+      .catch(() => {
+        ElMessage({
+          type: "error",
+          message: t("monitor.leaveCancel")
+        });
+      });
+  });
+}
+//#endregion
 
 // 多选与高亮联动
 watch(selectedEmployeeIds, ids => {

@@ -3275,6 +3275,7 @@
       :show-submit="false"
       @cancel="handleCancel"
       @save="handleSave"
+      :isEdit="isEdit"
     />
   </div>
   <el-dialog v-model="dialogVisible">
@@ -3283,7 +3284,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
@@ -3307,6 +3308,11 @@ const props = defineProps({
   isEdit: {
     type: Boolean,
     default: false
+  },
+  year: {
+    type: String,
+    default: "",
+    required: true
   }
 });
 
@@ -3480,6 +3486,7 @@ const formData = ref({
   envViolationPenalty: "", // 环保违法违规事件与处罚
   envTrainingPublicity: "" // 公司环保宣贯、培训次数及覆盖人数
 });
+const emptyFormData = JSON.parse(JSON.stringify(formData.value));
 
 // 文件上传处理
 const handleFileChange = (file, fileList) => {
@@ -3508,10 +3515,17 @@ const handlePictureCardPreview = uploadFile => {
 // 页面加载时获取数据
 const loadData = async () => {
   try {
-    const res = await getEsgRuleDetail({ type: props.activeTab });
+    // 初始化表单数据
+    Object.keys(formData.value).forEach(key => {
+      formData.value[key] = emptyFormData[key];
+    });
+    const res = await getEsgRuleDetail({
+      type: props.activeTab,
+      year: props.year
+    });
     if (res.code === 200 && res.data) {
       // 如果返回的content是JSON字符串，需要解析
-      if (res.data.content) {
+      if (res.data?.content) {
         try {
           const contentData = JSON.parse(res.data.content);
           // 将数据回填到表单
@@ -3541,6 +3555,7 @@ const loadData = async () => {
 onMounted(() => {
   loadData();
 });
+watch(() => props.year, loadData);
 
 // 操作处理函数
 const handleCancel = () => {
@@ -3554,7 +3569,7 @@ const handleSave = () => {
   const sendConfig = {
     content: JSON.stringify(formData.value),
     type: props.activeTab,
-    year: new Date().getFullYear()
+    year: props.year
   };
 
   updateEsgConfig(sendConfig).then(res => {
