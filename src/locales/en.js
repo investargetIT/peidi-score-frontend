@@ -88,7 +88,8 @@ export default {
     confirmLeave: "Are you sure you want to leave this employee?",
     confirmLeaveTitle: "Leave Confirmation",
     leaveSuccess: "Leave successful",
-    leaveFailed: "Leave failed"
+    leaveFailed: "Leave failed",
+    selectedCount: "Current selected employees"
   },
   navbar: {
     updateProfile: "Update Profile",

@@ -131,14 +131,20 @@ function resignEmployee() {
   //   })
   // );
   ElMessageBox.confirm(
-    t("monitor.confirmLeave"),
-    `❗${t("monitor.confirmLeaveTitle")}`,
+    `${t("monitor.confirmLeave")} ${t("monitor.selectedCount")}：${selectedEmployeeIds.value.length}`,
+    `❗${t("monitor.confirmLeaveTitle")} `,
     {
       type: "warning",
       showCancelButton: false,
       confirmButtonClass: "el-button--danger"
     }
   ).then(() => {
+    // const temp = selectedEmployeeIds.value.map(id => {
+    //   const emp = employees.value.find(emp => emp.id === id);
+    //   return emp?.userId || null;
+    // });
+    // console.log("离职用户userId数组", temp);
+    // return;
     deleteUser(
       // 将selectedEmployeeIds数组里的id转换成employees对应id数据的userId
       selectedEmployeeIds.value.map(id => {
@@ -164,7 +170,7 @@ function resignEmployee() {
       .catch(() => {
         ElMessage({
           type: "error",
-          message: t("monitor.leaveCancel")
+          message: t("monitor.leaveFailed")
         });
       });
   });

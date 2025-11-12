@@ -86,7 +86,8 @@ export default {
     confirmLeave: "确认当前选中员工离职吗？",
     confirmLeaveTitle: "离职确认",
     leaveSuccess: "离职成功",
-    leaveFailed: "离职失败"
+    leaveFailed: "离职失败",
+    selectedCount: "当前选中人数"
   },
   navbar: {
     updateProfile: "更新资料",
