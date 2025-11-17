@@ -194,7 +194,8 @@ const routes = [
       icon: "ep:data-analysis",
       title: t("menu.esg"),
       rank: 4,
-      showLink: isEsgAdmin()
+      // showLink: isEsgAdmin()
+      showLink: false
     },
     children: [
       {
@@ -407,6 +408,10 @@ router.beforeEach((to: ToRouteType, _from, next) => {
     }
   } else {
     if (to.path !== "/login") {
+      // alert(to.path);
+      if (to.path === "/pdesg") {
+        localStorage.setItem("pridi-unLoginUrl", "/pdesg");
+      }
       if (whiteList.indexOf(to.path) !== -1) {
         next();
       } else {

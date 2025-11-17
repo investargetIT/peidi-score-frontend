@@ -167,6 +167,17 @@ onMounted(() => {
                     });
                   } else {
                     return initRouter().then(() => {
+                      // 先判断是否有未登录时的路由记录
+                      const unLoginUrl =
+                        localStorage.getItem("pridi-unLoginUrl");
+                      if (unLoginUrl) {
+                        localStorage.removeItem("pridi-unLoginUrl");
+                        router.push(unLoginUrl).then(() => {
+                          message("登录成功", { type: "success" });
+                        });
+                        return;
+                      }
+
                       router.push(getTopMenu(true).path).then(() => {
                         message("登录成功", { type: "success" });
                       });
@@ -236,13 +247,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .pridi-loader2-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
   @keyframes loading-shake {
     0% {
       transform: rotate(-5deg);
@@ -276,6 +280,13 @@ onMounted(() => {
       transform: rotate(0deg);
     }
   }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 
   .loader2 {
     width: 200px;
