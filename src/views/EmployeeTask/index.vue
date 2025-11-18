@@ -481,6 +481,7 @@ import {
   baseUrlApi,
   getFileDownLoadPath
 } from "@/api/esg";
+import dayjs from "dayjs";
 
 const { t } = useI18n();
 
@@ -715,7 +716,9 @@ const initializeSaveQuestions = async randomQuestions => {
     remark: JSON.stringify({
       validPeriod,
       totalQuestions: randomQuestions.length,
-      completedQuestions: 0
+      completedQuestions: 0,
+      // 初始化问题时，设置截止日期为当前时间加7天 格式为2025年9月29日
+      dueDate: dayjs().add(7, "day").format("YYYY年M月D日")
     }),
     hasReview: false,
     education: educationAnswer.value || ""
