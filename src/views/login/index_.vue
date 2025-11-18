@@ -172,6 +172,7 @@ onMounted(() => {
                         localStorage.getItem("pridi-unLoginUrl");
                       if (unLoginUrl) {
                         localStorage.removeItem("pridi-unLoginUrl");
+                        // alert("unLoginUrl:" + unLoginUrl);
                         router.push(unLoginUrl).then(() => {
                           message("登录成功", { type: "success" });
                         });

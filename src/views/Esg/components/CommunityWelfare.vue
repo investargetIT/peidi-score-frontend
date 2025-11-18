@@ -628,7 +628,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["social-welfare"]);
+const activeCollapse = ref([]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 

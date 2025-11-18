@@ -3317,7 +3317,7 @@ const props = defineProps({
 });
 
 // 折叠面板
-const activeCollapse = ref(["climate-strategy-goals"]);
+const activeCollapse = ref([]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 

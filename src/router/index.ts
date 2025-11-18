@@ -407,8 +407,9 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       toCorrectRoute();
     }
   } else {
+    // alert("1: " + to.path);
     if (to.path !== "/login") {
-      // alert(to.path);
+      // alert("2: " + to.path);
       if (to.path === "/pdesg") {
         localStorage.setItem("pridi-unLoginUrl", "/pdesg");
       }
