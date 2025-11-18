@@ -1,11 +1,15 @@
 <template>
-  <div class="w-[100%] h-[100%] px-[20px] py-[20px]">
+  <div class="w-[100%] h-[100%] relative">
+    <Navbar />
     <YearCard
       :yearOptions="yearOptions"
       :submit="handleYearSubmit"
       v-show="showYearCard"
     />
-    <div class="esg-management" v-show="!showYearCard">
+    <div
+      class="esg-management px-[20px] py-[20px] pt-[60px]"
+      v-show="!showYearCard"
+    >
       <!-- 顶部导航标签 -->
       <div class="flex items-center justify-between">
         <div class="mr-[10px]">
@@ -181,6 +185,7 @@ import CommunityWelfare from "./components/CommunityWelfare.vue";
 import ProductsServices from "./components/ProductsServices.vue";
 import { hasEditPermission } from "./utils";
 import YearCard from "./yearCard.vue";
+import Navbar from "./navbar.vue";
 
 const { t } = useI18n();
 
@@ -259,7 +264,8 @@ const handleYearSubmit = year => {
 
 .esg-management {
   min-height: 100vh;
-  padding: 0;
+
+  /* padding: 0; */
   background: #f5f7fa;
 }
 

@@ -1,12 +1,16 @@
 <template>
-  <div class="action-buttons flex justify-between w-full">
-    <el-button @click="handleExit" type="danger">退出登录</el-button>
+  <div class="action-buttons flex justify-end w-full">
+    <el-button v-if="false" @click="handleExit" type="danger"
+      >退出登录</el-button
+    >
     <!-- <el-button v-if="showCancel" @click="handleCancel">取消</el-button> -->
     <el-button
       v-if="showSave"
       type="primary"
       @click="handleSave"
       :disabled="!isEdit"
+      size="large"
+      style="width: 120px"
       >保存</el-button
     >
     <el-button v-if="showSubmit" type="success" @click="handleSubmit"
