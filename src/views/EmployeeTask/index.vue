@@ -265,7 +265,7 @@
 
         <!-- 空状态展示 -->
         <div v-if="shouldShowEmptyState" class="empty-state">
-          <div class="empty-content">
+          <div class="empty-content" v-if="!isNeedFill16PF">
             <el-icon class="empty-icon">
               <Calendar v-if="shouldShowEmptyState" />
               <Document v-else />
@@ -276,6 +276,15 @@
               }}
             </h3>
           </div>
+
+          <!-- ifarme内嵌一个填表网页 -->
+          <iframe
+            v-if="isNeedFill16PF"
+            :src="getRecruitmentUrl()"
+            frameborder="0"
+            width="100%"
+            height="700px"
+          ></iframe>
         </div>
 
         <!-- 问题卡片列表 -->
@@ -472,6 +481,7 @@ import {
   baseUrlApi,
   getFileDownLoadPath
 } from "@/api/esg";
+import dayjs from "dayjs";
 
 const { t } = useI18n();
 
@@ -706,7 +716,9 @@ const initializeSaveQuestions = async randomQuestions => {
     remark: JSON.stringify({
       validPeriod,
       totalQuestions: randomQuestions.length,
-      completedQuestions: 0
+      completedQuestions: 0,
+      // 初始化问题时，设置截止日期为当前时间加7天 格式为2025年9月29日
+      dueDate: dayjs().add(7, "day").format("YYYY年M月D日")
     }),
     hasReview: false,
     education: educationAnswer.value || ""
@@ -876,6 +888,7 @@ const computedTaskStatus = computed(() => {
 
 // 日期比较逻辑
 const shouldShowEmptyState = computed(() => {
+  // return true;
   console.log("hired_date", hired_date);
   console.log("validDate.value", validDate.value);
   if (!hired_date || !validDate.value) {
@@ -1192,6 +1205,37 @@ const handleEducationChange = () => {
     education: educationAnswer.value
   });
 };
+
+//#region 16PF人格测评分析表逻辑
+// 获取name和phone 并返回URL地址
+function getRecruitmentUrl() {
+  // 从ddUserInfo得到
+  const name = storageLocal().getItem("ddUserInfo")?.name || "";
+  const phone = storageLocal().getItem("ddUserInfo")?.mobile || "";
+  return `https://login.peidigroup.cn/#/recruitment?name=${name}&phone=${phone}`;
+}
+
+// 用于判断是否需要填写16PF人格测评分析表
+const isNeedFill16PF = ref(false);
+function checkNeedFill16PF() {
+  // 请求接口获取列表 https://api.peidigroup.cn/ui/extra/page?pageNo=1&pageSize=9999
+  fetch("https://api.peidigroup.cn/ui/extra/page?pageNo=1&pageSize=9999")
+    .then(response => response.json())
+    .then(data => {
+      // console.log("检查16PF人格测评分析表:", data);
+      // 检查数组里是否有userName为当前用户的项，有则返回false，否则返回true
+      const isNeedFill = !data?.data?.records.some(
+        item => item.userName === storageLocal().getItem("ddUserInfo")?.name
+      );
+      // console.log("isNeedFill:", isNeedFill);
+      isNeedFill16PF.value = isNeedFill;
+    })
+    .catch(error => console.error("检查16PF人格测评分析表失败:", error));
+}
+onMounted(() => {
+  checkNeedFill16PF();
+});
+//#endregion
 
 // 生命周期
 </script>

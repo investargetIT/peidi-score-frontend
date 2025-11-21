@@ -159,6 +159,7 @@ const onLogin = async (
                       return;
                     }
 
+                    // FIXME: esgUserInfo和dataSource是一个东西，应该整合只用dataSource
                     // ESG权限逻辑
                     if (userCheckRes.success) {
                       // 因为动态路由暂时无效，先检查是否存在esgUserInfo，如果不存在则在存入后刷新一次页面，因为权限配置基本不会变
@@ -542,13 +543,6 @@ onBeforeUnmount(() => {
 }
 
 .pridi-loader2-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
   @keyframes loading-shake {
     0% {
       transform: rotate(-5deg);
@@ -582,6 +576,13 @@ onBeforeUnmount(() => {
       transform: rotate(0deg);
     }
   }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 
   .loader2 {
     width: 200px;

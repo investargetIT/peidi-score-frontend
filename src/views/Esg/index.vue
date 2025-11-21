@@ -1,11 +1,15 @@
 <template>
-  <div class="w-[100%] h-[100%]">
+  <div class="w-[100%] h-[100%] relative">
+    <Navbar />
     <YearCard
       :yearOptions="yearOptions"
       :submit="handleYearSubmit"
       v-show="showYearCard"
     />
-    <div class="esg-management" v-show="!showYearCard">
+    <div
+      class="esg-management px-[20px] py-[20px] pt-[60px]"
+      v-show="!showYearCard"
+    >
       <!-- 顶部导航标签 -->
       <div class="flex items-center justify-between">
         <div class="mr-[10px]">
@@ -29,22 +33,127 @@
         </div>
         <div class="flex-1">
           <el-tabs v-model="activeTab" class="esg-tabs">
-            <el-tab-pane label="公司概况" name="company-overview" />
-            <el-tab-pane label="公司治理" name="corporate-governance" />
-            <el-tab-pane label="ESG管理" name="esg-management" />
-            <el-tab-pane label="产业发展与运营" name="business-operations" />
-            <el-tab-pane
-              label="质量与食品安全管理"
-              name="quality-food-safety"
-            />
-            <el-tab-pane label="供应链管理" name="supplier-management" />
-            <el-tab-pane
-              label="信息安全与隐私保护"
-              name="information-security-privacy"
-            />
-            <el-tab-pane label="员工" name="employees" />
-            <el-tab-pane label="环境影响" name="environmental-impact" />
-            <el-tab-pane label="回馈社会" name="community-welfare" />
+            <el-tab-pane name="company-overview">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>公司概况</span>
+                  <el-icon v-if="hasEditPermission('company-overview')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="corporate-governance">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>公司治理</span>
+                  <el-icon v-if="hasEditPermission('corporate-governance')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="esg-management">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>ESG管理</span>
+                  <el-icon v-if="hasEditPermission('esg-management')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="business-operations">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>产业发展与运营</span>
+                  <el-icon v-if="hasEditPermission('business-operations')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="quality-food-safety">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>质量与食品安全管理</span>
+                  <el-icon v-if="hasEditPermission('quality-food-safety')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="supplier-management">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>供应链管理</span>
+                  <el-icon v-if="hasEditPermission('supplier-management')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="information-security-privacy">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>信息安全与隐私保护</span>
+                  <el-icon
+                    v-if="hasEditPermission('information-security-privacy')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="employees">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>员工</span>
+                  <el-icon v-if="hasEditPermission('employees')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="environmental-impact">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>环境影响</span>
+                  <el-icon v-if="hasEditPermission('environmental-impact')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
+            <el-tab-pane name="community-welfare">
+              <template #label>
+                <span
+                  class="custom-tabs-label flex justify-center items-center"
+                >
+                  <span>回馈社会</span>
+                  <el-icon v-if="hasEditPermission('community-welfare')"
+                    ><Edit />
+                  </el-icon>
+                </span>
+              </template>
+            </el-tab-pane>
           </el-tabs>
         </div>
       </div>
@@ -76,6 +185,7 @@ import CommunityWelfare from "./components/CommunityWelfare.vue";
 import ProductsServices from "./components/ProductsServices.vue";
 import { hasEditPermission } from "./utils";
 import YearCard from "./yearCard.vue";
+import Navbar from "./navbar.vue";
 
 const { t } = useI18n();
 
@@ -154,7 +264,8 @@ const handleYearSubmit = year => {
 
 .esg-management {
   min-height: 100vh;
-  padding: 0;
+
+  /* padding: 0; */
   background: #f5f7fa;
 }
 

@@ -1,11 +1,16 @@
 <template>
-  <div class="action-buttons">
-    <el-button v-if="showCancel" @click="handleCancel">取消</el-button>
+  <div class="action-buttons flex justify-end w-full">
+    <el-button v-if="false" @click="handleExit" type="danger"
+      >退出登录</el-button
+    >
+    <!-- <el-button v-if="showCancel" @click="handleCancel">取消</el-button> -->
     <el-button
       v-if="showSave"
       type="primary"
       @click="handleSave"
       :disabled="!isEdit"
+      size="large"
+      style="width: 120px"
       >保存</el-button
     >
     <el-button v-if="showSubmit" type="success" @click="handleSubmit"
@@ -55,6 +60,18 @@ const handleSubmit = () => {
   emit("submit");
   ElMessage.success("提交成功");
 };
+
+const handleExit = () => {
+  // 暴力退出 清空cookie
+  localStorage.setItem("pridi-unLoginUrl", "/pdesg");
+  document.cookie.split(";").forEach(cookie => {
+    document.cookie = cookie
+      .replace(/^ +/, "")
+      .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+  });
+
+  window.location.href = window.location.origin + "/#/pdesg";
+};
 </script>
 
 <style scoped>
@@ -67,7 +84,8 @@ const handleSubmit = () => {
   z-index: 1000;
   display: flex;
   gap: 12px;
-  justify-content: center;
+
+  /* justify-content: center; */
   padding: 16px 20px;
   margin-top: 0;
   background: #fff;

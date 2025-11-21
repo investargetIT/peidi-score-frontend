@@ -36,5 +36,14 @@ export default [
       rank: 103,
       showLink: false // 方式4：自定义hideInMenu属性
     }
+  },
+  {
+    path: "/pdesg",
+    name: "Pdesg",
+    component: () => import("@/views/esg/index.vue"),
+    meta: {
+      rank: 104,
+      showLink: false
+    }
   }
 ] satisfies Array<RouteConfigsTable>;
