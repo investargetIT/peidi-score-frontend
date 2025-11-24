@@ -35,7 +35,7 @@
       <template v-else-if="modelValue?.length > 1">
         <div class="multi-employee-info">
           <div class="selected-count">
-            {{ t("monitor.selectedCount", { count: modelValue.length }) }}
+            {{ t("monitor.selectedCount") }} {{ `(${modelValue.length})` }}
           </div>
           <div class="selected-names">{{ selectedEmployeeNames }}</div>
         </div>
