@@ -137,54 +137,54 @@ const routes = [
       }
     ]
   },
-  {
-    path: "/task",
-    name: "TaskLayout",
-    redirect: "/task/index",
-    component: Layout,
-    meta: {
-      icon: "flowbite:address-book-outline",
-      title: t("menu.task"),
-      rank: 3,
-      showLink: isSiteHangzhou()
-    },
-    children: [
-      {
-        path: "/task/index",
-        name: "task",
-        component: () => import("@/views/employeeTask/index.vue"),
-        meta: {
-          title: t("menu.task"),
-          showParent: false,
-          icon: "flowbite:address-book-outline"
-        }
-      }
-    ]
-  },
-  {
-    path: "/monitor",
-    name: "MonitorLayout",
-    redirect: "/monitor/index",
-    component: Layout,
-    meta: {
-      icon: "ep:setting",
-      title: t("menu.adminboard"),
-      rank: 999, // 管理员设置 最后显示
-      showLink: isAdmin()
-    },
-    children: [
-      {
-        path: "/monitor/index",
-        name: "monitor",
-        component: () => import("@/views/monitor/index.vue"),
-        meta: {
-          title: t("menu.adminboard"),
-          showParent: false,
-          icon: "ep:setting"
-        }
-      }
-    ]
-  },
+  // {
+  //   path: "/task",
+  //   name: "TaskLayout",
+  //   redirect: "/task/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "flowbite:address-book-outline",
+  //     title: t("menu.task"),
+  //     rank: 3,
+  //     showLink: isSiteHangzhou()
+  //   },
+  //   children: [
+  //     {
+  //       path: "/task/index",
+  //       name: "task",
+  //       component: () => import("@/views/employeeTask/index.vue"),
+  //       meta: {
+  //         title: t("menu.task"),
+  //         showParent: false,
+  //         icon: "flowbite:address-book-outline"
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/monitor",
+  //   name: "MonitorLayout",
+  //   redirect: "/monitor/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "ep:setting",
+  //     title: t("menu.adminboard"),
+  //     rank: 999, // 管理员设置 最后显示
+  //     showLink: isAdmin()
+  //   },
+  //   children: [
+  //     {
+  //       path: "/monitor/index",
+  //       name: "monitor",
+  //       component: () => import("@/views/monitor/index.vue"),
+  //       meta: {
+  //         title: t("menu.adminboard"),
+  //         showParent: false,
+  //         icon: "ep:setting"
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: "/esg",
     name: "EsgLayout",

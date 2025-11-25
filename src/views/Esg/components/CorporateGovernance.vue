@@ -57,6 +57,8 @@
                 v-model:file-list="formData.governanceStructureFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :on-success="() => handleSave('autoSave')"
+                :on-remove="() => handleSave('autoSave')"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -117,6 +119,8 @@
                 v-model:file-list="formData.boardCompositionFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :on-success="() => handleSave('autoSave')"
+                :on-remove="() => handleSave('autoSave')"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -390,6 +394,8 @@
                 v-model:file-list="formData.boardTrainingFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :on-success="() => handleSave('autoSave')"
+                :on-remove="() => handleSave('autoSave')"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1120,6 +1126,8 @@ Wind评级"
                 v-model:file-list="formData.investorInteractionFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :on-success="() => handleSave('autoSave')"
+                :on-remove="() => handleSave('autoSave')"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1158,6 +1166,8 @@ Wind评级"
                 v-model:file-list="formData.investorInteractionCaseFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :on-success="() => handleSave('autoSave')"
+                :on-remove="() => handleSave('autoSave')"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1277,6 +1287,8 @@ Wind评级"
                 v-model:file-list="formData.investorEducationFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :on-success="() => handleSave('autoSave')"
+                :on-remove="() => handleSave('autoSave')"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1738,6 +1750,8 @@ Wind评级"
                 v-model:file-list="formData.antiCorruptionFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :on-success="() => handleSave('autoSave')"
+                :on-remove="() => handleSave('autoSave')"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1926,6 +1940,8 @@ Wind评级"
                 v-model:file-list="formData.antiMonopolyTrainingFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :on-success="() => handleSave('autoSave')"
+                :on-remove="() => handleSave('autoSave')"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -2181,7 +2197,7 @@ Wind评级"
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, onUnmounted, toRef } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
@@ -2195,6 +2211,7 @@ import EsgTooltip from "@/components/EsgTooltip/index.vue";
 import { formatToken, getToken } from "@/utils/auth.ts";
 const uploadUrl = baseUrlApi("/esg/upload");
 import { onlyPositiveInteger, onlyPositiveNumber } from "../utils";
+import { useEsgAutoSave } from "@/utils/autoSave";
 
 // 定义props，接收activeTab参数
 const props = defineProps({
@@ -2210,6 +2227,10 @@ const props = defineProps({
     type: String,
     default: "",
     required: true
+  },
+  curDDUserInfo: {
+    type: Object,
+    default: () => ({})
   }
 });
 
@@ -2397,26 +2418,85 @@ const loadData = async () => {
     });
     if (res.code === 200 && res.data) {
       // 如果返回的content是JSON字符串，需要解析
-      if (res.data?.content) {
-        try {
-          const contentData = JSON.parse(res.data.content);
-          // 将数据回填到表单
-          Object.keys(contentData).forEach(key => {
-            // 检查是否有字段映射
-            const targetKey = key;
+      // if (res.data?.content) {
+      //   try {
+      //     const contentData = JSON.parse(res.data.content);
+      //     // 将数据回填到表单
+      //     Object.keys(contentData).forEach(key => {
+      //       // 检查是否有字段映射
+      //       const targetKey = key;
 
-            if (formData.value.hasOwnProperty(targetKey)) {
-              formData.value[targetKey] = contentData[key];
-            } else {
-              console.warn(
-                `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
-              );
-            }
-          });
-        } catch (e) {
-          console.warn("解析content数据失败:", e);
+      //       if (formData.value.hasOwnProperty(targetKey)) {
+      //         formData.value[targetKey] = contentData[key];
+      //       } else {
+      //         console.warn(
+      //           `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
+      //         );
+      //       }
+      //     });
+      //   } catch (e) {
+      //     console.warn("解析content数据失败:", e);
+      //   }
+      // }
+
+      //###############################################################################################
+      // 如果没有编辑权限，则遍历res.data数组，把每个对象相同的字段值进行拼接，格式为res.data[x].userName: res.data.[x].content.[字段值]
+      // 因为返回的res.data.[x].content是JSON字符串，所以都需要解析
+      if (!props.isEdit) {
+        res.data.forEach(item => {
+          try {
+            const contentData = JSON.parse(item.content);
+            // 将数据回填到表单
+            Object.keys(contentData).forEach(key => {
+              // 检查是否有字段映射
+              const targetKey = key;
+
+              if (formData.value.hasOwnProperty(targetKey)) {
+                // 如果是字符串类型则拼接，如果是数组则push
+                if (typeof contentData[key] === "string") {
+                  formData.value[targetKey] +=
+                    `${item.userName}: ${contentData[key]}\n`;
+                } else if (Array.isArray(contentData[key])) {
+                  formData.value[targetKey].push(...contentData[key]);
+                }
+              } else {
+                console.warn(
+                  `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
+                );
+              }
+            });
+          } catch (e) {
+            console.warn("解析content数据失败:", e);
+          }
+        });
+      } else {
+        // 如果有编辑权限，则找到res.data里userId等于props.curDDUserInfo?.id的对象，把它的content赋值给formData.value.content
+        const userItem = res.data.find(
+          item => item.userId == props.curDDUserInfo?.id
+        );
+        console.log("回馈社会：", userItem);
+        if (userItem) {
+          try {
+            const contentData = JSON.parse(userItem.content);
+            // 将数据回填到表单
+            Object.keys(contentData).forEach(key => {
+              // 检查是否有字段映射
+              const targetKey = key;
+
+              if (formData.value.hasOwnProperty(targetKey)) {
+                formData.value[targetKey] = contentData[key];
+              } else {
+                console.warn(
+                  `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
+                );
+              }
+            });
+          } catch (e) {
+            console.warn("解析content数据失败:", e);
+          }
         }
       }
+      //###############################################################################################
     }
   } catch (error) {
     console.error("获取数据失败:", error);
@@ -2435,23 +2515,51 @@ const handleCancel = () => {
   console.log("取消操作");
 };
 
-const handleSave = () => {
+// type 可选，默认为请求，可指定自动保存类型  可选值："request" | "autoSave"
+const handleSave = (type = "request") => {
   console.log("保存数据:", formData.value);
   // 自定义保存逻辑
   const sendConfig = {
     content: JSON.stringify(formData.value),
     type: props.activeTab,
-    year: props.year
+    year: props.year,
+    userId: props.curDDUserInfo?.id,
+    userName: props.curDDUserInfo?.username
   };
 
   updateEsgConfig(sendConfig).then(res => {
     if (res.code === 200) {
-      ElMessage.success("保存成功");
+      if (type === "request") {
+        ElMessage.success("保存成功");
+      }
     } else {
       ElMessage.error("保存失败");
     }
   });
 };
+
+// //#region 自动保存逻辑，一分钟自动保存一次，文件上传成功自动保存一次，页面没激活时不会保存，页面没编辑权限时也不会保存
+// const autoSaveInterval = 60 * 1000; // 1分钟
+// const autoSaveTimer = ref(null);
+// autoSaveTimer.value = setInterval(() => {
+//   if (props.activeTab === "corporate-governance" && props.isEdit) {
+//     handleSave();
+//   }
+// }, autoSaveInterval);
+// onUnmounted(() => {
+//   if (autoSaveTimer.value) {
+//     clearInterval(autoSaveTimer.value);
+//   }
+// });
+// //#endregion
+//#region 自动保存逻辑，使用抽象后的工具函数
+useEsgAutoSave(
+  () => handleSave("autoSave"),
+  toRef(props, "activeTab"),
+  toRef(props, "isEdit"),
+  "corporate-governance"
+);
+//#endregion
 </script>
 
 <style scoped>

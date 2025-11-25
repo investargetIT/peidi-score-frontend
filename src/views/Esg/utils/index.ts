@@ -21,7 +21,7 @@ export const onlyPositiveNumber = value => {
 
 // 判断是否有权限编辑模块
 export const hasEditPermission = (moduleName: string) => {
-  const moduleList = {
+  const moduleList: Record<string, string> = {
     "company-overview": "companyOverview",
     "esg-management": "esgManagement",
     "corporate-governance": "corporateGovernance",
@@ -37,9 +37,25 @@ export const hasEditPermission = (moduleName: string) => {
   const esgEnum = JSON.parse(localStorage.getItem("esgEnum") || "[]");
   const curDDUserInfo = JSON.parse(localStorage.getItem("esgUserInfo") || "{}");
 
-  return esgEnum.some(
-    item =>
-      item.value.includes(curDDUserInfo?.userid) &&
-      item.value.includes(moduleList[moduleName])
+  // 在esgEnum里找到含有curDDUserInfo?.userid的项
+  const userItem = esgEnum.find((item: any) =>
+    item.value.includes(curDDUserInfo?.userid)
   );
+
+  // 如果没有找到则返回false
+  if (!userItem) return false;
+
+  // #### 特殊处理：如果含有所有模块，则不让修改
+  if (userItem.value.split("&").length === 11) {
+    return false;
+  }
+
+  // 如果找到则判断是否包含moduleList[moduleName]
+  return userItem.value.includes(moduleList[moduleName]);
+
+  // return esgEnum.some(
+  //   item =>
+  //     item.value.includes(curDDUserInfo?.userid) &&
+  //     item.value.includes(moduleList[moduleName])
+  // );
 };

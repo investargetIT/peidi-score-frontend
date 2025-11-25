@@ -238,7 +238,11 @@ const passwordRules = reactive({
     }
   ],
   confirmPassword: [
-    { required: true, message: t("navbar.confirmPassword"), trigger: "blur" },
+    {
+      required: true,
+      message: t("navbar.confirmPasswordTip"),
+      trigger: "blur"
+    },
     { required: true, validator: validateConfirmPassword, trigger: "blur" }
   ]
 });
@@ -325,7 +329,7 @@ const isDingUser = computed(() => {
             class="logout"
             :style="{ width: locale === 'en' ? '150px' : '' }"
           >
-            <el-dropdown-item @click="changePassword" v-if="!isDingUser">
+            <el-dropdown-item @click="changePassword">
               <IconifyIconOffline :icon="RiEditBoxLine" style="margin: 5px" />
               {{ t("navbar.updatePassword") }}
             </el-dropdown-item>

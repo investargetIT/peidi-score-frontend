@@ -165,6 +165,7 @@
         :active-tab="activeTab"
         :isEdit="hasEditPermission(activeTab)"
         :year="yearValue"
+        :curDDUserInfo="curDDUserInfo"
       />
     </div>
   </div>
@@ -186,6 +187,7 @@ import ProductsServices from "./components/ProductsServices.vue";
 import { hasEditPermission } from "./utils";
 import YearCard from "./yearCard.vue";
 import Navbar from "./navbar.vue";
+import { storageLocal } from "@pureadmin/utils";
 
 const { t } = useI18n();
 
@@ -251,6 +253,9 @@ const handleYearSubmit = year => {
   showYearCard.value = false;
 };
 //#endregion
+
+// 获取用户信息
+const curDDUserInfo = storageLocal().getItem("dataSource");
 </script>
 
 <style scoped>
