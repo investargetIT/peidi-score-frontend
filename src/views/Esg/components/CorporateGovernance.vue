@@ -57,8 +57,19 @@
                 v-model:file-list="formData.governanceStructureFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.governanceStructureFiles =
+                      formData.governanceStructureFiles.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -119,8 +130,19 @@
                 v-model:file-list="formData.boardCompositionFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.boardCompositionFiles =
+                      formData.boardCompositionFiles.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -136,10 +158,15 @@
             <!-- 定性描述 -->
             <el-form-item label="董事会成员数量">
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.boardMemberCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.boardMemberCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -152,10 +179,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.boardCommitteeMemberCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.boardCommitteeMemberCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -168,10 +200,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.employeeDirectorCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveIntege"
+                /> -->
+                <el-input
+                  v-model="formData.employeeDirectorCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -184,10 +221,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.employeeDirectorRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.employeeDirectorRatio"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -200,10 +242,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.supervisorCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.supervisorCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -216,10 +263,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.employeeSupervisorCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.employeeSupervisorCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -232,10 +284,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.employeeSupervisorRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.employeeSupervisorRatio"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -314,10 +371,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.femaleDirectorCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.femaleDirectorCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -332,10 +394,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.femaleDirectorRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.femaleDirectorRatio"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -394,8 +461,19 @@
                 v-model:file-list="formData.boardTrainingFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.boardTrainingFiles =
+                      formData.boardTrainingFiles.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -416,7 +494,12 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input v-model="formData.boardTrainingCount" />
+                <!-- <el-input v-model="formData.boardTrainingCount" /> -->
+                <el-input
+                  v-model="formData.boardTrainingCount"
+                  type="textarea"
+                  :rows="2"
+                />
                 <span>次</span>
               </div>
             </el-form-item>
@@ -428,10 +511,15 @@
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.boardTrainingCoverage"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.boardTrainingCoverage"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -534,10 +622,15 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.independentDirectorCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.independentDirectorCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -550,10 +643,15 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.independentDirectorRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.independentDirectorRatio"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -566,10 +664,15 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.nonExecutiveDirectorCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.nonExecutiveDirectorCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -582,10 +685,15 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.nonExecutiveDirectorRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.nonExecutiveDirectorRatio"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -598,10 +706,15 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.independentNonExecutiveDirectorCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -614,10 +727,15 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.independentNonExecutiveDirectorRatio"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.independentNonExecutiveDirectorRatio"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -775,21 +893,33 @@ Wind评级"
               <div class="textContainer">
                 <div class="textAlignStyle">
                   <span>召开</span>
-                  <el-input
+                  <!-- <el-input
                     style="width: 100px"
                     v-model="formData.shareholderMeetingCount"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
+                  /> -->
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.shareholderMeetingCount"
+                    type="textarea"
+                    :rows="2"
                   />
                   <span>次</span>
                 </div>
                 <div class="textAlignStyle">
                   <span>审议通过</span>
-                  <el-input
+                  <!-- <el-input
                     style="width: 100px"
                     v-model="formData.shareholderMeetingResolutionCount"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
+                  /> -->
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.shareholderMeetingResolutionCount"
+                    type="textarea"
+                    :rows="2"
                   />
                   <span>项议案</span>
                 </div>
@@ -805,21 +935,33 @@ Wind评级"
               <div class="textContainer">
                 <div class="textAlignStyle">
                   <span>召开</span>
-                  <el-input
+                  <!-- <el-input
                     style="width: 100px"
                     v-model="formData.boardMeetingCount"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
+                  /> -->
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.boardMeetingCount"
+                    type="textarea"
+                    :rows="2"
                   />
                   <span>次</span>
                 </div>
                 <div class="textAlignStyle">
                   <span>审议通过</span>
-                  <el-input
+                  <!-- <el-input
                     style="width: 100px"
                     v-model="formData.boardMeetingResolutionCount"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
+                  /> -->
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.boardMeetingResolutionCount"
+                    type="textarea"
+                    :rows="2"
                   />
                   <span>项议案</span>
                 </div>
@@ -834,21 +976,33 @@ Wind评级"
               <div class="textContainer">
                 <div class="textAlignStyle">
                   <span>召开</span>
-                  <el-input
+                  <!-- <el-input
                     style="width: 100px"
                     v-model="formData.boardCommitteeMeetingCount"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
+                  /> -->
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.boardCommitteeMeetingCount"
+                    type="textarea"
+                    :rows="2"
                   />
                   <span>次</span>
                 </div>
                 <div class="textAlignStyle">
                   <span>审议通过</span>
-                  <el-input
+                  <!-- <el-input
                     style="width: 100px"
                     v-model="formData.boardCommitteeMeetingResolutionCount"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
+                  /> -->
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.boardCommitteeMeetingResolutionCount"
+                    type="textarea"
+                    :rows="2"
                   />
                   <span>项议案</span>
                 </div>
@@ -864,21 +1018,33 @@ Wind评级"
               <div class="textContainer">
                 <div class="textAlignStyle">
                   <span>召开</span>
-                  <el-input
+                  <!-- <el-input
                     style="width: 100px"
                     v-model="formData.supervisorMeetingCount"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
+                  /> -->
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.supervisorMeetingCount"
+                    type="textarea"
+                    :rows="2"
                   />
                   <span>次</span>
                 </div>
                 <div class="textAlignStyle">
                   <span>审议通过</span>
-                  <el-input
+                  <!-- <el-input
                     style="width: 100px"
                     v-model="formData.supervisorMeetingResolutionCount"
                     :formatter="onlyPositiveInteger"
                     :parser="onlyPositiveInteger"
+                  /> -->
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.supervisorMeetingResolutionCount"
+                    type="textarea"
+                    :rows="2"
                   />
                   <span>项议案</span>
                 </div>
@@ -1005,10 +1171,15 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.regularReportCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.regularReportCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>项</span>
               </div>
@@ -1021,10 +1192,15 @@ Wind评级"
                 </div>
               </template>
               <div style="display: flex; gap: 8px; align-items: center">
-                <el-input
+                <!-- <el-input
                   v-model="formData.interimReportCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.interimReportCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>项</span>
               </div>
@@ -1092,10 +1268,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.investorInquiryCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.investorInquiryCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>项</span>
               </div>
@@ -1126,8 +1307,19 @@ Wind评级"
                 v-model:file-list="formData.investorInteractionFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.investorInteractionFiles =
+                      formData.investorInteractionFiles.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1166,8 +1358,19 @@ Wind评级"
                 v-model:file-list="formData.investorInteractionCaseFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.investorInteractionCaseFiles =
+                      formData.investorInteractionCaseFiles.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1190,10 +1393,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.investorReplyRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.investorReplyRate"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -1208,10 +1416,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.investorActivityCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.investorActivityCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>次</span>
               </div>
@@ -1226,10 +1439,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.investorActivityCoverage"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.investorActivityCoverage"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人次</span>
               </div>
@@ -1287,8 +1505,19 @@ Wind评级"
                 v-model:file-list="formData.investorEducationFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.investorEducationFiles =
+                      formData.investorEducationFiles.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1750,8 +1979,19 @@ Wind评级"
                 v-model:file-list="formData.antiCorruptionFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.antiCorruptionFiles =
+                      formData.antiCorruptionFiles.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1774,10 +2014,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.antiCorruptionIncidents"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.antiCorruptionIncidents"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>次</span>
               </div>
@@ -1792,10 +2037,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.integrityCommitmentSigningRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.integrityCommitmentSigningRate"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -1807,10 +2057,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.antiCorruptionTrainingParticipants"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.antiCorruptionTrainingParticipants"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人次</span>
               </div>
@@ -1822,10 +2077,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.antiCorruptionTrainingTotalHours"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.antiCorruptionTrainingTotalHours"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>小时</span>
               </div>
@@ -1837,10 +2097,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.antiCorruptionTrainingAvgHours"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.antiCorruptionTrainingAvgHours"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>小时</span>
               </div>
@@ -1940,8 +2205,19 @@ Wind评级"
                 v-model:file-list="formData.antiMonopolyTrainingFiles"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.antiMonopolyTrainingFiles =
+                      formData.antiMonopolyTrainingFiles.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1961,10 +2237,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.antiMonopolyTrainingSessions"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.antiMonopolyTrainingSessions"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>次</span>
               </div>
@@ -1976,10 +2257,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.antiMonopolyTrainingParticipants"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.antiMonopolyTrainingParticipants"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人次</span>
               </div>
@@ -1991,10 +2277,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.antiMonopolyTrainingTotalHours"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.antiMonopolyTrainingTotalHours"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>小时</span>
               </div>
@@ -2006,10 +2297,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.antiMonopolyTrainingAvgHours"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.antiMonopolyTrainingAvgHours"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>小时</span>
               </div>
@@ -2078,10 +2374,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.violationCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.violationCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>次</span>
               </div>
@@ -2093,10 +2394,15 @@ Wind评级"
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.violationHandlingRate"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.violationHandlingRate"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -2386,6 +2692,19 @@ const handleFileChange = (file, fileList) => {
   console.log("文件变化:", file, fileList);
 };
 
+const handleFileBeforeUpload = file => {
+  // 生成新的文件名
+  const newFileName = props.curDDUserInfo.username + "_" + file.name;
+
+  // 使用 new File 构造新的文件对象，并设置新的文件名
+  const newFile = new File([file], newFileName, {
+    type: file.type,
+    lastModified: file.lastModified
+  });
+  // 返回新的文件对象
+  return newFile;
+};
+
 const handlePictureCardPreview = uploadFile => {
   if (uploadFile.response?.code !== 200) return;
   getFileDownLoadPath({
@@ -2454,8 +2773,11 @@ const loadData = async () => {
               if (formData.value.hasOwnProperty(targetKey)) {
                 // 如果是字符串类型则拼接，如果是数组则push
                 if (typeof contentData[key] === "string") {
-                  formData.value[targetKey] +=
-                    `${item.userName}: ${contentData[key]}\n`;
+                  // 如果值为空则不做拼接
+                  if (contentData[key]) {
+                    formData.value[targetKey] +=
+                      `${item.userName}: ${contentData[key]}\n`;
+                  }
                 } else if (Array.isArray(contentData[key])) {
                   formData.value[targetKey].push(...contentData[key]);
                 }
@@ -2474,7 +2796,7 @@ const loadData = async () => {
         const userItem = res.data.find(
           item => item.userId == props.curDDUserInfo?.id
         );
-        console.log("回馈社会：", userItem);
+        // console.log("回馈社会：", userItem);
         if (userItem) {
           try {
             const contentData = JSON.parse(userItem.content);

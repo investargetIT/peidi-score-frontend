@@ -41,10 +41,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.socialWelfareInvestment"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.socialWelfareInvestment"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>万元</span>
               </div>
@@ -59,10 +64,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.socialContributionPerShare"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.socialContributionPerShare"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>元</span>
               </div>
@@ -200,8 +210,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.brandCharityProjectsAttachmentFileList =
+                      formData.brandCharityProjectsAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -279,8 +302,21 @@
                 v-model:file-list="formData.publicityTrainingAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.publicityTrainingAttachmentFileList =
+                      formData.publicityTrainingAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -303,10 +339,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.volunteerTotalParticipants"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.volunteerTotalParticipants"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -323,10 +364,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.volunteerAverageHours"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.volunteerAverageHours"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>小时</span>
               </div>
@@ -395,8 +441,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.communityWelfareHonorsAttachmentFileList =
+                      formData.communityWelfareHonorsAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -502,8 +561,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.ruralRevitalizationAttachmentFileList =
+                      formData.ruralRevitalizationAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -524,10 +596,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.ruralRevitalizationInvestment"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.ruralRevitalizationInvestment"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>万元</span>
               </div>
@@ -540,10 +617,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.agriculturalProductPurchaseAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.agriculturalProductPurchaseAmount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>万元</span>
               </div>
@@ -558,10 +640,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.supportProductDevelopmentCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.supportProductDevelopmentCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>种</span>
               </div>
@@ -576,10 +663,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.jobCreationCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                />  -->
+                <el-input
+                  v-model="formData.jobCreationCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人次</span>
               </div>
@@ -688,7 +780,21 @@ const handleFileChange = (file, fileList) => {
   console.log("文件变化:", file, fileList);
 };
 
+const handleFileBeforeUpload = file => {
+  // 生成新的文件名
+  const newFileName = props.curDDUserInfo.username + "_" + file.name;
+
+  // 使用 new File 构造新的文件对象，并设置新的文件名
+  const newFile = new File([file], newFileName, {
+    type: file.type,
+    lastModified: file.lastModified
+  });
+  // 返回新的文件对象
+  return newFile;
+};
+
 const handlePictureCardPreview = uploadFile => {
+  console.log(uploadFile);
   if (uploadFile.response?.code !== 200) return;
   getFileDownLoadPath({
     objectName: uploadFile.response.data
@@ -744,6 +850,7 @@ const loadData = async () => {
       //###############################################################################################
       // 如果没有编辑权限，则遍历res.data数组，把每个对象相同的字段值进行拼接，格式为res.data[x].userName: res.data.[x].content.[字段值]
       // 因为返回的res.data.[x].content是JSON字符串，所以都需要解析
+      // 属性里的值为空则不做拼接
       if (!props.isEdit) {
         res.data.forEach(item => {
           try {
@@ -756,8 +863,11 @@ const loadData = async () => {
               if (formData.value.hasOwnProperty(targetKey)) {
                 // 如果是字符串类型则拼接，如果是数组则push
                 if (typeof contentData[key] === "string") {
-                  formData.value[targetKey] +=
-                    `${item.userName}: ${contentData[key]}\n`;
+                  // 如果值为空则不做拼接
+                  if (contentData[key]) {
+                    formData.value[targetKey] +=
+                      `${item.userName}: ${contentData[key]}\n`;
+                  }
                 } else if (Array.isArray(contentData[key])) {
                   formData.value[targetKey].push(...contentData[key]);
                 }
@@ -776,7 +886,7 @@ const loadData = async () => {
         const userItem = res.data.find(
           item => item.userId == props.curDDUserInfo?.id
         );
-        console.log("回馈社会：", userItem);
+        // console.log("回馈社会：", userItem);
         if (userItem) {
           try {
             const contentData = JSON.parse(userItem.content);

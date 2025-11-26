@@ -167,8 +167,19 @@ Wind评级"
                 v-model:file-list="formData.certificationAndAuditFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.certificationAndAuditFileList =
+                      formData.certificationAndAuditFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -209,8 +220,19 @@ Wind评级"
                 v-model:file-list="formData.trainingAndPromotionFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.trainingAndPromotionFileList =
+                      formData.trainingAndPromotionFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -284,8 +306,19 @@ Wind评级"
                 v-model:file-list="formData.qualityPracticeFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.qualityPracticeFileList =
+                      formData.qualityPracticeFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -325,8 +358,19 @@ Wind评级"
                 v-model:file-list="formData.honorsAndAwardsFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.honorsAndAwardsFileList =
+                      formData.honorsAndAwardsFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -500,8 +544,19 @@ Wind评级"
                 v-model:file-list="formData.safetyTrainingFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.safetyTrainingFileList =
+                      formData.safetyTrainingFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -558,8 +613,19 @@ Wind评级"
                 v-model:file-list="formData.emergencyManagementFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.emergencyManagementFileList =
+                      formData.emergencyManagementFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1017,6 +1083,19 @@ const handleFileChange = (file, fileList) => {
   console.log("文件变化:", file, fileList);
 };
 
+const handleFileBeforeUpload = file => {
+  // 生成新的文件名
+  const newFileName = props.curDDUserInfo.username + "_" + file.name;
+
+  // 使用 new File 构造新的文件对象，并设置新的文件名
+  const newFile = new File([file], newFileName, {
+    type: file.type,
+    lastModified: file.lastModified
+  });
+  // 返回新的文件对象
+  return newFile;
+};
+
 const handlePictureCardPreview = uploadFile => {
   if (uploadFile.response?.code !== 200) return;
   getFileDownLoadPath({
@@ -1085,8 +1164,11 @@ const loadData = async () => {
               if (formData.value.hasOwnProperty(targetKey)) {
                 // 如果是字符串类型则拼接，如果是数组则push
                 if (typeof contentData[key] === "string") {
-                  formData.value[targetKey] +=
-                    `${item.userName}: ${contentData[key]}\n`;
+                  // 如果值为空则不做拼接
+                  if (contentData[key]) {
+                    formData.value[targetKey] +=
+                      `${item.userName}: ${contentData[key]}\n`;
+                  }
                 } else if (Array.isArray(contentData[key])) {
                   formData.value[targetKey].push(...contentData[key]);
                 }
@@ -1105,7 +1187,7 @@ const loadData = async () => {
         const userItem = res.data.find(
           item => item.userId == props.curDDUserInfo?.id
         );
-        console.log("回馈社会：", userItem);
+        // console.log("回馈社会：", userItem);
         if (userItem) {
           try {
             const contentData = JSON.parse(userItem.content);

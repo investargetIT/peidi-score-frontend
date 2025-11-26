@@ -224,10 +224,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.scope1GhgEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.scope1GhgEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>吨二氧化碳当量</span>
               </div>
@@ -242,10 +247,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.scope2GhgEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.scope2GhgEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>吨二氧化碳当量</span>
               </div>
@@ -262,10 +272,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.scope3GhgEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.scope3GhgEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>吨二氧化碳当量</span>
               </div>
@@ -282,10 +297,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.totalGhgEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.totalGhgEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>吨二氧化碳当量</span>
               </div>
@@ -300,10 +320,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.ghgEmissionIntensity"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.ghgEmissionIntensity"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>吨二氧化碳当量/万元</span>
               </div>
@@ -338,8 +363,19 @@
                 v-model:file-list="formData.ghgVerificationAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.ghgVerificationAttachmentFileList =
+                      formData.ghgVerificationAttachmentFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -479,8 +515,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.carbonReductionTechAttachmentFileList =
+                      formData.carbonReductionTechAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -527,8 +576,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.lowCarbonProductRAndDAttachmentFileList =
+                      formData.lowCarbonProductRAndDAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -575,8 +637,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.energySavingMeasuresAttachmentFileList =
+                      formData.energySavingMeasuresAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -623,8 +698,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.cleanProductionMeasuresAttachmentFileList =
+                      formData.cleanProductionMeasuresAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -669,8 +757,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.valueChainEnergySavingAttachmentFileList =
+                      formData.valueChainEnergySavingAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -842,8 +943,21 @@
                 v-model:file-list="formData.climateInitiativeAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.climateInitiativeAttachmentFileList =
+                      formData.climateInitiativeAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -887,8 +1001,19 @@
                 v-model:file-list="formData.climateActivityAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.climateActivityAttachmentFileList =
+                      formData.climateActivityAttachmentFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1009,8 +1134,19 @@
                 v-model:file-list="formData.envHonorsAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.envHonorsAttachmentFileList =
+                      formData.envHonorsAttachmentFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1098,8 +1234,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.envSystemCertificationAttachmentFileList =
+                      formData.envSystemCertificationAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1190,8 +1339,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.envEmergencyTrainingAttachmentFileList =
+                      formData.envEmergencyTrainingAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1233,10 +1395,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.envPollutionFine"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.envPollutionFine"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>万元</span>
               </div>
@@ -1279,10 +1446,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.envImpactAssessmentProjectCount"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.envImpactAssessmentProjectCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>个</span>
               </div>
@@ -1320,8 +1492,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.envImpactMgmtActionsAttachmentFileList =
+                      formData.envImpactMgmtActionsAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1455,8 +1640,19 @@
                 v-model:file-list="formData.envProjectsAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.envProjectsAttachmentFileList =
+                      formData.envProjectsAttachmentFileList.map(item => ({
+                        ...item,
+                        name: item.response.data.split('/').pop()
+                      }));
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1479,10 +1675,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.envInvestmentAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.envInvestmentAmount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>万元</span>
               </div>
@@ -1520,8 +1721,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.envTrainingPublicityAttachmentFileList =
+                      formData.envTrainingPublicityAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1722,8 +1936,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.energyManagementSystemCertificationAttachmentFileList =
+                      formData.energyManagementSystemCertificationAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1780,7 +2007,7 @@
               <el-input
                 v-model="formData.electricityConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1796,7 +2023,7 @@
               <el-input
                 v-model="formData.heatConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1812,7 +2039,7 @@
               <el-input
                 v-model="formData.steamConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1828,7 +2055,7 @@
               <el-input
                 v-model="formData.coalConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1844,7 +2071,7 @@
               <el-input
                 v-model="formData.lngConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1860,7 +2087,7 @@
               <el-input
                 v-model="formData.naturalGasConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1876,7 +2103,7 @@
               <el-input
                 v-model="formData.fuelOilConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1892,7 +2119,7 @@
               <el-input
                 v-model="formData.lubricantConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1908,7 +2135,7 @@
               <el-input
                 v-model="formData.dieselConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1924,7 +2151,7 @@
               <el-input
                 v-model="formData.gasolineConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1940,7 +2167,7 @@
               <el-input
                 v-model="formData.lpgConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1956,7 +2183,7 @@
               <el-input
                 v-model="formData.otherPetroleumProductsConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1974,7 +2201,7 @@
               <el-input
                 v-model="formData.renewableEnergyUsage"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -1992,7 +2219,7 @@
               <el-input
                 v-model="formData.organizationInternalEnergyConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -2010,7 +2237,7 @@
               <el-input
                 v-model="formData.externalEnergyConsumption"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -2028,7 +2255,7 @@
               <el-input
                 v-model="formData.energySavingMeasures"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -2046,7 +2273,7 @@
               <el-input
                 v-model="formData.energyIntensity"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -2064,7 +2291,7 @@
               <el-input
                 v-model="formData.energySavingAmount"
                 type="textarea"
-                :rows="1"
+                :rows="2"
                 placeholder="单位：千瓦时或吨标准煤、%"
               />
             </el-form-item>
@@ -2197,8 +2424,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.waterSavingMeasuresAttachmentFileList =
+                      formData.waterSavingMeasuresAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -2288,10 +2528,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.materialTotalWeightOrVolume"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.materialTotalWeightOrVolume"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>吨/立方米</span>
               </div>
@@ -2308,10 +2553,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.recycledMaterialUsage"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.recycledMaterialUsage"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -2328,10 +2578,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.recycledProductAndPackaging"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.recycledProductAndPackaging"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>%</span>
               </div>
@@ -2510,10 +2765,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.odsEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.odsEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
               </div>
             </el-form-item>
@@ -2529,10 +2789,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.noxEmissionsAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.noxEmissionsAmount"
+                  type="textarea"
+                  :rows="2"
                 />
               </div>
             </el-form-item>
@@ -2548,10 +2813,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.soxEmissionsAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.soxEmissionsAmount"
+                  type="textarea"
+                  :rows="2"
                 />
               </div>
             </el-form-item>
@@ -2567,10 +2837,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.popEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.popEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
               </div>
             </el-form-item>
@@ -2586,10 +2861,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.vocEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.vocEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
               </div>
             </el-form-item>
@@ -2605,10 +2885,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.hapEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.hapEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
               </div>
             </el-form-item>
@@ -2624,10 +2909,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.pmEmissions"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.pmEmissions"
+                  type="textarea"
+                  :rows="2"
                 />
               </div>
             </el-form-item>
@@ -3285,8 +3575,21 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
-                :on-success="() => handleSave('autoSave')"
-                :on-remove="() => handleSave('autoSave')"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  () => {
+                    // 遍历替换一边文件名
+                    formData.biodiversityProtectedAreasAttachmentFileList =
+                      formData.biodiversityProtectedAreasAttachmentFileList.map(
+                        item => ({
+                          ...item,
+                          name: item.response.data.split('/').pop()
+                        })
+                      );
+                    handleSave('autoSave');
+                  }
+                "
+                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -3532,6 +3835,19 @@ const handleFileChange = (file, fileList) => {
   console.log("文件变化:", file, fileList);
 };
 
+const handleFileBeforeUpload = file => {
+  // 生成新的文件名
+  const newFileName = props.curDDUserInfo.username + "_" + file.name;
+
+  // 使用 new File 构造新的文件对象，并设置新的文件名
+  const newFile = new File([file], newFileName, {
+    type: file.type,
+    lastModified: file.lastModified
+  });
+  // 返回新的文件对象
+  return newFile;
+};
+
 const handlePictureCardPreview = uploadFile => {
   if (uploadFile.response?.code !== 200) return;
   getFileDownLoadPath({
@@ -3600,8 +3916,11 @@ const loadData = async () => {
               if (formData.value.hasOwnProperty(targetKey)) {
                 // 如果是字符串类型则拼接，如果是数组则push
                 if (typeof contentData[key] === "string") {
-                  formData.value[targetKey] +=
-                    `${item.userName}: ${contentData[key]}\n`;
+                  // 如果值为空则不做拼接
+                  if (contentData[key]) {
+                    formData.value[targetKey] +=
+                      `${item.userName}: ${contentData[key]}\n`;
+                  }
                 } else if (Array.isArray(contentData[key])) {
                   formData.value[targetKey].push(...contentData[key]);
                 }
@@ -3620,7 +3939,7 @@ const loadData = async () => {
         const userItem = res.data.find(
           item => item.userId == props.curDDUserInfo?.id
         );
-        console.log("回馈社会：", userItem);
+        // console.log("回馈社会：", userItem);
         if (userItem) {
           try {
             const contentData = JSON.parse(userItem.content);
