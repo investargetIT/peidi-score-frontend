@@ -290,12 +290,14 @@ onMounted(() => {
     }
   }
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  & {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
 
   .loader2 {
     width: 200px;
