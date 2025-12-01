@@ -3,6 +3,9 @@ import { storageLocal } from "@pureadmin/utils";
 import { ElMessage } from "element-plus";
 import { onMounted, reactive, ref } from "vue";
 import { updateUserPassword } from "../../api/user";
+import { useNav } from "@/layout/hooks/useNav";
+
+const { getLogo } = useNav();
 
 const username = ref("");
 
@@ -92,6 +95,10 @@ const handlePasswordUpdate = () => {
 
 <template>
   <div class="peidi-esg-navbar">
+    <div>
+      <img class="h-[32px] ml-[20px]" :src="getLogo()" alt="logo" />
+    </div>
+
     <div class="mr-[20px]">
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
@@ -112,52 +119,52 @@ const handlePasswordUpdate = () => {
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-
-      <el-dialog
-        v-model="showPasswordDialog"
-        title="修改密码"
-        width="500"
-        @closed="passwordFormRef?.resetFields()"
-        :close-on-click-modal="false"
-      >
-        <el-form
-          :model="passwordForm"
-          :rules="passwordRules"
-          ref="passwordFormRef"
-          :label-width="'100px'"
-        >
-          <el-form-item label="旧密码" prop="oldPassword">
-            <el-input
-              v-model="passwordForm.oldPassword"
-              type="password"
-              show-password
-            />
-          </el-form-item>
-          <el-form-item label="新密码" prop="newPassword">
-            <el-input
-              v-model="passwordForm.newPassword"
-              type="password"
-              show-password
-            />
-          </el-form-item>
-          <el-form-item label="确认密码" prop="confirmPassword">
-            <el-input
-              v-model="passwordForm.confirmPassword"
-              type="password"
-              show-password
-            />
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <div class="dialog-footer">
-            <el-button type="primary" @click="handlePasswordUpdate">
-              确认
-            </el-button>
-          </div>
-        </template>
-      </el-dialog>
     </div>
   </div>
+
+  <el-dialog
+    v-model="showPasswordDialog"
+    title="修改密码"
+    width="500"
+    @closed="passwordFormRef?.resetFields()"
+    :close-on-click-modal="false"
+  >
+    <el-form
+      :model="passwordForm"
+      :rules="passwordRules"
+      ref="passwordFormRef"
+      :label-width="'100px'"
+    >
+      <el-form-item label="旧密码" prop="oldPassword">
+        <el-input
+          v-model="passwordForm.oldPassword"
+          type="password"
+          show-password
+        />
+      </el-form-item>
+      <el-form-item label="新密码" prop="newPassword">
+        <el-input
+          v-model="passwordForm.newPassword"
+          type="password"
+          show-password
+        />
+      </el-form-item>
+      <el-form-item label="确认密码" prop="confirmPassword">
+        <el-input
+          v-model="passwordForm.confirmPassword"
+          type="password"
+          show-password
+        />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="handlePasswordUpdate">
+          确认
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
@@ -168,7 +175,7 @@ const handlePasswordUpdate = () => {
   z-index: 999;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   width: 100%;
   height: 50px;
   background-color: #fff;

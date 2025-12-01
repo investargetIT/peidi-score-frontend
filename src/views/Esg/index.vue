@@ -12,16 +12,18 @@
     >
       <!-- 顶部导航标签 -->
       <div class="flex items-center justify-between">
-        <div class="mr-[10px]">
+        <div class="mr-[10px] flex-shrink-0">
           <el-select
             v-model="yearValue"
-            placeholder="请选择年度"
+            placeholder="请选择年份"
             style="width: 200px"
             size="large"
           >
             <template #label="{ label, value }">
-              <span class="text-[14px]">年度: </span>
-              <span class="text-[16px] font-bold">{{ value }}</span>
+              <span class="text-[14px] text-[#0a0a0a] font-bold"
+                >报告年份:
+              </span>
+              <span class="text-[16px] text-[#0a0a0a]">{{ value }}</span>
             </template>
             <el-option
               v-for="item in yearOptions"
@@ -31,7 +33,7 @@
             />
           </el-select>
         </div>
-        <div class="flex-1">
+        <div class="flex-1 min-w-0">
           <el-tabs v-model="activeTab" class="esg-tabs">
             <el-tab-pane name="company-overview">
               <template #label>
@@ -303,6 +305,14 @@ const curDDUserInfo = storageLocal().getItem("dataSource");
 }
 
 :deep(.el-select__wrapper) {
+  height: 50px;
+}
+
+:deep(.el-tabs__nav-next),
+:deep(.el-tabs__nav-prev) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 50px;
 }
 </style>

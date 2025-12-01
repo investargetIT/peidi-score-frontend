@@ -419,6 +419,7 @@ const isDingUser = computed(() => {
           :rules="passwordRules"
           ref="passwordFormRef"
           :label-width="locale === 'en' ? '150px' : '100px'"
+          :label-position="'left'"
         >
           <el-form-item :label="t('navbar.oldPassword')" prop="oldPassword">
             <el-input
