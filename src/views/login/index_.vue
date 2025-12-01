@@ -11,7 +11,7 @@ import { CrossStorageClient } from "cross-storage";
 import { decryptMessage, encryptMessage } from "./utils/cryptojs";
 import { getUserInfoData } from "../../api/pmApi";
 const timestamp = new Date().getTime();
-// ESG重定向标识
+// 重定向标识
 const unLoginUrl = localStorage.getItem("pridi-unLoginUrl");
 
 const route = useRoute();
@@ -177,7 +177,7 @@ onMounted(() => {
                       // 先判断是否有未登录时的路由记录
 
                       if (unLoginUrl) {
-                        localStorage.removeItem("pridi-unLoginUrl");
+                        // localStorage.removeItem("pridi-unLoginUrl");
                         // alert("unLoginUrl:" + unLoginUrl);
                         router.push(unLoginUrl).then(() => {
                           message("登录成功", { type: "success" });

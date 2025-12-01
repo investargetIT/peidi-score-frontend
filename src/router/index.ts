@@ -410,8 +410,9 @@ router.beforeEach((to: ToRouteType, _from, next) => {
     // alert("1: " + to.path);
     if (to.path !== "/login") {
       // alert("2: " + to.path);
-      if (to.path === "/pdesg") {
-        localStorage.setItem("pridi-unLoginUrl", "/pdesg");
+      // 记录用户访问的URL，用于登录后重定向（排除白名单路由）
+      if (!whiteList.includes(to.path)) {
+        localStorage.setItem("pridi-unLoginUrl", to.fullPath);
       }
       if (whiteList.indexOf(to.path) !== -1) {
         next();
