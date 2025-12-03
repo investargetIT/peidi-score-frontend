@@ -134,6 +134,7 @@ const handlePasswordUpdate = () => {
       :rules="passwordRules"
       ref="passwordFormRef"
       :label-width="'100px'"
+      :label-position="'left'"
     >
       <el-form-item label="旧密码" prop="oldPassword">
         <el-input
