@@ -80,7 +80,7 @@
                     <el-select
                       v-model="educationAnswer"
                       placeholder="请选择您的学历"
-                      style="width: 240px"
+                      style="max-width: 240px"
                       :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       @change="handleEducationChange"
                     >
@@ -482,6 +482,7 @@ import {
   getFileDownLoadPath
 } from "@/api/esg";
 import dayjs from "dayjs";
+import { message } from "@/utils/message";
 
 const { t } = useI18n();
 
@@ -559,7 +560,15 @@ const handlePreview = file => {
     .then(res => {
       const { code, msg, data } = res;
       if (code === 200) {
-        if (file.raw.type.includes("image")) {
+        // console.log("file.raw", file);
+
+        // 更健壮的图片类型检查
+        const isImage =
+          file.raw?.type?.includes("image") ||
+          /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.name || "");
+
+        if (isImage) {
+          // 判断是否是图片文件
           dialogImageUrl.value = res.data;
           dialogVisible.value = true;
         } else {
@@ -570,7 +579,7 @@ const handlePreview = file => {
       }
     })
     .catch(err => {
-      message("图片预览失败", { type: "error" });
+      message("图片预览失败--" + err.message, { type: "error" });
     });
 };
 
@@ -1392,6 +1401,7 @@ onMounted(() => {
 /* 额外的移动端适配 - 平板和小屏幕 */
 @media screen and (width <= 1024px) {
   .difficulty-stats-cards {
+    display: flex !important;
     flex-direction: column !important;
     gap: 16px !important;
   }
@@ -1447,13 +1457,15 @@ onMounted(() => {
 /* 难度级别统计卡片样式 */
 .difficulty-stats-cards {
   display: flex;
+  flex-wrap: wrap;
   gap: 24px;
   margin-bottom: 32px;
 }
 
 .stats-card {
   flex: 1;
-  min-width: 0;
+
+  /* min-width: 0; */
   padding: 20px;
   background: #fff;
   border-radius: 12px;
