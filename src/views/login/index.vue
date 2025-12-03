@@ -61,6 +61,7 @@ const ruleForm = reactive({
   password: "",
   site: ""
 });
+
 const onLogin = async (
   formEl: FormInstance | undefined,
   isDingTalkLogin: boolean = true
@@ -87,12 +88,12 @@ const onLogin = async (
       useUserStoreHook()
         .loginByUsername({
           username: ruleForm.username,
-          password: DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD_ENCRYPTED,
-          site: ruleForm.site || null
+          password: DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD_ENCRYPTED
+          // site: ruleForm.site || null
         })
         .then(res => {
           if (res.success) {
-            // 先获取用户数据源信息
+            // 先获取用户数据源信息 就是user-check接口
             getUserDataSourceApi({ token: res.data }).then(userRes => {
               console.log("res", userRes);
               if (userRes.success) {
@@ -115,22 +116,21 @@ const onLogin = async (
                           ...(storageLocal().getItem("ddUserInfo") || {}),
                           hired_date: hireDateTimestamp.toString()
                         });
-
-                        // 初始化用户配置
-                        initUserInfo();
                       } else {
                         console.log("用户没有入职时间");
+                        message("用户没有入职时间，请联系管理员", {
+                          type: "error"
+                        });
                       }
                       console.log("用户信息:", res.data);
                     } else {
-                      message("获取用户信息失败", { type: "error" });
+                      message("获取用户信息失败+" + res.msg, { type: "error" });
                       return;
                     }
                   });
-                } else {
-                  // 初始化用户配置
-                  initUserInfo();
                 }
+                // 初始化用户配置
+                initUserInfo();
                 // #endregion
 
                 // 使用 Promise.all 并行获取多个枚举类型列表
@@ -147,7 +147,9 @@ const onLogin = async (
                         JSON.stringify(adminUserRes.data)
                       );
                     } else {
-                      message("获取管理员列表失败", { type: "error" });
+                      message("获取管理员列表失败+" + adminUserRes.msg, {
+                        type: "error"
+                      });
                       return;
                     }
 
@@ -158,7 +160,9 @@ const onLogin = async (
                         JSON.stringify(esgRes.data)
                       );
                     } else {
-                      message("获取ESG枚举列表失败", { type: "error" });
+                      message("获取ESG枚举列表失败+" + esgRes.msg, {
+                        type: "error"
+                      });
                       return;
                     }
 
@@ -166,8 +170,9 @@ const onLogin = async (
                     // ESG权限逻辑
                     if (userCheckRes.success) {
                       // 因为动态路由暂时无效，先检查是否存在esgUserInfo，如果不存在则在存入后刷新一次页面，因为权限配置基本不会变
-                      const isExist =
-                        localStorage.getItem("esgUserInfo") !== null;
+                      // 2025-12-03：动态路由已解决
+                      // const isExist =
+                      //   localStorage.getItem("esgUserInfo") !== null;
                       localStorage.setItem(
                         "esgUserInfo",
                         JSON.stringify({
@@ -176,9 +181,14 @@ const onLogin = async (
                           dingId: userCheckRes?.data?.dingId
                         })
                       );
-                      if (!isExist) window.location.reload();
+                      // if (!isExist) window.location.reload();
                     } else {
-                      message("获取用户检查失败", { type: "error" });
+                      message(
+                        "user-check接口获取用户信息失败+" + userCheckRes.msg,
+                        {
+                          type: "error"
+                        }
+                      );
                       return;
                     }
 
@@ -200,10 +210,12 @@ const onLogin = async (
                   })
                   .catch(error => {
                     console.error("获取枚举类型列表失败:", error);
-                    message("获取枚举类型列表失败", { type: "error" });
+                    message("获取枚举类型列表失败" + error, { type: "error" });
                   });
               } else {
-                message("获取用户数据失败", { type: "error" });
+                message("获取用户数据失败" + userRes.msg, {
+                  type: "error"
+                });
               }
             });
 
@@ -219,13 +231,14 @@ const onLogin = async (
             // );
             //#endregion
           } else {
-            message("登录失败", { type: "error" });
+            message("登录失败" + res.msg, { type: "error" });
           }
         })
         .finally(() => (loading.value = false));
     }
   });
 };
+
 const ddLogin = () => {
   let ddUserEmail = "";
   dd.runtime.permission.requestAuthCode({
@@ -322,51 +335,51 @@ const ddLogin = () => {
               });
             }
           }
-        })
-        .then(res => {
-          if (res) {
-            if (res.success) {
-              localStorage.setItem("token", res.data);
-
-              // #region 入职时间逻辑 （如果用户没有入职时间，才去获取）
-              if (!storageLocal().getItem("ddUserInfo")?.hired_date) {
-                getUserInfoData({
-                  userId: storageLocal()?.getItem("dataSource")?.id
-                }).then(res => {
-                  if (res.success) {
-                    const { hireDate } = res.data;
-                    if (hireDate) {
-                      const hireDateTimestamp = new Date(hireDate).getTime();
-                      storageLocal().setItem("ddUserInfo", {
-                        ...(storageLocal().getItem("ddUserInfo") || {}),
-                        hired_date: hireDateTimestamp.toString()
-                      });
-
-                      // 初始化用户配置
-                      initUserInfo();
-                    } else {
-                      console.log("用户没有入职时间");
-                    }
-                    console.log("用户信息:", res.data);
-                  } else {
-                    message("获取用户信息失败", { type: "error" });
-                    return;
-                  }
-                });
-              } else {
-                // 初始化用户配置
-                initUserInfo();
-              }
-              // #endregion
-
-              // 登录成功，跳转到指定页面
-              const urlParams = new URL(window.location.href).searchParams;
-              window.location.href = urlParams.get("redirect") || "/";
-            } else {
-              setErrMsg("用户登录失败：" + JSON.stringify(res));
-            }
-          }
         });
+      // .then(res => {
+      //   if (res) {
+      //     if (res.success) {
+      //       localStorage.setItem("token", res.data);
+
+      //       // #region 入职时间逻辑 （如果用户没有入职时间，才去获取）
+      //       if (!storageLocal().getItem("ddUserInfo")?.hired_date) {
+      //         getUserInfoData({
+      //           userId: storageLocal()?.getItem("dataSource")?.id
+      //         }).then(res => {
+      //           if (res.success) {
+      //             const { hireDate } = res.data;
+      //             if (hireDate) {
+      //               const hireDateTimestamp = new Date(hireDate).getTime();
+      //               storageLocal().setItem("ddUserInfo", {
+      //                 ...(storageLocal().getItem("ddUserInfo") || {}),
+      //                 hired_date: hireDateTimestamp.toString()
+      //               });
+
+      //               // 初始化用户配置
+      //               initUserInfo();
+      //             } else {
+      //               console.log("用户没有入职时间");
+      //             }
+      //             console.log("用户信息:", res.data);
+      //           } else {
+      //             message("获取用户信息失败", { type: "error" });
+      //             return;
+      //           }
+      //         });
+      //       } else {
+      //         // 初始化用户配置
+      //         initUserInfo();
+      //       }
+      //       // #endregion
+
+      //       // 登录成功，跳转到指定页面
+      //       const urlParams = new URL(window.location.href).searchParams;
+      //       window.location.href = urlParams.get("redirect") || "/";
+      //     } else {
+      //       setErrMsg("用户登录失败：" + JSON.stringify(res));
+      //     }
+      //   }
+      // });
     },
     onFail: function (err) {
       // setErrMsg('获取钉钉免登授权码失败：' + JSON.stringify(err))

@@ -79,8 +79,8 @@ onMounted(() => {
     useUserStoreHook()
       .loginByUsername({
         username: userInfo?.username,
-        password: userInfo?.password,
-        site: userInfo?.site || null
+        password: userInfo?.password
+        // site: userInfo?.site || null
       })
       .then(res => {
         if (res.success) {
@@ -127,7 +127,9 @@ onMounted(() => {
                       JSON.stringify(adminUserRes.data)
                     );
                   } else {
-                    message("获取管理员列表失败", { type: "error" });
+                    message("获取管理员列表失败" + adminUserRes.msg, {
+                      type: "error"
+                    });
                     return;
                   }
 
@@ -138,14 +140,16 @@ onMounted(() => {
                       JSON.stringify(esgRes.data)
                     );
                   } else {
-                    message("获取ESG枚举列表失败", { type: "error" });
+                    message("获取ESG枚举列表失败" + esgRes.msg, {
+                      type: "error"
+                    });
                     return;
                   }
                   // ESG权限逻辑
                   if (userCheckRes.success) {
                     // 动态路由已解决 因为动态路由暂时无效，先检查是否存在esgUserInfo，如果不存在则在存入后刷新一次页面，因为权限配置基本不会变
-                    const isExist =
-                      localStorage.getItem("esgUserInfo") !== null;
+                    // const isExist =
+                    //   localStorage.getItem("esgUserInfo") !== null;
                     localStorage.setItem(
                       "esgUserInfo",
                       JSON.stringify({
@@ -159,7 +163,10 @@ onMounted(() => {
                     //   window.location.reload();
                     // }
                   } else {
-                    message("获取用户检查失败", { type: "error" });
+                    message(
+                      "user-check接口获取用户信息失败+" + userCheckRes.msg,
+                      { type: "error" }
+                    );
                     return;
                   }
 
@@ -174,8 +181,8 @@ onMounted(() => {
                   } else {
                     return initRouter().then(() => {
                       // alert("触发unLoginUrl");
-                      // 先判断是否有未登录时的路由记录
 
+                      // 先判断是否有未登录时的路由记录
                       if (unLoginUrl) {
                         // localStorage.removeItem("pridi-unLoginUrl");
                         // alert("unLoginUrl:" + unLoginUrl);
@@ -193,10 +200,10 @@ onMounted(() => {
                 })
                 .catch(error => {
                   console.error("获取枚举类型列表失败:", error);
-                  message("获取枚举类型列表失败", { type: "error" });
+                  message("获取枚举类型列表失败" + error, { type: "error" });
                 });
             } else {
-              message("获取用户数据失败", { type: "error" });
+              message("获取用户数据失败" + userRes.msg, { type: "error" });
             }
           });
 
@@ -213,12 +220,12 @@ onMounted(() => {
           // );
           //#endregion
         } else {
-          message("登录失败", { type: "error" });
+          message("登录失败" + res.msg, { type: "error" });
         }
       })
       .catch(error => {
         console.error("登录失败:", error);
-        message("登录失败", { type: "error" });
+        message("登录失败" + error, { type: "error" });
         window.location.href = `https://login.peidigroup.cn/${timestamp}/#/login?source=${encryptMessage(window.location.href)}`;
       });
   } else {
