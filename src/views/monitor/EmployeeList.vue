@@ -8,6 +8,7 @@
           size="small"
           :icon="Delete"
           @click="handleResign"
+          :disabled="checkedIds.length === 0"
           >{{ t("monitor.leave") }}</el-button
         >
       </div>
