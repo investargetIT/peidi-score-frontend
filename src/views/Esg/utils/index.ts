@@ -21,17 +21,20 @@ export const onlyPositiveNumber = value => {
 
 // 判断是否有权限编辑模块
 export const hasEditPermission = (moduleName: string) => {
+  // 开发环境下，默认所有模块都有编辑权限
+  if (process.env.NODE_ENV === "development") return true;
+
   const moduleList: Record<string, string> = {
-    "company-overview": "companyOverview",
-    "esg-management": "esgManagement",
-    "corporate-governance": "corporateGovernance",
-    "business-operations": "businessOperations",
-    "quality-food-safety": "qualityFoodSafety",
-    "supplier-management": "supplierManagement",
-    "information-security-privacy": "informationSecurityPrivacy",
-    employees: "employees",
-    "environmental-impact": "environmentalImpact",
-    "community-welfare": "communityWelfare"
+    "company-overview": "companyOverview", // 公司概览权限标识
+    "corporate-governance": "corporateGovernance", // 公司治理权限标识
+    "esg-management": "esgManagement", // ESG管理权限标识
+    "business-operations": "businessOperations", // 产业发展与运营权限标识
+    "quality-food-safety": "qualityFoodSafety", // 质量与食品安全权限标识
+    "supplier-management": "supplierManagement", // 供应链管理权限标识
+    "information-security-privacy": "informationSecurityPrivacy", // 信息安全与隐私保护权限标识
+    employees: "employees", // 员工权限标识
+    "environmental-impact": "environmentalImpact", // 环境影响权限标识
+    "community-welfare": "communityWelfare" // 回馈社会权限标识
   };
 
   const esgEnum = JSON.parse(localStorage.getItem("esgEnum") || "[]");
@@ -45,8 +48,8 @@ export const hasEditPermission = (moduleName: string) => {
   // 如果没有找到则返回false
   if (!userItem) return false;
 
-  // #### 特殊处理：如果含有所有模块，则不让修改
-  if (userItem.value.split("&").length === 11) {
+  // 特殊处理：如果含有所有模块，则不让修改
+  if (userItem.value.split("&").length === Object.keys(moduleList).length + 1) {
     return false;
   }
 

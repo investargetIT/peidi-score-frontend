@@ -1,7 +1,8 @@
 <template>
   <div class="esg-content">
-    <!-- 公司名称与组织架构 -->
+    <!-- 供应链管理组件 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
+      <!-- 目标 -->
       <el-collapse-item title="目标" name="policy-goals">
         <template #title>
           <div class="collapse-title">
@@ -21,7 +22,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -39,7 +40,7 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="中粮糖业坚持货比三家、择优选择、程序规范、过程透明 的采购原则 ，建立健全采购管理制度和内部控制体系，加强采购制度梳理与完善，增强业务流程建设、采购绩效管理、采购监督管理，从制度上保障对供应商管理的合规有序，保证供应商在公平公正的环境下进行投标或谈判活动， 实现公司采购管理标准化、规范化、高效化。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】中粮糖业坚持货比三家、择优选择、程序规范、过程透明 的采购原则 ，建立健全采购管理制度和内部控制体系，加强采购制度梳理与完善，增强业务流程建设、采购绩效管理、采购监督管理，从制度上保障对供应商管理的合规有序，保证供应商在公平公正的环境下进行投标或谈判活动， 实现公司采购管理标准化、规范化、高效化。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="目标完成情况">
@@ -54,12 +55,13 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="中粮糖业坚持货比三家、择优选择、程序规范、过程透明 的采购原则 ，建立健全采购管理制度和内部控制体系，加强采购制度梳理与完善，增强业务流程建设、采购绩效管理、采购监督管理，从制度上保障对供应商管理的合规有序，保证供应商在公平公正的环境下进行投标或谈判活动， 实现公司采购管理标准化、规范化、高效化。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】中粮糖业坚持货比三家、择优选择、程序规范、过程透明 的采购原则 ，建立健全采购管理制度和内部控制体系，加强采购制度梳理与完善，增强业务流程建设、采购绩效管理、采购监督管理，从制度上保障对供应商管理的合规有序，保证供应商在公平公正的环境下进行投标或谈判活动， 实现公司采购管理标准化、规范化、高效化。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 体系及策略 -->
       <el-collapse-item title="体系及策略" name="system-strategy">
         <template #title>
           <div class="collapse-title">
@@ -82,7 +84,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -112,7 +114,7 @@
                 v-model="formData.policyAndRegulation"
                 type="textarea"
                 :rows="4"
-                placeholder="我们落实从准入到淘汰的供应商管理闭环，更新《供应商管理制度》，新增I类物资8供应商引入前的考察，更新辅包、 农牧供应商的年度业绩评价标准，完善招标系统供应商管理模块上传要求，实现供应商全生命 周期的数字化高效管理。双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为准则)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】我们落实从准入到淘汰的供应商管理闭环，更新《供应商管理制度》，新增I类物资8供应商引入前的考察，更新辅包、 农牧供应商的年度业绩评价标准，完善招标系统供应商管理模块上传要求，实现供应商全生命 周期的数字化高效管理。双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为准则)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
                 resize="vertical"
               />
             </el-form-item>
@@ -129,7 +131,7 @@
                 v-model="formData.riskManagement"
                 type="textarea"
                 :rows="4"
-                placeholder="根据BRC准入原则，公司建立《ML/QP842供方管理控制程序》，对现有合格供应商进行高风险、中风险、低风险的分级管理: 高风险材料供应商的准入需满足以下2个条件中任何1个: 1供方通过GFSI认证且样品试样通过; 2供方资质齐全、食品安全等级至少为A级、样品试样通过且现场审核通过或经整改验证通过; 中风险材料供应商的准入需满足以下2个条件中任何1个: 1供方通过HACCP或ISO认证且样品试样通过; 2供方资质齐全、食品安全等级至少为B级且样品试样通过; 低风险材料供应商的准入需满足以下条件: 供方资质齐全、食品安全等级至少为C级且样品试样通过。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="【提示】根据BRC准入原则，公司建立《ML/QP842供方管理控制程序》，对现有合格供应商进行高风险、中风险、低风险的分级管理: 高风险材料供应商的准入需满足以下2个条件中任何1个: 1供方通过GFSI认证且样品试样通过; 2供方资质齐全、食品安全等级至少为A级、样品试样通过且现场审核通过或经整改验证通过; 中风险材料供应商的准入需满足以下2个条件中任何1个: 1供方通过HACCP或ISO认证且样品试样通过; 2供方资质齐全、食品安全等级至少为B级且样品试样通过; 低风险材料供应商的准入需满足以下条件: 供方资质齐全、食品安全等级至少为C级且样品试样通过。 ——《上海梅林2023年ESG 暨可持续发展报告》"
                 resize="vertical"
               />
             </el-form-item>
@@ -146,13 +148,13 @@
                 v-model="formData.digitalManagementPlatform"
                 type="textarea"
                 :rows="4"
-                placeholder="旺旺依托供应商协同平台(SRM)系统进行平台化的供应链管理，我们已建立包含供应商开发、审核、评估、分级评价等全部环节在内的供应商管理体系，一体化管控供应商从注册报名到资质单管理、 访厂单管理、检验单管理、试车单管理全阶段，提升管理效率。 ——《中国旺旺2022/23年环境、社会及管治报告》"
+                placeholder="【提示】旺旺依托供应商协同平台(SRM)系统进行平台化的供应链管理，我们已建立包含供应商开发、审核、评估、分级评价等全部环节在内的供应商管理体系，一体化管控供应商从注册报名到资质单管理、 访厂单管理、检验单管理、试车单管理全阶段，提升管理效率。 ——《中国旺旺2022/23年环境、社会及管治报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <!-- 其他折叠项 -->
+      <!-- 宣贯及培训 -->
       <el-collapse-item title="宣贯及培训" name="training-publicity">
         <template #title>
           <div class="collapse-title">
@@ -172,7 +174,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="供应商ESG培训体系">
@@ -188,7 +190,7 @@
                 v-model="formData.esgTrainingSystem"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展注重与合作供应商之间的沟通与交流，通过形式多样、主题丰富的培训帮助供应商提 升可持续发展能力。报告期内我们通过驻厂、电话、书面函件、视频会议等多渠道形式，保障我们与供应商伙伴双方的可持续发展，助推当地产业发展。 对于需要重点帮扶、问题较多的供应商，我们积极通过分析实际案例、解决具体问题等形式与 合作伙伴展开一对一深入沟通，通过对新出现的质量问题开展预防性测试，以提高供应商的可 持续发展管理水平。报告期内，我们共培训原料供应商65家，辅包供应商387家，生猪供应商4,245家，并对异地纸箱、五金供应商133家进行杂质、质量红线管控培训，帮助10家原料供应商恢复正常供应，持续助力供应商成长。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】双汇发展注重与合作供应商之间的沟通与交流，通过形式多样、主题丰富的培训帮助供应商提 升可持续发展能力。报告期内我们通过驻厂、电话、书面函件、视频会议等多渠道形式，保障我们与供应商伙伴双方的可持续发展，助推当地产业发展。 对于需要重点帮扶、问题较多的供应商，我们积极通过分析实际案例、解决具体问题等形式与 合作伙伴展开一对一深入沟通，通过对新出现的质量问题开展预防性测试，以提高供应商的可 持续发展管理水平。报告期内，我们共培训原料供应商65家，辅包供应商387家，生猪供应商4,245家，并对异地纸箱、五金供应商133家进行杂质、质量红线管控培训，帮助10家原料供应商恢复正常供应，持续助力供应商成长。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="trainingAttachmentFileList">
@@ -204,18 +206,8 @@
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
-                :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.trainingAttachmentFileList =
-                      formData.trainingAttachmentFileList.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
-                "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-success="handleUploadSuccess('trainingAttachmentFileList')"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -291,7 +283,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-
+      <!-- 准入与评估 -->
       <el-collapse-item title="准入与评估" name="access-evaluation">
         <template #title>
           <div class="collapse-title">
@@ -315,7 +307,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="供应商ESG审查与评估">
@@ -332,7 +324,7 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="本年度，本集团更新了供应商审核流 程，将养殖场审核纳入供应商准入审核程序中，增加对供应商养殖体系评价以及兽药使用、兽药引进制度和生物安全 的审核，将食品安全风险前置，综合评估供应商的全产业链能力。本年度，本集团更新了《供应商管理程序》、《供应商食品安全调查问卷》、《供应商文件评估清单》，新建了《养殖场审核清单》、《OEM工厂审核清单》、《供应商绩效评估程序》、《OEM工厂绩效评估程序》。 ——《大成食品2023年环境、社会及管治报告》"
+                placeholder="【提示】本年度，本集团更新了供应商审核流 程，将养殖场审核纳入供应商准入审核程序中，增加对供应商养殖体系评价以及兽药使用、兽药引进制度和生物安全 的审核，将食品安全风险前置，综合评估供应商的全产业链能力。本年度，本集团更新了《供应商管理程序》、《供应商食品安全调查问卷》、《供应商文件评估清单》，新建了《养殖场审核清单》、《OEM工厂审核清单》、《供应商绩效评估程序》、《OEM工厂绩效评估程序》。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
             <el-form-item label="签署供应商行为准则">
@@ -349,7 +341,7 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为准则)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】双汇发展建立《反腐败管理制度》《供应商行为准则》(以下简称为准则)等制度，对合作供应商在环境保护、社会责任、廉洁治理等ESG方面提出有明确的要求和期许。基于该准则，我们倡导供应商积极获取国际标准化组织的管理体系标准认证，规定供应商若确认违反本规范，经提示后，对发生的问题给予应有的纠正或处理，相关表现将纳入供应商评审考量，严重的将给予停止合作或列入黑名单处理。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item style="margin-bottom: 35px">
@@ -530,7 +522,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-
+      <!-- 供应商数量 -->
       <el-collapse-item title="供应商数量" name="supplier-quantity">
         <template #title>
           <div class="collapse-title">
@@ -551,7 +543,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item>
@@ -653,6 +645,7 @@
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 供应商/承包商权益保护 -->
       <el-collapse-item
         title="供应商/承包商权益保护"
         name="supplier-contractor-rights"
@@ -673,7 +666,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="公平交易">
@@ -689,7 +682,7 @@
                 v-model="formData.fairTrade"
                 type="textarea"
                 :rows="4"
-                placeholder="上海梅林根据《人力资源控制程序》《采购控制程序》《岗位职责任职要求》《物资采购管理办法》的制度，明确 规定采购部门的业务人员的岗位任职要求、业务流程规范。同时公司纪监部门，要求相关采购人员签订《廉洁承诺书》，要求采购人员在思想意识方面严格遵守公司纪律、规定。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="【提示】上海梅林根据《人力资源控制程序》《采购控制程序》《岗位职责任职要求》《物资采购管理办法》的制度，明确 规定采购部门的业务人员的岗位任职要求、业务流程规范。同时公司纪监部门，要求相关采购人员签订《廉洁承诺书》，要求采购人员在思想意识方面严格遵守公司纪律、规定。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
             <el-form-item label="能力建设支持">
@@ -705,7 +698,7 @@
                 v-model="formData.capacityBuildingSupport"
                 type="textarea"
                 :rows="4"
-                placeholder="同时，我们对标同行业，探索新技术，引进新资源，坚持走出去，引进来的发展理念，组织集团相关部门与行业内龙头企业交流学习，资源共享，深度延伸供应资源价值。2023 年，双汇发展共组织设备、饲料行业和鸡产业供应商技术交流 51 场，组织辅包供应商信息交流 40 场，协同推进集团新产品新产业发展。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】同时，我们对标同行业，探索新技术，引进新资源，坚持走出去，引进来的发展理念，组织集团相关部门与行业内龙头企业交流学习，资源共享，深度延伸供应资源价值。2023 年，双汇发展共组织设备、饲料行业和鸡产业供应商技术交流 51 场，组织辅包供应商信息交流 40 场，协同推进集团新产品新产业发展。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="rightsAttachmentFileList">
@@ -721,18 +714,8 @@
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
-                :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.rightsAttachmentFileList =
-                      formData.rightsAttachmentFileList.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
-                "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-success="handleUploadSuccess('rightsAttachmentFileList')"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -749,22 +732,11 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-
-    <!-- 操作按钮 -->
-    <EsgActionButtons
-      :show-submit="false"
-      @cancel="handleCancel"
-      @save="handleSave"
-      :isEdit="isEdit"
-    />
   </div>
-  <el-dialog v-model="dialogVisible">
-    <img w-full :src="dialogImageUrl" alt="Preview Image" />
-  </el-dialog>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onUnmounted, toRef } from "vue";
+import { ref, onMounted, watch, onUnmounted, toRef, inject } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
@@ -776,9 +748,16 @@ import {
 } from "@/api/esg";
 import EsgTooltip from "@/components/EsgTooltip/index.vue";
 import { formatToken, getToken } from "@/utils/auth.ts";
-const uploadUrl = baseUrlApi("/esg/upload");
 import { onlyPositiveInteger, onlyPositiveNumber } from "../utils";
 import { useEsgAutoSave } from "@/utils/autoSave";
+import {
+  FORM_LABEL_WIDTH,
+  useEsgSave,
+  useEsgCancel,
+  useEsgLoadData,
+  useEsgFileUpload
+} from "@/views/Esg/components/utils/index.ts";
+const uploadUrl = baseUrlApi("/esg/upload");
 
 // 定义props，接收activeTab参数
 const props = defineProps({
@@ -800,11 +779,12 @@ const props = defineProps({
     default: () => ({})
   }
 });
+// 依赖注入 - 接收图片预览相关参数
+const dialogVisible = inject("dialogVisible");
+const dialogImageUrl = inject("dialogImageUrl");
 
 // 折叠面板
 const activeCollapse = ref([]);
-const dialogImageUrl = ref("");
-const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
@@ -838,143 +818,32 @@ const formData = ref({
 });
 const emptyFormData = JSON.parse(JSON.stringify(formData.value));
 
-// 文件上传处理
-const handleFileChange = (file, fileList) => {
-  console.log("文件变化:", file, fileList);
-};
+//#region 文件上传处理，使用封装后的公共函数
+const {
+  handleFileChange,
+  handleFileBeforeUpload,
+  handlePictureCardPreview,
+  handleUploadSuccess,
+  handleUploadRemove
+} = useEsgFileUpload(
+  dialogImageUrl,
+  dialogVisible,
+  toRef(props, "curDDUserInfo"),
+  formData,
+  () => handleSave("autoSave")
+);
+//#endregion
 
-const handleFileBeforeUpload = file => {
-  // 生成新的文件名
-  const newFileName = props.curDDUserInfo.username + "_" + file.name;
-
-  // 使用 new File 构造新的文件对象，并设置新的文件名
-  const newFile = new File([file], newFileName, {
-    type: file.type,
-    lastModified: file.lastModified
-  });
-  // 返回新的文件对象
-  return newFile;
-};
-
-const handlePictureCardPreview = uploadFile => {
-  if (uploadFile.response?.code !== 200) return;
-  getFileDownLoadPath({
-    objectName: uploadFile.response.data
-  })
-    .then(res => {
-      const { code, msg, data } = res;
-      if (code === 200) {
-        dialogImageUrl.value = res.data;
-        dialogVisible.value = true;
-      } else {
-        ElMessage.error("图片预览失败--" + msg);
-      }
-    })
-    .catch(err => {
-      ElMessage.error("图片预览失败");
-    });
-};
-
-// 页面加载时获取数据
-const loadData = async () => {
-  try {
-    // 初始化表单数据
-    Object.keys(formData.value).forEach(key => {
-      formData.value[key] = emptyFormData[key];
-    });
-    const res = await getEsgRuleDetail({
-      type: props.activeTab,
-      year: props.year
-    });
-    if (res.code === 200 && res.data) {
-      // 如果返回的content是JSON字符串，需要解析
-      // if (res.data?.content) {
-      //   try {
-      //     const contentData = JSON.parse(res.data.content);
-      //     // 将数据回填到表单
-      //     Object.keys(contentData).forEach(key => {
-      //       // 检查是否有字段映射
-      //       const targetKey = key;
-
-      //       if (formData.value.hasOwnProperty(targetKey)) {
-      //         formData.value[targetKey] = contentData[key];
-      //       } else {
-      //         console.warn(
-      //           `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
-      //         );
-      //       }
-      //     });
-      //   } catch (e) {
-      //     console.warn("解析content数据失败:", e);
-      //   }
-      // }
-
-      //###############################################################################################
-      // 如果没有编辑权限，则遍历res.data数组，把每个对象相同的字段值进行拼接，格式为res.data[x].userName: res.data.[x].content.[字段值]
-      // 因为返回的res.data.[x].content是JSON字符串，所以都需要解析
-      if (!props.isEdit) {
-        res.data.forEach(item => {
-          try {
-            const contentData = JSON.parse(item.content);
-            // 将数据回填到表单
-            Object.keys(contentData).forEach(key => {
-              // 检查是否有字段映射
-              const targetKey = key;
-
-              if (formData.value.hasOwnProperty(targetKey)) {
-                // 如果是字符串类型则拼接，如果是数组则push
-                if (typeof contentData[key] === "string") {
-                  // 如果值为空则不做拼接
-                  if (contentData[key]) {
-                    formData.value[targetKey] +=
-                      `${item.userName}: ${contentData[key]}\n`;
-                  }
-                } else if (Array.isArray(contentData[key])) {
-                  formData.value[targetKey].push(...contentData[key]);
-                }
-              } else {
-                console.warn(
-                  `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
-                );
-              }
-            });
-          } catch (e) {
-            console.warn("解析content数据失败:", e);
-          }
-        });
-      } else {
-        // 如果有编辑权限，则找到res.data里userId等于props.curDDUserInfo?.id的对象，把它的content赋值给formData.value.content
-        const userItem = res.data.find(
-          item => item.userId == props.curDDUserInfo?.id
-        );
-        // console.log("回馈社会：", userItem);
-        if (userItem) {
-          try {
-            const contentData = JSON.parse(userItem.content);
-            // 将数据回填到表单
-            Object.keys(contentData).forEach(key => {
-              // 检查是否有字段映射
-              const targetKey = key;
-
-              if (formData.value.hasOwnProperty(targetKey)) {
-                formData.value[targetKey] = contentData[key];
-              } else {
-                console.warn(
-                  `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
-                );
-              }
-            });
-          } catch (e) {
-            console.warn("解析content数据失败:", e);
-          }
-        }
-      }
-      //###############################################################################################
-    }
-  } catch (error) {
-    console.error("获取数据失败:", error);
-  }
-};
+//#region 数据加载逻辑，使用封装后的公共函数
+const { loadData } = useEsgLoadData(
+  formData,
+  emptyFormData,
+  toRef(props, "activeTab"),
+  toRef(props, "year"),
+  toRef(props, "curDDUserInfo"),
+  toRef(props, "isEdit")
+);
+//#endregion
 
 // 组件挂载后加载数据
 onMounted(() => {
@@ -983,48 +852,17 @@ onMounted(() => {
 watch(() => props.year, loadData);
 
 // 操作处理函数
-const handleCancel = () => {
-  // 自定义取消逻辑
-  console.log("取消操作");
-};
+const { handleCancel } = useEsgCancel();
 
-// type 可选，默认为请求，可指定自动保存类型  可选值："request" | "autoSave"
-const handleSave = (type = "request") => {
-  console.log("保存数据:", formData.value);
-  // 自定义保存逻辑
-  const sendConfig = {
-    content: JSON.stringify(formData.value),
-    type: props.activeTab,
-    year: props.year,
-    userId: props.curDDUserInfo?.id,
-    userName: props.curDDUserInfo?.username
-  };
+//#region 保存逻辑，使用封装后的公共函数
+const { handleSave } = useEsgSave(
+  formData,
+  toRef(props, "activeTab"),
+  toRef(props, "year"),
+  toRef(props, "curDDUserInfo")
+);
+//#endregion
 
-  updateEsgConfig(sendConfig).then(res => {
-    if (res.code === 200) {
-      if (type === "request") {
-        ElMessage.success("保存成功");
-      }
-    } else {
-      ElMessage.error("保存失败");
-    }
-  });
-};
-
-// //#region 自动保存逻辑，一分钟自动保存一次，文件上传成功自动保存一次，页面没激活时不会保存，页面没编辑权限时也不会保存
-// const autoSaveInterval = 60 * 1000; // 1分钟
-// const autoSaveTimer = ref(null);
-// autoSaveTimer.value = setInterval(() => {
-//   if (props.activeTab === "supplier-management" && props.isEdit) {
-//     handleSave();
-//   }
-// }, autoSaveInterval);
-// onUnmounted(() => {
-//   if (autoSaveTimer.value) {
-//     clearInterval(autoSaveTimer.value);
-//   }
-// });
-// //#endregion
 //#region 自动保存逻辑，使用抽象后的工具函数
 useEsgAutoSave(
   () => handleSave("autoSave"),
@@ -1033,31 +871,15 @@ useEsgAutoSave(
   "supplier-management"
 );
 //#endregion
+
+// ref暴露方法
+defineExpose({
+  handleSave,
+  handleCancel
+});
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url("./styles/common.css");
-
-/* tooltip图标垂直位置调整 */
-
-/* 为esg-content添加底部padding，避免内容被按钮遮挡 */
-.esg-content {
-  padding-bottom: 80px;
-}
-
-:deep(.el-form-item__label) {
-  height: 20px;
-
-  /* font-weight: bold;
-  color: #222;
-  font-size: 16px; */
-  line-height: 1.3;
-}
-
-.textContainer {
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  white-space: nowrap;
-}
+@import url("./styles/optimize.scss");
 </style>

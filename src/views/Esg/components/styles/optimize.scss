@@ -1,0 +1,28 @@
+/* 抽离一些公共样式 */
+
+/* 为esg-content添加底部padding，避免内容被按钮遮挡 */
+.esg-content {
+  padding-bottom: 80px;
+}
+
+:deep(.el-form-item__label) {
+  font-size: 12px;
+  line-height: 16px;
+
+  /* height: 20px; */
+
+  color: #222;
+}
+
+.textContainer {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.textAlignStyle {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}

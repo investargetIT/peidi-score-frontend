@@ -1,7 +1,8 @@
 <template>
   <div class="esg-content">
-    <!-- 公司名称与组织架构 -->
+    <!-- 员工组件 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
+      <!-- 员工组成 -->
       <el-collapse-item title="员工组成" name="employee-composition">
         <template #title>
           <div class="collapse-title">
@@ -29,7 +30,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -236,6 +237,7 @@
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 员工招聘 -->
       <el-collapse-item title="员工招聘" name="employee-recruitment">
         <template #title>
           <div class="collapse-title">
@@ -258,7 +260,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -317,13 +319,13 @@
                 v-model="formData.jobPositionInfo"
                 type="textarea"
                 :rows="6"
-                placeholder="在校园招聘方面，双汇发展积极推进校企合作，推行管理培训生计划，给予优秀在校学生实习机会，并为表现突出者提供留用机会。我们依据《大学生引进培养管理制度》对校园招聘的薪酬待遇、培养措施、培养周期等内容进行系统性的规范和优化，以确保招聘流程的公正、公平和透明。我们开展'领英汇'和'群英汇'校园招聘项目，通过'领英汇'项目面向国内外高校的优秀 应届毕业生招收项目管培生，通过'群英汇'项目招收本科及以上的管培学员。 校企合作 •我们与58家高校签订校企合作协议，稳定重点渠道人才输送，增设与大学生面对面交流 的机会，稳步搭建高校人才蓄水池。 本地招聘 •立足本地发展，我们携手专业招聘机构，与河南省内招聘机构合作开展专业化的大学生 校招工作，全面提升校园招聘的效率和水平。 线上招聘 •我们与多个国内知名招聘服务机构合作，为大学生人才招聘打造专属互联网平台。  在社会招聘方面，双汇发展积极通过当地劳动局或人才市场开展本土化招聘，并通过扩大内部推荐和举办专项招聘等形式不断助力公司丰富人才储备。 ——《双汇发展2023ESG报告》"
+                placeholder="【提示】在校园招聘方面，双汇发展积极推进校企合作，推行管理培训生计划，给予优秀在校学生实习机会，并为表现突出者提供留用机会。我们依据《大学生引进培养管理制度》对校园招聘的薪酬待遇、培养措施、培养周期等内容进行系统性的规范和优化，以确保招聘流程的公正、公平和透明。我们开展'领英汇'和'群英汇'校园招聘项目，通过'领英汇'项目面向国内外高校的优秀 应届毕业生招收项目管培生，通过'群英汇'项目招收本科及以上的管培学员。 校企合作 •我们与58家高校签订校企合作协议，稳定重点渠道人才输送，增设与大学生面对面交流 的机会，稳步搭建高校人才蓄水池。 本地招聘 •立足本地发展，我们携手专业招聘机构，与河南省内招聘机构合作开展专业化的大学生 校招工作，全面提升校园招聘的效率和水平。 线上招聘 •我们与多个国内知名招聘服务机构合作，为大学生人才招聘打造专属互联网平台。  在社会招聘方面，双汇发展积极通过当地劳动局或人才市场开展本土化招聘，并通过扩大内部推荐和举办专项招聘等形式不断助力公司丰富人才储备。 ——《双汇发展2023ESG报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <!-- 其他折叠项 -->
+      <!-- 员工流动率 -->
       <el-collapse-item title="员工流动率" name="employee-turnover">
         <template #title>
           <div class="collapse-title">
@@ -346,7 +348,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item
@@ -466,7 +468,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-
+      <!-- 荣誉或认可 -->
       <el-collapse-item title="荣誉或认可" name="honors-recognition">
         <template #title>
           <div class="collapse-title">
@@ -484,7 +486,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="雇主品牌荣誉">
@@ -501,7 +503,7 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="本年度，本集团在国内中高端人才职业发展知 名平台「猎聘」主办的2023年度「客户成功奖」 评选活动中，凭借本集团多元化人才沟通桥梁、重视人才互动与求职体验，人才吸引指数及增长率，团队招聘行为数据等评审维度，从 数百家活跃企业中脱颖而出，荣获猎聘华北区「社会责任奖」殊荣。 ——《大成食品2023年环境、社会及管治报告》"
+                placeholder="【提示】本年度，本集团在国内中高端人才职业发展知 名平台「猎聘」主办的2023年度「客户成功奖」 评选活动中，凭借本集团多元化人才沟通桥梁、重视人才互动与求职体验，人才吸引指数及增长率，团队招聘行为数据等评审维度，从 数百家活跃企业中脱颖而出，荣获猎聘华北区「社会责任奖」殊荣。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="honorCertificateAttachments">
@@ -517,18 +519,8 @@
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
-                :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.honorCertificateAttachments =
-                      formData.honorCertificateAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
-                "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-success="handleUploadSuccess('honorCertificateAttachments')"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -544,7 +536,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-
+      <!-- 基本权益保障 -->
       <el-collapse-item title="基本权益保障" name="basic-rights-protection">
         <template #title>
           <div class="collapse-title">
@@ -569,7 +561,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="平等、多元的合规雇佣政策">
@@ -585,7 +577,7 @@ Wind评级"
                 v-model="formData.fairEmploymentPolicy"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展坚持公平、多元、包容的理念，实行男女同工同酬，确保在雇佣环节不存在任何因种族、肤色、宗教、民族、性别、年龄、残疾等原因所导致的歧视行为。本公司坚定践行多元化雇佣政策，积极为包括退役军人、残疾人和女性员工在内的潜在候选人提供全方位的支持与关怀。
+                placeholder="【提示】双汇发展坚持公平、多元、包容的理念，实行男女同工同酬，确保在雇佣环节不存在任何因种族、肤色、宗教、民族、性别、年龄、残疾等原因所导致的歧视行为。本公司坚定践行多元化雇佣政策，积极为包括退役军人、残疾人和女性员工在内的潜在候选人提供全方位的支持与关怀。
  ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
@@ -600,7 +592,7 @@ Wind评级"
                 v-model="formData.employeeHandbookDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展严格遵守《中华人民共和国劳动法》《中华人民共和国劳动合同法》等国家法律法规的要求，遵循国际劳工组织的核心公约和劳工标准，并积极发挥职工代表大会的作用，使所有员工的合法权益得到充分保障和尊重。 双汇发展坚持'公平、公正、公开'的雇佣原则，制定了《人力资源管理标准化》等规章制度，合法合规雇佣，广泛吸引人才。
+                placeholder="【提示】双汇发展严格遵守《中华人民共和国劳动法》《中华人民共和国劳动合同法》等国家法律法规的要求，遵循国际劳工组织的核心公约和劳工标准，并积极发挥职工代表大会的作用，使所有员工的合法权益得到充分保障和尊重。 双汇发展坚持'公平、公正、公开'的雇佣原则，制定了《人力资源管理标准化》等规章制度，合法合规雇佣，广泛吸引人才。
  ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
@@ -617,7 +609,7 @@ Wind评级"
                 v-model="formData.antiChildLaborPolicy"
                 type="textarea"
                 :rows="4"
-                placeholder="我们明确禁止任何雇佣童工及强制劳动行为，为确保本公司聘用的员工均达到法定年龄，我们在雇佣环节开展入职身份证件查验和信息化系统登记等工作，保障员工及潜在候选人知悉公司相关规定，一旦发生违规事件，以零容忍态度严肃处理。报告期内，公司未发生任何违反与雇佣童工和强迫劳动法律法规相关的事件。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】我们明确禁止任何雇佣童工及强制劳动行为，为确保本公司聘用的员工均达到法定年龄，我们在雇佣环节开展入职身份证件查验和信息化系统登记等工作，保障员工及潜在候选人知悉公司相关规定，一旦发生违规事件，以零容忍态度严肃处理。报告期内，公司未发生任何违反与雇佣童工和强迫劳动法律法规相关的事件。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="非法用工违规事件披露">
@@ -648,7 +640,7 @@ Wind评级"
                 v-model="formData.employeeSalarySocialSecurity"
                 type="textarea"
                 :rows="4"
-                placeholder="同时，公司建立健全综合福利保障体系，为员工提供补充医疗保险和意外保险，不断提高员工重特大疾病保障水平。社会保险覆盖率100%，员工平均带薪年休假12天。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】同时，公司建立健全综合福利保障体系，为员工提供补充医疗保险和意外保险，不断提高员工重特大疾病保障水平。社会保险覆盖率100%，员工平均带薪年休假12天。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="工作时间与休假方式">
@@ -664,7 +656,7 @@ Wind评级"
                 v-model="formData.workingHoursLeavePolicy"
                 type="textarea"
                 :rows="4"
-                placeholder="在依法签订劳动合同、缴纳五险一金的基础上，我们积极维护员工的休息休假权利，并确保病假、产休假、陪产看护、哺乳期关怀等各项福利措施得到有效执行。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】在依法签订劳动合同、缴纳五险一金的基础上，我们积极维护员工的休息休假权利，并确保病假、产休假、陪产看护、哺乳期关怀等各项福利措施得到有效执行。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="安保人员人权培训">
@@ -695,18 +687,8 @@ Wind评级"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
-                :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.employeeHandbookAttachments =
-                      formData.employeeHandbookAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
-                "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-success="handleUploadSuccess('employeeHandbookAttachments')"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -747,18 +729,8 @@ Wind评级"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
-                :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.thirdPartyAuditAttachments =
-                      formData.thirdPartyAuditAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
-                "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-success="handleUploadSuccess('thirdPartyAuditAttachments')"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -774,6 +746,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 薪酬与激励 -->
       <el-collapse-item title="薪酬与激励" name="compensation-incentives">
         <template #title>
           <div class="collapse-title">
@@ -794,7 +767,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="薪酬与激励政策">
@@ -810,7 +783,7 @@ Wind评级"
                 v-model="formData.compensationIncentivePolicy"
                 type="textarea"
                 :rows="4"
-                placeholder="本公司制定了《员工薪酬管理规定》，使薪酬标准对内具有公平性、对外具有竞争性，充分调动员工的工作热情。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】本公司制定了《员工薪酬管理规定》，使薪酬标准对内具有公平性、对外具有竞争性，充分调动员工的工作热情。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="薪酬与激励措施">
@@ -826,7 +799,7 @@ Wind评级"
                 v-model="formData.compensationIncentiveMeasures"
                 type="textarea"
                 :rows="4"
-                placeholder="业务、研发岗位员工薪酬奖励机制 报告期内，为助力'十四五'规划的顺利落实，我们针对业务、研发岗位的员工实施奖励机制， 并对收入提取办法进一步优化，按阶梯式提取标准确定部门总收入，以'多销多得'的方式增加员工收入，进一步激励他们发挥更高的工作热情，坚持与员工共创、共享、共赢。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】业务、研发岗位员工薪酬奖励机制 报告期内，为助力'十四五'规划的顺利落实，我们针对业务、研发岗位的员工实施奖励机制， 并对收入提取办法进一步优化，按阶梯式提取标准确定部门总收入，以'多销多得'的方式增加员工收入，进一步激励他们发挥更高的工作热情，坚持与员工共创、共享、共赢。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="绩效反馈与申诉情况">
@@ -842,7 +815,7 @@ Wind评级"
                 v-model="formData.performanceFeedbackAppeal"
                 type="textarea"
                 :rows="4"
-                placeholder="当员工认为个人权益受到侵害，或对公司的经营管理 措施有不同意见时，可选择适当的申诉渠道向公司申 诉，并由公司相应人员接待记录并处理。申诉首先应 本着逐级反映的原则在本部门内进行反映，在本部门 反映未果的情况下可以通过工会组织、人力资源部、 安保信访等部门向公司申诉。 申诉方式可选用面谈或书面两种形式;如选用书面方式，申诉书须具实名，否则不予受理。 公司在接到员工申诉后，应认真负责、及时公正地对申 诉事件涉及的相关人事进行调查，根据调查结果尽快 作出处理决定。处理决定将 通过书面、电子邮件、电话或当面反馈的形式通报给申诉者。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="【提示】当员工认为个人权益受到侵害，或对公司的经营管理 措施有不同意见时，可选择适当的申诉渠道向公司申 诉，并由公司相应人员接待记录并处理。申诉首先应 本着逐级反映的原则在本部门内进行反映，在本部门 反映未果的情况下可以通过工会组织、人力资源部、 安保信访等部门向公司申诉。 申诉方式可选用面谈或书面两种形式;如选用书面方式，申诉书须具实名，否则不予受理。 公司在接到员工申诉后，应认真负责、及时公正地对申 诉事件涉及的相关人事进行调查，根据调查结果尽快 作出处理决定。处理决定将 通过书面、电子邮件、电话或当面反馈的形式通报给申诉者。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
             <el-form-item label="男女员工薪酬比例">
@@ -903,12 +876,13 @@ Wind评级"
                 v-model="formData.compensationIncentiveInvestment"
                 type="textarea"
                 :rows="4"
-                placeholder="本公司制定了《员工薪酬管理规定》，使薪酬标准对内具有公平性、对外具有竞争性，充分调动员工的工作热情。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】本公司制定了《员工薪酬管理规定》，使薪酬标准对内具有公平性、对外具有竞争性，充分调动员工的工作热情。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 福利与关怀 -->
       <el-collapse-item title="福利与关怀" name="welfare-care">
         <template #title>
           <div class="collapse-title">
@@ -929,7 +903,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="福利与关怀政策">
@@ -945,7 +919,7 @@ Wind评级"
                 v-model="formData.welfareCarePolicy"
                 type="textarea"
                 :rows="4"
-                placeholder="旺旺坚信员工是企业发展的重要基石。报告期内，我们持续修订了11个内部招聘流程，着力优化编制及薪资内容。我 们开展人资组织优化，调整集团分公司人 资团队结构， 提升共享人力资源服务覆 盖比，打造有温度、有责任的僱主品牌形 象。报告期内，旺旺已提升共享人力资源 服务比至1:550。旺旺坚持「以人为本」的发展策略， 为员工创造幸福有爱的工作环境，培养忠 于旺旺事业、志同道合的员工队伍。我们建立了完善的员工福利体系，包括年节福 利、常规福利和其他福利等，从健康、经 济、家庭与个人、工作生活平衡等多方面 提供保障，激励员工实现长足发展。 ——《中国旺旺2022/23年环境、社会及管治报告》"
+                placeholder="【提示】旺旺坚信员工是企业发展的重要基石。报告期内，我们持续修订了11个内部招聘流程，着力优化编制及薪资内容。我 们开展人资组织优化，调整集团分公司人 资团队结构， 提升共享人力资源服务覆 盖比，打造有温度、有责任的僱主品牌形 象。报告期内，旺旺已提升共享人力资源 服务比至1:550。旺旺坚持「以人为本」的发展策略， 为员工创造幸福有爱的工作环境，培养忠 于旺旺事业、志同道合的员工队伍。我们建立了完善的员工福利体系，包括年节福 利、常规福利和其他福利等，从健康、经 济、家庭与个人、工作生活平衡等多方面 提供保障，激励员工实现长足发展。 ——《中国旺旺2022/23年环境、社会及管治报告》"
               />
             </el-form-item>
             <el-form-item label="福利措施与关怀活动">
@@ -961,7 +935,7 @@ Wind评级"
                 v-model="formData.welfareCareActivity"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展关心员工生活，组织各种暖心活动以提升员工在双汇工作的满意度。我们持续多年开展'夏送清凉'活动，为酷暑中坚守一线作业的员工送去防暑降温用品。报告期内，我们已对总部、异地61家单位11,948名高温岗位人员，发放降温物品34.7 万元。我们还持续关注困难员工的生活情况，帮助他们度过生活上的难关。此外，我们关心员工子女的教育情况，鼓励员工子女均接受高等教育，已连续13年为12,378名考取大学的职工子女设立'金秋奖学金'，累计发放 3,200万元，助力他们梦想启航。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】双汇发展关心员工生活，组织各种暖心活动以提升员工在双汇工作的满意度。我们持续多年开展'夏送清凉'活动，为酷暑中坚守一线作业的员工送去防暑降温用品。报告期内，我们已对总部、异地61家单位11,948名高温岗位人员，发放降温物品34.7 万元。我们还持续关注困难员工的生活情况，帮助他们度过生活上的难关。此外，我们关心员工子女的教育情况，鼓励员工子女均接受高等教育，已连续13年为12,378名考取大学的职工子女设立'金秋奖学金'，累计发放 3,200万元，助力他们梦想启航。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="welfareCareAttachments">
@@ -977,18 +951,8 @@ Wind评级"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
-                :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.welfareCareAttachments =
-                      formData.welfareCareAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
-                "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-success="handleUploadSuccess('welfareCareAttachments')"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1029,7 +993,7 @@ Wind评级"
                 v-model="formData.welfareCareEmployeeEvent"
                 type="textarea"
                 :rows="4"
-                placeholder="公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】公司开展形式多样的文体活动，组织参加集团职工线上健步走活动、职工篮球足球赛和急救培训活动等，进一步丰富员工精神文化生活，帮助员工平衡生活与工作。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="employeeEventAttachments">
@@ -1045,18 +1009,8 @@ Wind评级"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
-                :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.employeeEventAttachments =
-                      formData.employeeEventAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
-                "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-success="handleUploadSuccess('employeeEventAttachments')"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1097,6 +1051,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 管理体系 -->
       <el-collapse-item title="管理体系" name="management-system">
         <template #title>
           <div class="collapse-title">
@@ -1119,7 +1074,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="多元与包容管理政策">
@@ -1136,7 +1091,7 @@ Wind评级"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="旺旺坚持以人为本，以《联合国世界人权宣言(Universal Declaration of Human Rights, UDHR)》等国际人权公约和劳工标准为指引，坚持男女同工同酬， 严格杜绝在招聘、薪酬、福利、晋升等 过程中发生任何因性别、年龄、民族、宗教、伤残等因素导致的歧视行为。 集团提倡多元与包容，贯彻机会均等的标准与方针，确保每位员工得到公平公正的对待与尊重，为员工打造安心、尊重、多元的工作环境。同时，我们尊重和保障员工知情权、参与权、表达权和监督 权，建立了举报处理机制，通过电话专线 及邮箱、微信企业号、微信公众号、官网 等方式畅通申诉渠道，受理包含职场歧视、骚扰、强迫劳动、工作不作为等多类问题，切实保障员工合法权益。 ——《中国旺旺2022/23年环境、社会及管治报告》"
+                placeholder="【提示】旺旺坚持以人为本，以《联合国世界人权宣言(Universal Declaration of Human Rights, UDHR)》等国际人权公约和劳工标准为指引，坚持男女同工同酬， 严格杜绝在招聘、薪酬、福利、晋升等 过程中发生任何因性别、年龄、民族、宗教、伤残等因素导致的歧视行为。 集团提倡多元与包容，贯彻机会均等的标准与方针，确保每位员工得到公平公正的对待与尊重，为员工打造安心、尊重、多元的工作环境。同时，我们尊重和保障员工知情权、参与权、表达权和监督 权，建立了举报处理机制，通过电话专线 及邮箱、微信企业号、微信公众号、官网 等方式畅通申诉渠道，受理包含职场歧视、骚扰、强迫劳动、工作不作为等多类问题，切实保障员工合法权益。 ——《中国旺旺2022/23年环境、社会及管治报告》"
               />
             </el-form-item>
             <el-form-item label="歧视事件及应对机制">
@@ -1153,12 +1108,13 @@ Wind评级"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="报告期内，旺旺未发生任何歧视或骚扰相关的投诉事件。 ——《中国旺旺2022/23年环境、社会及管治报告》"
+                placeholder="【提示】报告期内，旺旺未发生任何歧视或骚扰相关的投诉事件。 ——《中国旺旺2022/23年环境、社会及管治报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 女性员工 -->
       <el-collapse-item title="女性员工" name="female-employees">
         <template #title>
           <div class="collapse-title">
@@ -1176,7 +1132,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item>
@@ -1260,7 +1216,7 @@ Wind评级"
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="我们致力于保障女性员工的劳动权益，制定并发布了《女工劳动保护规定》，明确规定尊重女性工作的权利，并在各级管理职位中对能力突出、表现优异的女性进行优先培养及录用。 •三期(孕期、产期、哺乳期)女工工作安排避免重体力劳动 为孕期、哺乳期女职工提供爱心母婴室，双汇总部大楼爱心母婴室荣获漯河市'五星级爱心母婴室'。同时，我们在三八妇女节发放关爱物资，合计发放慰问品16,060份，金额 89.7万元。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】我们致力于保障女性员工的劳动权益，制定并发布了《女工劳动保护规定》，明确规定尊重女性工作的权利，并在各级管理职位中对能力突出、表现优异的女性进行优先培养及录用。 •三期(孕期、产期、哺乳期)女工工作安排避免重体力劳动 为孕期、哺乳期女职工提供爱心母婴室，双汇总部大楼爱心母婴室荣获漯河市'五星级爱心母婴室'。同时，我们在三八妇女节发放关爱物资，合计发放慰问品16,060份，金额 89.7万元。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="femaleFacilitiesAttachments">
@@ -1276,18 +1232,8 @@ Wind评级"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
-                :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.femaleFacilitiesAttachments =
-                      formData.femaleFacilitiesAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
-                "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-success="handleUploadSuccess('femaleFacilitiesAttachments')"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1303,6 +1249,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 残障人士雇佣 -->
       <el-collapse-item title="残障人士雇佣" name="disabled-employment">
         <template #title>
           <div class="collapse-title">
@@ -1325,7 +1272,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -1403,17 +1350,9 @@ Wind评级"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
                 :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.accessibilityFacilityAttachments =
-                      formData.accessibilityFacilityAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
+                  handleUploadSuccess('accessibilityFacilityAttachments')
                 "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1429,6 +1368,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 培训 -->
       <el-collapse-item title="培训" name="training">
         <template #title>
           <div class="collapse-title">
@@ -1450,7 +1390,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -1467,7 +1407,7 @@ Wind评级"
                 v-model="formData.antiHarassmentTrainingDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="集团内，P.A.C.E.项目的持续推进效果显著，我们不断深化项目，从赋能女性员工转而提倡两性融合，开放男性员工加入培训中，促进包容与公平的环境。项目推行至今，已有教练级讲师3位，优秀讲师181位，从试点运行截止2022年12月31日已有 5,224位员工受惠(其中女性占5,004位，男性220位)，活动覆盖20家工厂。根据2022财年年度评价，主管对员工的满意度训 前为70.1%，训后为81.1%;受训员工幸福度从92.9%提升至97.5%。 ——《中国旺旺2022/23年环境、社会及管治报告》"
+                placeholder="【提示】集团内，P.A.C.E.项目的持续推进效果显著，我们不断深化项目，从赋能女性员工转而提倡两性融合，开放男性员工加入培训中，促进包容与公平的环境。项目推行至今，已有教练级讲师3位，优秀讲师181位，从试点运行截止2022年12月31日已有 5,224位员工受惠(其中女性占5,004位，男性220位)，活动覆盖20家工厂。根据2022财年年度评价，主管对员工的满意度训 前为70.1%，训后为81.1%;受训员工幸福度从92.9%提升至97.5%。 ——《中国旺旺2022/23年环境、社会及管治报告》"
               />
             </el-form-item>
             <el-form-item
@@ -1487,17 +1427,9 @@ Wind评级"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
                 :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.antiHarassmentTrainingAttachments =
-                      formData.antiHarassmentTrainingAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
+                  handleUploadSuccess('antiHarassmentTrainingAttachments')
                 "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1556,6 +1488,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 员工培训与考核 -->
       <el-collapse-item
         title="员工培训与考核"
         name="employee-training-assessment"
@@ -1583,7 +1516,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -1600,7 +1533,7 @@ Wind评级"
                 v-model="formData.talentDevelopmentConcept"
                 type="textarea"
                 :rows="4"
-                placeholder="本集团以向全体员工提供理想之终身职业为己任，重视员工个人技能提升和职业发展，秉承 「诚信、谦和、前瞻」的企业文化理念，构建完 善的学习发展体系。本集团涉足多领域专业，并基于各事业群为单位进行项目制培训。本集团还根据各事业群发展需求、员工岗位和职级，以及员工个人培训意愿，设计有针对性的 培训课程并开展对应的培训计划，持续提升员工的管理及专业技巧和晋陞机会。 ——《大成食品2023年环境、社会及管治报告》"
+                placeholder="【提示】本集团以向全体员工提供理想之终身职业为己任，重视员工个人技能提升和职业发展，秉承 「诚信、谦和、前瞻」的企业文化理念，构建完 善的学习发展体系。本集团涉足多领域专业，并基于各事业群为单位进行项目制培训。本集团还根据各事业群发展需求、员工岗位和职级，以及员工个人培训意愿，设计有针对性的 培训课程并开展对应的培训计划，持续提升员工的管理及专业技巧和晋陞机会。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
             <el-form-item label="人才培养体系与项目">
@@ -1616,7 +1549,7 @@ Wind评级"
                 v-model="formData.talentDevelopmentSystem"
                 type="textarea"
                 :rows="4"
-                placeholder="我们建立了三级培训体系，为不同职业发展需求的员工打造定制化的培养计划，将人才培养与梯队建设并举，为每一位员工提供全职业周期的培训资源。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】我们建立了三级培训体系，为不同职业发展需求的员工打造定制化的培养计划，将人才培养与梯队建设并举，为每一位员工提供全职业周期的培训资源。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="附件上传" prop="talentDevelopmentAttachments">
@@ -1633,17 +1566,9 @@ Wind评级"
                 :on-change="handleFileChange"
                 :before-upload="handleFileBeforeUpload"
                 :on-success="
-                  () => {
-                    // 遍历替换一边文件名
-                    formData.talentDevelopmentAttachments =
-                      formData.talentDevelopmentAttachments.map(item => ({
-                        ...item,
-                        name: item.response.data.split('/').pop()
-                      }));
-                    handleSave('autoSave');
-                  }
+                  handleUploadSuccess('talentDevelopmentAttachments')
                 "
-                :on-remove="() => $nextTick(() => handleSave('autoSave'))"
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -1669,7 +1594,7 @@ Wind评级"
                 v-model="formData.talentDevelopmentCategory"
                 type="textarea"
                 :rows="4"
-                placeholder="公司以'34885'教育培训体系为抓手，采用名师课堂、团队学习、外部对标、线上学习、实践锻炼等多种方式开展广泛而精准的人才培育，打造学习型组织，帮助员工实现与公司的共同发展。同时，持续推进网络学习平台建设。截至 2023 年末，平台账号共激活 6977 个，开设课程共计 1496 门，其中内部课程占比 58%，外部课程占比 42%，覆盖政治、 党建、战略、市场、销售、供应链、生产、安全、财务等 12 大类，以丰富的学习资源满足广大经理人和员工学习发展需要。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】公司以'34885'教育培训体系为抓手，采用名师课堂、团队学习、外部对标、线上学习、实践锻炼等多种方式开展广泛而精准的人才培育，打造学习型组织，帮助员工实现与公司的共同发展。同时，持续推进网络学习平台建设。截至 2023 年末，平台账号共激活 6977 个，开设课程共计 1496 门，其中内部课程占比 58%，外部课程占比 42%，覆盖政治、 党建、战略、市场、销售、供应链、生产、安全、财务等 12 大类，以丰富的学习资源满足广大经理人和员工学习发展需要。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="人才培养管理组织架构">
@@ -1685,7 +1610,7 @@ Wind评级"
                 v-model="formData.talentDevelopmentOrganization"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展为加强人才梯队建设，推动企业转型升级，积极完善培训体系、丰富培训内容。我们遵照《项目公司新入职员工三级培训管理规定》《内训师制度》《'领英汇'管培生培养实施方案》《培训管理制度》等内部培训制度，于2023年编制了《数字化学习平台课程管理规范》， 结合数字化学习平台的推广运用情况，提升线上培训课程使用频率，提升全方位培训能力。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】双汇发展为加强人才梯队建设，推动企业转型升级，积极完善培训体系、丰富培训内容。我们遵照《项目公司新入职员工三级培训管理规定》《内训师制度》《'领英汇'管培生培养实施方案》《培训管理制度》等内部培训制度，于2023年编制了《数字化学习平台课程管理规范》， 结合数字化学习平台的推广运用情况，提升线上培训课程使用频率，提升全方位培训能力。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item>
@@ -2105,6 +2030,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 人才晋升 -->
       <el-collapse-item title="人才晋升" name="talent-promotion">
         <template #title>
           <div class="collapse-title">
@@ -2130,7 +2056,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -2147,7 +2073,7 @@ Wind评级"
                 v-model="formData.promotionDevelopmentPath"
                 type="textarea"
                 :rows="6"
-                placeholder="双汇发展贯彻'公开竞聘、逐级提名、分层任命'的用人原则，明确晋升标准和晋升路径，实现 人尽其才的选拔机制，促进企业内部人员正常流动和人才梯队建设。本年度，我们修订《人力资源标准化》制度，完善管理人员竞聘原则，明确后备管理人员竞聘为正式管理人员后分别进行任职满3个月和满6个月的考评，着力推动公平竞争的用人氛围。 我们秉承'能者上、平者让、庸者下'的核心理念，引导管理职位员工从事财务、技术、人事、生 产、质量、设备、法务、营销、新电商等领域，通过垂直管理通道，深耕领域技能，进而提升领导力和综合素质。 针对由'领英汇'和'群英汇'招聘项目进入公司的员工，我们制定了全方位的管培生晋升发展路 径，'领英汇'管培生将晋升为业务骨干，并成长至中层管理人员，并以成为公司高层为培养目标;'群英汇'管培学员则由一线员工晋升至班长、调度等基层管理人员，再至车间主任、各系统部长等中层管理人员，培养目标为项目公司、集团或事业部中高层。通过公开、透明的晋升路径，充分发挥员工潜能，并鼓励优秀管培生可以在培养过程中根据部门需求参与竞聘。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】双汇发展贯彻'公开竞聘、逐级提名、分层任命'的用人原则，明确晋升标准和晋升路径，实现 人尽其才的选拔机制，促进企业内部人员正常流动和人才梯队建设。本年度，我们修订《人力资源标准化》制度，完善管理人员竞聘原则，明确后备管理人员竞聘为正式管理人员后分别进行任职满3个月和满6个月的考评，着力推动公平竞争的用人氛围。 我们秉承'能者上、平者让、庸者下'的核心理念，引导管理职位员工从事财务、技术、人事、生 产、质量、设备、法务、营销、新电商等领域，通过垂直管理通道，深耕领域技能，进而提升领导力和综合素质。 针对由'领英汇'和'群英汇'招聘项目进入公司的员工，我们制定了全方位的管培生晋升发展路 径，'领英汇'管培生将晋升为业务骨干，并成长至中层管理人员，并以成为公司高层为培养目标;'群英汇'管培学员则由一线员工晋升至班长、调度等基层管理人员，再至车间主任、各系统部长等中层管理人员，培养目标为项目公司、集团或事业部中高层。通过公开、透明的晋升路径，充分发挥员工潜能，并鼓励优秀管培生可以在培养过程中根据部门需求参与竞聘。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="接受定期绩效与职业发展考核的员工占比">
@@ -2178,12 +2104,13 @@ Wind评级"
                 v-model="formData.talentReserveInventory"
                 type="textarea"
                 :rows="6"
-                placeholder="本集团会通过系统的人才盘点工作，对该年度员工工作和发展进行综合评价，结合员工的工作经历和能力，提供符合员工个人工 作愿望的发展机会，实现'专业通道'和'管理通道'的双通道晋陞路线。未来，我们会给予员工更多工作轮调、岗位轮岗等机会，知人善任、人尽其才，组织实现人才效能。 ——《大成食品2023年环境、社会及管治报告》"
+                placeholder="【提示】本集团会通过系统的人才盘点工作，对该年度员工工作和发展进行综合评价，结合员工的工作经历和能力，提供符合员工个人工 作愿望的发展机会，实现'专业通道'和'管理通道'的双通道晋陞路线。未来，我们会给予员工更多工作轮调、岗位轮岗等机会，知人善任、人尽其才，组织实现人才效能。 ——《大成食品2023年环境、社会及管治报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 政策与沟通渠道 -->
       <el-collapse-item
         title="政策与沟通渠道"
         name="policy-communication-channels"
@@ -2209,7 +2136,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -2226,7 +2153,7 @@ Wind评级"
                 v-model="formData.employeeCommunicationPolicy"
                 type="textarea"
                 :rows="4"
-                placeholder="双汇发展严格遵循《中华人民共和国工会法》《集体合同规定》及所在地相关法律法规，成立运营地的各级工会组织，与员工开展建设性的对话，双汇发展尊重并充分听取来自员工的意见和反馈，不仅提高员工在公司发展进程中的参与度， 还有效增强团队凝聚力，进一步促进公司发展。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】双汇发展严格遵循《中华人民共和国工会法》《集体合同规定》及所在地相关法律法规，成立运营地的各级工会组织，与员工开展建设性的对话，双汇发展尊重并充分听取来自员工的意见和反馈，不仅提高员工在公司发展进程中的参与度， 还有效增强团队凝聚力，进一步促进公司发展。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="员工沟通渠道">
@@ -2242,12 +2169,13 @@ Wind评级"
                 v-model="formData.employeeCommunicationChannel"
                 type="textarea"
                 :rows="4"
-                placeholder="我们积极搭建包括举报热线、人力资源热线、 员工座谈会、职工代表大会在内的信息反馈渠道，确保员工申诉有途径、权益有保障。2023年， 本公司召开大学生见面会、职工座谈会和年度职工代表大会及时获取并解决员工诉求。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】我们积极搭建包括举报热线、人力资源热线、 员工座谈会、职工代表大会在内的信息反馈渠道，确保员工申诉有途径、权益有保障。2023年， 本公司召开大学生见面会、职工座谈会和年度职工代表大会及时获取并解决员工诉求。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 员工沟通 -->
       <el-collapse-item title="员工沟通" name="employee-communication">
         <template #title>
           <div class="collapse-title">
@@ -2273,7 +2201,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -2326,7 +2254,7 @@ Wind评级"
                 v-model="formData.employeeSatisfactionSurvey"
                 type="textarea"
                 :rows="4"
-                placeholder="集团全力打造幸福工程，提升员工幸福感。旺旺建立了集满意度和幸福度于一 体的员工幸福指数评价体系，作为评估旺旺开展各项关怀员工措施的实际成效诊断 工具。员工幸福指数评价体系每年进行指 标优化调整，综合衡量薪酬福利、工作内 容、工作环境、职业发展等维度，帮助管 理者发现问题、找到员工的共同诉求和期望，激发员工的工作热情和积极性，促进 集团长青发展。 旺旺自2016年在全国各工厂开展员 工幸福指数评估以来，持续循环精进改善 员工反馈问题，为员工提供更加优质的工 作环境和条件。我们建立健全员工福利制 度，加强员工培训和发展，并将员工幸 福指数纳入基地最高主管的关键绩效考核中，工厂员工幸福指数分数2022财年为 88.1分。 ——《中国旺旺2022/23年环境、社会及管治报告》"
+                placeholder="【提示】集团全力打造幸福工程，提升员工幸福感。旺旺建立了集满意度和幸福度于一 体的员工幸福指数评价体系，作为评估旺旺开展各项关怀员工措施的实际成效诊断 工具。员工幸福指数评价体系每年进行指 标优化调整，综合衡量薪酬福利、工作内 容、工作环境、职业发展等维度，帮助管 理者发现问题、找到员工的共同诉求和期望，激发员工的工作热情和积极性，促进 集团长青发展。 旺旺自2016年在全国各工厂开展员 工幸福指数评估以来，持续循环精进改善 员工反馈问题，为员工提供更加优质的工 作环境和条件。我们建立健全员工福利制 度，加强员工培训和发展，并将员工幸 福指数纳入基地最高主管的关键绩效考核中，工厂员工幸福指数分数2022财年为 88.1分。 ——《中国旺旺2022/23年环境、社会及管治报告》"
               />
             </el-form-item>
             <el-form-item>
@@ -2374,6 +2302,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 职业病 -->
       <el-collapse-item title="职业病" name="occupational-disease">
         <template #title>
           <div class="collapse-title">
@@ -2393,7 +2322,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -2490,6 +2419,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 保障措施 -->
       <el-collapse-item title="保障措施" name="protection-measures">
         <template #title>
           <div class="collapse-title">
@@ -2509,7 +2439,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -2547,12 +2477,13 @@ Wind评级"
                 v-model="formData.mentalHealthServiceDescription"
                 type="textarea"
                 :rows="4"
-                placeholder="促进职工心理健康成长一直是工会关注的工作主题，结合提升职工生活品质工作部署，工会积极鼓励 各基层单位根据实际，整合外部专业力量，围绕职业成长、人际交往、婚恋交友、亲子关系、压力缓解、情绪疏导等职工关切主题，以咨询、培训、讲座等方式，开展职工心理帮助计划。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="【提示】促进职工心理健康成长一直是工会关注的工作主题，结合提升职工生活品质工作部署，工会积极鼓励 各基层单位根据实际，整合外部专业力量，围绕职业成长、人际交往、婚恋交友、亲子关系、压力缓解、情绪疏导等职工关切主题，以咨询、培训、讲座等方式，开展职工心理帮助计划。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 职业健康培训 -->
       <el-collapse-item
         title="职业健康培训"
         name="occupational-health-training"
@@ -2575,7 +2506,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -2668,6 +2599,7 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 伤亡情况 -->
       <el-collapse-item title="伤亡情况" name="casualties">
         <template #title>
           <div class="collapse-title">
@@ -2687,7 +2619,7 @@ Wind评级"
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -2859,29 +2791,18 @@ Wind评级"
                 v-model="formData.customerPrivacyLeakIncidents"
                 type="textarea"
                 :rows="4"
-                placeholder="数字化技术高速发展的当下，上海梅林高度重视客户信息和隐私保护，公司严格遵守国家及有关部门颁布的《中华人民共和国网络安全法》《个人信息保护法》《数据安全法》《中华人民共和国消费者权益保护法》等隐私保护的相关 规定，打造相应的安全可信的服务体系，保障用户隐私。报告期内，本公司未接获有关客户隐私泄漏的投诉。 ——《上海梅林2023年ESG 暨可持续发展报告》"
+                placeholder="【提示】数字化技术高速发展的当下，上海梅林高度重视客户信息和隐私保护，公司严格遵守国家及有关部门颁布的《中华人民共和国网络安全法》《个人信息保护法》《数据安全法》《中华人民共和国消费者权益保护法》等隐私保护的相关 规定，打造相应的安全可信的服务体系，保障用户隐私。报告期内，本公司未接获有关客户隐私泄漏的投诉。 ——《上海梅林2023年ESG 暨可持续发展报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
     </el-collapse>
-
-    <!-- 操作按钮 -->
-    <EsgActionButtons
-      :show-submit="false"
-      @cancel="handleCancel"
-      @save="handleSave"
-      :isEdit="isEdit"
-    />
   </div>
-  <el-dialog v-model="dialogVisible">
-    <img w-full :src="dialogImageUrl" alt="Preview Image" />
-  </el-dialog>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onUnmounted, toRef } from "vue";
+import { ref, onMounted, watch, onUnmounted, toRef, inject } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
@@ -2893,9 +2814,16 @@ import {
 } from "@/api/esg";
 import EsgTooltip from "@/components/EsgTooltip/index.vue";
 import { formatToken, getToken } from "@/utils/auth.ts";
-const uploadUrl = baseUrlApi("/esg/upload");
 import { onlyPositiveInteger, onlyPositiveNumber } from "../utils";
 import { useEsgAutoSave } from "@/utils/autoSave";
+import {
+  FORM_LABEL_WIDTH,
+  useEsgSave,
+  useEsgCancel,
+  useEsgLoadData,
+  useEsgFileUpload
+} from "@/views/Esg/components/utils/index.ts";
+const uploadUrl = baseUrlApi("/esg/upload");
 
 // 定义props，接收activeTab参数
 const props = defineProps({
@@ -2917,11 +2845,12 @@ const props = defineProps({
     default: () => ({})
   }
 });
+// 依赖注入 - 接收图片预览相关参数
+const dialogVisible = inject("dialogVisible");
+const dialogImageUrl = inject("dialogImageUrl");
 
 // 折叠面板
 const activeCollapse = ref([]);
-const dialogImageUrl = ref("");
-const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
@@ -3061,143 +2990,32 @@ const formData = ref({
 });
 const emptyFormData = JSON.parse(JSON.stringify(formData.value));
 
-// 文件上传处理
-const handleFileChange = (file, fileList) => {
-  console.log("文件变化:", file, fileList);
-};
+//#region 文件上传处理，使用封装后的公共函数
+const {
+  handleFileChange,
+  handleFileBeforeUpload,
+  handlePictureCardPreview,
+  handleUploadSuccess,
+  handleUploadRemove
+} = useEsgFileUpload(
+  dialogImageUrl,
+  dialogVisible,
+  toRef(props, "curDDUserInfo"),
+  formData,
+  () => handleSave("autoSave")
+);
+//#endregion
 
-const handleFileBeforeUpload = file => {
-  // 生成新的文件名
-  const newFileName = props.curDDUserInfo.username + "_" + file.name;
-
-  // 使用 new File 构造新的文件对象，并设置新的文件名
-  const newFile = new File([file], newFileName, {
-    type: file.type,
-    lastModified: file.lastModified
-  });
-  // 返回新的文件对象
-  return newFile;
-};
-
-const handlePictureCardPreview = uploadFile => {
-  if (uploadFile.response?.code !== 200) return;
-  getFileDownLoadPath({
-    objectName: uploadFile.response.data
-  })
-    .then(res => {
-      const { code, msg, data } = res;
-      if (code === 200) {
-        dialogImageUrl.value = res.data;
-        dialogVisible.value = true;
-      } else {
-        ElMessage.error("图片预览失败--" + msg);
-      }
-    })
-    .catch(err => {
-      ElMessage.error("图片预览失败");
-    });
-};
-
-// 页面加载时获取数据
-const loadData = async () => {
-  try {
-    // 初始化表单数据
-    Object.keys(formData.value).forEach(key => {
-      formData.value[key] = emptyFormData[key];
-    });
-    const res = await getEsgRuleDetail({
-      type: props.activeTab,
-      year: props.year
-    });
-    if (res.code === 200 && res.data) {
-      // 如果返回的content是JSON字符串，需要解析
-      // if (res.data?.content) {
-      //   try {
-      //     const contentData = JSON.parse(res.data.content);
-      //     // 将数据回填到表单
-      //     Object.keys(contentData).forEach(key => {
-      //       // 检查是否有字段映射
-      //       const targetKey = key;
-
-      //       if (formData.value.hasOwnProperty(targetKey)) {
-      //         formData.value[targetKey] = contentData[key];
-      //       } else {
-      //         console.warn(
-      //           `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
-      //         );
-      //       }
-      //     });
-      //   } catch (e) {
-      //     console.warn("解析content数据失败:", e);
-      //   }
-      // }
-
-      //###############################################################################################
-      // 如果没有编辑权限，则遍历res.data数组，把每个对象相同的字段值进行拼接，格式为res.data[x].userName: res.data.[x].content.[字段值]
-      // 因为返回的res.data.[x].content是JSON字符串，所以都需要解析
-      if (!props.isEdit) {
-        res.data.forEach(item => {
-          try {
-            const contentData = JSON.parse(item.content);
-            // 将数据回填到表单
-            Object.keys(contentData).forEach(key => {
-              // 检查是否有字段映射
-              const targetKey = key;
-
-              if (formData.value.hasOwnProperty(targetKey)) {
-                // 如果是字符串类型则拼接，如果是数组则push
-                if (typeof contentData[key] === "string") {
-                  // 如果值为空则不做拼接
-                  if (contentData[key]) {
-                    formData.value[targetKey] +=
-                      `${item.userName}: ${contentData[key]}\n`;
-                  }
-                } else if (Array.isArray(contentData[key])) {
-                  formData.value[targetKey].push(...contentData[key]);
-                }
-              } else {
-                console.warn(
-                  `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
-                );
-              }
-            });
-          } catch (e) {
-            console.warn("解析content数据失败:", e);
-          }
-        });
-      } else {
-        // 如果有编辑权限，则找到res.data里userId等于props.curDDUserInfo?.id的对象，把它的content赋值给formData.value.content
-        const userItem = res.data.find(
-          item => item.userId == props.curDDUserInfo?.id
-        );
-        // console.log("回馈社会：", userItem);
-        if (userItem) {
-          try {
-            const contentData = JSON.parse(userItem.content);
-            // 将数据回填到表单
-            Object.keys(contentData).forEach(key => {
-              // 检查是否有字段映射
-              const targetKey = key;
-
-              if (formData.value.hasOwnProperty(targetKey)) {
-                formData.value[targetKey] = contentData[key];
-              } else {
-                console.warn(
-                  `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
-                );
-              }
-            });
-          } catch (e) {
-            console.warn("解析content数据失败:", e);
-          }
-        }
-      }
-      //###############################################################################################
-    }
-  } catch (error) {
-    console.error("获取数据失败:", error);
-  }
-};
+//#region 数据加载逻辑，使用封装后的公共函数
+const { loadData } = useEsgLoadData(
+  formData,
+  emptyFormData,
+  toRef(props, "activeTab"),
+  toRef(props, "year"),
+  toRef(props, "curDDUserInfo"),
+  toRef(props, "isEdit")
+);
+//#endregion
 
 // 组件挂载后加载数据
 onMounted(() => {
@@ -3206,48 +3024,17 @@ onMounted(() => {
 watch(() => props.year, loadData);
 
 // 操作处理函数
-const handleCancel = () => {
-  // 自定义取消逻辑
-  console.log("取消操作");
-};
+const { handleCancel } = useEsgCancel();
 
-// type 可选，默认为请求，可指定自动保存类型  可选值："request" | "autoSave"
-const handleSave = (type = "request") => {
-  console.log("保存数据:", formData.value);
-  // 自定义保存逻辑
-  const sendConfig = {
-    content: JSON.stringify(formData.value),
-    type: props.activeTab,
-    year: props.year,
-    userId: props.curDDUserInfo?.id,
-    userName: props.curDDUserInfo?.username
-  };
+//#region 保存逻辑，使用封装后的公共函数
+const { handleSave } = useEsgSave(
+  formData,
+  toRef(props, "activeTab"),
+  toRef(props, "year"),
+  toRef(props, "curDDUserInfo")
+);
+//#endregion
 
-  updateEsgConfig(sendConfig).then(res => {
-    if (res.code === 200) {
-      if (type === "request") {
-        ElMessage.success("保存成功");
-      }
-    } else {
-      ElMessage.error("保存失败");
-    }
-  });
-};
-
-// //#region 自动保存逻辑，一分钟自动保存一次，文件上传成功自动保存一次，页面没激活时不会保存，页面没编辑权限时也不会保存
-// const autoSaveInterval = 60 * 1000; // 1分钟
-// const autoSaveTimer = ref(null);
-// autoSaveTimer.value = setInterval(() => {
-//   if (props.activeTab === "employees" && props.isEdit) {
-//     handleSave();
-//   }
-// }, autoSaveInterval);
-// onUnmounted(() => {
-//   if (autoSaveTimer.value) {
-//     clearInterval(autoSaveTimer.value);
-//   }
-// });
-// //#endregion
 //#region 自动保存逻辑，使用抽象后的工具函数
 useEsgAutoSave(
   () => handleSave("autoSave"),
@@ -3256,37 +3043,15 @@ useEsgAutoSave(
   "employees"
 );
 //#endregion
+
+// ref暴露方法
+defineExpose({
+  handleSave,
+  handleCancel
+});
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url("./styles/common.css");
-
-/* tooltip图标垂直位置调整 */
-
-/* 为esg-content添加底部padding，避免内容被按钮遮挡 */
-.esg-content {
-  padding-bottom: 80px;
-}
-
-:deep(.el-form-item__label) {
-  height: 20px;
-
-  /* font-weight: bold;
-  color: #222;
-  font-size: 16px; */
-  line-height: 1.3;
-}
-
-.textContainer {
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.textAlignStyle {
-  display: flex;
-  gap: 20px;
-  justify-content: space-between;
-}
+@import url("./styles/optimize.scss");
 </style>
