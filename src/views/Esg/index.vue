@@ -165,10 +165,9 @@
         ref="currentComponentRef"
         :is="currentComponent"
         :active-tab="activeTab"
-        :isEdit="hasEditPermission(activeTab)"
+        :isEdit="canEditModule(activeTab, modeVal)"
         :year="yearValue"
         :curDDUserInfo="curDDUserInfo"
-        @show-image-preview="handleShowImagePreview"
       />
     </div>
 
@@ -179,16 +178,20 @@
 
     <!-- 操作按钮 - 统一在父组件中管理 -->
     <EsgActionButtons
+      v-show="!showYearCard"
       :show-submit="false"
       @cancel="handleCancel"
       @save="handleSave"
-      :isEdit="hasEditPermission(activeTab)"
+      :isEdit="canEditModule(activeTab, modeVal)"
+      :isAdmin="hasEditPermission(activeTab)"
+      :modeVal="modeVal"
+      @update:modeVal="val => (modeVal = val)"
     />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, provide } from "vue";
+import { ref, computed, provide, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import CompanyOverview from "./components/CompanyOverview.vue";
 import CorporateGovernance from "./components/CorporateGovernance.vue";
@@ -200,7 +203,7 @@ import OccupationalHealth from "./components/OccupationalHealth.vue";
 import SupplierManagement from "./components/SupplierManagement.vue";
 import CommunityWelfare from "./components/CommunityWelfare.vue";
 import ProductsServices from "./components/ProductsServices.vue";
-import { hasEditPermission } from "./utils";
+import { hasEditPermission, canEditModule } from "./utils";
 import YearCard from "./yearCard.vue";
 import Navbar from "./navbar.vue";
 import { storageLocal } from "@pureadmin/utils";
@@ -234,6 +237,15 @@ const componentMap = {
   "environmental-impact": EnvironmentalImpact, // 环境影响组件
   "community-welfare": CommunityWelfare // 回馈社会组件
 };
+
+// 展示模式相关状态 false 查看模式 true 编辑模式
+const modeVal = ref(false);
+watch(activeTab, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    // 当切换到新的标签页时，重置展示模式为查看模式
+    modeVal.value = false;
+  }
+});
 
 // 当前组件
 const currentComponent = computed(() => {

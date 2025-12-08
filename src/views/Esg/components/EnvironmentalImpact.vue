@@ -3731,6 +3731,7 @@ onMounted(() => {
   loadData();
 });
 watch(() => props.year, loadData);
+watch(() => props.isEdit, loadData);
 
 // 操作处理函数
 const { handleCancel } = useEsgCancel();

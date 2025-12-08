@@ -88,8 +88,15 @@ export function useEsgLoadData(
     try {
       // 初始化表单数据
       Object.keys(formData.value).forEach(key => {
-        formData.value[key] = emptyFormData[key];
+        // 如果是数组类型，需要确保完全重置为空数组
+        if (Array.isArray(emptyFormData[key])) {
+          formData.value[key] = [...emptyFormData[key]]; // 创建新数组引用
+        } else {
+          formData.value[key] = emptyFormData[key];
+        }
       });
+      // console.log("空表单数据:", emptyFormData);
+      // console.log("初始化后的表单数据:", formData.value);
       const res = await getEsgRuleDetail({
         type: activeTab.value,
         year: year.value
