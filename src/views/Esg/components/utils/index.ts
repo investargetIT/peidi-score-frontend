@@ -210,8 +210,19 @@ export function useEsgFileUpload(
       .then((res: any) => {
         const { code, msg, data } = res;
         if (code === 200) {
-          dialogImageUrl.value = res.data;
-          dialogVisible.value = true;
+          // 更健壮的图片类型检查
+          const isImage =
+            uploadFile.raw?.type?.includes("image") ||
+            /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(uploadFile.name || "");
+
+          if (isImage) {
+            // 判断是否是图片文件
+            dialogImageUrl.value = res.data;
+            dialogVisible.value = true;
+          } else {
+            // 如果不是图片，则直接打开文件
+            window.open(res.data, "_blank");
+          }
         } else {
           ElMessage.error("图片预览失败--" + msg);
         }

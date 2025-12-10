@@ -38,6 +38,30 @@
                 resize="vertical"
               />
             </el-form-item>
+            <el-form-item label="附件上传" prop="companyFullNameFileList">
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.companyFullNameFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="handleUploadSuccess('companyFullNameFileList')"
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".doc,.docx,.xls,.xlsx"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">支持上传word文档或excel表格</div>
+                </template>
+              </el-upload>
+            </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
@@ -85,6 +109,35 @@
                 resize="vertical"
               />
             </el-form-item>
+            <el-form-item
+              label="附件上传"
+              prop="managementStrategyAndPolicyFileList"
+            >
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.managementStrategyAndPolicyFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  handleUploadSuccess('managementStrategyAndPolicyFileList')
+                "
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".doc,.docx,.xls,.xlsx"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">支持上传word文档或excel表格</div>
+                </template>
+              </el-upload>
+            </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
@@ -130,6 +183,37 @@
                 resize="vertical"
               />
             </el-form-item>
+            <el-form-item
+              label="附件上传"
+              prop="reportingEntitiesDescriptionFileList"
+            >
+              <el-upload
+                class="upload-area"
+                v-model:file-list="
+                  formData.reportingEntitiesDescriptionFileList
+                "
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  handleUploadSuccess('reportingEntitiesDescriptionFileList')
+                "
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".doc,.docx,.xls,.xlsx"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">支持上传word文档或excel表格</div>
+                </template>
+              </el-upload>
+            </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
@@ -170,6 +254,30 @@
                 resize="vertical"
               />
             </el-form-item>
+            <el-form-item label="附件上传" prop="targetSetAndReviewFileList">
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.targetSetAndReviewFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="handleUploadSuccess('targetSetAndReviewFileList')"
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".doc,.docx,.xls,.xlsx"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">支持上传word文档或excel表格</div>
+                </template>
+              </el-upload>
+            </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
@@ -197,7 +305,7 @@
             <el-form-item label="ESG风险与机遇识别">
               <template #label>
                 <div>
-                  <span> ESG目标制定与审核 </span>
+                  <span> ESG风险与机遇识别 </span>
                   <EsgTooltip
                     content="描述董事会对于公司ESG相关风险与机遇的识别流程。"
                   />
@@ -208,6 +316,35 @@
                 type="textarea"
                 :rows="4"
               />
+            </el-form-item>
+            <el-form-item
+              label="附件上传"
+              prop="serviceGeographicLocationsFileList"
+            >
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.serviceGeographicLocationsFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  handleUploadSuccess('serviceGeographicLocationsFileList')
+                "
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".doc,.docx,.xls,.xlsx"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">支持上传word文档或excel表格</div>
+                </template>
+              </el-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -254,6 +391,30 @@
                 :rows="4"
                 placeholder="【提示】伊利建立可持续发展议题重要性分析的基本流程，通过利益相关方识别、议题识别、重要性评估和议题分析与验证四大步骤，从“对伊利集团可持续发展的重要性”和“利益相关方关注程度”两个维度，确定对自身可持续发展影响重大、利益相关方普遍关注的关键性议题。根据实质性议题分析结果，制定议题管理与披露策略，针对性在全集团范围内收集信息并系统整理，形成报告内容对外披露。 具体内容详见《伊利股份2023年可持续发展报告》"
               />
+            </el-form-item>
+            <el-form-item label="附件上传" prop="strategicVisionFileList">
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.strategicVisionFileList"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="handleUploadSuccess('strategicVisionFileList')"
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".doc,.docx,.xls,.xlsx"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">支持上传word文档或excel表格</div>
+                </template>
+              </el-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -521,18 +682,25 @@ const activeCollapse = ref([]);
 const formData = ref({
   // 公司名称与组织架构
   companyFullName: "", // 公司全称
+  companyFullNameFileList: [], // 附件列表
 
   // 纳入组织可持续发展报告的实体
   reportingEntitiesDescription: "", // 定性描述
+  reportingEntitiesDescriptionFileList: [], // 附件列表
 
   targetSetAndReview: "", // ESG目标制定与审核
+  targetSetAndReviewFileList: [], // 附件列表
+
   managementStrategyAndPolicy: "", // 管理战略与方针
+  managementStrategyAndPolicyFileList: [], // 附件列表
 
   // 服务的市场与行业
   serviceGeographicLocations: "", // 提供产品和服务所在的地理位置
+  serviceGeographicLocationsFileList: [], // 附件列表
 
   // 公司文化与行为规范
   strategicVision: "", // 战略愿景
+  strategicVisionFileList: [], // 附件列表
 
   // 外部倡议
   externalInitiativesDescription: "", // 外部倡议描述
