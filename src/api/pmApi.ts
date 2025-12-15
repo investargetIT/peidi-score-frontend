@@ -231,3 +231,18 @@ export const addScoreAction = data => {
     data
   });
 };
+
+export interface getExchangeListItem {
+  category: string;
+  id: number;
+  imageUrl: string;
+  pointsChange: number;
+  ruleId: number;
+  title: string;
+}
+// 获取兑换列表
+export const getExchangeList = () => {
+  return http.request("get", baseUrlApiDev("/point/redeem/list"), {
+    timeout: 60e3
+  });
+};

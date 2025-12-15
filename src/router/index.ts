@@ -137,6 +137,29 @@ const routes = [
       }
     ]
   },
+  {
+    path: "/redeem",
+    name: "RedeemLayout",
+    redirect: "/redeem/index",
+    component: Layout,
+    meta: {
+      icon: "ri:gift-2-line",
+      title: t("menu.redeem"),
+      rank: 3
+    },
+    children: [
+      {
+        path: "/redeem/index",
+        name: "redeem",
+        component: () => import("@/views/redeem/index.vue"),
+        meta: {
+          title: t("menu.redeem"),
+          showParent: false,
+          icon: "ri:gift-2-line"
+        }
+      }
+    ]
+  },
   // {
   //   path: "/task",
   //   name: "TaskLayout",
@@ -193,7 +216,7 @@ const routes = [
     meta: {
       icon: "ep:data-analysis",
       title: t("menu.esg"),
-      rank: 4,
+      rank: 99,
       // showLink: isEsgAdmin()
       showLink: false
     },

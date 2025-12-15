@@ -7,7 +7,8 @@ export default {
     adminboard: "Admin",
     dashboard: "Dashboard",
     esg: "ESG",
-    task: "Tasks"
+    task: "Tasks",
+    redeem: "Redeem"
   },
   system: {
     title: "Points Management System"
@@ -116,5 +117,21 @@ export default {
     pleaseEnterNewPassword: "Please enter new password",
     confirmPasswordTip: "Please confirm new password",
     passwordNotMatch: "Passwords do not match"
+  },
+  redeem: {
+    longTermPoints: "Long Term Points",
+    exchangeablePoints: "Exchangeable Points",
+    points: "Points",
+    redeem: "Redeem",
+    redeemFailed: "Redeem Failed",
+    redeemSuccess: "Redeem Success",
+    pointsNotEnough: "Points Not Enough",
+    confirmRedeem: "Confirm",
+    cancel: "Cancel",
+    confirmRedeemTip: "Are you sure you want to redeem this item?",
+    redeemListFailed: "Redeem List Failed",
+    getUserInfoFailed: "Get User Info Failed",
+    userNotFound: "User Not Found",
+    redeemTitle: "Redeem Points"
   }
 };

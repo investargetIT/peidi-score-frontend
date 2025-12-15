@@ -310,7 +310,7 @@ function initRouter() {
         meta: {
           icon: "flowbite:address-book-outline",
           title: t("menu.task"),
-          rank: 3,
+          rank: 11,
           showLink: isSiteHangzhou()
         },
         children: [

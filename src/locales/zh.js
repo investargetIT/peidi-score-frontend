@@ -7,7 +7,8 @@ export default {
     adminboard: "管理员仪表板",
     dashboard: "仪表盘",
     esg: "ESG",
-    task: "任务"
+    task: "任务",
+    redeem: "积分兑换"
   },
   system: {
     title: "积分管理系统"
@@ -114,5 +115,21 @@ export default {
     pleaseEnterNewPassword: "请输入新密码",
     confirmPasswordTip: "请确认新密码",
     passwordNotMatch: "两次输入密码不一致"
+  },
+  redeem: {
+    longTermPoints: "长期积分",
+    exchangeablePoints: "可兑换积分",
+    points: "积分",
+    redeem: "兑换",
+    redeemFailed: "兑换失败",
+    redeemSuccess: "兑换成功",
+    pointsNotEnough: "积分不足",
+    confirmRedeem: "确认",
+    cancel: "取消",
+    confirmRedeemTip: "确认兑换吗？",
+    redeemListFailed: "获取兑换列表失败",
+    getUserInfoFailed: "获取用户信息失败",
+    userNotFound: "用户不存在",
+    redeemTitle: "积分兑换"
   }
 };
