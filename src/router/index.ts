@@ -145,7 +145,8 @@ const routes = [
     meta: {
       icon: "ri:gift-2-line",
       title: t("menu.redeem"),
-      rank: 3
+      rank: 3,
+      showLink: process.env.NODE_ENV === "development"
     },
     children: [
       {

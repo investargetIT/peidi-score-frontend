@@ -144,7 +144,7 @@ export const getFileDownLoadPath = params => {
 
 // 更新用户信息
 export const updateUserInfo = data => {
-  return http.request("post", baseUrlApi("ui/user/info", false), {
+  return http.request("post", baseUrlApiDev("ui/user/info", false), {
     data
   });
 };

@@ -88,7 +88,17 @@ export default {
     confirmLeaveTitle: "离职确认",
     leaveSuccess: "离职成功",
     leaveFailed: "离职失败",
-    selectedCount: "当前选中人数"
+    selectedCount: "当前选中人数",
+    updateUserInfoSuccess: "更新用户信息成功",
+    updateUserInfoFailed: "更新用户信息失败",
+    fetchEducationEnumFailed: "获取学历枚举失败",
+    education: "学历",
+    hiredDate: "入职日期",
+    adjustEmployeeInfo: "调整该员工的学历或入职日期",
+    adjustInfo: "调整信息",
+    pleaseSelectEducation: "请选择学历",
+    pleaseSelectHiredDate: "请选择入职日期",
+    updateInfo: "更新信息"
   },
   navbar: {
     updateProfile: "更新资料",

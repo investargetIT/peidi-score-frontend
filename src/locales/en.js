@@ -90,7 +90,17 @@ export default {
     confirmLeaveTitle: "Leave Confirmation",
     leaveSuccess: "Leave successful",
     leaveFailed: "Leave failed",
-    selectedCount: "Current selected employees"
+    selectedCount: "Current selected employees",
+    updateUserInfoSuccess: "User information updated successfully",
+    updateUserInfoFailed: "User information update failed",
+    fetchEducationEnumFailed: "Failed to fetch education enum",
+    education: "Education",
+    hiredDate: "Hired Date",
+    adjustEmployeeInfo: "Adjust Employee Info",
+    adjustInfo: "Adjust Info",
+    pleaseSelectEducation: "Please select education",
+    pleaseSelectHiredDate: "Please select hired date",
+    updateInfo: "Update Info"
   },
   navbar: {
     updateProfile: "Update Profile",

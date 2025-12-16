@@ -33,13 +33,6 @@
           </div>
         </transition>
       </el-tab-pane>
-      <!-- <el-tab-pane label="兑换历史" name="exchange">
-        <transition name="fade-transform" mode="out-in">
-          <div v-if="activeTab === 'exchange'" key="exchange">
-            <ExchangeHistory :exchangeList="exchangeList" />
-          </div>
-        </transition>
-      </el-tab-pane> -->
       <el-tab-pane :label="t('monitor.history')" name="history">
         <HistoryScore
           v-if="activeTab === 'history'"
@@ -69,6 +62,13 @@
         <transition name="fade-transform" mode="out-in">
           <div v-if="activeTab === 'task'" key="task">
             <TaskList />
+          </div>
+        </transition>
+      </el-tab-pane>
+      <el-tab-pane label="兑换历史" name="exchange">
+        <transition name="fade-transform" mode="out-in">
+          <div v-if="activeTab === 'exchange'" key="exchange">
+            <ExchangeHistory :exchangeList="exchangeList" />
           </div>
         </transition>
       </el-tab-pane>
