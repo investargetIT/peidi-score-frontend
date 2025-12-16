@@ -141,5 +141,31 @@ export default {
     getUserInfoFailed: "获取用户信息失败",
     userNotFound: "用户不存在",
     redeemTitle: "积分兑换"
+  },
+  redeemMonitor: {
+    title: "兑换历史",
+    userName: "兑换人",
+    pleaseEnterUserName: "请输入兑换人",
+    redeemStatus: "状态",
+    pleaseSelectStatus: "请选择状态",
+    approved: "已审核",
+    pending: "待审核",
+    query: "查询",
+    reset: "重置",
+    noExchangeRecords: "暂无兑换记录",
+    exchangeDate: "兑换日期",
+    itemName: "物品名称",
+    pointsChange: "积分花费",
+    status: "状态",
+    redeemReviewUserName: "审核人",
+    operation: "操作",
+    approve: "审核",
+    approveExchangeRecord: "审核兑换记录",
+    confirmApproveExchangeRecord: "确认审核兑换记录吗？",
+    confirm: "确认",
+    cancel: "取消",
+    approveExchangeRecordFailed: "审核兑换记录失败",
+    fetchExchangeRecordFailed: "获取兑换记录失败",
+    approveSuccess: "审核成功"
   }
 };

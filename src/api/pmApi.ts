@@ -246,3 +246,22 @@ export const getExchangeList = () => {
     timeout: 60e3
   });
 };
+
+// 获取兑换记录分页
+export const getRecordPage = (params: {
+  pageNo: number;
+  pageSize: number;
+  searchStr?: string;
+  sortStr?: string;
+}) => {
+  return http.request("get", baseUrlApiDev("/point/record/page"), {
+    params
+  });
+};
+
+// 记录修改
+export const updateRecord = (data: any) => {
+  return http.request("post", baseUrlApiDev("/point/record/update"), {
+    data
+  });
+};

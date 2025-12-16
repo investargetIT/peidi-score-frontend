@@ -143,5 +143,31 @@ export default {
     getUserInfoFailed: "Get User Info Failed",
     userNotFound: "User Not Found",
     redeemTitle: "Redeem Points"
+  },
+  redeemMonitor: {
+    title: "Redeem History",
+    userName: "User Name",
+    pleaseEnterUserName: "Please enter user name",
+    redeemStatus: "Status",
+    pleaseSelectStatus: "Please select status",
+    approved: "Approved",
+    pending: "Pending",
+    query: "Query",
+    reset: "Reset",
+    noExchangeRecords: "No exchange records found",
+    exchangeDate: "Exchange Date",
+    itemName: "Item Name",
+    pointsChange: "Points Change",
+    status: "Status",
+    redeemReviewUserName: "Reviewer",
+    operation: "Operation",
+    approve: "Approve",
+    approveExchangeRecord: "Approve Exchange Record",
+    confirmApproveExchangeRecord: "Confirm Approve Exchange Record?",
+    confirm: "Confirm",
+    cancel: "Cancel",
+    approveExchangeRecordFailed: "Approve Exchange Record Failed",
+    fetchExchangeRecordFailed: "Fetch Exchange Record Failed",
+    approveSuccess: "Approve Success"
   }
 };
