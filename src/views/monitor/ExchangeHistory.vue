@@ -220,8 +220,20 @@ const exchangeList = ref([]);
 // 点击审核
 const handleReview = (row: any) => {
   // 获取当前用户信息
-  const dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
+  // const dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
   // console.log("审核兑换记录", row, dataSource?.id);
+  let dataSource: { id?: string | number; username?: string } = {};
+  try {
+    dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
+  } catch (e) {
+    console.warn("解析用户信息失败:", e);
+  }
+
+  if (!dataSource?.id) {
+    ElMessage.warning(t("redeemMonitor.parseUserInfoFailed"));
+    return;
+  }
+
   ElMessageBox.confirm(
     `${t("redeemMonitor.confirmApproveExchangeRecord")} 【${row.userName} - ${row.remark}】？`,
     t("redeemMonitor.approvePass"),

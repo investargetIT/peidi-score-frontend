@@ -109,10 +109,10 @@ const handlePasswordUpdate = () => {
           </div>
         </span>
         <template #dropdown>
-          <el-dropdown-item @click="changePassword">
-            <span class="text-[14px] py-[5px]">修改密码</span>
-          </el-dropdown-item>
           <el-dropdown-menu>
+            <el-dropdown-item @click="changePassword">
+              <span class="text-[14px] py-[5px]">修改密码</span>
+            </el-dropdown-item>
             <el-dropdown-item @click="handleExit">
               <span class="text-[14px] py-[5px]">退出登录</span>
             </el-dropdown-item>

@@ -167,6 +167,7 @@ export default {
     approveExchangeRecordFailed: "审核兑换记录失败",
     fetchExchangeRecordFailed: "获取兑换记录失败",
     approveSuccess: "审核成功",
-    approvePass: "审核通过"
+    approvePass: "审核通过",
+    parseUserInfoFailed: "解析用户信息失败"
   }
 };
