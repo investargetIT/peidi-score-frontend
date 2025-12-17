@@ -45,7 +45,7 @@
               :content="t('monitor.adjustEmployeeInfo')"
               placement="top-start"
             >
-              <el-button color="#000" @click="showInfoDialog">{{
+              <el-button type="primary" @click="showInfoDialog">{{
                 t("monitor.adjustInfo")
               }}</el-button>
             </el-tooltip>

@@ -200,8 +200,6 @@
         background
         layout="total, sizes, prev, pager, next, jumper"
         :total="pagination.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
       />
     </div>
   </el-card>
@@ -249,16 +247,16 @@ const pagination = reactive({
   pageSize: 30,
   pageNo: 1
 });
-// 分页大小改变
-const handleSizeChange = (val: number) => {
-  pagination.pageSize = val;
-  fetchRecordPage();
-};
-// 分页当前页改变
-const handleCurrentChange = (val: number) => {
-  pagination.pageNo = val;
-  fetchRecordPage();
-};
+// // 分页大小改变
+// const handleSizeChange = (val: number) => {
+//   pagination.pageSize = val;
+//   // fetchRecordPage();
+// };
+// // 分页当前页改变
+// const handleCurrentChange = (val: number) => {
+//   pagination.pageNo = val;
+//   // fetchRecordPage();
+// };
 //#endregion
 
 //#region 搜索逻辑
@@ -359,6 +357,9 @@ const fetchUpdateRecord = (data: any) => {
 onMounted(() => {
   fetchRecordPage();
 });
+
+// 监听分页参数变化
+watch(() => [pagination.pageNo, pagination.pageSize], fetchRecordPage);
 </script>
 
 <style scoped>
