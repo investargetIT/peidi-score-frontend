@@ -166,6 +166,7 @@ export default {
     cancel: "取消",
     approveExchangeRecordFailed: "审核兑换记录失败",
     fetchExchangeRecordFailed: "获取兑换记录失败",
-    approveSuccess: "审核成功"
+    approveSuccess: "审核成功",
+    approvePass: "审核通过"
   }
 };

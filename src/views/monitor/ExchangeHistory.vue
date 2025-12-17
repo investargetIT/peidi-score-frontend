@@ -70,14 +70,13 @@
         <template #default="scope">
           <div class="item-cell">
             <el-avatar
-              :size="48"
+              :size="32"
               :src="scope.row.avatarUrl"
               style="margin-right: 16px"
             />
             <span
-              >{{ scope.row.userName }}({{ scope.row.lifeTimePoints }}/{{
-                scope.row.redeemablePoints
-              }})</span
+              >{{ scope.row.userName }} ({{ scope.row.lifeTimePoints }} /
+              {{ scope.row.redeemablePoints }})</span
             >
           </div>
         </template>
@@ -95,15 +94,60 @@
       <el-table-column
         prop="redeemReview"
         :label="t('redeemMonitor.status')"
-        width="120"
+        width="150"
       >
         <template #default="scope">
-          <el-tag v-if="scope.row.redeemReview" type="success" effect="dark">{{
+          <!-- 已审核状态 -->
+          <div
+            v-if="scope.row.redeemReview"
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-green-100 text-green-800"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span class="ml-1">{{ t("redeemMonitor.approved") }}</span>
+          </div>
+          <!-- 待审核状态 -->
+          <div
+            v-else
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-orange-100 text-orange-800"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="ml-1">{{ t("redeemMonitor.pending") }}</span>
+          </div>
+
+          <!-- <el-tag v-if="scope.row.redeemReview" type="success" effect="dark">{{
             t("redeemMonitor.approved")
           }}</el-tag>
           <el-tag v-else type="info" effect="dark">
             {{ t("redeemMonitor.pending") }}
-          </el-tag>
+          </el-tag> -->
         </template>
       </el-table-column>
       <el-table-column
@@ -117,12 +161,34 @@
         width="120"
       >
         <template #default="scope">
-          <el-button
+          <button
+            v-if="!scope.row.redeemReview"
+            @click="handleReview(scope.row)"
+            class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-green-600 hover:bg-green-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check h-4 w-4"
+            >
+              <path d="M20 6 9 17 4 12"></path>
+            </svg>
+            {{ t("redeemMonitor.approve") }}
+          </button>
+
+          <!-- <el-button
             v-if="!scope.row.redeemReview"
             type="primary"
             @click="handleReview(scope.row)"
             >{{ t("redeemMonitor.approve") }}</el-button
-          >
+          > -->
         </template>
       </el-table-column>
     </el-table>
@@ -160,7 +226,7 @@ const handleReview = (row: any) => {
   // console.log("审核兑换记录", row, dataSource?.id);
   ElMessageBox.confirm(
     `${t("redeemMonitor.confirmApproveExchangeRecord")} 【${row.userName} - ${row.remark}】？`,
-    "Warning",
+    t("redeemMonitor.approvePass"),
     {
       confirmButtonText: t("redeemMonitor.confirm"),
       cancelButtonText: t("redeemMonitor.cancel"),
@@ -332,5 +398,9 @@ onMounted(() => {
 
 .no-border-table ::v-deep tr {
   background: #fff;
+}
+
+.bg-green-600 {
+  background-color: #059669;
 }
 </style>

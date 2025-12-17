@@ -168,6 +168,7 @@ export default {
     cancel: "Cancel",
     approveExchangeRecordFailed: "Approve Exchange Record Failed",
     fetchExchangeRecordFailed: "Fetch Exchange Record Failed",
-    approveSuccess: "Approve Success"
+    approveSuccess: "Approve Success",
+    approvePass: "Approve Pass"
   }
 };
