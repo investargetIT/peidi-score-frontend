@@ -144,7 +144,7 @@ export const getFileDownLoadPath = params => {
 
 // 更新用户信息
 export const updateUserInfo = data => {
-  return http.request("post", baseUrlApi("ui/user/info", false), {
+  return http.request("post", baseUrlApiDev("ui/user/info", false), {
     data
   });
 };
@@ -228,6 +228,40 @@ export const getPointRuleList = params => {
 // 新增积分活动
 export const addScoreAction = data => {
   return http.request("post", baseUrlApi("/point/rule/new"), {
+    data
+  });
+};
+
+export interface getExchangeListItem {
+  category: string;
+  id: number;
+  imageUrl: string;
+  pointsChange: number;
+  ruleId: number;
+  title: string;
+}
+// 获取兑换列表
+export const getExchangeList = () => {
+  return http.request("get", baseUrlApiDev("/point/redeem/list"), {
+    timeout: 60e3
+  });
+};
+
+// 获取兑换记录分页
+export const getRecordPage = (params: {
+  pageNo: number;
+  pageSize: number;
+  searchStr?: string;
+  sortStr?: string;
+}) => {
+  return http.request("get", baseUrlApiDev("/point/record/page"), {
+    params
+  });
+};
+
+// 记录修改
+export const updateRecord = (data: any) => {
+  return http.request("post", baseUrlApiDev("/point/record/update"), {
     data
   });
 };

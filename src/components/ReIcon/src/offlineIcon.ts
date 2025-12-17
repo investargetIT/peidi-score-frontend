@@ -7,9 +7,11 @@ import Lollipop from "@iconify-icons/ep/lollipop";
 import HomeFilled from "@iconify-icons/ep/home-filled";
 import suplierIcon from "@iconify-icons/ep/avatar";
 // import cateIcon from "../../../assets/png/cateIcon.png"
+import Gift2Line from "@iconify-icons/ri/gift-2-line";
 addIcon("ep:lollipop", Lollipop);
 addIcon("ep:home-filled", HomeFilled);
 addIcon("ep:cate", suplierIcon);
+addIcon("ri:gift-2-line", Gift2Line);
 // @iconify-icons/ri
 import Search from "@iconify-icons/ri/search-line";
 import InformationLine from "@iconify-icons/ri/information-line";

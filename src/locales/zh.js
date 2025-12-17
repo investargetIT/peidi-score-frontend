@@ -7,7 +7,8 @@ export default {
     adminboard: "管理员仪表板",
     dashboard: "仪表盘",
     esg: "ESG",
-    task: "任务"
+    task: "任务",
+    redeem: "积分兑换"
   },
   system: {
     title: "积分管理系统"
@@ -87,7 +88,17 @@ export default {
     confirmLeaveTitle: "离职确认",
     leaveSuccess: "离职成功",
     leaveFailed: "离职失败",
-    selectedCount: "当前选中人数"
+    selectedCount: "当前选中人数",
+    updateUserInfoSuccess: "更新用户信息成功",
+    updateUserInfoFailed: "更新用户信息失败",
+    fetchEducationEnumFailed: "获取学历枚举失败",
+    education: "学历",
+    hiredDate: "入职日期",
+    adjustEmployeeInfo: "调整该员工的学历或入职日期",
+    adjustInfo: "调整信息",
+    pleaseSelectEducation: "请选择学历",
+    pleaseSelectHiredDate: "请选择入职日期",
+    updateInfo: "更新信息"
   },
   navbar: {
     updateProfile: "更新资料",
@@ -114,5 +125,48 @@ export default {
     pleaseEnterNewPassword: "请输入新密码",
     confirmPasswordTip: "请确认新密码",
     passwordNotMatch: "两次输入密码不一致"
+  },
+  redeem: {
+    longTermPoints: "长期积分",
+    exchangeablePoints: "可兑换积分",
+    points: "积分",
+    redeem: "兑换",
+    redeemFailed: "兑换失败",
+    redeemSuccess: "兑换成功",
+    pointsNotEnough: "积分不足",
+    confirmRedeem: "确认",
+    cancel: "取消",
+    confirmRedeemTip: "确认兑换吗？",
+    redeemListFailed: "获取兑换列表失败",
+    getUserInfoFailed: "获取用户信息失败",
+    userNotFound: "用户不存在",
+    redeemTitle: "积分兑换"
+  },
+  redeemMonitor: {
+    title: "兑换历史",
+    userName: "兑换人",
+    pleaseEnterUserName: "请输入兑换人",
+    redeemStatus: "状态",
+    pleaseSelectStatus: "请选择状态",
+    approved: "已审核",
+    pending: "待审核",
+    query: "查询",
+    reset: "重置",
+    noExchangeRecords: "暂无兑换记录",
+    exchangeDate: "兑换日期",
+    itemName: "物品名称",
+    pointsChange: "积分花费",
+    status: "状态",
+    redeemReviewUserName: "审核人",
+    operation: "操作",
+    approve: "审核",
+    approveExchangeRecord: "审核兑换记录",
+    confirmApproveExchangeRecord: "确认审核兑换记录吗？",
+    confirm: "确认",
+    cancel: "取消",
+    approveExchangeRecordFailed: "审核兑换记录失败",
+    fetchExchangeRecordFailed: "获取兑换记录失败",
+    approveSuccess: "审核成功",
+    approvePass: "审核通过"
   }
 };

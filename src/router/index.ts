@@ -138,53 +138,77 @@ const routes = [
     ]
   },
   {
-    path: "/task",
-    name: "TaskLayout",
-    redirect: "/task/index",
+    path: "/redeem",
+    name: "RedeemLayout",
+    redirect: "/redeem/index",
     component: Layout,
     meta: {
-      icon: "flowbite:address-book-outline",
-      title: t("menu.task"),
+      icon: "ri:gift-2-line",
+      title: t("menu.redeem"),
       rank: 3,
-      showLink: isSiteHangzhou()
+      showLink: process.env.NODE_ENV === "development"
     },
     children: [
       {
-        path: "/task/index",
-        name: "task",
-        component: () => import("@/views/employeeTask/index.vue"),
+        path: "/redeem/index",
+        name: "redeem",
+        component: () => import("@/views/redeem/index.vue"),
         meta: {
-          title: t("menu.task"),
+          title: t("menu.redeem"),
           showParent: false,
-          icon: "flowbite:address-book-outline"
+          icon: "ri:gift-2-line"
         }
       }
     ]
   },
-  {
-    path: "/monitor",
-    name: "MonitorLayout",
-    redirect: "/monitor/index",
-    component: Layout,
-    meta: {
-      icon: "ep:setting",
-      title: t("menu.adminboard"),
-      rank: 999, // 管理员设置 最后显示
-      showLink: isAdmin()
-    },
-    children: [
-      {
-        path: "/monitor/index",
-        name: "monitor",
-        component: () => import("@/views/monitor/index.vue"),
-        meta: {
-          title: t("menu.adminboard"),
-          showParent: false,
-          icon: "ep:setting"
-        }
-      }
-    ]
-  },
+  // {
+  //   path: "/task",
+  //   name: "TaskLayout",
+  //   redirect: "/task/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "flowbite:address-book-outline",
+  //     title: t("menu.task"),
+  //     rank: 3,
+  //     showLink: isSiteHangzhou()
+  //   },
+  //   children: [
+  //     {
+  //       path: "/task/index",
+  //       name: "task",
+  //       component: () => import("@/views/employeeTask/index.vue"),
+  //       meta: {
+  //         title: t("menu.task"),
+  //         showParent: false,
+  //         icon: "flowbite:address-book-outline"
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/monitor",
+  //   name: "MonitorLayout",
+  //   redirect: "/monitor/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "ep:setting",
+  //     title: t("menu.adminboard"),
+  //     rank: 999, // 管理员设置 最后显示
+  //     showLink: isAdmin()
+  //   },
+  //   children: [
+  //     {
+  //       path: "/monitor/index",
+  //       name: "monitor",
+  //       component: () => import("@/views/monitor/index.vue"),
+  //       meta: {
+  //         title: t("menu.adminboard"),
+  //         showParent: false,
+  //         icon: "ep:setting"
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: "/esg",
     name: "EsgLayout",
@@ -193,7 +217,7 @@ const routes = [
     meta: {
       icon: "ep:data-analysis",
       title: t("menu.esg"),
-      rank: 4,
+      rank: 99,
       // showLink: isEsgAdmin()
       showLink: false
     },
@@ -410,8 +434,9 @@ router.beforeEach((to: ToRouteType, _from, next) => {
     // alert("1: " + to.path);
     if (to.path !== "/login") {
       // alert("2: " + to.path);
-      if (to.path === "/pdesg") {
-        localStorage.setItem("pridi-unLoginUrl", "/pdesg");
+      // 记录用户访问的URL，用于登录后重定向（排除白名单路由）
+      if (!whiteList.includes(to.path)) {
+        localStorage.setItem("pridi-unLoginUrl", to.fullPath);
       }
       if (whiteList.indexOf(to.path) !== -1) {
         next();

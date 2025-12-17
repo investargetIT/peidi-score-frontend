@@ -25,6 +25,9 @@ import en from "./locales/en";
 import zh from "./locales/zh";
 import { createI18n } from "vue-i18n";
 
+// 导入自定义el-tabs样式
+import "./style/pd-el-tabs.scss";
+
 const app = createApp(App);
 
 // 自定义指令

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import RiCalendarLine from "@iconify-icons/ri/calendar-line";
+import dayjs from "dayjs";
 
 // props
 const props = defineProps({
@@ -14,8 +15,26 @@ const props = defineProps({
   }
 });
 
+// 默认年份处理函数
+const getDefaultYear = () => {
+  // 获取当前年份
+  const currentYear = dayjs().year();
+  // 获取当年月份
+  const currentMonth = dayjs().month() + 1;
+  // 获取当前日期
+  const currentDate = dayjs().date();
+  // console.log("默认年份", currentYear, currentMonth, currentDate);
+  if (currentMonth < 4 || (currentMonth === 4 && currentDate < 17)) {
+    return dayjs()
+      .year(currentYear - 1)
+      .format("YYYY");
+  }
+  return dayjs().format("YYYY");
+};
+
 const form = reactive({
-  esgYear: new Date().getFullYear().toString()
+  // 默认年份：每年4月17日前为上一年年，4月17日后为当前年
+  esgYear: getDefaultYear()
 });
 
 const handleSubmit = () => {

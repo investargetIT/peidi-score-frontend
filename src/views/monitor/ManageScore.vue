@@ -28,14 +28,34 @@
                   {{ changeNumberFormat(employee.redeemablePoints) }}
                 </div>
               </div>
+              <div class="score-block">
+                <div class="score-label">{{ t("monitor.education") }}</div>
+                <div class="score-value">{{ employee.education }}</div>
+              </div>
+              <div class="score-block">
+                <div class="score-label">{{ t("monitor.hiredDate") }}</div>
+                <div class="score-value">{{ employee.hireDate }}</div>
+              </div>
             </div>
+          </div>
+          <div class="self-baseline">
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              :content="t('monitor.adjustEmployeeInfo')"
+              placement="top-start"
+            >
+              <el-button type="primary" @click="showInfoDialog">{{
+                t("monitor.adjustInfo")
+              }}</el-button>
+            </el-tooltip>
           </div>
         </div>
       </template>
       <template v-else-if="modelValue?.length > 1">
         <div class="multi-employee-info">
           <div class="selected-count">
-            {{ t("monitor.selectedCount", { count: modelValue.length }) }}
+            {{ t("monitor.selectedCount") }} {{ `(${modelValue.length})` }}
           </div>
           <div class="selected-names">{{ selectedEmployeeNames }}</div>
         </div>
@@ -133,16 +153,85 @@
       }}</el-button>
     </template>
   </el-dialog>
+  <el-dialog
+    v-model="infoDialogVisible"
+    :title="t('monitor.adjustInfo')"
+    width="420px"
+    :close-on-click-modal="false"
+  >
+    <el-form :model="infoDialogForm" label-width="100px">
+      <el-form-item
+        :label="t('monitor.education')"
+        prop="education"
+        :rules="[
+          {
+            required: true,
+            message: t('monitor.pleaseSelectEducation'),
+            trigger: 'blur'
+          }
+        ]"
+      >
+        <el-select
+          v-model="infoDialogForm.education"
+          :placeholder="t('monitor.pleaseSelectEducation')"
+          style="max-width: 220px"
+        >
+          <el-option
+            v-for="item in validEducation"
+            :key="item.id"
+            :label="item.value"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item
+        :label="t('monitor.hiredDate')"
+        prop="employment"
+        :rules="[
+          {
+            required: true,
+            message: t('monitor.pleaseSelectHiredDate'),
+            trigger: 'blur'
+          }
+        ]"
+      >
+        <el-date-picker
+          v-model="infoDialogForm.employment"
+          type="date"
+          :placeholder="t('monitor.pleaseSelectHiredDate')"
+          :clearable="false"
+        />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="handleInfoDialogSubmit"
+          :loading="infoLoading"
+        >
+          {{ t("monitor.updateInfo") }}
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, reactive } from "vue";
 import { useI18n } from "vue-i18n";
 import { changeNumberFormat } from "@/utils/common";
-import { updateUseScore, getPointRuleList, addScoreAction } from "@/api/pmApi";
+import {
+  updateUseScore,
+  getPointRuleList,
+  addScoreAction,
+  getEnumTypeList,
+  updateUserInfo
+} from "@/api/pmApi";
 import { ElMessage } from "element-plus";
 import Avatar from "@/assets/user.jpg";
 import { storageLocal } from "@pureadmin/utils";
+import dayjs from "dayjs";
 
 const { t } = useI18n();
 const pointRuleList = ref([]);
@@ -310,6 +399,67 @@ const selectedEmployeeNames = computed(() => {
 });
 
 fetchPointRuleList();
+
+//#region 调整学历或入职日期逻辑
+const infoLoading = ref(false);
+const validEducation = ref(""); // 有效学历
+const infoDialogVisible = ref(false);
+const infoDialogForm = reactive({
+  education: "",
+  employment: ""
+});
+watch(
+  () => props.employee,
+  val => {
+    if (val) {
+      infoDialogForm.education = val.education || "";
+      infoDialogForm.employment = val.hireDate || "";
+    }
+  },
+  { immediate: true }
+);
+const showInfoDialog = () => {
+  infoDialogVisible.value = true;
+};
+const handleInfoDialogSubmit = () => {
+  infoLoading.value = true;
+  updateUserInfo({
+    ...props.employee,
+    education: infoDialogForm.education,
+    hireDate: dayjs(infoDialogForm.employment).format("YYYY-MM-DD")
+  })
+    .then(async res => {
+      if (res?.code === 200) {
+        ElMessage.success(t("monitor.updateUserInfoSuccess"));
+        infoDialogVisible.value = false;
+        const list = await props.fetchUserListData();
+      } else {
+        ElMessage.error(res?.msg || t("monitor.updateUserInfoFailed"));
+      }
+    })
+    .catch(err => {
+      ElMessage.error(err?.msg || t("monitor.updateUserInfoFailed"));
+    })
+    .finally(() => {
+      infoLoading.value = false;
+    });
+};
+// 获取学历枚举方法
+const fetchEducationEnum = () => {
+  getEnumTypeList({ type: "education" })
+    .then(res => {
+      if (res?.code === 200) {
+        validEducation.value = res?.data || "";
+      } else {
+        ElMessage.error(res?.msg || t("monitor.fetchEducationEnumFailed"));
+      }
+    })
+    .catch(err => {
+      ElMessage.error(err?.msg || t("monitor.fetchEducationEnumFailed"));
+    });
+};
+fetchEducationEnum();
+//#endregion
 </script>
 
 <style scoped>

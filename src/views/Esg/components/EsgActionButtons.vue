@@ -3,6 +3,15 @@
     <el-button v-if="false" @click="handleExit" type="danger"
       >退出登录</el-button
     >
+    <el-switch
+      :disabled="!isAdmin"
+      style="margin-right: auto"
+      :model-value="modeVal"
+      @update:model-value="val => emit('update:modeVal', val)"
+      size="large"
+      active-text="编辑模式"
+      inactive-text="查看模式"
+    />
     <!-- <el-button v-if="showCancel" @click="handleCancel">取消</el-button> -->
     <el-button
       v-if="showSave"
@@ -13,7 +22,8 @@
       style="width: 120px"
       >保存</el-button
     >
-    <el-button v-if="showSubmit" type="success" @click="handleSubmit"
+    <!-- v-if="showSubmit" -->
+    <el-button v-if="false" type="success" @click="handleSubmit"
       >提交</el-button
     >
   </div>
@@ -39,11 +49,19 @@ const props = defineProps({
   isEdit: {
     type: Boolean,
     default: false
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
+  modeVal: {
+    type: Boolean,
+    default: false
   }
 });
 
 // 定义emits，允许父组件监听按钮点击事件
-const emit = defineEmits(["cancel", "save", "submit"]);
+const emit = defineEmits(["cancel", "save", "submit", "update:modeVal"]);
 
 // 按钮处理函数
 const handleCancel = () => {

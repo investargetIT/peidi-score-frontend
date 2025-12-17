@@ -7,7 +7,8 @@ export default {
     adminboard: "Admin",
     dashboard: "Dashboard",
     esg: "ESG",
-    task: "Tasks"
+    task: "Tasks",
+    redeem: "Redeem"
   },
   system: {
     title: "Points Management System"
@@ -89,7 +90,17 @@ export default {
     confirmLeaveTitle: "Leave Confirmation",
     leaveSuccess: "Leave successful",
     leaveFailed: "Leave failed",
-    selectedCount: "Current selected employees"
+    selectedCount: "Current selected employees",
+    updateUserInfoSuccess: "User information updated successfully",
+    updateUserInfoFailed: "User information update failed",
+    fetchEducationEnumFailed: "Failed to fetch education enum",
+    education: "Education",
+    hiredDate: "Hired Date",
+    adjustEmployeeInfo: "Adjust Employee Info",
+    adjustInfo: "Adjust Info",
+    pleaseSelectEducation: "Please select education",
+    pleaseSelectHiredDate: "Please select hired date",
+    updateInfo: "Update Info"
   },
   navbar: {
     updateProfile: "Update Profile",
@@ -116,5 +127,48 @@ export default {
     pleaseEnterNewPassword: "Please enter new password",
     confirmPasswordTip: "Please confirm new password",
     passwordNotMatch: "Passwords do not match"
+  },
+  redeem: {
+    longTermPoints: "Long Term Points",
+    exchangeablePoints: "Exchangeable Points",
+    points: "Points",
+    redeem: "Redeem",
+    redeemFailed: "Redeem Failed",
+    redeemSuccess: "Redeem Success",
+    pointsNotEnough: "Points Not Enough",
+    confirmRedeem: "Confirm",
+    cancel: "Cancel",
+    confirmRedeemTip: "Are you sure you want to redeem this item?",
+    redeemListFailed: "Redeem List Failed",
+    getUserInfoFailed: "Get User Info Failed",
+    userNotFound: "User Not Found",
+    redeemTitle: "Redeem Points"
+  },
+  redeemMonitor: {
+    title: "Redeem History",
+    userName: "User Name",
+    pleaseEnterUserName: "Please enter user name",
+    redeemStatus: "Status",
+    pleaseSelectStatus: "Please select status",
+    approved: "Approved",
+    pending: "Pending",
+    query: "Query",
+    reset: "Reset",
+    noExchangeRecords: "No exchange records found",
+    exchangeDate: "Exchange Date",
+    itemName: "Item Name",
+    pointsChange: "Points Change",
+    status: "Status",
+    redeemReviewUserName: "Reviewer",
+    operation: "Operation",
+    approve: "Approve",
+    approveExchangeRecord: "Approve Exchange Record",
+    confirmApproveExchangeRecord: "Confirm Approve Exchange Record?",
+    confirm: "Confirm",
+    cancel: "Cancel",
+    approveExchangeRecordFailed: "Approve Exchange Record Failed",
+    fetchExchangeRecordFailed: "Fetch Exchange Record Failed",
+    approveSuccess: "Approve Success",
+    approvePass: "Approve Pass"
   }
 };

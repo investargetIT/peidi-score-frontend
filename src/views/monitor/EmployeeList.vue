@@ -8,6 +8,7 @@
           size="small"
           :icon="Delete"
           @click="handleResign"
+          :disabled="checkedIds.length === 0"
           >{{ t("monitor.leave") }}</el-button
         >
       </div>
@@ -67,24 +68,27 @@
         node-key="id"
         :default-checked-keys="checkedIds"
         check-on-click-leaf
+        :default-expanded-keys="expandedCompanyIds"
+        @node-expand="treeHandleExpand"
+        @node-collapse="treeHandleCollapse"
       >
         <template #default="{ node, data }">
           <el-tooltip
             :content="`${node.label} (${data.lifeTimePoints} / ${data.redeemablePoints})`"
             placement="top-start"
             effect="dark"
-            :disabled="!data.id"
+            :disabled="data.id.startsWith('company_')"
             :show-after="800"
           >
             <div class="custom-tree-node">
               <img
-                v-if="data.id"
+                v-if="data.id && !data.id.startsWith('company_')"
                 :src="data.avatarUrl || Avatar"
                 style="width: 20px; height: 20px; margin-right: 5px"
               />
               <span>{{ node.label }}</span>
               <p
-                v-if="data.id"
+                v-if="data.id && !data.id.startsWith('company_')"
                 class="ml-[5px] text-[#9b9a9a] text-[12px] flex"
               >
                 {{ `(${data.lifeTimePoints} / ${data.redeemablePoints})` }}
@@ -101,7 +105,6 @@
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
-import { da } from "element-plus/es/locale/index.mjs";
 import { Delete } from "@element-plus/icons-vue";
 const { t } = useI18n();
 const props = defineProps({
@@ -140,6 +143,9 @@ const treeData = [
     ]
   }
 ];
+
+// 记录已经展开的公司节点
+const expandedCompanyIds = ref([]);
 
 // 监听 props.employees 变化，遍历源数据，转换成 treeData 格式
 const treeEmployees = ref([]);
@@ -199,7 +205,14 @@ watch(
 
 const treeFilteredEmployees = computed(() => {
   const searchTerm = searchValue.value?.toLowerCase() || "";
-  if (!searchTerm) return treeEmployees.value || [];
+  // 若搜索内容为空, 也要处理一遍公司id
+  if (!searchTerm)
+    return (
+      treeEmployees.value.map(item => ({
+        ...item,
+        id: "company_" + item.label
+      })) || []
+    );
   // 筛选 treeEmployees.value 中每个对象children数字里是否有label匹配到搜索内容, 如果有, 则留下
   const tem = [];
   treeEmployees.value.forEach(item => {
@@ -208,10 +221,12 @@ const treeFilteredEmployees = computed(() => {
         child => child.label && child.label.toLowerCase().includes(searchTerm)
       );
       if (tem2.length > 0) {
-        tem.push({ ...item, children: tem2 });
+        // 前端为每个公司加入id，用于后续判断是否选中，但是需要一个标识判断是否是公司id，因为名称后面要展示积分括号，之前是用是否有id判断显隐的
+        tem.push({ ...item, children: tem2, id: "company_" + item.label });
       }
     }
   });
+  // console.log("人员列表数据:", tem);
   return tem;
 });
 
@@ -251,16 +266,20 @@ function treeHandleCheckAll(val) {
 }
 
 function treeHandleClick(emp) {
-  // console.log(emp);
+  // 加入了公司id，所以需要对公司id进行特殊处理，排除掉公司id
+  // console.log("treeHandleClick:", emp, treeRef.value.getCheckedKeys());
   const checkedKeys = treeRef.value
     .getCheckedKeys()
-    .filter(element => element !== undefined);
+    .filter(
+      element => element !== undefined && !element.startsWith("company_")
+    );
   // console.log("===========================================");
   // console.log("checkedKeys:", checkedKeys);
 
   // 会有问题，如果筛选后选了人，则不符合筛选条件的人但是已经选择的人也会被取消选择
   // 遍历当前 checkedIds.value，如果在 treeFilteredEmployees.value 里的每个对象的children里都匹配不到，说明当前id是需要被保留的
   // console.log("checkedIds.value:", checkedIds.value);
+
   const keepIds = checkedIds.value.filter(
     id =>
       !treeFilteredEmployees.value.some(
@@ -400,6 +419,27 @@ function handleClick(emp) {
 // 处理离职逻辑
 function handleResign() {
   emit("resign");
+}
+
+// treeHandleExpand 处理展开事件
+function treeHandleExpand(node) {
+  // console.log("展开节点:", node);
+  if (node.id && node.id.startsWith("company_")) {
+    // 记录展开的公司节点
+    expandedCompanyIds.value = [...expandedCompanyIds.value, node.id];
+    // console.log("已经展开的公司节点:", expandedCompanyIds.value);
+  }
+}
+
+// treeHandleCollapse 处理折叠事件
+function treeHandleCollapse(node) {
+  if (node.id && node.id.startsWith("company_")) {
+    // 从展开的公司节点列表中移除
+    expandedCompanyIds.value = expandedCompanyIds.value.filter(
+      id => id !== node.id
+    );
+    console.log("已经折叠的公司节点:", expandedCompanyIds.value);
+  }
 }
 </script>
 

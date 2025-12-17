@@ -1,7 +1,8 @@
 <template>
   <div class="esg-content">
-    <!-- 公司名称与组织架构 -->
+    <!-- 回馈社会组件 -->
     <el-collapse v-model="activeCollapse" class="esg-collapse">
+      <!-- 社会公益 -->
       <el-collapse-item title="社会公益" name="social-welfare">
         <template #title>
           <div class="collapse-title">
@@ -27,7 +28,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -41,10 +42,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.socialWelfareInvestment"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.socialWelfareInvestment"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>万元</span>
               </div>
@@ -59,10 +65,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.socialContributionPerShare"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.socialContributionPerShare"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>元</span>
               </div>
@@ -70,6 +81,7 @@
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 社区公益-目标与理念 -->
       <el-collapse-item
         title="社区公益-目标与理念"
         name="community-welfare-goals"
@@ -98,7 +110,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <!-- 定性描述 -->
@@ -113,7 +125,7 @@
                 v-model="formData.communityWelfareStrategy"
                 type="textarea"
                 :rows="4"
-                placeholder="中粮糖业坚持发展成果与社会共享，利用自身资源优势，开展公益志愿活动，汇聚点滴力量服务社区、关爱社会，向社会传递爱与温暖。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】中粮糖业坚持发展成果与社会共享，利用自身资源优势，开展公益志愿活动，汇聚点滴力量服务社区、关爱社会，向社会传递爱与温暖。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="体系及策略">
@@ -129,13 +141,13 @@
                 v-model="formData.communityWelfareSystem"
                 type="textarea"
                 :rows="4"
-                placeholder="我们积极践行“关爱与分享”的公益理念，主动担当社会公益责任，鼓励员工参与志愿服务活动，努力实现自身与社区的和谐共处、共生共荣。报告期内，公司对外捐赠659.27万元，员工注册志愿者人数78人，员工累计参与志愿服务53小时，员工参与志愿服务7人次。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】我们积极践行“关爱与分享”的公益理念，主动担当社会公益责任，鼓励员工参与志愿服务活动，努力实现自身与社区的和谐共处、共生共荣。报告期内，公司对外捐赠659.27万元，员工注册志愿者人数78人，员工累计参与志愿服务53小时，员工参与志愿服务7人次。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
-      <!-- 其他折叠项 -->
+      <!-- 社区公益-打造品牌公益项目 -->
       <el-collapse-item
         title="社区公益-打造品牌公益项目"
         name="brand-charity-projects"
@@ -164,7 +176,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="打造品牌公益项目">
@@ -180,7 +192,7 @@
                 v-model="formData.brandCharityProjects"
                 type="textarea"
                 :rows="4"
-                placeholder="“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item
@@ -200,6 +212,11 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  handleUploadSuccess('brandCharityProjectsAttachmentFileList')
+                "
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -215,7 +232,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-
+      <!-- 社区公益与志愿活动实践 -->
       <el-collapse-item
         title="社区公益与志愿活动实践"
         name="community-volunteer-activities"
@@ -242,7 +259,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="社区公益与志愿活动实践">
@@ -259,7 +276,7 @@
                 type="textarea"
                 :rows="4"
                 resize="vertical"
-                placeholder="公司积极履行社会责任，奉献爱心，每年都通过山东省公安民警优抚基金会进行捐赠，并用于帮助公安系统烈士、因公牺牲和伤残民警家属。此外，公司持续完善爱心基金制度，帮扶困难职工，在2023年共计帮扶职工109人，支出帮扶资金12.08万元。同样，作为中国小动物保护协会副会长单位，中宠股份深知每一个生命都值得尊重与呵护，特别是那些无家可归、亟需救助的流浪动物，公司每年定期向流浪猫狗动物基地捐赠宠粮。在2023年9月，秉持着社会责任感和公益爱心，公司向位于安徽省巢湖市的寻爱宠物有限公司旗下的流浪犬动物保护中心进行了宠粮捐赠。此次公益活动充分展示了中宠股份对于动物福祉及社会公益事业的持续关注与鼎力支持。 ——《中宠股份2023年度社会责任报告》"
+                placeholder="【提示】公司积极履行社会责任，奉献爱心，每年都通过山东省公安民警优抚基金会进行捐赠，并用于帮助公安系统烈士、因公牺牲和伤残民警家属。此外，公司持续完善爱心基金制度，帮扶困难职工，在2023年共计帮扶职工109人，支出帮扶资金12.08万元。同样，作为中国小动物保护协会副会长单位，中宠股份深知每一个生命都值得尊重与呵护，特别是那些无家可归、亟需救助的流浪动物，公司每年定期向流浪猫狗动物基地捐赠宠粮。在2023年9月，秉持着社会责任感和公益爱心，公司向位于安徽省巢湖市的寻爱宠物有限公司旗下的流浪犬动物保护中心进行了宠粮捐赠。此次公益活动充分展示了中宠股份对于动物福祉及社会公益事业的持续关注与鼎力支持。 ——《中宠股份2023年度社会责任报告》"
               />
             </el-form-item>
             <el-form-item
@@ -277,6 +294,11 @@
                 v-model:file-list="formData.publicityTrainingAttachmentFileList"
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  handleUploadSuccess('publicityTrainingAttachmentFileList')
+                "
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -299,10 +321,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.volunteerTotalParticipants"
                   :formatter="onlyPositiveInteger"
                   :parser="onlyPositiveInteger"
+                /> -->
+                <el-input
+                  v-model="formData.volunteerTotalParticipants"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人</span>
               </div>
@@ -319,10 +346,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.volunteerAverageHours"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.volunteerAverageHours"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>小时</span>
               </div>
@@ -330,6 +362,7 @@
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 社区公益所获荣誉 -->
       <el-collapse-item
         title="社区公益所获荣誉"
         name="community-welfare-honors"
@@ -355,7 +388,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="社区公益所获荣誉">
@@ -371,7 +404,7 @@
                 v-model="formData.communityWelfareHonors"
                 type="textarea"
                 :rows="4"
-                placeholder="“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item
@@ -391,6 +424,13 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  handleUploadSuccess(
+                    'communityWelfareHonorsAttachmentFileList'
+                  )
+                "
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -406,6 +446,7 @@
           </el-form>
         </div>
       </el-collapse-item>
+      <!-- 乡村振兴 -->
       <el-collapse-item title="乡村振兴" name="rural-revitalization">
         <template #title>
           <div class="collapse-title">
@@ -428,7 +469,7 @@
           <el-form
             :model="formData"
             label-position="left"
-            label-width="100px"
+            :label-width="FORM_LABEL_WIDTH"
             :disabled="!isEdit"
           >
             <el-form-item label="目标、方针及承诺；战略">
@@ -444,7 +485,7 @@
                 v-model="formData.ruralRevitalizationStrategy"
                 type="textarea"
                 :rows="4"
-                placeholder="“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
+                placeholder="【提示】“与你共飞翔”公益计划于2022年启动，通过爱心捐赠与教师培训帮扶，旨在通过向学前儿童提供科学健康的营养补给及先进的教学体系培养，助力国家学前教育高质量发展。 2023年，双汇“与你共飞翔”公益计划走进陕西汉中、山东莱芜、贵州威宁等地，向当地数十家幼儿园定向捐赠双汇儿童产品智趣多鳕鱼肠及儿童性格涵养教学体系，以全力推进学 前教育优质、均衡发展，切实保障城乡适龄儿童享受公平、高质的学前教育。 未来，“与你共飞翔”公益计划还将陆续走进安徽、湖南等地，为当地学前教育提供支持与助力，惠及更多儿童及家庭，为促进中国少年儿童健康成长贡献更多力量。 ——《双汇发展2023年ESG报告》"
               />
             </el-form-item>
             <el-form-item label="政策">
@@ -460,7 +501,7 @@
                 v-model="formData.ruralRevitalizationPolicy"
                 type="textarea"
                 :rows="4"
-                placeholder="中粮糖业充分发挥农业产业化龙头企业的带头作用，深入推进“种植规划+种子研发+田间管理+农机服务+数智农业” 的“五位一体”现代农业管理体系，推广智慧农业，引领产业发展，将便捷、科学的农业服务推广至千家万户，稳步 推进农业现代化转型发展。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】中粮糖业充分发挥农业产业化龙头企业的带头作用，深入推进“种植规划+种子研发+田间管理+农机服务+数智农业” 的“五位一体”现代农业管理体系，推广智慧农业，引领产业发展，将便捷、科学的农业服务推广至千家万户，稳步 推进农业现代化转型发展。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item label="实践">
@@ -476,7 +517,7 @@
                 v-model="formData.ruralRevitalizationPractice"
                 type="textarea"
                 :rows="4"
-                placeholder="中粮糖业在全国建立了 1186 个各类农业合作社，带动 10.2 万户农民就业，为农业产业高质量发展不断注入新动能。 ——《中粮糖业2023年环境、社会及治理报告》"
+                placeholder="【提示】中粮糖业在全国建立了 1186 个各类农业合作社，带动 10.2 万户农民就业，为农业产业高质量发展不断注入新动能。 ——《中粮糖业2023年环境、社会及治理报告》"
               />
             </el-form-item>
             <el-form-item
@@ -496,6 +537,11 @@
                 "
                 :on-preview="handlePictureCardPreview"
                 :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  handleUploadSuccess('ruralRevitalizationAttachmentFileList')
+                "
+                :on-remove="handleUploadRemove"
                 drag
                 :action="uploadUrl"
                 :auto-upload="true"
@@ -516,10 +562,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.ruralRevitalizationInvestment"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.ruralRevitalizationInvestment"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>万元</span>
               </div>
@@ -532,10 +583,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.agriculturalProductPurchaseAmount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.agriculturalProductPurchaseAmount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>万元</span>
               </div>
@@ -550,10 +606,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.supportProductDevelopmentCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                /> -->
+                <el-input
+                  v-model="formData.supportProductDevelopmentCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>种</span>
               </div>
@@ -568,10 +629,15 @@
                 </div>
               </template>
               <div class="textContainer">
-                <el-input
+                <!-- <el-input
                   v-model="formData.jobCreationCount"
                   :formatter="onlyPositiveNumber"
                   :parser="onlyPositiveNumber"
+                />  -->
+                <el-input
+                  v-model="formData.jobCreationCount"
+                  type="textarea"
+                  :rows="2"
                 />
                 <span>人次</span>
               </div>
@@ -580,22 +646,11 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-
-    <!-- 操作按钮 -->
-    <EsgActionButtons
-      :show-submit="false"
-      @cancel="handleCancel"
-      @save="handleSave"
-      :isEdit="isEdit"
-    />
   </div>
-  <el-dialog v-model="dialogVisible">
-    <img w-full :src="dialogImageUrl" alt="Preview Image" />
-  </el-dialog>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, onUnmounted, toRef, inject } from "vue";
 import { ElMessage } from "element-plus";
 import { Upload, QuestionFilled } from "@element-plus/icons-vue";
 import EsgActionButtons from "./EsgActionButtons.vue";
@@ -607,8 +662,16 @@ import {
 } from "@/api/esg";
 import EsgTooltip from "@/components/EsgTooltip/index.vue";
 import { formatToken, getToken } from "@/utils/auth.ts";
-const uploadUrl = baseUrlApi("/esg/upload");
 import { onlyPositiveInteger, onlyPositiveNumber } from "../utils";
+import { useEsgAutoSave } from "@/utils/autoSave";
+import {
+  FORM_LABEL_WIDTH,
+  useEsgSave,
+  useEsgCancel,
+  useEsgLoadData,
+  useEsgFileUpload
+} from "@/views/Esg/components/utils/index.ts";
+const uploadUrl = baseUrlApi("/esg/upload");
 
 // 定义props，接收activeTab参数
 const props = defineProps({
@@ -624,13 +687,18 @@ const props = defineProps({
     type: String,
     default: "",
     required: true
+  },
+  curDDUserInfo: {
+    type: Object,
+    default: () => ({})
   }
 });
+// 依赖注入 - 接收图片预览相关参数
+const dialogVisible = inject("dialogVisible");
+const dialogImageUrl = inject("dialogImageUrl");
 
 // 折叠面板
 const activeCollapse = ref([]);
-const dialogImageUrl = ref("");
-const dialogVisible = ref(false);
 
 // 表单数据 - 重新命名以匹配各模块标题和字段含义
 const formData = ref({
@@ -670,123 +738,69 @@ const formData = ref({
 });
 const emptyFormData = JSON.parse(JSON.stringify(formData.value));
 
-// 文件上传处理
-const handleFileChange = (file, fileList) => {
-  console.log("文件变化:", file, fileList);
-};
+//#region 文件上传处理，使用封装后的公共函数
+const {
+  handleFileChange,
+  handleFileBeforeUpload,
+  handlePictureCardPreview,
+  handleUploadSuccess,
+  handleUploadRemove
+} = useEsgFileUpload(
+  dialogImageUrl,
+  dialogVisible,
+  toRef(props, "curDDUserInfo"),
+  formData,
+  () => handleSave("autoSave")
+);
+//#endregion
 
-const handlePictureCardPreview = uploadFile => {
-  if (uploadFile.response?.code !== 200) return;
-  getFileDownLoadPath({
-    objectName: uploadFile.response.data
-  })
-    .then(res => {
-      const { code, msg, data } = res;
-      if (code === 200) {
-        dialogImageUrl.value = res.data;
-        dialogVisible.value = true;
-      } else {
-        ElMessage.error("图片预览失败--" + msg);
-      }
-    })
-    .catch(err => {
-      ElMessage.error("图片预览失败");
-    });
-};
-
-// 页面加载时获取数据
-const loadData = async () => {
-  try {
-    // 初始化表单数据
-    Object.keys(formData.value).forEach(key => {
-      formData.value[key] = emptyFormData[key];
-    });
-    const res = await getEsgRuleDetail({
-      type: props.activeTab,
-      year: props.year
-    });
-    if (res.code === 200 && res.data) {
-      // 如果返回的content是JSON字符串，需要解析
-      if (res.data?.content) {
-        try {
-          const contentData = JSON.parse(res.data.content);
-          // 将数据回填到表单
-          Object.keys(contentData).forEach(key => {
-            // 检查是否有字段映射
-            const targetKey = key;
-
-            if (formData.value.hasOwnProperty(targetKey)) {
-              formData.value[targetKey] = contentData[key];
-            } else {
-              console.warn(
-                `字段 ${key} (映射为 ${targetKey}) 在formData中不存在，跳过回填`
-              );
-            }
-          });
-        } catch (e) {
-          console.warn("解析content数据失败:", e);
-        }
-      }
-    }
-  } catch (error) {
-    console.error("获取数据失败:", error);
-  }
-};
+//#region 数据加载逻辑，使用封装后的公共函数
+const { loadData } = useEsgLoadData(
+  formData,
+  emptyFormData,
+  toRef(props, "activeTab"),
+  toRef(props, "year"),
+  toRef(props, "curDDUserInfo"),
+  toRef(props, "isEdit")
+);
+//#endregion
 
 // 组件挂载后加载数据
 onMounted(() => {
   loadData();
 });
 watch(() => props.year, loadData);
+watch(() => props.isEdit, loadData);
 
 // 操作处理函数
-const handleCancel = () => {
-  // 自定义取消逻辑
-  console.log("取消操作");
-};
+const { handleCancel } = useEsgCancel();
 
-const handleSave = () => {
-  console.log("保存数据:", formData.value);
-  // 自定义保存逻辑
-  const sendConfig = {
-    content: JSON.stringify(formData.value),
-    type: props.activeTab,
-    year: props.year
-  };
+//#region 保存逻辑，使用封装后的公共函数
+const { handleSave } = useEsgSave(
+  formData,
+  toRef(props, "activeTab"),
+  toRef(props, "year"),
+  toRef(props, "curDDUserInfo")
+);
+//#endregion
 
-  updateEsgConfig(sendConfig).then(res => {
-    if (res.code === 200) {
-      ElMessage.success("保存成功");
-    } else {
-      ElMessage.error("保存失败");
-    }
-  });
-};
+//#region 自动保存逻辑，使用抽象后的工具函数
+useEsgAutoSave(
+  () => handleSave("autoSave"),
+  toRef(props, "activeTab"),
+  toRef(props, "isEdit"),
+  "community-welfare"
+);
+//#endregion
+
+// ref暴露方法
+defineExpose({
+  handleSave,
+  handleCancel
+});
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url("./styles/common.css");
-
-/* tooltip图标垂直位置调整 */
-
-/* 为esg-content添加底部padding，避免内容被按钮遮挡 */
-.esg-content {
-  padding-bottom: 80px;
-}
-
-:deep(.el-form-item__label) {
-  height: 20px;
-
-  /* font-weight: bold;
-  color: #222;
-  font-size: 16px; */
-  line-height: 1.3;
-}
-
-.textContainer {
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  white-space: nowrap;
-}
+@import url("./styles/optimize.scss");
 </style>

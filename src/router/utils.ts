@@ -22,6 +22,10 @@ import { userKey, type DataInfo } from "@/utils/auth";
 import { type menuType, routerArrays } from "@/layout/types";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
+import { isAdmin, isSiteHangzhou } from "./index";
+import i18n from "@/plugins/i18n";
+const { t } = i18n.global;
+const Layout = () => import("@/layout/index.vue");
 const IFrame = () => import("@/layout/frame.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
@@ -192,58 +196,58 @@ function handleAsyncRoutes(routeList) {
 /** 初始化路由（`new Promise` 写法防止在异步请求中造成无限循环）*/
 function initRouter() {
   // 固定路由
-  const permissionRouter = {
-    path: "/permission",
-    meta: {
-      title: "权限管理000",
-      icon: "ep:lollipop",
-      rank: 10
-    },
-    children: [
-      {
-        path: "/permission/page/index",
-        name: "PermissionPage",
-        meta: {
-          title: "页面权限",
-          roles: ["admin", "common"]
-        }
-      },
-      {
-        path: "/permission/button",
-        meta: {
-          title: "按钮权限",
-          roles: ["admin", "common"]
-        },
-        children: [
-          {
-            path: "/permission/button/router",
-            component: "permission/button/index",
-            name: "PermissionButtonRouter",
-            meta: {
-              title: "路由返回按钮权限",
-              auths: [
-                "permission:btn:add",
-                "permission:btn:edit",
-                "permission:btn:delete"
-              ]
-            }
-          },
-          {
-            path: "/permission/button/login",
-            component: "permission/button/perms",
-            name: "PermissionButtonLogin",
-            meta: {
-              title: "登录接口返回按钮权限"
-            }
-          }
-        ]
-      }
-    ]
-  };
-  return new Promise(resolve => {
-    handleAsyncRoutes([permissionRouter]);
-    resolve(router);
-  });
+  // const permissionRouter = {
+  //   path: "/permission",
+  //   meta: {
+  //     title: "权限管理000",
+  //     icon: "ep:lollipop",
+  //     rank: 10
+  //   },
+  //   children: [
+  //     {
+  //       path: "/permission/page/index",
+  //       name: "PermissionPage",
+  //       meta: {
+  //         title: "页面权限",
+  //         roles: ["admin", "common"]
+  //       }
+  //     },
+  //     {
+  //       path: "/permission/button",
+  //       meta: {
+  //         title: "按钮权限",
+  //         roles: ["admin", "common"]
+  //       },
+  //       children: [
+  //         {
+  //           path: "/permission/button/router",
+  //           component: "permission/button/index",
+  //           name: "PermissionButtonRouter",
+  //           meta: {
+  //             title: "路由返回按钮权限",
+  //             auths: [
+  //               "permission:btn:add",
+  //               "permission:btn:edit",
+  //               "permission:btn:delete"
+  //             ]
+  //           }
+  //         },
+  //         {
+  //           path: "/permission/button/login",
+  //           component: "permission/button/perms",
+  //           name: "PermissionButtonLogin",
+  //           meta: {
+  //             title: "登录接口返回按钮权限"
+  //           }
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // };
+  // return new Promise(resolve => {
+  //   handleAsyncRoutes([permissionRouter]);
+  //   resolve(router);
+  // });
   // if (getConfig()?.CachingAsyncRoutes) {
   //   // 开启动态路由缓存本地localStorage
   //   const key = "async-routes";
@@ -270,6 +274,64 @@ function initRouter() {
   //     });
   //   });
   // }
+
+  // 尝试实现动态路由
+  return new Promise(resolve => {
+    const temp = [
+      {
+        path: "/monitor",
+        name: "MonitorLayout",
+        redirect: "/monitor/index",
+        component: Layout,
+        meta: {
+          icon: "ep:setting",
+          title: t("menu.adminboard"),
+          rank: 999, // 管理员设置 最后显示
+          showLink: isAdmin()
+        },
+        children: [
+          {
+            path: "/monitor/index",
+            name: "monitor",
+            // component: () => import("../views/monitor/index.vue"),
+            meta: {
+              title: t("menu.adminboard"),
+              showParent: false,
+              icon: "ep:setting"
+            }
+          }
+        ]
+      },
+      {
+        path: "/task",
+        name: "TaskLayout",
+        redirect: "/task/index",
+        component: Layout,
+        meta: {
+          icon: "flowbite:address-book-outline",
+          title: t("menu.task"),
+          rank: 11,
+          showLink: isSiteHangzhou()
+        },
+        children: [
+          {
+            path: "/task/index",
+            name: "task",
+            // component: () => import("../views/employeeTask/index.vue"),
+            component: "EmployeeTask/index",
+            meta: {
+              title: t("menu.task"),
+              showParent: false,
+              icon: "flowbite:address-book-outline"
+            }
+          }
+        ]
+      }
+    ];
+
+    handleAsyncRoutes(cloneDeep(temp));
+    resolve(router);
+  });
 }
 
 /**

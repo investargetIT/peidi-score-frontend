@@ -12,16 +12,18 @@
     >
       <!-- 顶部导航标签 -->
       <div class="flex items-center justify-between">
-        <div class="mr-[10px]">
+        <div class="mr-[10px] flex-shrink-0">
           <el-select
             v-model="yearValue"
-            placeholder="请选择年度"
+            placeholder="请选择年份"
             style="width: 200px"
             size="large"
           >
             <template #label="{ label, value }">
-              <span class="text-[14px]">年度: </span>
-              <span class="text-[16px] font-bold">{{ value }}</span>
+              <span class="text-[14px] text-[#0a0a0a] font-bold"
+                >报告年份:
+              </span>
+              <span class="text-[16px] text-[#0a0a0a]">{{ value }}</span>
             </template>
             <el-option
               v-for="item in yearOptions"
@@ -31,7 +33,7 @@
             />
           </el-select>
         </div>
-        <div class="flex-1">
+        <div class="flex-1 min-w-0">
           <el-tabs v-model="activeTab" class="esg-tabs">
             <el-tab-pane name="company-overview">
               <template #label>
@@ -159,19 +161,37 @@
       </div>
 
       <!-- 动态组件内容区域 -->
-      <!-- :isEdit="hasEditPermission(activeTab)" -->
       <component
+        ref="currentComponentRef"
         :is="currentComponent"
         :active-tab="activeTab"
-        :isEdit="hasEditPermission(activeTab)"
+        :isEdit="canEditModule(activeTab, modeVal)"
         :year="yearValue"
+        :curDDUserInfo="curDDUserInfo"
       />
     </div>
+
+    <!-- 图片预览对话框 - 抽离到父组件 -->
+    <el-dialog v-model="dialogVisible">
+      <img w-full :src="dialogImageUrl" alt="Preview Image" />
+    </el-dialog>
+
+    <!-- 操作按钮 - 统一在父组件中管理 -->
+    <EsgActionButtons
+      v-show="!showYearCard"
+      :show-submit="false"
+      @cancel="handleCancel"
+      @save="handleSave"
+      :isEdit="canEditModule(activeTab, modeVal)"
+      :isAdmin="hasEditPermission(activeTab)"
+      :modeVal="modeVal"
+      @update:modeVal="val => (modeVal = val)"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, provide, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import CompanyOverview from "./components/CompanyOverview.vue";
 import CorporateGovernance from "./components/CorporateGovernance.vue";
@@ -183,35 +203,82 @@ import OccupationalHealth from "./components/OccupationalHealth.vue";
 import SupplierManagement from "./components/SupplierManagement.vue";
 import CommunityWelfare from "./components/CommunityWelfare.vue";
 import ProductsServices from "./components/ProductsServices.vue";
-import { hasEditPermission } from "./utils";
+import { hasEditPermission, canEditModule } from "./utils";
 import YearCard from "./yearCard.vue";
 import Navbar from "./navbar.vue";
+import { storageLocal } from "@pureadmin/utils";
+import EsgActionButtons from "./components/EsgActionButtons.vue";
 
 const { t } = useI18n();
+
+// 图片预览相关状态
+const dialogVisible = ref(false);
+const dialogImageUrl = ref("");
+
+// 依赖注入 - 提供图片预览相关参数
+provide("dialogVisible", dialogVisible);
+provide("dialogImageUrl", dialogImageUrl);
 
 // 活动标签页
 const activeTab = ref("company-overview");
 
 // 组件映射
+// 将标签页名称映射到对应的Vue组件
+// 用于动态加载不同ESG模块的组件
 const componentMap = {
-  "company-overview": CompanyOverview,
-  "esg-management": EsgManagement,
-  "corporate-governance": CorporateGovernance,
-  "business-operations": BusinessOperations,
-  "quality-food-safety": ProductsServices,
-  "supplier-management": SupplierManagement,
-  "information-security-privacy": OccupationalHealth,
-  employees: Employees,
-  "environmental-impact": EnvironmentalImpact,
-  "community-welfare": CommunityWelfare
+  "company-overview": CompanyOverview, // 公司概览组件
+  "corporate-governance": CorporateGovernance, // 公司治理组件
+  "esg-management": EsgManagement, // ESG管理组件
+  "business-operations": BusinessOperations, // 产业发展与运营组件
+  "quality-food-safety": ProductsServices, // 质量与食品安全组件（使用产品服务组件）
+  "supplier-management": SupplierManagement, // 供应链管理组件
+  "information-security-privacy": OccupationalHealth, // 信息安全与隐私保护组件（使用职业健康组件）
+  employees: Employees, // 员工组件
+  "environmental-impact": EnvironmentalImpact, // 环境影响组件
+  "community-welfare": CommunityWelfare // 回馈社会组件
 };
+
+// 展示模式相关状态 false 查看模式 true 编辑模式
+const modeVal = ref(false);
+watch(activeTab, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    // 当切换到新的标签页时，重置展示模式为查看模式
+    modeVal.value = false;
+  }
+});
 
 // 当前组件
 const currentComponent = computed(() => {
   return componentMap[activeTab.value] || CompanyOverview;
 });
 
-//#region 年份选择
+//#region 保存按钮逻辑
+// 当前激活组件的引用
+const currentComponentRef = ref(null);
+
+// 处理保存按钮点击
+const handleSave = () => {
+  if (currentComponentRef.value && currentComponentRef.value.handleSave) {
+    // 调用当前激活组件的保存方法
+    currentComponentRef.value.handleSave();
+  } else {
+    console.warn(`当前激活的组件 ${activeTab.value} 没有 handleSave 方法`);
+  }
+};
+
+// 处理取消按钮点击
+const handleCancel = () => {
+  if (currentComponentRef.value && currentComponentRef.value.handleCancel) {
+    // 调用当前激活组件的取消方法
+    currentComponentRef.value.handleCancel();
+  } else {
+    // 如果没有取消方法，使用默认的取消逻辑
+    window.location.reload();
+  }
+};
+//#endregion
+
+//#region 年份相关逻辑
 // 默认为今年
 const yearValue = ref(new Date().getFullYear().toString());
 // const yearOptions = [
@@ -219,18 +286,6 @@ const yearValue = ref(new Date().getFullYear().toString());
 //     value: "2026",
 //     label: "2026"
 //   },
-//   {
-//     value: "2025",
-//     label: "2025"
-//   },
-//   {
-//     value: "2024",
-//     label: "2024"
-//   },
-//   {
-//     value: "2023",
-//     label: "2023"
-//   }
 // ];
 // 2025年之后10年 2025是写死的
 const yearOptions = [];
@@ -240,17 +295,17 @@ for (let i = 0; i < 10; i++) {
     label: (2025 + i).toString()
   });
 }
-//#endregion
 
-//#region 首次选择年份
-// 首次遮罩层
+// 遮罩层显示控制
 const showYearCard = ref(true);
 const handleYearSubmit = year => {
   yearValue.value = year;
-  // 隐藏遮罩层
   showYearCard.value = false;
 };
 //#endregion
+
+// 获取用户信息
+const curDDUserInfo = storageLocal().getItem("dataSource");
 </script>
 
 <style scoped>
@@ -298,6 +353,14 @@ const handleYearSubmit = year => {
 }
 
 :deep(.el-select__wrapper) {
+  height: 50px;
+}
+
+:deep(.el-tabs__nav-next),
+:deep(.el-tabs__nav-prev) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 50px;
 }
 </style>

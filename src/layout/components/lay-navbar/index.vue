@@ -238,7 +238,11 @@ const passwordRules = reactive({
     }
   ],
   confirmPassword: [
-    { required: true, message: t("navbar.confirmPassword"), trigger: "blur" },
+    {
+      required: true,
+      message: t("navbar.confirmPasswordTip"),
+      trigger: "blur"
+    },
     { required: true, validator: validateConfirmPassword, trigger: "blur" }
   ]
 });
@@ -325,7 +329,7 @@ const isDingUser = computed(() => {
             class="logout"
             :style="{ width: locale === 'en' ? '150px' : '' }"
           >
-            <el-dropdown-item @click="changePassword" v-if="!isDingUser">
+            <el-dropdown-item @click="changePassword">
               <IconifyIconOffline :icon="RiEditBoxLine" style="margin: 5px" />
               {{ t("navbar.updatePassword") }}
             </el-dropdown-item>
@@ -349,7 +353,12 @@ const isDingUser = computed(() => {
         width="500"
         :close-on-click-modal="false"
       >
-        <el-form :model="form" ref="formRef">
+        <el-form
+          :model="form"
+          ref="formRef"
+          :label-width="locale === 'en' ? '140px' : '80px'"
+          :label-position="'left'"
+        >
           <el-form-item :label="t('navbar.avatar')">
             <el-upload
               v-model:file-list="form.avatarUrlList"
@@ -414,7 +423,8 @@ const isDingUser = computed(() => {
           :model="passwordForm"
           :rules="passwordRules"
           ref="passwordFormRef"
-          :label-width="locale === 'en' ? '150px' : '100px'"
+          :label-width="locale === 'en' ? '130px' : '80px'"
+          :label-position="'left'"
         >
           <el-form-item :label="t('navbar.oldPassword')" prop="oldPassword">
             <el-input
