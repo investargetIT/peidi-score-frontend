@@ -37,7 +37,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="updateUserName"
+        prop="userName"
         :label="t('monitor.updateUserName')"
         align="center"
       />
