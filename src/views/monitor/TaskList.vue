@@ -444,7 +444,7 @@ const handleShowDetails = row => {
 const getQaListData = () => {
   getQaList().then(res => {
     if (res.code === 200) {
-      exchangeList.value = res.data;
+      exchangeList.value = [...res.data].reverse();
       // 获取用户列表
       const users = [...new Set(res.data.map(item => item.fullName))];
       userList.value = users.map(user => ({
