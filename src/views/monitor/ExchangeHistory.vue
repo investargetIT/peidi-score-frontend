@@ -36,6 +36,10 @@
       </el-form-item>
     </el-form>
 
+    <div class="flex justify-end">
+      <ExHistoryExport :exchangeList="exchangeList" />
+    </div>
+
     <el-table
       :data="exchangeList"
       class="exchange-table no-border-table"
@@ -65,7 +69,7 @@
       <el-table-column
         prop="userName"
         :label="t('redeemMonitor.userName')"
-        min-width="150"
+        min-width="180"
       >
         <template #default="scope">
           <div class="item-cell">
@@ -237,6 +241,7 @@ import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
 import Avatar from "@/assets/user.jpg";
 import { storageLocal } from "@pureadmin/utils";
+import ExHistoryExport from "./components/exHistoryExport.vue";
 
 const { t } = useI18n();
 

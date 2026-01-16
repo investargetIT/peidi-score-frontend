@@ -175,6 +175,7 @@ export default {
     pass: "Pass",
     confirmPassExchangeRecord: "Confirm Pass Exchange Record?",
     confirmRejectExchangeRecord: "Confirm Reject Exchange Record?",
-    operationSuccess: "Operation Success"
+    operationSuccess: "Operation Success",
+    upperDepartment: "Upper Department"
   }
 };

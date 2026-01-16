@@ -173,6 +173,7 @@ export default {
     pass: "通过",
     confirmPassExchangeRecord: "确认通过兑换记录吗？",
     confirmRejectExchangeRecord: "确认驳回兑换记录吗？",
-    operationSuccess: "操作成功"
+    operationSuccess: "操作成功",
+    upperDepartment: "上级部门"
   }
 };

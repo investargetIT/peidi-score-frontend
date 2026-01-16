@@ -172,3 +172,17 @@ export const getUserDataSourceApi = params => {
     params
   });
 };
+
+// 根据用户钉钉id获取上级部门列表
+export const getParentDepartmentByUser = (params: { userId: string }) => {
+  return http.request("get", "https://user.peidigroup.cn/ding/parentbyuser", {
+    params
+  });
+};
+
+// 获取部门详情
+export const getDepartmentDetail = (params: { deptId: string }) => {
+  return http.request("get", "https://user.peidigroup.cn/ding/department", {
+    params
+  });
+};
