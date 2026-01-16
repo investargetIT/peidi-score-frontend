@@ -137,30 +137,30 @@ const routes = [
       }
     ]
   },
-  {
-    path: "/redeem",
-    name: "RedeemLayout",
-    redirect: "/redeem/index",
-    component: Layout,
-    meta: {
-      icon: "ri:gift-2-line",
-      title: t("menu.redeem"),
-      rank: 3,
-      showLink: process.env.NODE_ENV === "development"
-    },
-    children: [
-      {
-        path: "/redeem/index",
-        name: "redeem",
-        component: () => import("@/views/redeem/index.vue"),
-        meta: {
-          title: t("menu.redeem"),
-          showParent: false,
-          icon: "ri:gift-2-line"
-        }
-      }
-    ]
-  },
+  // {
+  //   path: "/redeem",
+  //   name: "RedeemLayout",
+  //   redirect: "/redeem/index",
+  //   component: Layout,
+  //   meta: {
+  //     icon: "ri:gift-2-line",
+  //     title: t("menu.redeem"),
+  //     rank: 3,
+  //     showLink: process.env.NODE_ENV === "development"
+  //   },
+  //   children: [
+  //     {
+  //       path: "/redeem/index",
+  //       name: "redeem",
+  //       component: () => import("@/views/redeem/index.vue"),
+  //       meta: {
+  //         title: t("menu.redeem"),
+  //         showParent: false,
+  //         icon: "ri:gift-2-line"
+  //       }
+  //     }
+  //   ]
+  // },
   // {
   //   path: "/task",
   //   name: "TaskLayout",
