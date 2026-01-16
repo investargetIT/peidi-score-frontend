@@ -170,6 +170,11 @@ export default {
     fetchExchangeRecordFailed: "Fetch Exchange Record Failed",
     approveSuccess: "Approve Success",
     approvePass: "Approve Pass",
-    parseUserInfoFailed: "Parse User Info Failed"
+    parseUserInfoFailed: "Parse User Info Failed",
+    reject: "Reject",
+    pass: "Pass",
+    confirmPassExchangeRecord: "Confirm Pass Exchange Record?",
+    confirmRejectExchangeRecord: "Confirm Reject Exchange Record?",
+    operationSuccess: "Operation Success"
   }
 };

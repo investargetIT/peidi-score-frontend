@@ -41,11 +41,18 @@ const fetchExchangeList = () => {
         // console.log("兑换列表", res.data);
         // sourceList.value = res.data;
 
+        // 基地
+        const site = storageLocal().getItem("dataSource")?.dataSource || "";
+        // 筛选出site等于site的项
+        const filteredData = res.data.filter(
+          (item: getExchangeListItem) => item.dataSource == site
+        );
+
         // 遍历数据，根据category分类
         const temp: Record<string, getExchangeListItem[]> = {};
         // 往最前面添加一个所有分类
-        temp["所有"] = res.data;
-        res.data.forEach((item: getExchangeListItem) => {
+        temp["所有"] = filteredData;
+        filteredData.forEach((item: getExchangeListItem) => {
           if (!temp[item.category]) {
             temp[item.category] = [];
           }

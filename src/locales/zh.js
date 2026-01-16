@@ -168,6 +168,11 @@ export default {
     fetchExchangeRecordFailed: "获取兑换记录失败",
     approveSuccess: "审核成功",
     approvePass: "审核通过",
-    parseUserInfoFailed: "解析用户信息失败"
+    parseUserInfoFailed: "解析用户信息失败",
+    reject: "驳回",
+    pass: "通过",
+    confirmPassExchangeRecord: "确认通过兑换记录吗？",
+    confirmRejectExchangeRecord: "确认驳回兑换记录吗？",
+    operationSuccess: "操作成功"
   }
 };
