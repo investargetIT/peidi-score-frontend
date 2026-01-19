@@ -331,7 +331,7 @@ function initRouter() {
     ];
 
     const userId = storageLocal().getItem("dataSource")?.id;
-    if (hasPermission(userId, "redeem")) {
+    if (true) {
       temp.push({
         path: "/redeem",
         name: "RedeemLayout",
