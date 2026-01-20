@@ -176,6 +176,11 @@ export default {
     confirmPassExchangeRecord: "Confirm Pass Exchange Record?",
     confirmRejectExchangeRecord: "Confirm Reject Exchange Record?",
     operationSuccess: "Operation Success",
-    upperDepartment: "Upper Department"
+    upperDepartment: "Upper Department",
+    exportExcel: "Export Excel",
+    noDataToExport: "No data to export",
+    exportSuccess: "Export Success",
+    exportFailed: "Export Failed",
+    exportLoading: "Exporting..."
   }
 };

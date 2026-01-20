@@ -174,6 +174,11 @@ export default {
     confirmPassExchangeRecord: "确认通过兑换记录吗？",
     confirmRejectExchangeRecord: "确认驳回兑换记录吗？",
     operationSuccess: "操作成功",
-    upperDepartment: "上级部门"
+    upperDepartment: "上级部门",
+    exportExcel: "导出Excel",
+    noDataToExport: "没有数据可导出",
+    exportSuccess: "导出成功",
+    exportFailed: "导出失败",
+    exportLoading: "导出中..."
   }
 };

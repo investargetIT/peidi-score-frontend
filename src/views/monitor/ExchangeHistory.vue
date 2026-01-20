@@ -37,7 +37,7 @@
     </el-form>
 
     <div class="flex justify-end">
-      <ExHistoryExport :exchangeList="exchangeList" />
+      <ExHistoryExport />
     </div>
 
     <el-table
@@ -397,7 +397,9 @@ const fetchRecordPage = () => {
       }
     })
     .catch((err: any) => {
-      ElMessage.error(err.msg || t("redeemMonitor.fetchExchangeRecordFailed"));
+      ElMessage.error(
+        err.message || t("redeemMonitor.fetchExchangeRecordFailed")
+      );
     });
 };
 // 审核兑换记录
@@ -416,7 +418,7 @@ const fetchUpdateRecord = (data: any) => {
     })
     .catch((err: any) => {
       ElMessage.error(
-        err.msg || t("redeemMonitor.approveExchangeRecordFailed")
+        err.message || t("redeemMonitor.approveExchangeRecordFailed")
       );
     });
 };

@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import ExcelJS from "exceljs";
 import dayjs from "dayjs";
 import { storageLocal } from "@pureadmin/utils";
 import { getParentDepartmentByUser, getDepartmentDetail } from "@/api/user";
+import { getRecordPage } from "@/api/pmApi";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 interface ExchangeItem {
   id?: string;
@@ -20,26 +24,53 @@ interface ExchangeItem {
   [key: string]: any;
 }
 
-const props = defineProps({
-  exchangeList: {
-    type: Array as () => ExchangeItem[],
-    required: true
-  }
-});
+const loading = ref(false);
+const exchangeList = ref<ExchangeItem[]>([]);
+
+const fetchRecordPage = () => {
+  return getRecordPage({
+    pageNo: 1,
+    pageSize: 9999,
+    searchStr: JSON.stringify([
+      {
+        searchName: "pointTypeId",
+        searchType: "equals",
+        searchValue: '"97"'
+      }
+    ])
+  })
+    .then((res: any) => {
+      if (res.code === 200) {
+        exchangeList.value = res.data?.records || [];
+      } else {
+        ElMessage.error(res.msg);
+        loading.value = false;
+      }
+    })
+    .catch((err: any) => {
+      ElMessage.error(err.message);
+      loading.value = false;
+    });
+};
 
 // 导出Excel函数
 const handleExport = async () => {
+  loading.value = true;
+  // 先获取最新数据
+  await fetchRecordPage();
+
   // 等待格式化数据完成
   const formattedData = await formatData();
 
   // 使用格式化后的数据（如果存在）
-  const dataToExport = formattedData || props.exchangeList;
+  const dataToExport: any = formattedData || exchangeList.value;
 
   // console.log("dataToExport", dataToExport);
 
   try {
     if (!dataToExport || dataToExport.length === 0) {
-      ElMessage.warning("没有数据可导出");
+      ElMessage.warning(t("noDataToExport"));
+      loading.value = false;
       return;
     }
 
@@ -73,7 +104,7 @@ const handleExport = async () => {
         : "";
 
       // 格式化状态
-      let statusText = "";
+      let statusText: string | number = "";
       if (item.redeemReview === 1 || item.redeemReview === "1") {
         statusText = "已审核";
       } else if (item.redeemReview === 0 || item.redeemReview === "0") {
@@ -163,10 +194,12 @@ const handleExport = async () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    ElMessage.success("导出成功");
+    ElMessage.success(t("exportSuccess"));
+    loading.value = false;
   } catch (error) {
-    console.error("导出失败:", error);
-    ElMessage.error("导出失败，请重试");
+    console.error(t("exportFailed"), error);
+    ElMessage.error(t("exportFailed") + ": " + error);
+    loading.value = false;
   }
 };
 
@@ -176,11 +209,11 @@ const formatData = async () => {
 
   // 如果不是杭州佩蒂站点，直接返回原数据
   if (site !== "3") {
-    return props.exchangeList;
+    return exchangeList.value;
   }
 
   const message = ElMessage({
-    message: "导出中...",
+    message: t("exportLoading"),
     type: "info",
     duration: 0
   });
@@ -188,7 +221,7 @@ const formatData = async () => {
   const department = {};
 
   // 创建所有异步请求的Promise数组
-  const promises = props.exchangeList.map(async item => {
+  const promises = exchangeList.value.map(async item => {
     if (!item.dingId) {
       // 如果没有dingId，直接返回原项目
       return { ...item };
@@ -196,7 +229,7 @@ const formatData = async () => {
 
     try {
       // 获取用户部门
-      const parentRes = await getParentDepartmentByUser({
+      const parentRes: any = await getParentDepartmentByUser({
         userId: item.dingId
       });
 
@@ -212,7 +245,7 @@ const formatData = async () => {
         }
 
         // 获取部门详情
-        const deptRes = await getDepartmentDetail({ deptId });
+        const deptRes: any = await getDepartmentDetail({ deptId });
 
         if (deptRes.data) {
           // 缓存部门信息
@@ -243,15 +276,16 @@ const formatData = async () => {
     console.error("格式化数据失败:", error);
     message.close();
     // 出错时返回原数据
-    return props.exchangeList;
+    return exchangeList;
   }
 };
 </script>
 
 <template>
   <div>
-    <el-button type="primary" @click="handleExport">
-      <el-icon class="el-icon--right"><Upload /></el-icon> 导出Excel
+    <el-button type="primary" @click="handleExport" :loading="loading">
+      <el-icon class="el-icon--right"><Upload /></el-icon>
+      {{ t("redeemMonitor.exportExcel") }}
     </el-button>
   </div>
 </template>
