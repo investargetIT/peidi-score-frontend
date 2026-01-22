@@ -142,7 +142,8 @@ export default {
     redeemListFailed: "Redeem List Failed",
     getUserInfoFailed: "Get User Info Failed",
     userNotFound: "User Not Found",
-    redeemTitle: "Redeem Points"
+    redeemTitle: "Redeem Points",
+    redeemEnded: "Redeem Ended"
   },
   redeemMonitor: {
     title: "Redeem History",

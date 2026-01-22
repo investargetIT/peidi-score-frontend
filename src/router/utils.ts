@@ -33,6 +33,7 @@ const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
 // 动态路由
 import { getAsyncRoutes } from "@/api/routes";
 import { hasPermission } from "../utils/permissionSettings";
+import dayjs from "dayjs";
 
 function handRank(routeInfo: any) {
   const { name, path, parentId, meta } = routeInfo;
@@ -331,7 +332,7 @@ function initRouter() {
     ];
 
     const userId = storageLocal().getItem("dataSource")?.id;
-    if (true) {
+    if (dayjs().isBefore("2026-01-26 00:00:00")) {
       temp.push({
         path: "/redeem",
         name: "RedeemLayout",

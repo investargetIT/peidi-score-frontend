@@ -140,7 +140,8 @@ export default {
     redeemListFailed: "获取兑换列表失败",
     getUserInfoFailed: "获取用户信息失败",
     userNotFound: "用户不存在",
-    redeemTitle: "积分兑换"
+    redeemTitle: "积分兑换",
+    redeemEnded: "兑换已结束"
   },
   redeemMonitor: {
     title: "兑换历史",

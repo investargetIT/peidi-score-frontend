@@ -13,6 +13,7 @@ import { message } from "@/utils/message";
 import { storageLocal } from "@pureadmin/utils";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
+import dayjs from "dayjs";
 
 const { t } = useI18n();
 
@@ -122,6 +123,11 @@ const updateUserPoints = (ruleId: number | string) => {
 
 // 兑换商品
 const handleRedeem = (item: getExchangeListItem) => {
+  if (dayjs().isAfter("2026-01-26 00:00:00")) {
+    message(t("redeem.redeemEnded"), { type: "error" });
+    return;
+  }
+
   // 检查用户积分是否足够
   if (points.value[1] < -item.pointsChange) {
     message(t("redeem.pointsNotEnough"), { type: "error" });
