@@ -177,6 +177,11 @@
     "noDataToExport": "没有数据可导出",
     "exportSuccess": "导出成功",
     "exportFailed": "导出失败",
-    "exportLoading": "导出中..."
+    "exportLoading": "导出中...",
+    "batchPass": "批量通过当前页申请",
+    "confirmBatchPass": "是否确认批量通过当前页待审核的兑换记录？",
+    "batchPassSuccess": "批量通过成功",
+    "batchPassFailed": "批量通过失败",
+    "noPendingRecords": "当前页暂无待审核记录"
   }
 }

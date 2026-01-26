@@ -177,6 +177,11 @@
     "noDataToExport": "No data to export",
     "exportSuccess": "Export Success",
     "exportFailed": "Export Failed",
-    "exportLoading": "Exporting..."
+    "exportLoading": "Exporting...",
+    "batchPass": "Batch Pass Current Page",
+    "confirmBatchPass": "Are you sure you want to pass the selected exchange records on the current page?",
+    "batchPassSuccess": "Batch Pass Success",
+    "batchPassFailed": "Batch Pass Failed",
+    "noPendingRecords": "Current page has no pending records"
   }
 }

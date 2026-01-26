@@ -37,7 +37,13 @@
     </el-form>
 
     <div class="flex justify-end">
-      <ExHistoryExport />
+      <Space>
+        <el-button color="#059669" @click="handleBatchPass">
+          <el-icon class="el-icon--right"><Check /></el-icon>
+          {{ t("redeemMonitor.batchPass") }}
+        </el-button>
+        <ExHistoryExport />
+      </Space>
     </div>
 
     <el-table
@@ -247,11 +253,8 @@ const { t } = useI18n();
 
 const exchangeList = ref([]);
 
-// 点击审核
-const handleReview = (row: any, status: "approvePass" | "reject") => {
-  // 获取当前用户信息
-  // const dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
-  // console.log("审核兑换记录", row, dataSource?.id);
+// 解析用户信息
+const parseDataSource = () => {
   let dataSource: { id?: string | number; username?: string } = {};
   try {
     dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
@@ -261,6 +264,20 @@ const handleReview = (row: any, status: "approvePass" | "reject") => {
 
   if (!dataSource?.id) {
     ElMessage.warning(t("redeemMonitor.parseUserInfoFailed"));
+    return null;
+  }
+
+  return dataSource;
+};
+
+// 点击审核
+const handleReview = (row: any, status: "approvePass" | "reject") => {
+  // 获取当前用户信息
+  // const dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
+  // console.log("审核兑换记录", row, dataSource?.id);
+
+  const dataSource = parseDataSource();
+  if (!dataSource) {
     return;
   }
 
@@ -330,7 +347,7 @@ const handleSearch = () => {
   fetchRecordPage();
 };
 const handleSearchStr = () => {
-  const dataSource = storageLocal().getItem("dataSource")?.dataSource;
+  const dataSource = (storageLocal().getItem("dataSource") as any)?.dataSource;
   const searchStr = [
     {
       searchName: "pointTypeId",
@@ -430,6 +447,61 @@ onMounted(() => {
 
 // 监听分页参数变化
 watch(() => [pagination.pageNo, pagination.pageSize], fetchRecordPage);
+
+// 批量通过
+const handleBatchPass = () => {
+  const dataSource = parseDataSource();
+  if (!dataSource) {
+    return;
+  }
+
+  ElMessageBox.confirm(
+    `${t("redeemMonitor.confirmBatchPass")}`,
+    t("redeemMonitor.pass"),
+    {
+      confirmButtonText: t("redeemMonitor.confirm"),
+      cancelButtonText: t("redeemMonitor.cancel"),
+      type: "warning"
+    }
+  )
+    .then(async () => {
+      // 获取所有待审核的记录
+      const pendingItems = exchangeList.value.filter(
+        (item: any) => item.redeemReview === 0
+      );
+
+      if (pendingItems.length === 0) {
+        ElMessage.warning(t("redeemMonitor.noPendingRecords"));
+        return;
+      }
+
+      try {
+        // 创建所有请求的Promise数组
+        const requests = pendingItems.map((item: any) => {
+          return updateRecord({
+            id: item.id,
+            redeemReview: 1,
+            redeemReviewUserId: dataSource?.id
+          });
+        });
+
+        // 等待所有请求完成
+        await Promise.all(requests);
+
+        // 所有请求完成后显示成功提示
+        ElMessage.success(
+          t("redeemMonitor.batchPassSuccess", { count: pendingItems.length })
+        );
+
+        // 刷新列表
+        fetchRecordPage();
+      } catch (error) {
+        // 如果有请求失败，显示错误提示
+        ElMessage.error(t("redeemMonitor.batchPassFailed"));
+      }
+    })
+    .catch(() => {});
+};
 </script>
 
 <style scoped>

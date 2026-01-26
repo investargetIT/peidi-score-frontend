@@ -205,7 +205,7 @@ const handleExport = async () => {
 
 // 格式化数据
 const formatData = async () => {
-  const site = storageLocal().getItem("dataSource")?.dataSource;
+  const site = (storageLocal().getItem("dataSource") as any)?.dataSource;
 
   // 如果不是杭州佩蒂站点，直接返回原数据
   if (site !== "3") {
@@ -309,10 +309,8 @@ const formatData = async () => {
 </script>
 
 <template>
-  <div>
-    <el-button type="primary" @click="handleExport" :loading="loading">
-      <el-icon class="el-icon--right"><Upload /></el-icon>
-      {{ t("redeemMonitor.exportExcel") }}
-    </el-button>
-  </div>
+  <el-button type="primary" @click="handleExport" :loading="loading">
+    <el-icon class="el-icon--right"><Upload /></el-icon>
+    {{ t("redeemMonitor.exportExcel") }}
+  </el-button>
 </template>
