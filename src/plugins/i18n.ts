@@ -1,7 +1,7 @@
 // i18n/index.ts
 
-import en from "@/locales/en";
-import zh from "@/locales/zh";
+import en from "@/locales/en.json";
+import zh from "@/locales/zh.json";
 import { createI18n } from "vue-i18n";
 
 const lang = localStorage.getItem("lang") || "zh";

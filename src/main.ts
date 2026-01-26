@@ -21,8 +21,8 @@ import "element-plus/dist/index.css";
 // 导入字体图标
 import "./assets/iconfont/iconfont.js";
 import "./assets/iconfont/iconfont.css";
-import en from "./locales/en";
-import zh from "./locales/zh";
+import en from "./locales/en.json";
+import zh from "./locales/zh.json";
 import { createI18n } from "vue-i18n";
 
 // 导入自定义el-tabs样式

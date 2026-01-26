@@ -69,7 +69,7 @@ const handleExport = async () => {
 
   try {
     if (!dataToExport || dataToExport.length === 0) {
-      ElMessage.warning(t("noDataToExport"));
+      ElMessage.warning(t("redeemMonitor.noDataToExport"));
       loading.value = false;
       return;
     }
@@ -194,11 +194,11 @@ const handleExport = async () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    ElMessage.success(t("exportSuccess"));
+    ElMessage.success(t("redeemMonitor.exportSuccess"));
     loading.value = false;
   } catch (error) {
-    console.error(t("exportFailed"), error);
-    ElMessage.error(t("exportFailed") + ": " + error);
+    console.error(t("redeemMonitor.exportFailed"), error);
+    ElMessage.error(t("redeemMonitor.exportFailed") + ": " + error);
     loading.value = false;
   }
 };
@@ -213,70 +213,97 @@ const formatData = async () => {
   }
 
   const message = ElMessage({
-    message: t("exportLoading"),
+    message: t("redeemMonitor.exportLoading"),
     type: "info",
     duration: 0
   });
 
   const department = {};
 
-  // 创建所有异步请求的Promise数组
-  const promises = exchangeList.value.map(async item => {
-    if (!item.dingId) {
-      // 如果没有dingId，直接返回原项目
-      return { ...item };
-    }
+  // 分批处理函数 - 控制并发数量
+  const processBatch = async (batch: any[], batchSize: number = 10) => {
+    const results = [];
 
-    try {
-      // 获取用户部门
-      const parentRes: any = await getParentDepartmentByUser({
-        userId: item.dingId
+    for (let i = 0; i < batch.length; i += batchSize) {
+      const currentBatch = batch.slice(i, i + batchSize);
+
+      // 处理当前批次
+      const batchPromises = currentBatch.map(async item => {
+        let upperDepartment = ""; // 默认空字符串
+
+        if (!item.dingId) {
+          // 如果没有dingId，返回带空部门的项目
+          return {
+            ...item,
+            upperDepartment: ""
+          };
+        }
+
+        try {
+          // 获取用户部门
+          const parentRes: any = await getParentDepartmentByUser({
+            userId: item.dingId
+          });
+
+          if (parentRes.data?.parent_list?.length) {
+            const deptId =
+              parentRes.data.parent_list[0]?.parent_dept_id_list?.[0];
+
+            if (department[deptId]) {
+              // 如果部门信息已缓存，直接使用
+              upperDepartment = department[deptId];
+            } else {
+              // 获取部门详情
+              const deptRes: any = await getDepartmentDetail({ deptId });
+
+              if (deptRes.data) {
+                // 缓存部门信息
+                department[deptId] = deptRes.data.name;
+                upperDepartment = deptRes.data.name;
+              }
+            }
+          }
+
+          // 返回带部门信息的项目
+          return {
+            ...item,
+            upperDepartment: upperDepartment
+          };
+        } catch (error) {
+          console.error(`获取用户 ${item.userName} 部门信息失败:`, error);
+          // 出错时返回带空部门的项目
+          return {
+            ...item,
+            upperDepartment: ""
+          };
+        }
       });
 
-      if (parentRes.data?.parent_list?.length) {
-        const deptId = parentRes.data.parent_list[0]?.parent_dept_id_list?.[0];
+      // 等待当前批次完成，并添加延迟避免请求过快
+      const batchResults = await Promise.all(batchPromises);
+      results.push(...batchResults);
 
-        if (department[deptId]) {
-          // 如果部门信息已缓存，直接使用
-          return {
-            ...item,
-            upperDepartment: department[deptId]
-          };
-        }
-
-        // 获取部门详情
-        const deptRes: any = await getDepartmentDetail({ deptId });
-
-        if (deptRes.data) {
-          // 缓存部门信息
-          department[deptId] = deptRes.data.name;
-          return {
-            ...item,
-            upperDepartment: deptRes.data.name
-          };
-        }
+      // 批次间延迟，避免对服务器造成过大压力
+      if (i + batchSize < batch.length) {
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
-
-      // 如果获取部门信息失败，返回原项目
-      return { ...item };
-    } catch (error) {
-      console.error(`获取用户 ${item.userName} 部门信息失败:`, error);
-      // 出错时返回原项目
-      return { ...item };
     }
-  });
 
-  // 等待所有异步操作完成
+    return results;
+  };
+
   try {
-    const results = await Promise.all(promises);
-    // console.log("格式化后的数据:", results);
+    const results = await processBatch(exchangeList.value, 10); // 每批10个请求
     message.close();
     return results;
   } catch (error) {
     console.error("格式化数据失败:", error);
     message.close();
-    // 出错时返回原数据
-    return exchangeList;
+    // 出错时返回带空部门信息的原数据
+    return exchangeList.value.map(item => ({
+      ...item,
+      upperDepartment: ""
+    }));
   }
 };
 </script>
