@@ -567,6 +567,37 @@
                 placeholder="【提示】伊利双碳案例入选了《中国落实2030年可持续发展议程进展报告（2023）》，是唯一一家入选的食品企业,也是伊利第三次入选该报告；伊利成功入选“中国ESG上市公司先锋100”榜单，ESG指数排名位于中国食品行业第一，ESG表现处于五星级水平，是上市公司ESG发展的卓越者；伊利荣获“乳制品行业社会责任发展指数（2023）第一；伊利入选中国上市公司协会2023年“上市公司ESG最佳实践案例。——《伊利股份2023年可持续发展报告》"
               />
             </el-form-item>
+            <el-form-item
+              label="附件上传"
+              prop="honorsAndRecognitionDescriptionFileList"
+            >
+              <el-upload
+                class="upload-area"
+                v-model:file-list="
+                  formData.honorsAndRecognitionDescriptionFileList
+                "
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="
+                  handleUploadSuccess('honorsAndRecognitionDescriptionFileList')
+                "
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".doc,.docx,.xls,.xlsx"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">支持上传word文档或excel表格</div>
+                </template>
+              </el-upload>
+            </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
@@ -709,6 +740,8 @@ const formData = ref({
   associationMembershipFileList: [], // 附件列表
   // 荣誉认可
   honorsAndRecognitionDescription: "", // 荣誉认可描述
+  honorsAndRecognitionDescriptionFileList: [], // 附件列表
+
   // 公司年度重大事件
   annualMajorEventsFileList: [] // 附件列表
 });

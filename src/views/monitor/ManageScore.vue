@@ -159,18 +159,13 @@
     width="420px"
     :close-on-click-modal="false"
   >
-    <el-form :model="infoDialogForm" label-width="100px">
-      <el-form-item
-        :label="t('monitor.education')"
-        prop="education"
-        :rules="[
-          {
-            required: true,
-            message: t('monitor.pleaseSelectEducation'),
-            trigger: 'blur'
-          }
-        ]"
-      >
+    <el-form
+      :model="infoDialogForm"
+      label-width="100px"
+      ref="infoDialogFormRef"
+      :rules="infoDialogRules"
+    >
+      <el-form-item :label="t('monitor.education')" prop="education">
         <el-select
           v-model="infoDialogForm.education"
           :placeholder="t('monitor.pleaseSelectEducation')"
@@ -184,17 +179,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="t('monitor.hiredDate')"
-        prop="employment"
-        :rules="[
-          {
-            required: true,
-            message: t('monitor.pleaseSelectHiredDate'),
-            trigger: 'blur'
-          }
-        ]"
-      >
+      <el-form-item :label="t('monitor.hiredDate')" prop="employment">
         <el-date-picker
           v-model="infoDialogForm.employment"
           type="date"
@@ -207,7 +192,7 @@
       <div class="dialog-footer">
         <el-button
           type="primary"
-          @click="handleInfoDialogSubmit"
+          @click="handleInfoDialogSubmit(infoDialogFormRef)"
           :loading="infoLoading"
         >
           {{ t("monitor.updateInfo") }}
@@ -402,12 +387,29 @@ fetchPointRuleList();
 
 //#region 调整学历或入职日期逻辑
 const infoLoading = ref(false);
-const validEducation = ref(""); // 有效学历
+const validEducation = ref([]); // 有效学历
 const infoDialogVisible = ref(false);
 const infoDialogForm = reactive({
   education: "",
   employment: ""
 });
+const infoDialogRules = reactive({
+  education: [
+    {
+      required: true,
+      message: t("monitor.pleaseSelectEducation"),
+      trigger: "blur"
+    }
+  ],
+  employment: [
+    {
+      required: true,
+      message: t("monitor.pleaseSelectHiredDate"),
+      trigger: "blur"
+    }
+  ]
+});
+const infoDialogFormRef = ref(null);
 watch(
   () => props.employee,
   val => {
@@ -421,28 +423,35 @@ watch(
 const showInfoDialog = () => {
   infoDialogVisible.value = true;
 };
-const handleInfoDialogSubmit = () => {
-  infoLoading.value = true;
-  updateUserInfo({
-    ...props.employee,
-    education: infoDialogForm.education,
-    hireDate: dayjs(infoDialogForm.employment).format("YYYY-MM-DD")
-  })
-    .then(async res => {
-      if (res?.code === 200) {
-        ElMessage.success(t("monitor.updateUserInfoSuccess"));
-        infoDialogVisible.value = false;
-        const list = await props.fetchUserListData();
-      } else {
-        ElMessage.error(res?.msg || t("monitor.updateUserInfoFailed"));
-      }
-    })
-    .catch(err => {
-      ElMessage.error(err?.msg || t("monitor.updateUserInfoFailed"));
-    })
-    .finally(() => {
-      infoLoading.value = false;
-    });
+const handleInfoDialogSubmit = async formEl => {
+  if (!formEl) return;
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      infoLoading.value = true;
+      updateUserInfo({
+        ...props.employee,
+        education: infoDialogForm.education,
+        hireDate: dayjs(infoDialogForm.employment).format("YYYY-MM-DD")
+      })
+        .then(async res => {
+          if (res?.code === 200) {
+            ElMessage.success(t("monitor.updateUserInfoSuccess"));
+            infoDialogVisible.value = false;
+            const list = await props.fetchUserListData();
+          } else {
+            ElMessage.error(res?.msg || t("monitor.updateUserInfoFailed"));
+          }
+        })
+        .catch(err => {
+          ElMessage.error(err?.msg || t("monitor.updateUserInfoFailed"));
+        })
+        .finally(() => {
+          infoLoading.value = false;
+        });
+    } else {
+      console.log("error submit!", fields);
+    }
+  });
 };
 // 获取学历枚举方法
 const fetchEducationEnum = () => {

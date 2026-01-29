@@ -36,6 +36,16 @@
       </el-form-item>
     </el-form>
 
+    <div class="flex justify-end">
+      <Space>
+        <el-button color="#059669" @click="handleBatchPass">
+          <el-icon class="el-icon--right"><Check /></el-icon>
+          {{ t("redeemMonitor.batchPass") }}
+        </el-button>
+        <ExHistoryExport />
+      </Space>
+    </div>
+
     <el-table
       :data="exchangeList"
       class="exchange-table no-border-table"
@@ -65,13 +75,13 @@
       <el-table-column
         prop="userName"
         :label="t('redeemMonitor.userName')"
-        min-width="220"
+        min-width="180"
       >
         <template #default="scope">
           <div class="item-cell">
             <el-avatar
               :size="32"
-              :src="scope.row.avatarUrl"
+              :src="scope.row.avatarUrl || Avatar"
               style="margin-right: 16px"
             />
             <span
@@ -84,7 +94,7 @@
       <el-table-column
         prop="remark"
         :label="t('redeemMonitor.itemName')"
-        min-width="300"
+        min-width="250"
       />
       <el-table-column
         prop="pointsChange"
@@ -158,12 +168,35 @@
       <el-table-column
         prop="operation"
         :label="t('redeemMonitor.operation')"
-        width="120"
+        width="250"
       >
         <template #default="scope">
           <button
             v-if="!scope.row.redeemReview"
-            @click="handleReview(scope.row)"
+            @click="handleReview(scope.row, 'reject')"
+            class="mr-[10px] ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-red-600 hover:bg-red-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-x h-4 w-4"
+            >
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+            {{ t("redeemMonitor.reject") }}
+          </button>
+
+          <button
+            v-if="!scope.row.redeemReview"
+            @click="handleReview(scope.row, 'approvePass')"
             class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-green-600 hover:bg-green-700"
           >
             <svg
@@ -180,7 +213,7 @@
             >
               <path d="M20 6 9 17 4 12"></path>
             </svg>
-            {{ t("redeemMonitor.approve") }}
+            {{ t("redeemMonitor.pass") }}
           </button>
 
           <!-- <el-button
@@ -212,33 +245,79 @@ import dayjs from "dayjs";
 import { ElMessageBox } from "element-plus";
 import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
+import Avatar from "@/assets/user.jpg";
+import { storageLocal } from "@pureadmin/utils";
+import ExHistoryExport from "./components/exHistoryExport.vue";
 
 const { t } = useI18n();
 
 const exchangeList = ref([]);
 
+// 解析用户信息
+const parseDataSource = () => {
+  let dataSource: { id?: string | number; username?: string } = {};
+  try {
+    dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
+  } catch (e) {
+    console.warn("解析用户信息失败:", e);
+  }
+
+  if (!dataSource?.id) {
+    ElMessage.warning(t("redeemMonitor.parseUserInfoFailed"));
+    return null;
+  }
+
+  return dataSource;
+};
+
 // 点击审核
-const handleReview = (row: any) => {
+const handleReview = (row: any, status: "approvePass" | "reject") => {
   // 获取当前用户信息
-  const dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
+  // const dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
   // console.log("审核兑换记录", row, dataSource?.id);
-  ElMessageBox.confirm(
-    `${t("redeemMonitor.confirmApproveExchangeRecord")} 【${row.userName} - ${row.remark}】？`,
-    t("redeemMonitor.approvePass"),
-    {
-      confirmButtonText: t("redeemMonitor.confirm"),
-      cancelButtonText: t("redeemMonitor.cancel"),
-      type: "warning"
-    }
-  )
-    .then(() => {
-      fetchUpdateRecord({
-        id: row.id,
-        redeemReview: 1,
-        redeemReviewUserId: dataSource?.id
-      });
-    })
-    .catch(() => {});
+
+  const dataSource = parseDataSource();
+  if (!dataSource) {
+    return;
+  }
+
+  if (status === "approvePass") {
+    ElMessageBox.confirm(
+      `${t("redeemMonitor.confirmPassExchangeRecord")} 【${row.userName} - ${row.remark}】`,
+      t("redeemMonitor.pass"),
+      {
+        confirmButtonText: t("redeemMonitor.confirm"),
+        cancelButtonText: t("redeemMonitor.cancel"),
+        type: "warning"
+      }
+    )
+      .then(() => {
+        fetchUpdateRecord({
+          id: row.id,
+          redeemReview: 1,
+          redeemReviewUserId: dataSource?.id
+        });
+      })
+      .catch(() => {});
+  } else if (status === "reject") {
+    ElMessageBox.confirm(
+      `${t("redeemMonitor.confirmRejectExchangeRecord")} 【${row.userName} - ${row.remark}】？`,
+      t("redeemMonitor.reject"),
+      {
+        confirmButtonText: t("redeemMonitor.confirm"),
+        cancelButtonText: t("redeemMonitor.cancel"),
+        type: "warning"
+      }
+    )
+      .then(() => {
+        fetchUpdateRecord({
+          id: row.id,
+          redeemReview: 2,
+          redeemReviewUserId: dataSource?.id
+        });
+      })
+      .catch(() => {});
+  }
 };
 
 //#region 分页逻辑
@@ -268,11 +347,17 @@ const handleSearch = () => {
   fetchRecordPage();
 };
 const handleSearchStr = () => {
+  const dataSource = (storageLocal().getItem("dataSource") as any)?.dataSource;
   const searchStr = [
     {
       searchName: "pointTypeId",
       searchType: "equals",
       searchValue: '"97"'
+    },
+    {
+      searchName: "dataSource",
+      searchType: "equals",
+      searchValue: `"${dataSource}"`
     }
   ];
   if (searchForm.userName) {
@@ -329,7 +414,9 @@ const fetchRecordPage = () => {
       }
     })
     .catch((err: any) => {
-      ElMessage.error(err.msg || t("redeemMonitor.fetchExchangeRecordFailed"));
+      ElMessage.error(
+        err.message || t("redeemMonitor.fetchExchangeRecordFailed")
+      );
     });
 };
 // 审核兑换记录
@@ -338,7 +425,7 @@ const fetchUpdateRecord = (data: any) => {
     .then((res: any) => {
       if (res.code === 200) {
         // console.log("审核兑换记录", res.data || []);
-        ElMessage.success(t("redeemMonitor.approveSuccess"));
+        ElMessage.success(t("redeemMonitor.operationSuccess"));
         fetchRecordPage();
       } else {
         ElMessage.error(
@@ -348,7 +435,7 @@ const fetchUpdateRecord = (data: any) => {
     })
     .catch((err: any) => {
       ElMessage.error(
-        err.msg || t("redeemMonitor.approveExchangeRecordFailed")
+        err.message || t("redeemMonitor.approveExchangeRecordFailed")
       );
     });
 };
@@ -360,6 +447,61 @@ onMounted(() => {
 
 // 监听分页参数变化
 watch(() => [pagination.pageNo, pagination.pageSize], fetchRecordPage);
+
+// 批量通过
+const handleBatchPass = () => {
+  const dataSource = parseDataSource();
+  if (!dataSource) {
+    return;
+  }
+
+  ElMessageBox.confirm(
+    `${t("redeemMonitor.confirmBatchPass")}`,
+    t("redeemMonitor.pass"),
+    {
+      confirmButtonText: t("redeemMonitor.confirm"),
+      cancelButtonText: t("redeemMonitor.cancel"),
+      type: "warning"
+    }
+  )
+    .then(async () => {
+      // 获取所有待审核的记录
+      const pendingItems = exchangeList.value.filter(
+        (item: any) => item.redeemReview === 0
+      );
+
+      if (pendingItems.length === 0) {
+        ElMessage.warning(t("redeemMonitor.noPendingRecords"));
+        return;
+      }
+
+      try {
+        // 创建所有请求的Promise数组
+        const requests = pendingItems.map((item: any) => {
+          return updateRecord({
+            id: item.id,
+            redeemReview: 1,
+            redeemReviewUserId: dataSource?.id
+          });
+        });
+
+        // 等待所有请求完成
+        await Promise.all(requests);
+
+        // 所有请求完成后显示成功提示
+        ElMessage.success(
+          t("redeemMonitor.batchPassSuccess", { count: pendingItems.length })
+        );
+
+        // 刷新列表
+        fetchRecordPage();
+      } catch (error) {
+        // 如果有请求失败，显示错误提示
+        ElMessage.error(t("redeemMonitor.batchPassFailed"));
+      }
+    })
+    .catch(() => {});
+};
 </script>
 
 <style scoped>

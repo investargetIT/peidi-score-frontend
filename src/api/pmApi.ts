@@ -233,6 +233,7 @@ export const addScoreAction = data => {
 };
 
 export interface getExchangeListItem {
+  dataSource: number;
   category: string;
   id: number;
   imageUrl: string;

@@ -294,7 +294,7 @@ defineExpose({
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   padding: 24px;
   overflow-y: auto;
 }

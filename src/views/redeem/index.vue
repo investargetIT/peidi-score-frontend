@@ -13,6 +13,7 @@ import { message } from "@/utils/message";
 import { storageLocal } from "@pureadmin/utils";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
+import dayjs from "dayjs";
 
 const { t } = useI18n();
 
@@ -41,11 +42,18 @@ const fetchExchangeList = () => {
         // console.log("兑换列表", res.data);
         // sourceList.value = res.data;
 
+        // 基地
+        const site = storageLocal().getItem("dataSource")?.dataSource || "";
+        // 筛选出site等于site的项
+        const filteredData = res.data.filter(
+          (item: getExchangeListItem) => item.dataSource == site
+        );
+
         // 遍历数据，根据category分类
         const temp: Record<string, getExchangeListItem[]> = {};
         // 往最前面添加一个所有分类
-        temp["所有"] = res.data;
-        res.data.forEach((item: getExchangeListItem) => {
+        temp["所有"] = filteredData;
+        filteredData.forEach((item: getExchangeListItem) => {
           if (!temp[item.category]) {
             temp[item.category] = [];
           }
@@ -115,6 +123,11 @@ const updateUserPoints = (ruleId: number | string) => {
 
 // 兑换商品
 const handleRedeem = (item: getExchangeListItem) => {
+  if (dayjs().isAfter("2026-01-26 00:00:00")) {
+    message(t("redeem.redeemEnded"), { type: "error" });
+    return;
+  }
+
   // 检查用户积分是否足够
   if (points.value[1] < -item.pointsChange) {
     message(t("redeem.pointsNotEnough"), { type: "error" });

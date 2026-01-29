@@ -45,7 +45,7 @@ const getImageUrl = (imagePath: string) => {
           :src="getImageUrl(item.imageUrl)"
           :fit="'cover'"
         />
-        <div class="text-[14px] font-[500] text-[#0a0a0a] mb-[8px]">
+        <div class="text-[15px] font-[500] text-[#0a0a0a] mb-[0px] h-[50px]">
           {{ item.title }}
         </div>
         <div class="mb-[16px]">
