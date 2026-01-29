@@ -182,6 +182,7 @@
     "confirmBatchPass": "是否确认批量通过当前页待审核的兑换记录？",
     "batchPassSuccess": "批量通过成功",
     "batchPassFailed": "批量通过失败",
-    "noPendingRecords": "当前页暂无待审核记录"
+    "noPendingRecords": "当前页暂无待审核记录",
+    "batchPassPartial": "批量通过成功{count}条，失败{failed}条"
   }
 }

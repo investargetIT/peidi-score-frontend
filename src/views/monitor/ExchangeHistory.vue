@@ -485,13 +485,27 @@ const handleBatchPass = () => {
           });
         });
 
-        // 等待所有请求完成
-        await Promise.all(requests);
+        // 使用 Promise.allSettled 等待所有请求完成（无论成功或失败）
+        const results = await Promise.allSettled(requests);
 
-        // 所有请求完成后显示成功提示
-        ElMessage.success(
-          t("redeemMonitor.batchPassSuccess", { count: pendingItems.length })
-        );
+        const succeeded = results.filter(r => r.status === "fulfilled").length;
+        const failed = results.filter(r => r.status === "rejected").length;
+
+        // 根据结果情况显示不同的消息
+        if (succeeded > 0 && failed === 0) {
+          // 全部成功
+          ElMessage.success(
+            t("redeemMonitor.batchPassSuccess", { count: succeeded })
+          );
+        } else if (succeeded > 0 && failed > 0) {
+          // 部分成功
+          ElMessage.warning(
+            t("redeemMonitor.batchPassPartial", { succeeded, failed })
+          );
+        } else if (succeeded === 0 && failed > 0) {
+          // 全部失败
+          ElMessage.error(t("redeemMonitor.batchPassFailed"));
+        }
 
         // 刷新列表
         fetchRecordPage();

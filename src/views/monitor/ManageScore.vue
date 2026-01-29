@@ -458,7 +458,7 @@ const fetchEducationEnum = () => {
   getEnumTypeList({ type: "education" })
     .then(res => {
       if (res?.code === 200) {
-        validEducation.value = res?.data || "";
+        validEducation.value = res?.data || [];
       } else {
         ElMessage.error(res?.msg || t("monitor.fetchEducationEnumFailed"));
       }
