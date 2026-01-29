@@ -4,6 +4,7 @@ import { ElMessage } from "element-plus";
 import { onMounted, reactive, ref } from "vue";
 import { updateUserPassword } from "../../api/user";
 import { useNav } from "@/layout/hooks/useNav";
+import { emitter } from "@/utils/mitt"; // 添加mitt导入
 
 const { getLogo } = useNav();
 
@@ -22,6 +23,9 @@ const handleExit = () => {
 };
 
 onMounted(() => {
+  emitter.on("logout", () => {
+    handleExit(); // 使用现有的退出逻辑
+  });
   // 从localStorage中获取用户名 dataSource对象里的username
   const dataSource = JSON.parse(localStorage.getItem("dataSource") || "{}");
   if (dataSource.username) {
