@@ -544,7 +544,7 @@ Wind评级"
             <el-form-item label="审计委员会独立性">
               <template #label>
                 <div>
-                  <span> 董事会独立性声明 </span>
+                  <span> 审计委员会独立性 </span>
                   <EsgTooltip
                     content="1.声明或计划建立完全由非执行董事或独立董事组成的董事会审计委员会<br> 2.当前审计委员会非执行董事或独立董事数量及占比"
                   />
