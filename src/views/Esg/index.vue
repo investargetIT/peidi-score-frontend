@@ -1,3 +1,28 @@
+<template>
+  <div class="pd-esg-container">
+    <div class="pd-esg-bg"></div>
+    <div class="pd-esg-overlay"></div>
+    <div class="pd-esg-content">
+      <div class="pd-esg-title">佩蒂股份</div>
+      <div class="pd-esg-subtitle">可持续发展数据管理平台</div>
+      <div class="pd-esg-english">
+        Sustainable Development Data Management Platform
+      </div>
+    </div>
+    <div class="pd-esg-button-container">
+      <el-button class="pd-esg-button" @click="handleClickFillIn"
+        >开始填报</el-button
+      >
+      <el-button
+        class="pd-esg-button"
+        @click="handleClickReport"
+        style="margin-left: 0"
+        >历年报告</el-button
+      >
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 const router = useRouter();
@@ -6,33 +31,16 @@ const handleClickFillIn = () => {
   router.push("/pdesg/fillin");
 };
 const handleClickReport = () => {
-  window.open(" https://www.peidibrand.com/sustainable-development", "_blank");
+  window.open("https://www.peidibrand.com/sustainable-development", "_blank");
 };
 </script>
 
-<template>
-  <div class="pd-esg-container">
-    <div class="pd-esg-bg"></div>
-    <div class="pd-esg-overlay"></div>
-    <div class="pd-esg-content">佩蒂股份可持续发展数据管理平台</div>
-    <div class="pd-esg-button-container">
-      <el-button
-        color="#A6B7DE"
-        class="pd-esg-button"
-        @click="handleClickFillIn"
-        >开始填报</el-button
-      >
-      <el-button
-        color="#E2F1EE"
-        class="pd-esg-button"
-        @click="handleClickReport"
-        >历年报告</el-button
-      >
-    </div>
-  </div>
-</template>
-
 <style lang="scss" scoped>
+.pd-esg-container {
+  position: relative;
+  min-height: 100vh;
+}
+
 .pd-esg-bg {
   position: fixed;
   top: 0;
@@ -54,37 +62,61 @@ const handleClickReport = () => {
   z-index: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(0 0 0 / 20%); // 黑色半透明遮罩
-  backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px); // 模糊效果 // Safari兼容
+  background-color: rgb(0 0 0 / 25%);
 }
 
 .pd-esg-content {
   position: relative;
   z-index: 1;
-  padding-top: 20vh;
+  padding-top: 180px;
+  padding-left: 150px;
+}
+
+.pd-esg-title {
+  margin-bottom: 15px;
+  font-size: 72px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgb(0 0 0 / 50%);
+}
+
+.pd-esg-subtitle {
+  margin-bottom: 25px;
   font-size: 48px;
   color: white;
-  text-align: center;
-  text-shadow: 2px 2px 4px rgb(0 0 0 / 50%); // 文字阴影增强可读性
+  text-shadow: 2px 2px 4px rgb(0 0 0 / 50%);
+}
+
+.pd-esg-english {
+  margin-bottom: 100px;
+  font-size: 28px;
+  color: white;
+  text-shadow: 1px 1px 2px rgb(0 0 0 / 50%);
 }
 
 .pd-esg-button-container {
   position: relative;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 15vh;
+  padding-left: 150px;
 }
 
 .pd-esg-button {
-  width: 250px;
-  height: 150px;
-  margin: 0 100px;
-  font-size: 32px;
-  color: #0a0a0a;
-  border-radius: 12px;
+  display: block;
+  width: 320px;
+  height: 70px;
+  margin-bottom: 40px;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  background-color: transparent;
+  border: 2px solid white;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.pd-esg-button:hover {
+  background-color: rgb(255 255 255 / 10%);
+  box-shadow: 0 0 15px rgb(255 255 255 / 30%);
+  transform: translateY(-2px);
 }
 </style>
