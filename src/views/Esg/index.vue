@@ -4,10 +4,8 @@
     <div class="pd-esg-overlay"></div>
     <div class="pd-esg-content">
       <div class="pd-esg-title">佩蒂股份</div>
-      <div class="pd-esg-subtitle">可持续发展数据管理平台</div>
-      <div class="pd-esg-english">
-        Sustainable Development Data Management Platform
-      </div>
+      <div class="pd-esg-subtitle">ESG数据管理平台</div>
+      <div class="pd-esg-english">ESG Data Management Platform</div>
     </div>
     <div class="pd-esg-button-container">
       <el-button class="pd-esg-button" @click="handleClickFillIn"
