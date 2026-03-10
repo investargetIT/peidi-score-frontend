@@ -186,6 +186,7 @@
       :isAdmin="hasEditPermission(activeTab)"
       :modeVal="modeVal"
       @update:modeVal="val => (modeVal = val)"
+      @export="handleExport"
     />
   </div>
 </template>
@@ -208,6 +209,7 @@ import YearCard from "./yearCard.vue";
 import Navbar from "./navbar.vue";
 import { storageLocal } from "@pureadmin/utils";
 import EsgActionButtons from "./components/EsgActionButtons.vue";
+import { exportAllEsgData } from "./utils/exportExcel/index";
 
 const { t } = useI18n();
 
@@ -306,6 +308,11 @@ const handleYearSubmit = year => {
 
 // 获取用户信息
 const curDDUserInfo = storageLocal().getItem("dataSource");
+
+// 处理导出按钮点击
+const handleExport = () => {
+  exportAllEsgData(yearValue.value);
+};
 </script>
 
 <style scoped>
