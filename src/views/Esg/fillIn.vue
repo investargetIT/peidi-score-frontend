@@ -209,7 +209,10 @@ import YearCard from "./yearCard.vue";
 import Navbar from "./navbar.vue";
 import { storageLocal } from "@pureadmin/utils";
 import EsgActionButtons from "./components/EsgActionButtons.vue";
-import { exportAllEsgData } from "./utils/exportExcel/index";
+import {
+  exportAllEsgData,
+  exportAllEsgDataWithExcelJS
+} from "./utils/exportExcel/index";
 
 const { t } = useI18n();
 
@@ -311,7 +314,7 @@ const curDDUserInfo = storageLocal().getItem("dataSource");
 
 // 处理导出按钮点击
 const handleExport = () => {
-  exportAllEsgData(yearValue.value);
+  exportAllEsgDataWithExcelJS(yearValue.value);
 };
 </script>
 
