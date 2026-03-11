@@ -77,6 +77,7 @@
     "otherReason": "其他",
     "otherReasonPlaceholder": "请输入积分",
     "onlyInteger": "请输入整数",
+    "onlyLessThan10": "请输入小于10的整数",
     "task": "任务管理",
     "remark": "备注",
     "operationHistory": "操作历史",

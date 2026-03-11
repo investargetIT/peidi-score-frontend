@@ -116,11 +116,7 @@
             />
           </el-form-item>
 
-          <el-form-item
-            :label="t('monitor.remark')"
-            :error="reasonError"
-            style="margin-top: 16px"
-          >
+          <el-form-item :label="t('monitor.remark')" style="margin-top: 16px">
             <el-input
               style="width: 240px"
               v-model="ohterForm.remark"
@@ -284,9 +280,11 @@ const handleSubmit = () => {
 };
 
 const validateReason = () => {
-  // 只允许整数
+  // 只允许整数 并且 小于 10
   if (!/^[-]?\d+$/.test(ohterForm.value.reasonValue)) {
     reasonError.value = t("monitor.onlyInteger");
+  } else if (Math.abs(ohterForm.value.reasonValue) > 10) {
+    reasonError.value = t("monitor.onlyLessThan10");
   } else {
     reasonError.value = "";
   }
@@ -299,6 +297,13 @@ const onDialogConfirm = async () => {
     !/^[-]?\d+$/.test(ohterForm.value.reasonValue)
   ) {
     reasonError.value = t("monitor.onlyInteger");
+    return;
+  }
+  if (
+    otherRuleMap[form.value.reason] &&
+    Math.abs(ohterForm.value.reasonValue) > 10
+  ) {
+    reasonError.value = t("monitor.onlyLessThan10");
     return;
   }
   let curRuleId = form.value.reason;
