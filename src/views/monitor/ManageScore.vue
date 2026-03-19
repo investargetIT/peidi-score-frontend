@@ -283,7 +283,10 @@ const validateReason = () => {
   // 只允许整数 并且 小于 10
   if (!/^[-]?\d+$/.test(ohterForm.value.reasonValue)) {
     reasonError.value = t("monitor.onlyInteger");
-  } else if (Math.abs(ohterForm.value.reasonValue) > 10) {
+  } else if (
+    Math.abs(ohterForm.value.reasonValue) > 10 &&
+    otherRuleMap[form.value.reason] === "【其他】"
+  ) {
     reasonError.value = t("monitor.onlyLessThan10");
   } else {
     reasonError.value = "";
@@ -300,7 +303,7 @@ const onDialogConfirm = async () => {
     return;
   }
   if (
-    otherRuleMap[form.value.reason] &&
+    otherRuleMap[form.value.reason] === "【其他】" &&
     Math.abs(ohterForm.value.reasonValue) > 10
   ) {
     reasonError.value = t("monitor.onlyLessThan10");
