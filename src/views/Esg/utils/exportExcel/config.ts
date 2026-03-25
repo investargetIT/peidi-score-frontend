@@ -348,6 +348,36 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
+      label: "审计委员会召开情况 - 召开次数",
+      value: "auditCommitteeMeetingCount",
+      isFile: false
+    },
+    {
+      label: "审计委员会召开情况 - 审议通过议案数",
+      value: "auditCommitteeMeetingResolutionCount",
+      isFile: false
+    },
+    {
+      label: "薪酬与考核委员会召开情况 - 召开次数",
+      value: "remunerationCommitteeMeetingCount",
+      isFile: false
+    },
+    {
+      label: "薪酬与考核委员会召开情况 - 审议通过议案数",
+      value: "remunerationCommitteeMeetingResolutionCount",
+      isFile: false
+    },
+    {
+      label: "战略委员会召开情况 - 召开次数",
+      value: "esgCommitteeMeetingCount",
+      isFile: false
+    },
+    {
+      label: "战略委员会召开情况 - 审议通过议案数",
+      value: "esgCommitteeMeetingResolutionCount",
+      isFile: false
+    },
+    {
       label: "高管薪酬政策",
       value: "executiveCompensationPolicy",
       isFile: false
