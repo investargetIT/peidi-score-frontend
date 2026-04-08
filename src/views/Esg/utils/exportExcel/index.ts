@@ -5,6 +5,7 @@ import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import { formatToken, getToken } from "@/utils/auth";
 import { EXCEL_CONFIG } from "./config";
+import { userNameToRegion } from "../../components/utils/config";
 
 // ESG 模块配置列表
 const ESG_MODULES = [
@@ -130,7 +131,9 @@ function mergeUserData(userDataRecords): Record<string, any> {
 
         // 如果是字符串且不为空，则添加用户名前缀
         if (typeof value === "string" && value.trim()) {
-          mergedData[key].push(`${item.userName}: ${value}`);
+          mergedData[key].push(
+            `${userNameToRegion[item.userName]}-${item.userName}: ${value}`
+          );
         } else if (Array.isArray(value)) {
           // 如果是数组，保留原始结构
           mergedData[key].push(...value);

@@ -125,7 +125,7 @@ watch(
   { immediate: true }
 );
 
-fetchHistoryList();
+// fetchHistoryList();
 </script>
 
 <style scoped>
