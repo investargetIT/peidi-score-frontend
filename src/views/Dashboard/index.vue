@@ -55,11 +55,18 @@ const fetchHistoryList = () => {
     pageSize: 5,
     sortStr: JSON.stringify([{ sortName: "createdAt", sortType: "desc" }])
   };
-  searchArr.push({
-    searchName: "userId",
-    searchType: "equals",
-    searchValue: storageLocal().getItem("dataSource")?.id
-  });
+  searchArr.push(
+    {
+      searchName: "userId",
+      searchType: "equals",
+      searchValue: storageLocal().getItem("dataSource")?.id
+    },
+    {
+      searchName: "show_flag",
+      searchType: "equals",
+      searchValue: 1
+    }
+  );
   commonInfo.searchStr = JSON.stringify(searchArr);
   getScoreHistoryList(commonInfo).then(res => {
     if (res.code === 200) {

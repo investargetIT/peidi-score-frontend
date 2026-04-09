@@ -19,7 +19,14 @@
     "description": "Description",
     "type": "Type",
     "points": "Points",
-    "pointplaceholder": "Please select a status"
+    "pointplaceholder": "Please select a status",
+    "operation": "Operation",
+    "rollback": "Rollback",
+    "confirmRollback": "Are you sure you want to rollback the points?",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "rollbackSuccess": "Points rollback successfully",
+    "rollbackFailed": "Points rollback failed"
   },
   "leaderboard": {
     "pointsrank": "Points Leaderboard",

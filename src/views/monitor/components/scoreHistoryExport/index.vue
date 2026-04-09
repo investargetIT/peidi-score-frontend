@@ -41,6 +41,11 @@ const fetchHistoryList = siteName => {
       searchName: "oaDelete",
       searchType: "equals",
       searchValue: "0"
+    },
+    {
+      searchName: "show_flag",
+      searchType: "equals",
+      searchValue: 1
     }
   );
   commonInfo.searchStr = JSON.stringify(searchArr);
