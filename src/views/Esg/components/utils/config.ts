@@ -30,7 +30,7 @@ export const userNameToRegion = {
   张亚菲: "上海",
 
   // 越南地区
-  阮氏艳庄: "越南",
+  "阮氏艳庄Nguyễn Thị Diễm Trang": "越南",
   潘氏黄梅: "越南",
 
   // 柬埔寨地区

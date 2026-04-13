@@ -58,13 +58,14 @@
         min-width="180"
         align="center"
       />
-      <el-table-column
+      <!-- <el-table-column
         prop="operation"
         :label="t('history.operation')"
         width="250"
       >
         <template #default="scope">
           <button
+            :disabled="true"
             @click="handleRollback(scope.row)"
             class="mr-[10px] ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-red-600 hover:bg-red-700"
           >
@@ -86,7 +87,7 @@
             {{ t("history.rollback") }}
           </button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
   </el-card>
 </template>
@@ -98,6 +99,7 @@ import { storageLocal } from "@pureadmin/utils";
 import { getScoreHistoryList, rollbackScoreHistory } from "@/api/pmApi.ts";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n";
+import { tr } from "element-plus/es/locale/index.mjs";
 const { t } = useI18n();
 
 const scoreHistoryList = ref([]);
