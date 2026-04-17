@@ -1368,6 +1368,175 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+
+      <!-- 退伍军人雇佣 -->
+      <el-collapse-item title="退伍军人雇佣" name="veteran-employment">
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >退伍军人雇佣
+              <EsgTooltip content="GRI 405" />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+
+        <div class="form-section">
+          <el-form
+            :model="formData"
+            label-position="left"
+            :label-width="FORM_LABEL_WIDTH"
+            :disabled="!isEdit"
+          >
+            <!-- 定性描述 -->
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>退伍军人雇佣总数</span>
+                  <EsgTooltip content="公司每年退伍军人雇佣数" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.veteranEmployeeCount"
+                  type="textarea"
+                  :rows="2"
+                />
+                <span>人</span>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>退伍军人雇佣比例</span>
+                  <EsgTooltip content="退伍军人员工占总员工的比例" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.veteranEmployeeRatio"
+                  type="textarea"
+                  :rows="2"
+                />
+                <span>%</span>
+              </div>
+            </el-form-item>
+
+            <el-form-item label="附件上传" prop="veteranEmployeeAttachments">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.veteranEmployeeAttachments"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="handleUploadSuccess('veteranEmployeeAttachments')"
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+
+      <!-- 海外员工雇佣 -->
+      <el-collapse-item title="海外员工雇佣" name="overseas-employment">
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >海外员工雇佣
+              <EsgTooltip content="GRI 405" />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+
+        <div class="form-section">
+          <el-form
+            :model="formData"
+            label-position="left"
+            :label-width="FORM_LABEL_WIDTH"
+            :disabled="!isEdit"
+          >
+            <!-- 定性描述 -->
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>海外员工雇佣总数</span>
+                  <EsgTooltip content="公司每年海外员工雇佣数" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.overseasEmployeeCount"
+                  type="textarea"
+                  :rows="2"
+                />
+                <span>人</span>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>海外员工雇佣比例</span>
+                  <EsgTooltip content="海外员工占总员工的比例" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.overseasEmployeeRatio"
+                  type="textarea"
+                  :rows="2"
+                />
+                <span>%</span>
+              </div>
+            </el-form-item>
+
+            <el-form-item label="附件上传" prop="overseasEmployeeAttachments">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.overseasEmployeeAttachments"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="handleUploadSuccess('overseasEmployeeAttachments')"
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+
       <!-- 培训 -->
       <el-collapse-item title="培训" name="training">
         <template #title>
@@ -2880,6 +3049,8 @@ const formData = ref({
   employeeEventAttachments: [],
   femaleFacilitiesAttachments: [],
   accessibilityFacilityAttachments: [],
+  veteranEmployeeAttachments: [],
+  overseasEmployeeAttachments: [],
   antiHarassmentTrainingAttachments: [],
   talentDevelopmentAttachments: [],
   // 基本权益保障/薪酬与激励/福利与关怀
@@ -2914,6 +3085,12 @@ const formData = ref({
   disabledEmployeeCount: "",
   disabledEmployeeRatio: "",
   accessibilityFacilityDescription: "",
+  // 退伍军人雇佣
+  veteranEmployeeCount: "",
+  veteranEmployeeRatio: "",
+  // 海外员工雇佣
+  overseasEmployeeCount: "",
+  overseasEmployeeRatio: "",
   // 培训与考核
   antiHarassmentTrainingDescription: "",
   antiHarassmentTrainingCount: "",

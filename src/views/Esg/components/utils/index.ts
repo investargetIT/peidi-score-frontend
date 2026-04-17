@@ -119,7 +119,7 @@ export function useEsgLoadData(
                     // 如果值为空则不做拼接
                     if (contentData[key]) {
                       formData.value[targetKey] +=
-                        `${userNameToRegion[item.userName]}-${item.userName}: ${contentData[key]}\n`;
+                        `${userNameToRegion[item.userName] || "未指定地区"}-${item.userName}: ${contentData[key]}\n`;
                     }
                   } else if (Array.isArray(contentData[key])) {
                     formData.value[targetKey].push(...contentData[key]);

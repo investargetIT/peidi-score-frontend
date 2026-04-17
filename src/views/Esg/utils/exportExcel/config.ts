@@ -1554,6 +1554,7 @@ export const EXCEL_CONFIG = {
       value: "femaleFacilitiesAttachments",
       isFile: true
     },
+
     {
       label: "残障人士雇佣总数",
       value: "disabledEmployeeCount",
@@ -1574,6 +1575,39 @@ export const EXCEL_CONFIG = {
       value: "accessibilityFacilityAttachments",
       isFile: true
     },
+
+    {
+      label: "退伍军人雇佣总数",
+      value: "veteranEmployeeCount",
+      isFile: false
+    },
+    {
+      label: "退伍军人雇佣比例",
+      value: "veteranEmployeeRatio",
+      isFile: false
+    },
+    {
+      label: "退伍军人雇佣 - 附件上传",
+      value: "veteranEmployeeAttachments",
+      isFile: true
+    },
+
+    {
+      label: "海外员工雇佣总数",
+      value: "overseasEmployeeCount",
+      isFile: false
+    },
+    {
+      label: "海外员工雇佣比例",
+      value: "overseasEmployeeRatio",
+      isFile: false
+    },
+    {
+      label: "海外员工雇佣 - 附件上传",
+      value: "overseasEmployeeAttachments",
+      isFile: true
+    },
+
     {
       label: "反骚扰、反歧视培训",
       value: "antiHarassmentTrainingDescription",
