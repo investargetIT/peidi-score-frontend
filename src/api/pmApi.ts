@@ -45,7 +45,7 @@ const baseUrlApi = (url: string, hasUi = true) => {
 // 开发环境下的接口地址
 const baseUrlApiDev = (url: string, hasUi = true) => {
   return baseUrlApi(url, hasUi);
-  return `http://12.18.1.12:8090/${hasUi ? "ui" : ""}${url}`;
+  // return `http://12.18.1.12:8090/${hasUi ? "ui" : ""}${url}`;
 };
 
 const commonUrlApi = (url: string) => `${"https://user.peidigroup.cn"}${url}`;
@@ -172,6 +172,18 @@ export const getScoreHistoryList = params => {
   }
   return http.request("get", baseUrlApi("/point/record/page"), {
     params
+  });
+};
+
+// 积分回滚
+export const rollbackScoreHistory = data => {
+  if (process.env.NODE_ENV === "development") {
+    return http.request("post", baseUrlApiDev("/point/record/callback"), {
+      data
+    });
+  }
+  return http.request("post", baseUrlApi("/point/record/callback"), {
+    data
   });
 };
 

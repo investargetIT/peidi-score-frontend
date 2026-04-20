@@ -98,11 +98,18 @@ const fetchProductList = () => {
   //     searchArr.push(searchParams);
   //   }
   // });
-  searchArr.push({
-    searchName: "userId",
-    searchType: "equals",
-    searchValue: storageLocal().getItem("dataSource")?.id
-  });
+  searchArr.push(
+    {
+      searchName: "userId",
+      searchType: "equals",
+      searchValue: storageLocal().getItem("dataSource")?.id
+    },
+    {
+      searchName: "show_flag",
+      searchType: "equals",
+      searchValue: 1
+    }
+  );
   commonInfo.searchStr = JSON.stringify(searchArr);
   getScoreHistoryList(commonInfo).then(res => {
     // 为每个产品添加默认状态

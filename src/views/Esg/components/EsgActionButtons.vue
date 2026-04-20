@@ -16,12 +16,24 @@
     <el-button
       v-if="showSave"
       type="primary"
+      @click="handleExport"
+      size="large"
+      style="width: 120px"
+      color="#217346"
+      :icon="Download"
+    >
+      导出Excel
+    </el-button>
+    <el-button
+      v-if="showSave"
+      type="primary"
       @click="handleSave"
       :disabled="!isEdit"
       size="large"
       style="width: 120px"
-      >保存</el-button
     >
+      保存
+    </el-button>
     <!-- v-if="showSubmit" -->
     <el-button v-if="false" type="success" @click="handleSubmit"
       >提交</el-button
@@ -31,6 +43,7 @@
 
 <script setup>
 import { ElMessage } from "element-plus";
+import { Download } from "@element-plus/icons-vue";
 
 // 定义props，允许父组件控制显示哪些按钮
 const props = defineProps({
@@ -89,6 +102,10 @@ const handleExit = () => {
   });
 
   window.location.href = window.location.origin + "/#/pdesg";
+};
+
+const handleExport = () => {
+  emit("export");
 };
 </script>
 

@@ -234,6 +234,982 @@
                 :rows="4"
               />
             </el-form-item>
+            <!-- #region 2026按地区划分参数 -->
+            <div v-show="false">
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>性别-男性员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_male_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="formData.employeeComposition_gender_male_Wenzhou"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="formData.employeeComposition_gender_male_Jiangsu"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_male_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="formData.employeeComposition_gender_male_Vietnam"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_male_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_gender_male_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>性别-女性员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_female_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_female_Wenzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_female_Jiangsu
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_female_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_female_Vietnam
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_gender_female_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_gender_female_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>年龄-30岁以下员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_age_30Under_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_30Under_Wenzhou"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_30Under_Jiangsu"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_age_30Under_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_30Under_Vietnam"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_age_30Under_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_30Under_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>年龄-31-50岁员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_31_50_Hangzhou"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_31_50_Wenzhou"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_31_50_Jiangsu"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_age_31_50_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_31_50_Vietnam"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_31_50_Cambodia"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_31_50_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>年龄-50岁以上员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_50Over_Hangzhou"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_50Over_Wenzhou"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_50Over_Jiangsu"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_age_50Over_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_50Over_Vietnam"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_50Over_Cambodia"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_age_50Over_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>学历-本科以下员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_undergraduate_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_undergraduate_Wenzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_undergraduate_Jiangsu
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_undergraduate_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_undergraduate_Vietnam
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_undergraduate_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_undergraduate_Total
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>学历-本科员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_graduate_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_graduate_Wenzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_graduate_Jiangsu
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_graduate_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_graduate_Vietnam
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_graduate_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_graduate_Total
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>学历-硕士及以上员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_master_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_master_Wenzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_master_Jiangsu
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_master_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_master_Vietnam
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_master_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_education_master_Total
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>职称-高级管理层员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_senior_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_senior_Wenzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_senior_Jiangsu
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_senior_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_senior_Vietnam
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_senior_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_senior_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>职称-中级管理层员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_mid_Hangzhou"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_mid_Wenzhou"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_mid_Jiangsu"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_mid_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_mid_Vietnam"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_mid_Cambodia"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_mid_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>职称-初级管理层员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_junior_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_junior_Wenzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_junior_Jiangsu
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_junior_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_junior_Vietnam
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_junior_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_junior_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+              <el-form-item>
+                <template #label>
+                  <div>
+                    <span>职称-普通员工人数</span>
+                  </div>
+                </template>
+                <div class="textContainer">
+                  <div class="textAlignStyle">
+                    <span>杭州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_normal_Hangzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>温州</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_normal_Wenzhou
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>江苏</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_normal_Jiangsu
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>新西兰</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_normal_Newzealand
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>越南</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_normal_Vietnam
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>柬埔寨</span>
+                    <el-input
+                      v-model="
+                        formData.employeeComposition_title_normal_Cambodia
+                      "
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                  <div class="textAlignStyle">
+                    <span>总数</span>
+                    <el-input
+                      v-model="formData.employeeComposition_title_normal_Total"
+                      type="textarea"
+                      :rows="2"
+                    />
+                    <span>人</span>
+                  </div>
+                </div>
+              </el-form-item>
+            </div>
+            <!-- #endregion -->
           </el-form>
         </div>
       </el-collapse-item>
@@ -1368,6 +2344,175 @@ Wind评级"
           </el-form>
         </div>
       </el-collapse-item>
+
+      <!-- 退伍军人雇佣 -->
+      <el-collapse-item title="退伍军人雇佣" name="veteran-employment">
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >退伍军人雇佣
+              <EsgTooltip content="GRI 405" />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+
+        <div class="form-section">
+          <el-form
+            :model="formData"
+            label-position="left"
+            :label-width="FORM_LABEL_WIDTH"
+            :disabled="!isEdit"
+          >
+            <!-- 定性描述 -->
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>退伍军人雇佣总数</span>
+                  <EsgTooltip content="公司每年退伍军人雇佣数" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.veteranEmployeeCount"
+                  type="textarea"
+                  :rows="2"
+                />
+                <span>人</span>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>退伍军人雇佣比例</span>
+                  <EsgTooltip content="退伍军人员工占总员工的比例" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.veteranEmployeeRatio"
+                  type="textarea"
+                  :rows="2"
+                />
+                <span>%</span>
+              </div>
+            </el-form-item>
+
+            <el-form-item label="附件上传" prop="veteranEmployeeAttachments">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.veteranEmployeeAttachments"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="handleUploadSuccess('veteranEmployeeAttachments')"
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+
+      <!-- 海外员工雇佣 -->
+      <el-collapse-item title="海外员工雇佣" name="overseas-employment">
+        <template #title>
+          <div class="collapse-title">
+            <span
+              >海外员工雇佣
+              <EsgTooltip content="GRI 405" />
+            </span>
+            <el-icon class="collapse-icon"></el-icon>
+          </div>
+        </template>
+
+        <div class="form-section">
+          <el-form
+            :model="formData"
+            label-position="left"
+            :label-width="FORM_LABEL_WIDTH"
+            :disabled="!isEdit"
+          >
+            <!-- 定性描述 -->
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>海外员工雇佣总数</span>
+                  <EsgTooltip content="公司每年海外员工雇佣数" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.overseasEmployeeCount"
+                  type="textarea"
+                  :rows="2"
+                />
+                <span>人</span>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>海外员工雇佣比例</span>
+                  <EsgTooltip content="海外员工占总员工的比例" />
+                </div>
+              </template>
+              <div class="textContainer">
+                <el-input
+                  v-model="formData.overseasEmployeeRatio"
+                  type="textarea"
+                  :rows="2"
+                />
+                <span>%</span>
+              </div>
+            </el-form-item>
+
+            <el-form-item label="附件上传" prop="overseasEmployeeAttachments">
+              <template #label>
+                <div>
+                  <span> 附件上传 </span>
+                  <EsgTooltip content="上传图片" />
+                </div>
+              </template>
+              <el-upload
+                class="upload-area"
+                v-model:file-list="formData.overseasEmployeeAttachments"
+                :on-preview="handlePictureCardPreview"
+                :on-change="handleFileChange"
+                :before-upload="handleFileBeforeUpload"
+                :on-success="handleUploadSuccess('overseasEmployeeAttachments')"
+                :on-remove="handleUploadRemove"
+                drag
+                :action="uploadUrl"
+                :auto-upload="true"
+                multiple
+                :headers="{
+                  Authorization: formatToken(getToken().accessToken)
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+              >
+                <el-button type="primary" :icon="Upload">上传附件</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-collapse-item>
+
       <!-- 培训 -->
       <el-collapse-item title="培训" name="training">
         <template #title>
@@ -2880,6 +4025,8 @@ const formData = ref({
   employeeEventAttachments: [],
   femaleFacilitiesAttachments: [],
   accessibilityFacilityAttachments: [],
+  veteranEmployeeAttachments: [],
+  overseasEmployeeAttachments: [],
   antiHarassmentTrainingAttachments: [],
   talentDevelopmentAttachments: [],
   // 基本权益保障/薪酬与激励/福利与关怀
@@ -2914,6 +4061,12 @@ const formData = ref({
   disabledEmployeeCount: "",
   disabledEmployeeRatio: "",
   accessibilityFacilityDescription: "",
+  // 退伍军人雇佣
+  veteranEmployeeCount: "",
+  veteranEmployeeRatio: "",
+  // 海外员工雇佣
+  overseasEmployeeCount: "",
+  overseasEmployeeRatio: "",
   // 培训与考核
   antiHarassmentTrainingDescription: "",
   antiHarassmentTrainingCount: "",
@@ -2986,7 +4139,105 @@ const formData = ref({
   trainingPassRateByGenderMale: "",
   trainingPassRateByPositionMiddle: "",
   trainingPassRateByPositionSenior: "",
-  trainingPassRateByPositionOther: ""
+  trainingPassRateByPositionOther: "",
+
+  /** 2026新增参数 */
+  // 性别-男性员工人数
+  employeeComposition_gender_male_Hangzhou: "",
+  employeeComposition_gender_male_Wenzhou: "",
+  employeeComposition_gender_male_Jiangsu: "",
+  employeeComposition_gender_male_Newzealand: "",
+  employeeComposition_gender_male_Vietnam: "",
+  employeeComposition_gender_male_Cambodia: "",
+  employeeComposition_gender_male_Total: "",
+  // 性别-女性员工人数
+  employeeComposition_gender_female_Hangzhou: "",
+  employeeComposition_gender_female_Wenzhou: "",
+  employeeComposition_gender_female_Jiangsu: "",
+  employeeComposition_gender_female_Newzealand: "",
+  employeeComposition_gender_female_Vietnam: "",
+  employeeComposition_gender_female_Cambodia: "",
+  employeeComposition_gender_female_Total: "",
+  // 年龄-30岁以下员工人数
+  employeeComposition_age_30Under_Hangzhou: "",
+  employeeComposition_age_30Under_Wenzhou: "",
+  employeeComposition_age_30Under_Jiangsu: "",
+  employeeComposition_age_30Under_Newzealand: "",
+  employeeComposition_age_30Under_Vietnam: "",
+  employeeComposition_age_30Under_Cambodia: "",
+  employeeComposition_age_30Under_Total: "",
+  // 年龄-31-50岁员工人数
+  employeeComposition_age_31_50_Hangzhou: "",
+  employeeComposition_age_31_50_Wenzhou: "",
+  employeeComposition_age_31_50_Jiangsu: "",
+  employeeComposition_age_31_50_Newzealand: "",
+  employeeComposition_age_31_50_Vietnam: "",
+  employeeComposition_age_31_50_Cambodia: "",
+  employeeComposition_age_31_50_Total: "",
+  // 年龄-50岁以上员工人数
+  employeeComposition_age_50Over_Hangzhou: "",
+  employeeComposition_age_50Over_Wenzhou: "",
+  employeeComposition_age_50Over_Jiangsu: "",
+  employeeComposition_age_50Over_Newzealand: "",
+  employeeComposition_age_50Over_Vietnam: "",
+  employeeComposition_age_50Over_Cambodia: "",
+  employeeComposition_age_50Over_Total: "",
+  // 学历-本科以下员工人数
+  employeeComposition_education_undergraduate_Hangzhou: "",
+  employeeComposition_education_undergraduate_Wenzhou: "",
+  employeeComposition_education_undergraduate_Jiangsu: "",
+  employeeComposition_education_undergraduate_Newzealand: "",
+  employeeComposition_education_undergraduate_Vietnam: "",
+  employeeComposition_education_undergraduate_Cambodia: "",
+  employeeComposition_education_undergraduate_Total: "",
+  // 学历-本科员工人数
+  employeeComposition_education_graduate_Hangzhou: "",
+  employeeComposition_education_graduate_Wenzhou: "",
+  employeeComposition_education_graduate_Jiangsu: "",
+  employeeComposition_education_graduate_Newzealand: "",
+  employeeComposition_education_graduate_Vietnam: "",
+  employeeComposition_education_graduate_Cambodia: "",
+  employeeComposition_education_graduate_Total: "",
+  // 学历-硕士及以上员工人数
+  employeeComposition_education_master_Hangzhou: "",
+  employeeComposition_education_master_Wenzhou: "",
+  employeeComposition_education_master_Jiangsu: "",
+  employeeComposition_education_master_Newzealand: "",
+  employeeComposition_education_master_Vietnam: "",
+  employeeComposition_education_master_Cambodia: "",
+  employeeComposition_education_master_Total: "",
+  // 职称-高级管理层员工人数
+  employeeComposition_title_senior_Hangzhou: "",
+  employeeComposition_title_senior_Wenzhou: "",
+  employeeComposition_title_senior_Jiangsu: "",
+  employeeComposition_title_senior_Newzealand: "",
+  employeeComposition_title_senior_Vietnam: "",
+  employeeComposition_title_senior_Cambodia: "",
+  employeeComposition_title_senior_Total: "",
+  // 职称-中级管理层员工人数
+  employeeComposition_title_mid_Hangzhou: "",
+  employeeComposition_title_mid_Wenzhou: "",
+  employeeComposition_title_mid_Jiangsu: "",
+  employeeComposition_title_mid_Newzealand: "",
+  employeeComposition_title_mid_Vietnam: "",
+  employeeComposition_title_mid_Cambodia: "",
+  employeeComposition_title_mid_Total: "",
+  // 职称-初级管理层员工人数
+  employeeComposition_title_junior_Hangzhou: "",
+  employeeComposition_title_junior_Wenzhou: "",
+  employeeComposition_title_junior_Jiangsu: "",
+  employeeComposition_title_junior_Newzealand: "",
+  employeeComposition_title_junior_Vietnam: "",
+  employeeComposition_title_junior_Cambodia: "",
+  employeeComposition_title_junior_Total: "",
+  // 职称-普通员工人数
+  employeeComposition_title_normal_Hangzhou: "",
+  employeeComposition_title_normal_Wenzhou: "",
+  employeeComposition_title_normal_Jiangsu: "",
+  employeeComposition_title_normal_Newzealand: "",
+  employeeComposition_title_normal_Vietnam: "",
+  employeeComposition_title_normal_Cambodia: "",
+  employeeComposition_title_normal_Total: ""
 });
 const emptyFormData = JSON.parse(JSON.stringify(formData.value));
 

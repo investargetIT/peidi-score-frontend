@@ -40,10 +40,22 @@ export default [
   {
     path: "/pdesg",
     name: "Pdesg",
-    component: () => import("@/views/esg/index.vue"),
     meta: {
       rank: 104,
       showLink: false
-    }
+    },
+    redirect: "/pdesg/home",
+    children: [
+      {
+        path: "/pdesg/home",
+        name: "PdesgHome",
+        component: () => import("@/views/Esg/index.vue")
+      },
+      {
+        path: "/pdesg/fillIn",
+        name: "PdesgFillIn",
+        component: () => import("@/views/Esg/fillIn.vue")
+      }
+    ]
   }
 ] satisfies Array<RouteConfigsTable>;

@@ -58,16 +58,51 @@
         min-width="180"
         align="center"
       />
+      <!-- <el-table-column
+        prop="operation"
+        :label="t('history.operation')"
+        width="250"
+      >
+        <template #default="scope">
+          <button
+            :disabled="true"
+            @click="handleRollback(scope.row)"
+            class="mr-[10px] ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-red-600 hover:bg-red-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-x h-4 w-4"
+            >
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+            {{ t("history.rollback") }}
+          </button>
+        </template>
+      </el-table-column> -->
     </el-table>
   </el-card>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, nextTick } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { storageLocal } from "@pureadmin/utils";
-import { getScoreHistoryList } from "@/api/pmApi.ts";
-const scoreHistoryList = ref([]);
+import { getScoreHistoryList, rollbackScoreHistory } from "@/api/pmApi.ts";
 import dayjs from "dayjs";
+import { useI18n } from "vue-i18n";
+import { tr } from "element-plus/es/locale/index.mjs";
+const { t } = useI18n();
+
+const scoreHistoryList = ref([]);
 const pagination = ref({
   pageNo: 1,
   pageSize: 500,
@@ -99,11 +134,18 @@ const fetchHistoryList = () => {
     pageSize: pagination.value.pageSize
   };
   const searchArr = [];
-  searchArr.push({
-    searchName: "update_user_id",
-    searchType: "equals",
-    searchValue: updateUserId
-  });
+  searchArr.push(
+    {
+      searchName: "update_user_id",
+      searchType: "equals",
+      searchValue: updateUserId
+    },
+    {
+      searchName: "show_flag",
+      searchType: "equals",
+      searchValue: 1
+    }
+  );
   commonInfo.searchStr = JSON.stringify(searchArr);
   getScoreHistoryList(commonInfo).then(res => {
     // 为每个产品添加默认状态
@@ -125,7 +167,36 @@ watch(
   { immediate: true }
 );
 
-fetchHistoryList();
+const handleRollback = row => {
+  console.log(row);
+  ElMessageBox.confirm(
+    `${t("history.confirmRollback")}`,
+    t("history.confirm"),
+    {
+      confirmButtonText: t("history.confirm"),
+      cancelButtonText: t("history.cancel"),
+      type: "warning"
+    }
+  )
+    .then(() => {
+      rollbackScoreHistory({
+        id: row.id
+      })
+        .then(res => {
+          if (res.code === 200) {
+            ElMessage.success(t("history.rollbackSuccess"));
+            fetchHistoryList();
+          } else {
+            ElMessage.error(t("history.rollbackFailed"));
+          }
+        })
+        .catch(() => {
+          ElMessage.error(t("history.rollbackFailed"));
+        });
+    })
+    .catch(() => {});
+};
+// fetchHistoryList();
 </script>
 
 <style scoped>

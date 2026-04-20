@@ -19,7 +19,14 @@
     "description": "Description",
     "type": "Type",
     "points": "Points",
-    "pointplaceholder": "Please select a status"
+    "pointplaceholder": "Please select a status",
+    "operation": "Operation",
+    "rollback": "Rollback",
+    "confirmRollback": "Are you sure you want to rollback the points?",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "rollbackSuccess": "Points rollback successfully",
+    "rollbackFailed": "Points rollback failed"
   },
   "leaderboard": {
     "pointsrank": "Points Leaderboard",
@@ -68,7 +75,7 @@
     "adjustPoints": "Adjust Points",
     "selectEmployeeFirst": "Please select an employee to view their points history",
     "confirmChangeTitle": "Confirm Points Change",
-    "confirmChangeDesc": "Are you sure you want to apply this points adjustment to  {selectedEmployeeNames}?",
+    "confirmChangeDesc": "Are you sure you want to apply this points adjustment to {selectedEmployeeNames}?",
     "submit": "Adjust Points",
     "cancel": "Cancel",
     "confirm": "Confirm",
@@ -77,6 +84,7 @@
     "enterReason": "Please enter score",
     "otherReason": "Other",
     "onlyInteger": "Please enter an integer",
+    "onlyLessThan10": "Please enter a number less than 10",
     "task": "Tasks",
     "remark": "Remark",
     "operationHistory": "Operation History",
@@ -182,6 +190,7 @@
     "confirmBatchPass": "Are you sure you want to pass the selected exchange records on the current page?",
     "batchPassSuccess": "Batch Pass Success",
     "batchPassFailed": "Batch Pass Failed",
-    "noPendingRecords": "Current page has no pending records"
+    "noPendingRecords": "Current page has no pending records",
+    "batchPassPartial": "Batch pass success {count} records, failed {failed} records"
   }
 }

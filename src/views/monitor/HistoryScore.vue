@@ -105,11 +105,18 @@ const fetchHistoryList = () => {
     pageSize: pagination.value.pageSize
   };
   const searchArr = [];
-  searchArr.push({
-    searchName: "userId",
-    searchType: "equals",
-    searchValue: props.selected.userId
-  });
+  searchArr.push(
+    {
+      searchName: "userId",
+      searchType: "equals",
+      searchValue: props.selected.userId
+    },
+    {
+      searchName: "show_flag",
+      searchType: "equals",
+      searchValue: 1
+    }
+  );
   commonInfo.searchStr = JSON.stringify(searchArr);
   getScoreHistoryList(commonInfo).then(res => {
     // 为每个产品添加默认状态

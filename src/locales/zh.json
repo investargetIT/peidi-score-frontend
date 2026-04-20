@@ -19,7 +19,14 @@
     "description": "描述",
     "type": "类型",
     "points": "积分",
-    "pointplaceholder": "请选择状态"
+    "pointplaceholder": "请选择状态",
+    "operation": "操作",
+    "rollback": "回退",
+    "confirmRollback": "是否确认回退积分？",
+    "confirm": "确认",
+    "cancel": "取消",
+    "rollbackSuccess": "积分回退成功",
+    "rollbackFailed": "积分回退失败"
   },
   "leaderboard": {
     "pointsrank": "积分排行榜",
@@ -77,6 +84,7 @@
     "otherReason": "其他",
     "otherReasonPlaceholder": "请输入积分",
     "onlyInteger": "请输入整数",
+    "onlyLessThan10": "请输入小于10的整数",
     "task": "任务管理",
     "remark": "备注",
     "operationHistory": "操作历史",
@@ -182,6 +190,7 @@
     "confirmBatchPass": "是否确认批量通过当前页待审核的兑换记录？",
     "batchPassSuccess": "批量通过成功",
     "batchPassFailed": "批量通过失败",
-    "noPendingRecords": "当前页暂无待审核记录"
+    "noPendingRecords": "当前页暂无待审核记录",
+    "batchPassPartial": "批量通过成功{count}条，失败{failed}条"
   }
 }

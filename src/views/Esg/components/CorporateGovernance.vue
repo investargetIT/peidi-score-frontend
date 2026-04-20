@@ -544,7 +544,7 @@ Wind评级"
             <el-form-item label="审计委员会独立性">
               <template #label>
                 <div>
-                  <span> 董事会独立性声明 </span>
+                  <span> 审计委员会独立性 </span>
                   <EsgTooltip
                     content="1.声明或计划建立完全由非执行董事或独立董事组成的董事会审计委员会<br> 2.当前审计委员会非执行董事或独立董事数量及占比"
                   />
@@ -1016,6 +1016,125 @@ Wind评级"
                   <el-input
                     style="width: 100px"
                     v-model="formData.supervisorMeetingResolutionCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>项议案</span>
+                </div>
+              </div>
+            </el-form-item>
+
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>审计委员会召开情况</span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <div class="textAlignStyle">
+                  <span>召开</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.auditCommitteeMeetingCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>次</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>审议通过</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.auditCommitteeMeetingResolutionCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>项议案</span>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>薪酬与考核委员会召开情况</span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <div class="textAlignStyle">
+                  <span>召开</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.remunerationCommitteeMeetingCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>次</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>审议通过</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="
+                      formData.remunerationCommitteeMeetingResolutionCount
+                    "
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>项议案</span>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>战略委员会召开情况</span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <div class="textAlignStyle">
+                  <span>召开</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.esgCommitteeMeetingCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>次</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>审议通过</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.esgCommitteeMeetingResolutionCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>项议案</span>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>提名委员会召开情况</span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <div class="textAlignStyle">
+                  <span>召开</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.nominationCommitteeMeetingCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>次</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>审议通过</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.nominationCommitteeMeetingResolutionCount"
                     type="textarea"
                     :rows="2"
                   />
@@ -2536,6 +2655,15 @@ const formData = ref({
   boardCommitteeMeetingResolutionCount: "", // 董事会专门委员会召开情况-审议通过项数
   supervisorMeetingCount: "", // 监事会召开情况-召开次数
   supervisorMeetingResolutionCount: "", // 监事会召开情况-审议通过项数
+
+  auditCommitteeMeetingCount: "", // 审计委员会召开情况-召开次数
+  auditCommitteeMeetingResolutionCount: "", // 审计委员会召开情况-审议通过项数
+  remunerationCommitteeMeetingCount: "", // 薪酬与考核委员会召开情况-召开次数
+  remunerationCommitteeMeetingResolutionCount: "", // 薪酬与考核委员会召开情况-审议通过项数
+  esgCommitteeMeetingCount: "", // 战略委员会召开情况-召开次数
+  esgCommitteeMeetingResolutionCount: "", // 战略委员会召开情况-审议通过项数
+  nominationCommitteeMeetingCount: "", // 提名委员会召开情况-召开次数
+  nominationCommitteeMeetingResolutionCount: "", // 提名委员会召开情况-审议通过项数
 
   // Executive Compensation
   executiveCompensationPolicy: "", // 高管薪酬政策

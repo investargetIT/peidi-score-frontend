@@ -92,9 +92,31 @@
       </el-table-column>
       <el-table-column label="状态">
         <template #default="scope">
+          <!-- 已归档状态 -->
+          <div
+            v-if="scope.row.hasArchiving"
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-gray-100 text-gray-800"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span class="ml-1">已归档</span>
+          </div>
           <!-- 已审核状态 -->
           <div
-            v-if="scope.row.hasReview"
+            v-else-if="scope.row.hasReview"
             class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-green-100 text-green-800"
           >
             <svg
@@ -153,9 +175,31 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="500">
         <template #default="scope">
           <div class="flex items-center gap-2">
+            <button
+              v-if="!scope.row.hasReview"
+              @click="handleArchive(scope.row)"
+              class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-red-600 hover:bg-red-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="none"
+                  stroke="#fff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4.222v15.556C4 21.005 5.023 22 6.286 22h11.428C18.977 22 20 21.005 20 19.778V8.444a2 2 0 0 0-2-2H6.286C5.023 6.444 4 5.45 4 4.222m0 0C4 2.995 5.023 2 6.286 2h9.143c1.262 0 2.285.995 2.285 2.222v2.222"
+                />
+              </svg>
+              归档
+            </button>
             <button
               @click="handleShowDetails(scope.row)"
               class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-input hover:bg-accent hover:text-accent-foreground border h-9 rounded-md px-3"
@@ -409,7 +453,7 @@
 <script setup>
 import { getQaList, updateQaConfig } from "@/api/task";
 import { getFileDownLoadPath } from "@/api/esg";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { ref, onMounted } from "vue";
 import Avatar from "@/assets/user.jpg";
 
@@ -691,6 +735,53 @@ const handleApprove = async row => {
     console.error("审核失败:", error);
     ElMessage.error("审核失败，请重试");
   }
+};
+
+// 归档操作
+const handleArchive = async row => {
+  if (!row) return;
+
+  ElMessageBox.confirm("确认归档该任务吗？", "请确认", {
+    confirmButtonText: "确认",
+    cancelButtonText: "取消",
+    type: "warning"
+  })
+    .then(async () => {
+      try {
+        // 解析当前任务的qa数据
+        // const qaData = JSON.parse(row.qa || "[]");
+
+        // 更新所有问题的审核状态为"approved"
+        // const updatedQaData = qaData.map(question => ({
+        //   ...question,
+        //   reviewStatus: "approved",
+        //   reviewedAt: new Date().toISOString()
+        // }));
+
+        // 解析remark数据
+        // const remarkData = JSON.parse(row.remark || "{}");
+
+        // 准备保存的数据
+        const saveData = {
+          userId: row.userId,
+          qa: row.qa,
+          remark: row.remark,
+          hasReview: false,
+          hasArchiving: true,
+          id: row.id
+        };
+
+        // 调用API更新数据
+        await updateQaConfig(saveData);
+
+        ElMessage.success("任务归档成功");
+        getQaListData();
+      } catch (error) {
+        console.error("归档失败:", error);
+        ElMessage.error("归档失败，请重试");
+      }
+    })
+    .catch(() => {});
 };
 
 // 获取进度百分比

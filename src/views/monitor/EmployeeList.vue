@@ -93,6 +93,12 @@
               >
                 {{ `(${data.lifeTimePoints} / ${data.redeemablePoints})` }}
               </p>
+
+              <ScoreHistoryExport
+                v-if="data.id.startsWith('company_')"
+                @click="handleExport(data)"
+                ref="scoreHistoryExportRef"
+              />
             </div>
           </el-tooltip>
         </template>
@@ -105,7 +111,8 @@
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
-import { Delete } from "@element-plus/icons-vue";
+import { Delete, Upload } from "@element-plus/icons-vue";
+import ScoreHistoryExport from "./components/scoreHistoryExport/index.vue";
 const { t } = useI18n();
 const props = defineProps({
   employees: Array,
@@ -441,6 +448,15 @@ function treeHandleCollapse(node) {
     console.log("已经折叠的公司节点:", expandedCompanyIds.value);
   }
 }
+
+//#region 导出逻辑
+const scoreHistoryExportRef = ref(null);
+const handleExport = data => {
+  // 阻止冒泡事件
+  event.stopPropagation();
+  scoreHistoryExportRef.value.handleExport(data);
+};
+//#endregion
 </script>
 
 <style scoped>

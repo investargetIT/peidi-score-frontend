@@ -260,6 +260,7 @@ const ddLogin = () => {
             // 判断是否存在邮箱，决定使用邮箱注册还是手机号注册
             if (org_email) {
               console.log("使用邮箱注册，ddEmail:", org_email);
+              // alert("使用邮箱注册，ddEmail:" + `${org_email}`);
               ddUserEmail = org_email;
               ruleForm.username = `${ddUserEmail}`;
               ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
@@ -275,6 +276,8 @@ const ddLogin = () => {
               });
             } else if (mobile) {
               console.log("使用手机号注册，mobile:", mobile);
+              // alert("使用手机号注册，mobile:" + `${mobile}`);
+              // alert("测试信息:" + JSON.stringify(ddUserInfo));
               ruleForm.username = `${mobile}`;
               ruleForm.password = DINGTALK_LOGIN_FREE_DEFAULT_PASSWORD;
 

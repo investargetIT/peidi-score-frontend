@@ -2,6 +2,7 @@
 export const FORM_LABEL_WIDTH = "100px";
 
 import { Ref, nextTick } from "vue";
+import { userNameToRegion } from "./config";
 
 import {
   updateEsgConfig,
@@ -97,7 +98,7 @@ export function useEsgLoadData(
       });
       // console.log("空表单数据:", emptyFormData);
       // console.log("初始化后的表单数据:", formData.value);
-      const res = await getEsgRuleDetail({
+      const res: any = await getEsgRuleDetail({
         type: activeTab.value,
         year: year.value
       });
@@ -118,7 +119,7 @@ export function useEsgLoadData(
                     // 如果值为空则不做拼接
                     if (contentData[key]) {
                       formData.value[targetKey] +=
-                        `${item.userName}: ${contentData[key]}\n`;
+                        `${userNameToRegion[item.userName] || "未指定地区"}-${item.userName}: ${contentData[key]}\n`;
                     }
                   } else if (Array.isArray(contentData[key])) {
                     formData.value[targetKey].push(...contentData[key]);

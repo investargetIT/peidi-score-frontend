@@ -5,8 +5,10 @@ import { onMounted, reactive, ref } from "vue";
 import { updateUserPassword } from "../../api/user";
 import { useNav } from "@/layout/hooks/useNav";
 import { emitter } from "@/utils/mitt"; // 添加mitt导入
+import { useRouter } from "vue-router";
 
 const { getLogo } = useNav();
+const router = useRouter();
 
 const username = ref("");
 
@@ -95,12 +97,22 @@ const handlePasswordUpdate = () => {
     }
   });
 };
+
+const handleClickLogo = () => {
+  router.push("/pdesg");
+};
 </script>
 
 <template>
   <div class="peidi-esg-navbar">
     <div>
-      <img class="h-[32px] ml-[20px]" :src="getLogo()" alt="logo" />
+      <img
+        class="h-[32px] ml-[20px] cursor-pointer"
+        :src="getLogo()"
+        alt="logo"
+        @click="handleClickLogo"
+        title="点击返回首页"
+      />
     </div>
 
     <div class="mr-[20px]">
