@@ -84,7 +84,7 @@
     "enterReason": "Please enter score",
     "otherReason": "Other",
     "onlyInteger": "Please enter an integer",
-    "onlyLessThan10": "Please enter a number less than 10",
+    "onlyLessThan10": "Please enter a number less than or equal to 10",
     "task": "Tasks",
     "remark": "Remark",
     "operationHistory": "Operation History",

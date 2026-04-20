@@ -179,9 +179,9 @@
         <template #default="scope">
           <div class="flex items-center gap-2">
             <button
-              v-if="!scope.row.hasReview"
+              v-if="!scope.row.hasReview && !scope.row.hasArchiving"
               @click="handleArchive(scope.row)"
-              class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-red-600 hover:bg-red-700"
+              class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-gray-600 hover:bg-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

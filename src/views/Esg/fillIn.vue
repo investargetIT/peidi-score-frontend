@@ -209,10 +209,7 @@ import YearCard from "./yearCard.vue";
 import Navbar from "./navbar.vue";
 import { storageLocal } from "@pureadmin/utils";
 import EsgActionButtons from "./components/EsgActionButtons.vue";
-import {
-  exportAllEsgData,
-  exportAllEsgDataWithExcelJS
-} from "./utils/exportExcel/index";
+import { exportAllEsgDataWithExcelJS } from "./utils/exportExcel/index";
 
 const { t } = useI18n();
 

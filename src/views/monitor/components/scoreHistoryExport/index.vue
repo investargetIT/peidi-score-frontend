@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { getScoreHistoryList } from "@/api/pmApi";
 import { Upload } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { exportScoreHistoryToExcel } from "./export ";
+import { exportScoreHistoryToExcel } from "./export";
 import dayjs from "dayjs";
 
 const siteName = ref("");

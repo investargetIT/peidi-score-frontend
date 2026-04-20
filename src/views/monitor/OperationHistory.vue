@@ -99,7 +99,7 @@ import { storageLocal } from "@pureadmin/utils";
 import { getScoreHistoryList, rollbackScoreHistory } from "@/api/pmApi.ts";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n";
-import { tr } from "element-plus/es/locale/index.mjs";
+
 const { t } = useI18n();
 
 const scoreHistoryList = ref([]);

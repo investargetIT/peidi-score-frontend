@@ -26,7 +26,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const handleClickFillIn = () => {
-  router.push("/pdesg/fillin");
+  router.push("/pdesg/fillIn");
 };
 const handleClickReport = () => {
   window.open("https://www.peidibrand.com/sustainable-development", "_blank");

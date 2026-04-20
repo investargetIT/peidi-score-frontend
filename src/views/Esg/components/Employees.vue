@@ -235,7 +235,7 @@
               />
             </el-form-item>
             <!-- #region 2026按地区划分参数 -->
-            <div v-show="false">
+            <div v-show="true" class="esg-expand-container">
               <el-form-item>
                 <template #label>
                   <div>
@@ -4306,4 +4306,23 @@ defineExpose({
 <style lang="scss" scoped>
 @import url("./styles/common.css");
 @import url("./styles/optimize.scss");
+
+.esg-expand-container {
+  .textContainer {
+    gap: 50px;
+  }
+
+  .textAlignStyle {
+    gap: 5px;
+    place-items: center center;
+  }
+
+  :deep(.el-textarea__inner) {
+    max-width: 100px;
+  }
+
+  span {
+    font-size: 12px;
+  }
+}
 </style>
