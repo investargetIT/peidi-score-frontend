@@ -1113,6 +1113,35 @@ Wind评级"
                 </div>
               </div>
             </el-form-item>
+            <el-form-item>
+              <template #label>
+                <div>
+                  <span>提名委员会召开情况</span>
+                </div>
+              </template>
+              <div class="textContainer">
+                <div class="textAlignStyle">
+                  <span>召开</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.nominationCommitteeMeetingCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>次</span>
+                </div>
+                <div class="textAlignStyle">
+                  <span>审议通过</span>
+                  <el-input
+                    style="width: 100px"
+                    v-model="formData.nominationCommitteeMeetingResolutionCount"
+                    type="textarea"
+                    :rows="2"
+                  />
+                  <span>项议案</span>
+                </div>
+              </div>
+            </el-form-item>
           </el-form>
         </div>
       </el-collapse-item>
@@ -2633,6 +2662,8 @@ const formData = ref({
   remunerationCommitteeMeetingResolutionCount: "", // 薪酬与考核委员会召开情况-审议通过项数
   esgCommitteeMeetingCount: "", // 战略委员会召开情况-召开次数
   esgCommitteeMeetingResolutionCount: "", // 战略委员会召开情况-审议通过项数
+  nominationCommitteeMeetingCount: "", // 提名委员会召开情况-召开次数
+  nominationCommitteeMeetingResolutionCount: "", // 提名委员会召开情况-审议通过项数
 
   // Executive Compensation
   executiveCompensationPolicy: "", // 高管薪酬政策

@@ -2048,13 +2048,31 @@ async function createExcelJSWorksheet(
   let currentRow = 3;
   for (const item of data) {
     const row = worksheet.getRow(currentRow);
-    row.values = [item.title, item.content];
 
-    // 设置行高（根据内容长度动态调整）
-    const contentLines = item.content
-      ? String(item.content).split("\n").length
-      : 1;
-    row.height = Math.max(25, 20 + contentLines * 18);
+    // 检查 content 是否包含超链接信息
+    const hasHyperlinks =
+      item.content &&
+      typeof item.content === "object" &&
+      item.content.hyperlinks;
+
+    if (hasHyperlinks) {
+      // 设置标题和文本内容
+      row.values = [item.title, item.content.text];
+
+      // 设置行高（根据内容长度动态调整）
+      const contentLines = item.content.text
+        ? String(item.content.text).split("\n").length
+        : 1;
+      row.height = Math.max(25, 20 + contentLines * 18);
+    } else {
+      row.values = [item.title, item.content];
+
+      // 设置行高（根据内容长度动态调整）
+      const contentLines = item.content
+        ? String(item.content).split("\n").length
+        : 1;
+      row.height = Math.max(25, 20 + contentLines * 18);
+    }
 
     // 设置标题列样式
     const titleCell = row.getCell(1);
@@ -2099,6 +2117,63 @@ async function createExcelJSWorksheet(
       right: { style: "thin", color: { argb: "FFD0D0D0" } }
     };
 
+    // 如果内容包含超链接，使用富文本格式
+    if (
+      hasHyperlinks &&
+      item.content.hyperlinks &&
+      item.content.hyperlinks.length > 0
+    ) {
+      const richText = [];
+      const lines = item.content.text.split("\n");
+
+      lines.forEach((line, lineIdx) => {
+        if (lineIdx > 0) {
+          richText.push({ text: "\n" });
+        }
+
+        // 查找该行是否有超链接
+        const hyperlink = item.content.hyperlinks.find(
+          h => h.lineIndex === lineIdx
+        );
+
+        if (hyperlink) {
+          // 提取序号部分（如 "1. "）
+          const match = line.match(/^(\d+\.\s)/);
+          if (match) {
+            // 添加序号部分（普通文本）
+            richText.push({ text: match[1] });
+            // 添加 URL 部分（超链接）
+            richText.push({
+              text: line.substring(match[1].length),
+              hyperlink: hyperlink.url,
+              font: {
+                size: 11,
+                name: "微软雅黑",
+                color: { argb: "FF0563C1" },
+                underline: true
+              }
+            });
+          } else {
+            // 如果没有序号，整个文本都是超链接
+            richText.push({
+              text: line,
+              hyperlink: hyperlink.url,
+              font: {
+                size: 11,
+                name: "微软雅黑",
+                color: { argb: "FF0563C1" },
+                underline: true
+              }
+            });
+          }
+        } else {
+          richText.push({ text: line });
+        }
+      });
+
+      contentCell.value = { richText };
+    }
+
     // 如果是偶数行，添加浅灰色背景
     if (currentRow % 2 === 0) {
       contentCell.fill = {
@@ -2120,17 +2195,27 @@ async function createExcelJSWorksheet(
  * @param attachments 附件 URL 数组
  * @returns 格式化后的文本，每个 URL 占一行
  */
-function formatAttachmentsForExcel(attachments: string[]): string {
+function formatAttachmentsForExcel(attachments: string[]) {
   if (!attachments || attachments.length === 0) {
-    return "";
+    return { text: "", hyperlinks: [] };
   }
 
   // 如果有多个附件，每个占一行并添加序号
   if (attachments.length > 1) {
-    return attachments.map((url, index) => `${index + 1}. ${url}`).join("\n");
+    const text = attachments
+      .map((url, index) => `${index + 1}. ${url}`)
+      .join("\n");
+    const hyperlinks = attachments.map((url, index) => ({
+      lineIndex: index,
+      url: url
+    }));
+    return { text, hyperlinks };
   }
 
-  return attachments[0] || "";
+  return {
+    text: attachments[0] || "",
+    hyperlinks: attachments[0] ? [{ lineIndex: 0, url: attachments[0] }] : []
+  };
 }
 
 /**

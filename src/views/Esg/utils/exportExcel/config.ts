@@ -21,12 +21,13 @@ export const EXCEL_CONFIG = {
       isFile: true
     },
     {
-      label: "组织的活动、产品、服务说明",
+      label: "说明：组织的活动、产品、服务 ，以及所服务的市场",
       value: "activitiesAndServicesDescription",
       isFile: false
     },
     {
-      label: "与先前报告期相比的重大变化",
+      label:
+        "与先前报告期相比，组织的活动、产品、服务 ，以及所服务的市场是否有重大变化",
       value: "activitiesChangesDescription",
       isFile: false
     },
@@ -36,7 +37,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "组织的活动、品牌、产品和服务 - 附件上传",
+      label: "主要产品功能与用途 - 附件上传",
       value: "activitiesAndServicesFileList",
       isFile: true
     },
@@ -86,57 +87,59 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "外部倡议描述",
+      label: "组织参与或支持的外界发起的经济、环境、社会章程、原则或其他倡议",
       value: "externalInitiativesDescription",
       isFile: false
     },
     {
-      label: "外部倡议 - 新闻链接",
+      label:
+        "组织参与或支持的外界发起的经济、环境、社会章程、原则或其他倡议-新闻链接",
       value: "externalInitiativesNewsLink",
       isFile: false
     },
     {
-      label: "外部倡议 - 附件上传",
+      label:
+        "组织参与或支持的外界发起的经济、环境、社会章程、原则或其他倡议-新闻链接 - 附件上传",
       value: "externalInitiativesFileList",
       isFile: true
     },
     {
-      label: "协会成员资格描述",
+      label: "主要协会成员资格清单",
       value: "associationMembershipDescription",
       isFile: false
     },
     {
-      label: "协会成员资格 - 新闻链接",
+      label: "主要协会成员资格清单-新闻链接",
       value: "associationMembershipNewsLink",
       isFile: false
     },
     {
-      label: "协会成员资格 - 附件上传",
+      label: "主要协会成员资格清单-新闻链接 - 附件上传",
       value: "associationMembershipFileList",
       isFile: true
     },
     {
-      label: "荣誉认可描述",
+      label: "公司及其子公司获得的重要荣誉奖项与颁奖单位",
       value: "honorsAndRecognitionDescription",
       isFile: false
     },
     {
-      label: "荣誉认可 - 附件上传",
+      label: "公司及其子公司获得的重要荣誉奖项与颁奖单位 - 附件上传",
       value: "honorsAndRecognitionFileList",
       isFile: true
     },
     {
-      label: "年度重大事件描述",
+      label: "公司本年度发生的重大事件",
       value: "annualMajorEventsDescription",
       isFile: false
     },
     {
-      label: "年度重大事件 - 新闻链接",
+      label: "公司本年度发生的重大事件-新闻链接",
       value: "annualMajorEventsNewsLink",
       isFile: false
     },
     {
-      label: "年度重大事件 - 附件上传",
+      label: "公司本年度发生的重大事件-新闻链接 - 附件上传",
       value: "annualMajorEventsFileList",
       isFile: true
     }
@@ -148,7 +151,8 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "管治架构和组成 - 附件上传",
+      label:
+        "公司的组织架构，并说明公司最高管治机构及其委员会的构成 - 附件上传",
       value: "governanceStructureFiles",
       isFile: true
     },
@@ -378,12 +382,22 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
+      label: "提名委员会召开情况 - 召开次数",
+      value: "nominationCommitteeMeetingCount",
+      isFile: false
+    },
+    {
+      label: "提名委员会召开情况 - 审议通过议案数",
+      value: "nominationCommitteeMeetingResolutionCount",
+      isFile: false
+    },
+    {
       label: "高管薪酬政策",
       value: "executiveCompensationPolicy",
       isFile: false
     },
     {
-      label: "高管薪酬与 ESG 表现挂钩",
+      label: "高管薪酬与ESG表现挂钩",
       value: "executiveCompensationEsgLink",
       isFile: false
     },
@@ -428,7 +442,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "投资者互动 - 附件上传",
+      label: "年度领导重要讲话稿 - 附件上传",
       value: "investorInteractionFiles",
       isFile: true
     },
@@ -463,7 +477,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "投资者教育与保护 - 附件上传",
+      label: "投资者教育活动与宣传 - 附件上传",
       value: "investorEducationFiles",
       isFile: true
     },
@@ -568,7 +582,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "反贪污腐败 - 附件上传",
+      label: "廉洁文化宣传渠道与措施 - 附件上传",
       value: "antiCorruptionFiles",
       isFile: true
     },
@@ -812,7 +826,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "科技创新 - 成果与荣誉 - 附件上传",
+      label: "科学技术奖励与荣誉 - 附件上传",
       value: "honorsAndRecognitionFileList",
       isFile: true
     },
@@ -897,7 +911,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "宣传与培训 - 附件上传",
+      label: "知识产权保护意识培训 - 附件上传",
       value: "publicityTrainingFileList",
       isFile: true
     },
@@ -954,7 +968,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "体系及策略 - 认证与审验 - 附件上传",
+      label: "认证与审验 - 附件上传",
       value: "certificationAndAuditFileList",
       isFile: true
     },
@@ -964,7 +978,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "体系及策略 - 宣贯与培训 - 附件上传",
+      label: "宣贯与培训 - 附件上传",
       value: "trainingAndPromotionFileList",
       isFile: true
     },
@@ -974,7 +988,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "质量管理实践 - 附件上传",
+      label: "活动与举措 - 附件上传",
       value: "qualityPracticeFileList",
       isFile: true
     },
@@ -984,7 +998,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "质量管理实践 - 荣誉及奖项 - 附件上传",
+      label: "荣誉及奖项 - 附件上传",
       value: "honorsAndAwardsFileList",
       isFile: true
     },
@@ -1019,7 +1033,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "安全生产管理实践 - 培训与宣导 - 附件上传",
+      label: "培训与宣导 - 附件上传",
       value: "safetyTrainingFileList",
       isFile: true
     },
@@ -1034,7 +1048,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "安全生产管理实践 - 安全应急事件管理 - 附件上传",
+      label: "安全应急事件管理 - 附件上传",
       value: "emergencyManagementFileList",
       isFile: true
     },
@@ -1131,7 +1145,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "宣贯及培训 - 附件上传",
+      label: "供应商 ESG 培训体系 - 附件上传",
       value: "trainingAttachmentFileList",
       isFile: true
     },
@@ -1226,7 +1240,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "供应商/承包商权益保护 - 附件上传",
+      label: "能力建设支持 - 附件上传",
       value: "rightsAttachmentFileList",
       isFile: true
     }
@@ -1273,7 +1287,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "宣传与培训 - 附件上传",
+      label: "信息安全与隐私保护意识培训场次 - 附件上传",
       value: "publicityTrainingAttachmentFileList",
       isFile: true
     },
@@ -1359,6 +1373,428 @@ export const EXCEL_CONFIG = {
       value: "newEmployeeByRegion",
       isFile: false
     },
+    /** #region 2026按地区划分参数 */
+    {
+      label: "性别-男性员工人数-杭州",
+      value: "employeeComposition_gender_male_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "性别-男性员工人数-温州",
+      value: "employeeComposition_gender_male_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "性别-男性员工人数-江苏",
+      value: "employeeComposition_gender_male_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "性别-男性员工人数-新西兰",
+      value: "employeeComposition_gender_male_Newzealand",
+      isFile: false
+    },
+    {
+      label: "性别-男性员工人数-越南",
+      value: "employeeComposition_gender_male_Vietnam",
+      isFile: false
+    },
+    {
+      label: "性别-男性员工人数-柬埔寨",
+      value: "employeeComposition_gender_male_Cambodia",
+      isFile: false
+    },
+    {
+      label: "性别-男性员工人数-总数",
+      value: "employeeComposition_gender_male_Total",
+      isFile: false
+    },
+    {
+      label: "性别-女性员工人数-杭州",
+      value: "employeeComposition_gender_female_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "性别-女性员工人数-温州",
+      value: "employeeComposition_gender_female_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "性别-女性员工人数-江苏",
+      value: "employeeComposition_gender_female_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "性别-女性员工人数-新西兰",
+      value: "employeeComposition_gender_female_Newzealand",
+      isFile: false
+    },
+    {
+      label: "性别-女性员工人数-越南",
+      value: "employeeComposition_gender_female_Vietnam",
+      isFile: false
+    },
+    {
+      label: "性别-女性员工人数-柬埔寨",
+      value: "employeeComposition_gender_female_Cambodia",
+      isFile: false
+    },
+    {
+      label: "性别-女性员工人数-总数",
+      value: "employeeComposition_gender_female_Total",
+      isFile: false
+    },
+    {
+      label: "年龄-30岁以下员工人数-杭州",
+      value: "employeeComposition_age_30Under_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "年龄-30岁以下员工人数-温州",
+      value: "employeeComposition_age_30Under_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "年龄-30岁以下员工人数-江苏",
+      value: "employeeComposition_age_30Under_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "年龄-30岁以下员工人数-新西兰",
+      value: "employeeComposition_age_30Under_Newzealand",
+      isFile: false
+    },
+    {
+      label: "年龄-30岁以下员工人数-越南",
+      value: "employeeComposition_age_30Under_Vietnam",
+      isFile: false
+    },
+    {
+      label: "年龄-30岁以下员工人数-柬埔寨",
+      value: "employeeComposition_age_30Under_Cambodia",
+      isFile: false
+    },
+    {
+      label: "年龄-30岁以下员工人数-总数",
+      value: "employeeComposition_age_30Under_Total",
+      isFile: false
+    },
+    {
+      label: "年龄-31-50岁员工人数-杭州",
+      value: "employeeComposition_age_31_50_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "年龄-31-50岁员工人数-温州",
+      value: "employeeComposition_age_31_50_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "年龄-31-50岁员工人数-江苏",
+      value: "employeeComposition_age_31_50_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "年龄-31-50岁员工人数-新西兰",
+      value: "employeeComposition_age_31_50_Newzealand",
+      isFile: false
+    },
+    {
+      label: "年龄-31-50岁员工人数-越南",
+      value: "employeeComposition_age_31_50_Vietnam",
+      isFile: false
+    },
+    {
+      label: "年龄-31-50岁员工人数-柬埔寨",
+      value: "employeeComposition_age_31_50_Cambodia",
+      isFile: false
+    },
+    {
+      label: "年龄-31-50岁员工人数-总数",
+      value: "employeeComposition_age_31_50_Total",
+      isFile: false
+    },
+    {
+      label: "年龄-50岁以上员工人数-杭州",
+      value: "employeeComposition_age_50Over_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "年龄-50岁以上员工人数-温州",
+      value: "employeeComposition_age_50Over_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "年龄-50岁以上员工人数-江苏",
+      value: "employeeComposition_age_50Over_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "年龄-50岁以上员工人数-新西兰",
+      value: "employeeComposition_age_50Over_Newzealand",
+      isFile: false
+    },
+    {
+      label: "年龄-50岁以上员工人数-越南",
+      value: "employeeComposition_age_50Over_Vietnam",
+      isFile: false
+    },
+    {
+      label: "年龄-50岁以上员工人数-柬埔寨",
+      value: "employeeComposition_age_50Over_Cambodia",
+      isFile: false
+    },
+    {
+      label: "年龄-50岁以上员工人数-总数",
+      value: "employeeComposition_age_50Over_Total",
+      isFile: false
+    },
+    {
+      label: "学历-本科以下员工人数-杭州",
+      value: "employeeComposition_education_undergraduate_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "学历-本科以下员工人数-温州",
+      value: "employeeComposition_education_undergraduate_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "学历-本科以下员工人数-江苏",
+      value: "employeeComposition_education_undergraduate_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "学历-本科以下员工人数-新西兰",
+      value: "employeeComposition_education_undergraduate_Newzealand",
+      isFile: false
+    },
+    {
+      label: "学历-本科以下员工人数-越南",
+      value: "employeeComposition_education_undergraduate_Vietnam",
+      isFile: false
+    },
+    {
+      label: "学历-本科以下员工人数-柬埔寨",
+      value: "employeeComposition_education_undergraduate_Cambodia",
+      isFile: false
+    },
+    {
+      label: "学历-本科以下员工人数-总数",
+      value: "employeeComposition_education_undergraduate_Total",
+      isFile: false
+    },
+    {
+      label: "学历-本科员工人数-杭州",
+      value: "employeeComposition_education_graduate_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "学历-本科员工人数-温州",
+      value: "employeeComposition_education_graduate_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "学历-本科员工人数-江苏",
+      value: "employeeComposition_education_graduate_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "学历-本科员工人数-新西兰",
+      value: "employeeComposition_education_graduate_Newzealand",
+      isFile: false
+    },
+    {
+      label: "学历-本科员工人数-越南",
+      value: "employeeComposition_education_graduate_Vietnam",
+      isFile: false
+    },
+    {
+      label: "学历-本科员工人数-柬埔寨",
+      value: "employeeComposition_education_graduate_Cambodia",
+      isFile: false
+    },
+    {
+      label: "学历-本科员工人数-总数",
+      value: "employeeComposition_education_graduate_Total",
+      isFile: false
+    },
+    {
+      label: "学历-硕士及以上员工人数-杭州",
+      value: "employeeComposition_education_master_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "学历-硕士及以上员工人数-温州",
+      value: "employeeComposition_education_master_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "学历-硕士及以上员工人数-江苏",
+      value: "employeeComposition_education_master_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "学历-硕士及以上员工人数-新西兰",
+      value: "employeeComposition_education_master_Newzealand",
+      isFile: false
+    },
+    {
+      label: "学历-硕士及以上员工人数-越南",
+      value: "employeeComposition_education_master_Vietnam",
+      isFile: false
+    },
+    {
+      label: "学历-硕士及以上员工人数-柬埔寨",
+      value: "employeeComposition_education_master_Cambodia",
+      isFile: false
+    },
+    {
+      label: "学历-硕士及以上员工人数-总数",
+      value: "employeeComposition_education_master_Total",
+      isFile: false
+    },
+    {
+      label: "职称-高级管理层员工人数-杭州",
+      value: "employeeComposition_title_senior_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "职称-高级管理层员工人数-温州",
+      value: "employeeComposition_title_senior_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "职称-高级管理层员工人数-江苏",
+      value: "employeeComposition_title_senior_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "职称-高级管理层员工人数-新西兰",
+      value: "employeeComposition_title_senior_Newzealand",
+      isFile: false
+    },
+    {
+      label: "职称-高级管理层员工人数-越南",
+      value: "employeeComposition_title_senior_Vietnam",
+      isFile: false
+    },
+    {
+      label: "职称-高级管理层员工人数-柬埔寨",
+      value: "employeeComposition_title_senior_Cambodia",
+      isFile: false
+    },
+    {
+      label: "职称-高级管理层员工人数-总数",
+      value: "employeeComposition_title_senior_Total",
+      isFile: false
+    },
+    {
+      label: "职称-中级管理层员工人数-杭州",
+      value: "employeeComposition_title_mid_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "职称-中级管理层员工人数-温州",
+      value: "employeeComposition_title_mid_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "职称-中级管理层员工人数-江苏",
+      value: "employeeComposition_title_mid_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "职称-中级管理层员工人数-新西兰",
+      value: "employeeComposition_title_mid_Newzealand",
+      isFile: false
+    },
+    {
+      label: "职称-中级管理层员工人数-越南",
+      value: "employeeComposition_title_mid_Vietnam",
+      isFile: false
+    },
+    {
+      label: "职称-中级管理层员工人数-柬埔寨",
+      value: "employeeComposition_title_mid_Cambodia",
+      isFile: false
+    },
+    {
+      label: "职称-中级管理层员工人数-总数",
+      value: "employeeComposition_title_mid_Total",
+      isFile: false
+    },
+    {
+      label: "职称-初级管理层员工人数-杭州",
+      value: "employeeComposition_title_junior_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "职称-初级管理层员工人数-温州",
+      value: "employeeComposition_title_junior_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "职称-初级管理层员工人数-江苏",
+      value: "employeeComposition_title_junior_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "职称-初级管理层员工人数-新西兰",
+      value: "employeeComposition_title_junior_Newzealand",
+      isFile: false
+    },
+    {
+      label: "职称-初级管理层员工人数-越南",
+      value: "employeeComposition_title_junior_Vietnam",
+      isFile: false
+    },
+    {
+      label: "职称-初级管理层员工人数-柬埔寨",
+      value: "employeeComposition_title_junior_Cambodia",
+      isFile: false
+    },
+    {
+      label: "职称-初级管理层员工人数-总数",
+      value: "employeeComposition_title_junior_Total",
+      isFile: false
+    },
+    {
+      label: "职称-普通员工人数-杭州",
+      value: "employeeComposition_title_normal_Hangzhou",
+      isFile: false
+    },
+    {
+      label: "职称-普通员工人数-温州",
+      value: "employeeComposition_title_normal_Wenzhou",
+      isFile: false
+    },
+    {
+      label: "职称-普通员工人数-江苏",
+      value: "employeeComposition_title_normal_Jiangsu",
+      isFile: false
+    },
+    {
+      label: "职称-普通员工人数-新西兰",
+      value: "employeeComposition_title_normal_Newzealand",
+      isFile: false
+    },
+    {
+      label: "职称-普通员工人数-越南",
+      value: "employeeComposition_title_normal_Vietnam",
+      isFile: false
+    },
+    {
+      label: "职称-普通员工人数-柬埔寨",
+      value: "employeeComposition_title_normal_Cambodia",
+      isFile: false
+    },
+    {
+      label: "职称-普通员工人数-总数",
+      value: "employeeComposition_title_normal_Total",
+      isFile: false
+    },
+    /** #endregion 2026按地区划分参数 */
     {
       label: "校园招聘的新员工数量",
       value: "campusRecruitmentCount",
@@ -1395,7 +1831,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "荣誉或认可 - 附件上传",
+      label: "雇主品牌荣誉 - 附件上传",
       value: "honorCertificateAttachments",
       isFile: true
     },
@@ -1435,7 +1871,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "基本权益保障 - 附件上传",
+      label: "安保人员人权培训 - 附件上传",
       value: "employeeHandbookAttachments",
       isFile: true
     },
@@ -1445,7 +1881,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "基本权益保障 - 第三方审核与认证 - 附件上传",
+      label: "第三方审核与认证 - 附件上传",
       value: "thirdPartyAuditAttachments",
       isFile: true
     },
@@ -1495,7 +1931,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "福利与关怀 - 附件上传",
+      label: "福利措施与关怀活动 - 附件上传",
       value: "welfareCareAttachments",
       isFile: true
     },
@@ -1510,7 +1946,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "福利与关怀 - 员工活动 - 附件上传",
+      label: "员工活动 - 附件上传",
       value: "employeeEventAttachments",
       isFile: true
     },
@@ -1550,7 +1986,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "女性员工 - 附件上传",
+      label: "女性设施与培训课程 - 附件上传",
       value: "femaleFacilitiesAttachments",
       isFile: true
     },
@@ -1571,7 +2007,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "残障人士雇佣 - 附件上传",
+      label: "无障碍设施的设置 - 附件上传",
       value: "accessibilityFacilityAttachments",
       isFile: true
     },
@@ -1587,7 +2023,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "退伍军人雇佣 - 附件上传",
+      label: "退伍军人 - 附件上传",
       value: "veteranEmployeeAttachments",
       isFile: true
     },
@@ -1614,7 +2050,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "培训 - 反骚扰、反歧视培训 - 附件上传",
+      label: "反骚扰、反歧视培训 - 附件上传",
       value: "antiHarassmentTrainingAttachments",
       isFile: true
     },
@@ -1639,7 +2075,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "员工培训与考核 - 附件上传",
+      label: "人才培养体系与项目 - 附件上传",
       value: "talentDevelopmentAttachments",
       isFile: true
     },
@@ -1664,8 +2100,13 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "按性别分类的员工平均培训小时数",
+      label: "按性别分类的员工平均培训小时数-女性",
       value: "avgTrainingHoursByGenderFemale",
+      isFile: false
+    },
+    {
+      label: "按性别分类的员工平均培训小时数-男性",
+      value: "avgTrainingHoursByGenderMale",
       isFile: false
     },
     {
@@ -1714,13 +2155,28 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "按性别划分培训考核通过率",
+      label: "按性别划分培训考核通过率-女性",
       value: "trainingPassRateByGenderFemale",
       isFile: false
     },
     {
-      label: "按职级划分的培训考核通过率",
+      label: "按性别划分培训考核通过率-男性",
+      value: "trainingPassRateByGenderMale",
+      isFile: false
+    },
+    {
+      label: "按职级划分的培训考核通过率-中层管理人员",
       value: "trainingPassRateByPositionMiddle",
+      isFile: false
+    },
+    {
+      label: "按职级划分的培训考核通过率-高级管理人员",
+      value: "trainingPassRateByPositionSenior",
+      isFile: false
+    },
+    {
+      label: "按职级划分的培训考核通过率-其他劳务关系人员",
+      value: "trainingPassRateByPositionOther",
       isFile: false
     },
     {
@@ -1906,27 +2362,27 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "范围 1 温室气体排放量",
+      label: "范围 1 温室气体排放量(吨二氧化碳当量)",
       value: "scope1GhgEmissions",
       isFile: false
     },
     {
-      label: "范围 2 温室气体排放量",
+      label: "范围 2 温室气体排放量(吨二氧化碳当量)",
       value: "scope2GhgEmissions",
       isFile: false
     },
     {
-      label: "范围 3 温室气体排放量",
+      label: "范围 3 温室气体排放量(吨二氧化碳当量)",
       value: "scope3GhgEmissions",
       isFile: false
     },
     {
-      label: "温室气体排放总量",
+      label: "温室气体排放总量(吨二氧化碳当量)",
       value: "totalGhgEmissions",
       isFile: false
     },
     {
-      label: "温室气体排放强度",
+      label: "温室气体排放强度(吨二氧化碳当量/万元)",
       value: "ghgEmissionIntensity",
       isFile: false
     },
@@ -1936,7 +2392,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "应对气候变化 - 温室气体排放 - 附件上传",
+      label: "温室气体排放核查 - 附件上传",
       value: "ghgVerificationAttachmentFileList",
       isFile: true
     },
@@ -1966,7 +2422,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "应对气候变化 - 气候变化实践 - 附件上传",
+      label: "减碳技术行业应用 - 附件上传",
       value: "carbonReductionTechAttachmentFileList",
       isFile: true
     },
@@ -1976,7 +2432,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "应对气候变化 - 气候变化实践 - 低/零碳产品研发 - 附件上传",
+      label: "低/零碳产品研发 - 附件上传",
       value: "lowCarbonProductRAndDAttachmentFileList",
       isFile: true
     },
@@ -1986,7 +2442,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "应对气候变化 - 气候变化实践 - 附件上传",
+      label: "节能减排实践 - 附件上传",
       value: "energySavingMeasuresAttachmentFileList",
       isFile: true
     },
@@ -1996,7 +2452,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "应对气候变化 - 气候变化实践 - 清洁生产举措 - 附件上传",
+      label: "清洁生产举措 - 附件上传",
       value: "cleanProductionMeasuresAttachmentFileList",
       isFile: true
     },
@@ -2006,8 +2462,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label:
-        "应对气候变化 - 气候变化实践 - 价值链节能减排推广与实践 - 附件上传",
+      label: "价值链节能减排推广与实践 - 附件上传",
       value: "valueChainEnergySavingAttachmentFileList",
       isFile: true
     },
@@ -2052,7 +2507,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "应对气候变化 - 行业合作 - 附件上传",
+      label: "参加/开展气候变化活动、论坛 - 附件上传",
       value: "climateActivityAttachmentFileList",
       isFile: true
     },
@@ -2072,7 +2527,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "环境管理 - 体系与策略 - 附件上传",
+      label: "荣誉及奖项 - 附件上传",
       value: "envHonorsAttachmentFileList",
       isFile: true
     },
@@ -2097,7 +2552,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "环境管理 - 体系与策略 - 附件上传",
+      label: "通过环境管理体系认证 - 附件上传",
       value: "envSystemCertificationAttachmentFileList",
       isFile: true
     },
@@ -2112,12 +2567,12 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "环境管理 - 环保预警及应急 - 附件上传",
+      label: "应急培训、应急演练 - 附件上传",
       value: "envEmergencyTrainingAttachmentFileList",
       isFile: true
     },
     {
-      label: "环保违法违规事件与处罚",
+      label: "环保违法违规事件与处罚-政策、制度",
       value: "envViolationPenalty",
       isFile: false
     },
@@ -2137,7 +2592,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "环境管理 - 环境影响评估 - 附件上传",
+      label: "管理有关环境影响的行动 - 附件上传",
       value: "envImpactMgmtActionsAttachmentFileList",
       isFile: true
     },
@@ -2162,7 +2617,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "环保实践 - 生产环保实践 - 附件上传",
+      label: "环保项目 - 附件上传",
       value: "envProjectsAttachmentFileList",
       isFile: true
     },
@@ -2177,7 +2632,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "环保实践 - 生产环保实践 - 附件上传",
+      label: "公司环保宣贯、培训次数及覆盖人数 - 附件上传",
       value: "envTrainingPublicityAttachmentFileList",
       isFile: true
     },
@@ -2212,7 +2667,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "资源使用 - 管理及策略 - 附件上传",
+      label: "能源管理体系认证 - 附件上传",
       value: "energyManagementSystemCertificationAttachmentFileList",
       isFile: true
     },
@@ -2327,7 +2782,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "资源使用 - 资源节约 - 附件上传",
+      label: "资源节约实践 - 附件上传",
       value: "waterSavingMeasuresAttachmentFileList",
       isFile: true
     },
@@ -2342,7 +2797,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "所用物料的重量或体积",
+      label: "所用物料的重量或体积(吨/立方米)",
       value: "materialTotalWeightOrVolume",
       isFile: false
     },
@@ -2558,7 +3013,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "生物多样性保护 - 生物多样性保护实践 - 附件上传",
+      label: "运营或项目地附近建设生物多样性保护区数量和保护举措 - 附件上传",
       value: "biodiversityProtectedAreasAttachmentFileList",
       isFile: true
     }
@@ -2590,7 +3045,7 @@ export const EXCEL_CONFIG = {
       isFile: false
     },
     {
-      label: "社区公益 - 打造品牌公益项目 - 附件上传",
+      label: "打造品牌公益项目 - 附件上传",
       value: "brandCharityProjectsAttachmentFileList",
       isFile: true
     },
@@ -2625,17 +3080,17 @@ export const EXCEL_CONFIG = {
       isFile: true
     },
     {
-      label: "目标、方针及承诺；战略",
+      label: "乡村振兴-目标、方针及承诺；战略",
       value: "ruralRevitalizationStrategy",
       isFile: false
     },
     {
-      label: "政策",
+      label: "乡村振兴-政策",
       value: "ruralRevitalizationPolicy",
       isFile: false
     },
     {
-      label: "实践",
+      label: "乡村振兴-实践",
       value: "ruralRevitalizationPractice",
       isFile: false
     },
