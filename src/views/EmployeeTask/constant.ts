@@ -56,14 +56,10 @@ export const TaskLevelList = {
       text: "请和庄总合影一张",
       key: "beginner-14"
     },
-    {
-      text: "请和庄总合影一张",
-      key: "beginner-14"
-    },
-    {
-      text: "请和陈董合影一张",
-      key: "beginner-15"
-    },
+    // {
+    //   text: "请和陈董合影一张",
+    //   key: "beginner-15"
+    // },
     {
       text: "请和游总合影一张",
       key: "beginner-16"
@@ -131,6 +127,10 @@ export const TaskLevelList = {
     {
       text: "提出一条可行性改善性建议意见（包括但不限于:工作流程、工作方案、公司制度、文化等）",
       key: "advanced-3"
+    },
+    {
+      text: "与陈董的互动合影&心得体会（100字左右）【入门自我介绍 + 请教一个问题 （工作、成长、公司业务、职场建议等均可）+ 正式合影】（不仅仅是拍一张合影，更在与陈董短暂交流中展示礼貌、思考与主动性）",
+      key: "advanced-4"
     }
   ]
 };
