@@ -55,6 +55,11 @@ export default [
         path: "/pdesg/fillIn",
         name: "PdesgFillIn",
         component: () => import("@/views/Esg/fillIn.vue")
+      },
+      {
+        path: "/pdesg/config",
+        name: "PdesgConfig",
+        component: () => import("@/views/EsgPlus/config/index.vue")
       }
     ]
   }
