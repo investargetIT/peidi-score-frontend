@@ -186,6 +186,8 @@
                 <el-input v-model="tab.tabName" placeholder="TAB名称" class="tab-title-input" size="small" />
               </div>
               <div class="tab-card-actions">
+                <el-button size="small" type="info" :icon="Upload" @click="triggerTabImport(tab)" title="导入JSON" />
+                <el-button size="small" type="warning" :icon="Download" @click="exportTabConfig(tab)" title="导出JSON" />
                 <el-button size="small" type="primary" :icon="Plus" @click="addCard(tab)" title="添加卡片" />
                 <el-button size="small" type="danger" :icon="Delete" @click="deleteTab(currentYearConfig, tab.tabId)" title="删除TAB" />
               </div>
@@ -227,6 +229,45 @@
       </div>
     </el-dialog>
 
+    <!-- JSON 导入弹窗 -->
+    <el-dialog v-model="showJsonImportDialog" :title="importDialogTitle" width="700px">
+      <el-tabs v-model="importType">
+        <el-tab-pane label="粘贴/手写" name="paste">
+          <el-input
+            v-model="importJsonContent"
+            type="textarea"
+            :rows="18"
+            placeholder="请在此处粘贴 JSON 内容，或直接手写"
+          />
+        </el-tab-pane>
+        <el-tab-pane label="上传文件" name="file">
+          <el-upload
+            ref="uploadRef"
+            class="upload-demo"
+            drag
+            accept=".json"
+            :auto-upload="false"
+            :on-change="handleFileChange"
+            :show-file-list="false"
+          >
+            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+            <div class="el-upload__text">
+              将 JSON 文件拖到此处，或 <em>点击上传</em>
+            </div>
+            <template #tip>
+              <div class="el-upload__tip">
+                只能上传 .json 文件
+              </div>
+            </template>
+          </el-upload>
+        </el-tab-pane>
+      </el-tabs>
+      <template #footer>
+        <el-button @click="showJsonImportDialog = false">取消</el-button>
+        <el-button type="primary" @click="confirmJsonImport">确定</el-button>
+      </template>
+    </el-dialog>
+
     <!-- 卡片详情弹窗 -->
     <el-dialog
       v-model="showCardDetailDialog"
@@ -248,6 +289,8 @@
 
         <div class="add-field-wrapper">
           <el-button type="primary" :icon="Plus" @click="addField(currentCard)">添加字段</el-button>
+          <el-button type="info" :icon="Upload" @click="triggerCardImport">导入 JSON</el-button>
+          <el-button type="warning" :icon="Download" @click="exportCardConfig">导出 JSON</el-button>
         </div>
 
         <div class="fields-editor">
@@ -268,7 +311,9 @@
             <!-- 混合类型的子控件 -->
             <div v-if="field.type === 'mixed'" class="controls-editor">
               <el-divider content-position="left" style="margin: 10px 0;">子控件</el-divider>
-              <el-button size="small" type="primary" :icon="Plus" @click="addControlToField(field)">添加子控件</el-button>
+              <div class="add-control-wrapper">
+                <el-button size="small" type="primary" :icon="Plus" @click="addControlToField(field)">添加子控件</el-button>
+              </div>
               <div v-for="(control, ctrlIndex) in (field.controls || [])" :key="ctrlIndex" class="control-editor">
                 <div class="control-editor-header">
                   <el-input v-model="control.label" placeholder="控件标签" size="small" class="control-label" />
@@ -307,7 +352,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight, Download } from '@element-plus/icons-vue'
+import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight, Download, Upload, UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
 import { getEsgConfigList, updateEsgConfig } from '@/api/esgConfig'
 
@@ -322,12 +367,24 @@ const showAddYearDialog = ref(false)
 const showYearDetailDialog = ref(false)
 // 卡片详情对话框显示状态
 const showCardDetailDialog = ref(false)
+// JSON 导入弹窗显示状态
+const showJsonImportDialog = ref(false)
 // 当前选中的年份配置
 const currentYearConfig = ref(null)
 // 当前选中的卡片
 const currentCard = ref(null)
 // 当前选中的卡片所属的 tab
 const currentTab = ref(null)
+// 当前正在导入的目标类型：'tab' | 'card'
+const importTargetType = ref('')
+// 当前正在导入的目标
+const currentImportTarget = ref(null)
+// 导入弹窗标题
+const importDialogTitle = ref('导入 JSON')
+// 导入方式：'paste' | 'file'
+const importType = ref('paste')
+// 粘贴的 JSON 内容
+const importJsonContent = ref('')
 // 是否全屏
 const isFullscreen = ref(false)
 // 新选的年份
@@ -726,6 +783,90 @@ const downloadJSON = (data, filename) => {
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
   ElMessage.success('导出成功')
+}
+
+// 触发卡片 JSON 导入
+const triggerCardImport = () => {
+  importTargetType.value = 'card'
+  currentImportTarget.value = currentCard.value
+  importDialogTitle.value = '导入卡片配置'
+  importJsonContent.value = ''
+  importType.value = 'paste'
+  showJsonImportDialog.value = true
+}
+
+// 触发 TAB JSON 导入
+const triggerTabImport = (tab) => {
+  importTargetType.value = 'tab'
+  currentImportTarget.value = tab
+  importDialogTitle.value = '导入 TAB 配置'
+  importJsonContent.value = ''
+  importType.value = 'paste'
+  showJsonImportDialog.value = true
+}
+
+// 处理文件选择变化
+const handleFileChange = (file) => {
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const result = e.target?.result
+    importJsonContent.value = result
+  }
+  reader.readAsText(file.raw)
+}
+
+// 确认导入 JSON
+const confirmJsonImport = () => {
+  if (!importJsonContent.value.trim()) {
+    ElMessage.warning('请输入 JSON 内容')
+    return
+  }
+
+  try {
+    const importedData = JSON.parse(importJsonContent.value)
+
+    if (importTargetType.value === 'card' && currentImportTarget.value) {
+      // 导入到卡片
+      const currentId = currentImportTarget.value.cardId
+      Object.assign(currentImportTarget.value, importedData)
+      currentImportTarget.value.cardId = currentId
+    } else if (importTargetType.value === 'tab' && currentImportTarget.value) {
+      // 导入到 TAB
+      const currentId = currentImportTarget.value.tabId
+      Object.assign(currentImportTarget.value, importedData)
+      currentImportTarget.value.tabId = currentId
+    }
+
+    ElMessage.success('导入成功')
+    showJsonImportDialog.value = false
+    // 清空
+    importJsonContent.value = ''
+    currentImportTarget.value = null
+  } catch (error) {
+    ElMessage.error('JSON 格式错误，请检查内容')
+    console.error('导入失败:', error)
+  }
+}
+
+// 导出当前卡片 JSON
+const exportCardConfig = () => {
+  if (!currentCard.value) return
+  // 移除 cardId，导出纯净的数据
+  const { cardId, ...configToExport } = currentCard.value
+  const filename = currentCard.value.cardName
+    ? `card-${currentCard.value.cardName}.json`
+    : `card-${Date.now()}.json`
+  downloadJSON(configToExport, filename)
+}
+
+// 导出 TAB 配置
+const exportTabConfig = (tab) => {
+  // 移除 tabId，导出纯净的数据
+  const { tabId, ...configToExport } = tab
+  const filename = tab.tabName
+    ? `tab-${tab.tabName}.json`
+    : `tab-${Date.now()}.json`
+  downloadJSON(configToExport, filename)
 }
 </script>
 
@@ -1316,9 +1457,18 @@ $text-placeholder: #9ca3af;
   }
 
   .controls-editor {
-    margin-top: 12px;
+    margin-top: 20px;
     padding-top: 12px;
     border-top: 1px dashed $border-color;
+
+    :deep(.el-divider__text) {
+      background-color: $bg-color;
+      padding: 0 10px;
+    }
+  }
+
+  .add-control-wrapper {
+    margin: 12px 0;
   }
 
   .control-editor {
@@ -1333,6 +1483,7 @@ $text-placeholder: #9ca3af;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    gap: 12px;
   }
 
   .control-label {
