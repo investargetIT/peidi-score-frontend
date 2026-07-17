@@ -1,11 +1,22 @@
 import { http } from "@/utils/http";
 
+// 环境切换：true-开发环境，false-生产环境
+const isDev = false;
+
 // 调试接口地址
 const debugBaseUrl = "http://12.18.1.36:8090";
 
-export const debugBaseUrlApi = (url: string, hasUi = true) => {
+const debugBaseUrlApi = (url: string, hasUi = true) => {
   return `${debugBaseUrl}/${hasUi ? "ui" : ""}${url}`;
 };
+
+// 生产环境接口地址
+const prodBaseUrlApi = (url: string, hasUi = true) => {
+  return `https://api.peidigroup.cn/${hasUi ? "ui" : ""}${url}`;
+};
+
+// 根据环境选择接口
+export const baseUrlApi = isDev ? debugBaseUrlApi : prodBaseUrlApi;
 
 /**
  * ESG配置信息表
@@ -77,21 +88,21 @@ export interface CreateEsgConfigRequest {
 
 // 分页查询ESG配置
 export const getEsgConfigList = (params: GetEsgConfigListRequest) => {
-  return http.request("get", debugBaseUrlApi("/esg/config"), {
+  return http.request("get", baseUrlApi("/esg/config"), {
     params
   });
 };
 
 // 创建ESG配置
 export const createEsgConfig = (data: CreateEsgConfigRequest) => {
-  return http.request("post", debugBaseUrlApi("/esg/config"), {
+  return http.request("post", baseUrlApi("/esg/config"), {
     data
   });
 };
 
 // 更新ESG配置
 export const updateEsgConfig = (data: CreateEsgConfigRequest) => {
-  return http.request("post", debugBaseUrlApi("/esg/config/update"), {
+  return http.request("post", baseUrlApi("/esg/config/update"), {
     data
   });
 };

@@ -16,6 +16,9 @@
           <el-button type="primary" :icon="Plus" @click="showAddYearDialog = true">
             <span>添加年份</span>
           </el-button>
+          <el-button type="info" :icon="Download" @click="exportAllConfig" v-if="formConfig.length > 0">
+            <span>导出全部</span>
+          </el-button>
           <el-button type="success" :icon="Check" @click="saveConfig">
             <span>保存配置</span>
           </el-button>
@@ -93,7 +96,15 @@
             </div>
             <div class="year-card-footer">
               <span class="enter-text">进入配置</span>
-              <el-icon class="enter-icon"><ArrowRight /></el-icon>
+              <div class="card-actions">
+                <el-button
+                  type="primary"
+                  size="small"
+                  :icon="Download"
+                  @click.stop="exportSingleConfig(yearConfig)"
+                  circle
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -296,13 +307,13 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight } from '@element-plus/icons-vue'
+import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight, Download } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
 import { getEsgConfigList, updateEsgConfig } from '@/api/esgConfig'
 
 // 配置数据
 const formConfig = ref([])
-// 保存所有从后端加载的配置记录，包含 id 等信息
+// 保存所有从后端加载的配置记录，包含 id、isDel 等信息
 const allConfigRecords = ref([])
 
 // 添加年份对话框显示状态
@@ -340,26 +351,34 @@ const init = async () => {
 
     if (res && res.data && res.data.records) {
       allConfigRecords.value = res.data.records
-      // 解析 config 字段为我们需要的格式
-      formConfig.value = res.data.records.map(record => {
-        try {
-          if (record.config) {
-            const parsed = JSON.parse(record.config)
-            return {
-              ...parsed,
-              id: record.id,
-              year: record.year?.toString() || parsed.year
+      // 解析 config 字段为我们需要的格式，只显示未删除的（isDel !== 1）
+      formConfig.value = res.data.records
+        .filter(record => record.isDel !== 1)
+        .map(record => {
+          try {
+            if (record.config) {
+              const parsed = JSON.parse(record.config)
+              return {
+                ...parsed,
+                id: record.id,
+                isDel: record.isDel,
+                createdAt: record.createdAt,
+                updatedAt: record.updatedAt,
+                year: record.year?.toString() || parsed.year
+              }
             }
+          } catch (e) {
+            console.error('解析配置失败', e)
           }
-        } catch (e) {
-          console.error('解析配置失败', e)
-        }
-        return {
-          id: record.id,
-          year: record.year?.toString() || '',
-          tabs: []
-        }
-      })
+          return {
+            id: record.id,
+            isDel: record.isDel,
+            createdAt: record.createdAt,
+            updatedAt: record.updatedAt,
+            year: record.year?.toString() || '',
+            tabs: []
+          }
+        })
     }
   } catch (error) {
     console.error('加载配置失败', error)
@@ -476,12 +495,15 @@ const confirmAddYear = () => {
     if (sourceConfig) {
       newYearConfig = JSON.parse(JSON.stringify(sourceConfig))
       newYearConfig.year = newYearValue.value
+      delete newYearConfig.id // 新增年份不传 id
+      newYearConfig.isDel = 0 // 新增年份 isDel 设为 0
       // 重新生成所有ID，避免冲突
       regenerateIds(newYearConfig)
     }
   } else {
     // 新建空配置
     newYearConfig = {
+      isDel: 0, // 新增年份 isDel 设为 0
       year: newYearValue.value,
       tabs: []
     }
@@ -489,12 +511,15 @@ const confirmAddYear = () => {
 
   formConfig.value.push(newYearConfig)
 
+  // 先保存要显示的年份
+  const addedYear = newYearValue.value
+
   // 重置对话框
   showAddYearDialog.value = false
   newYearValue.value = ''
   copyFromYear.value = ''
 
-  ElMessage.success(`已添加 ${newYearValue.value} 年`)
+  ElMessage.success(`已添加 ${addedYear} 年`)
 }
 
 // 重新生成所有ID，避免复制配置时的ID冲突
@@ -517,7 +542,11 @@ const regenerateIds = (config) => {
 
 // 删除年份
 const deleteYear = (year) => {
-  formConfig.value = formConfig.value.filter(y => y.year !== year)
+  const yearConfig = formConfig.value.find(y => y.year === year)
+  if (yearConfig) {
+    yearConfig.isDel = 1 // 标记为删除
+    formConfig.value = formConfig.value.filter(y => y.year !== year) // 从显示列表中移除
+  }
   showYearDetailDialog.value = false
   ElMessage.success(`已删除 ${year} 年`)
 }
@@ -586,16 +615,60 @@ const saveConfig = async () => {
   })
 
   try {
-    // 收集所有年份配置到数组
-    const saveList = formConfig.value.map(yearConfig => {
-      const { id, ...configToSave } = yearConfig
-      const saveData = {
-        year: parseInt(yearConfig.year),
-        config: JSON.stringify(configToSave)
+    // 创建一个 Map 来处理所有记录
+    const recordMap = new Map()
+
+    // 1. 先把所有后端原始记录放入 Map
+    allConfigRecords.value.forEach(record => {
+      recordMap.set(record.year, { ...record })
+    })
+
+    // 2. 更新当前存在的年份配置（包括新增和修改的）
+    formConfig.value.forEach(yearConfig => {
+      const { id, isDel, createdAt, updatedAt, ...configToSave } = yearConfig
+      const year = parseInt(yearConfig.year)
+
+      if (recordMap.has(year)) {
+        // 更新现有记录
+        const existingRecord = recordMap.get(year)
+        recordMap.set(year, {
+          ...existingRecord,
+          config: JSON.stringify(configToSave),
+          isDel: 0 // 确保未删除标记
+        })
+      } else {
+        // 新增记录
+        recordMap.set(year, {
+          year: year,
+          config: JSON.stringify(configToSave),
+          isDel: 0
+        })
       }
-      // 如果有 id，一并传递
-      if (id) {
-        saveData.id = id
+    })
+
+    // 3. 处理被删除的年份（检查哪些在原始记录中但现在不在 formConfig 中，或者被标记删除的）
+    // 先找到所有需要标记为删除的年份
+    const currentYears = new Set(formConfig.value.map(y => parseInt(y.year)))
+    allConfigRecords.value.forEach(record => {
+      if (!currentYears.has(record.year)) {
+        // 这个年份在后端有，但现在不在 formConfig 中，标记为删除
+        recordMap.set(record.year, {
+          ...record,
+          isDel: 1
+        })
+      }
+    })
+
+    // 4. 收集所有记录到数组
+    const saveList = Array.from(recordMap.values()).map(record => {
+      const saveData = {
+        year: record.year,
+        config: record.config,
+        isDel: record.isDel
+      }
+      // 只有当 id 存在时才传递
+      if (record.id) {
+        saveData.id = record.id
       }
       return saveData
     })
@@ -622,6 +695,37 @@ const saveConfig = async () => {
   } finally {
     loading.close()
   }
+}
+
+// 导出单个年份配置
+const exportSingleConfig = (yearConfig) => {
+  // 移除不需要导出的字段
+  const { id, isDel, createdAt, updatedAt, ...configToExport } = yearConfig
+  downloadJSON(configToExport, `esg-config-${yearConfig.year}.json`)
+}
+
+// 导出全部年份配置
+const exportAllConfig = () => {
+  const allConfig = formConfig.value.map(yearConfig => {
+    const { id, isDel, createdAt, updatedAt, ...configToExport } = yearConfig
+    return configToExport
+  })
+  downloadJSON(allConfig, `esg-config-all-${new Date().toISOString().slice(0, 10)}.json`)
+}
+
+// 下载 JSON 文件
+const downloadJSON = (data, filename) => {
+  const jsonStr = JSON.stringify(data, null, 2)
+  const blob = new Blob([jsonStr], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+  ElMessage.success('导出成功')
 }
 </script>
 
@@ -916,10 +1020,15 @@ $text-placeholder: #9ca3af;
   .year-card-footer {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 6px;
     color: $primary-color;
     font-weight: 500;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
   }
 
   .enter-text {
@@ -1274,11 +1383,6 @@ $text-placeholder: #9ca3af;
 :deep(.el-button--primary) {
   background-color: $primary-color;
   border-color: $primary-color;
-
-  &:hover {
-    background-color: lighten($primary-color, 5%);
-    border-color: lighten($primary-color, 5%);
-  }
 }
 
 // 图标按钮样式优化
