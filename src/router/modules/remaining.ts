@@ -60,6 +60,11 @@ export default [
         path: "/pdesg/config",
         name: "PdesgConfig",
         component: () => import("@/views/EsgPlus/config/index.vue")
+      },
+      {
+        path: "/pdesg/survey",
+        name: "PdesgSurvey",
+        component: () => import("@/views/EsgPlus/survey.vue")
       }
     ]
   }
