@@ -179,8 +179,8 @@
 
       <div v-if="currentYearConfig" class="year-detail-content">
         <!-- TAB 卡片网格 -->
-        <div class="tabs-grid">
-          <div v-for="tab in currentYearConfig.tabs" :key="tab.tabId" class="tab-card">
+        <div ref="tabsGridRef" class="tabs-grid">
+          <div v-for="tab in currentYearConfig.tabs" :key="tab.tabId" class="tab-card" :data-tab-id="tab.tabId">
             <div class="tab-card-header">
               <div class="tab-card-title">
                 <el-input v-model="tab.tabName" placeholder="TAB名称" class="tab-title-input" size="small" />
@@ -194,11 +194,12 @@
             </div>
 
             <!-- 卡片列表 -->
-            <div class="cards-list">
+            <div :ref="el => setCardsListRef(tab.tabId, el)" class="cards-list" :data-tab-id="tab.tabId">
               <div
                 v-for="card in tab.cards"
                 :key="card.cardId"
                 class="mini-card"
+                :data-card-id="card.cardId"
                 @click="openCardDetail(card, tab)"
               >
                 <div class="mini-card-content">
@@ -351,15 +352,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, nextTick, watch } from 'vue'
 import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight, Download, Upload, UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
 import { getEsgConfigList, updateEsgConfig } from '@/api/esgConfig'
+import Sortable from 'sortablejs'
 
 // 配置数据
 const formConfig = ref([])
 // 保存所有从后端加载的配置记录，包含 id、isDel 等信息
 const allConfigRecords = ref([])
+// tabs 网格的 ref
+const tabsGridRef = ref(null)
+// 存储每个 tab 对应卡片列表的 ref
+const cardsListRefs = ref(new Map())
+// 存储 Sortable 实例
+const sortableInstances = ref([])
 
 // 添加年份对话框显示状态
 const showAddYearDialog = ref(false)
@@ -617,12 +625,14 @@ const addTab = (yearConfig) => {
     cards: []
   })
   ElMessage.success('已添加 TAB')
+  reinitDragSortDebounced()
 }
 
 // 删除TAB
 const deleteTab = (yearConfig, tabId) => {
   yearConfig.tabs = yearConfig.tabs.filter(t => t.tabId !== tabId)
   ElMessage.success('已删除 TAB')
+  reinitDragSortDebounced()
 }
 
 // 添加卡片
@@ -635,12 +645,14 @@ const addCard = (tab) => {
     fields: []
   })
   ElMessage.success('已添加卡片')
+  reinitDragSortDebounced()
 }
 
 // 删除卡片
 const deleteCard = (tab, cardId) => {
   tab.cards = tab.cards.filter(c => c.cardId !== cardId)
   ElMessage.success('已删除卡片')
+  reinitDragSortDebounced()
 }
 
 // 添加字段
@@ -842,6 +854,7 @@ const confirmJsonImport = () => {
     // 清空
     importJsonContent.value = ''
     currentImportTarget.value = null
+    reinitDragSortDebounced()
   } catch (error) {
     ElMessage.error('JSON 格式错误，请检查内容')
     console.error('导入失败:', error)
@@ -867,6 +880,99 @@ const exportTabConfig = (tab) => {
     ? `tab-${tab.tabName}.json`
     : `tab-${Date.now()}.json`
   downloadJSON(configToExport, filename)
+}
+
+// 设置卡片列表的 ref
+const setCardsListRef = (tabId, el) => {
+  if (el) {
+    cardsListRefs.value.set(tabId, el)
+  } else {
+    cardsListRefs.value.delete(tabId)
+  }
+}
+
+// 初始化所有拖动排序
+const initDragSort = () => {
+  // 先销毁已有的实例
+  destroyDragSort()
+
+  nextTick(() => {
+    // 1. 初始化 TAB 拖动排序
+    if (tabsGridRef.value && currentYearConfig.value) {
+      const tabSortable = Sortable.create(tabsGridRef.value, {
+        animation: 150,
+        handle: '.tab-card-header',
+        ghostClass: 'sortable-ghost',
+        dragClass: 'sortable-drag',
+        chosenClass: 'sortable-chosen',
+        filter: '.add-tab-card',
+        onEnd: (evt) => {
+          const { oldIndex, newIndex } = evt
+          if (oldIndex !== undefined && newIndex !== undefined && oldIndex !== newIndex) {
+            const tabs = currentYearConfig.value.tabs
+            const [movedTab] = tabs.splice(oldIndex, 1)
+            tabs.splice(newIndex, 0, movedTab)
+          }
+        }
+      })
+      sortableInstances.value.push(tabSortable)
+    }
+
+    // 2. 初始化每个 TAB 内部的卡片拖动排序
+    if (currentYearConfig.value) {
+      currentYearConfig.value.tabs.forEach((tab) => {
+        const cardsListEl = cardsListRefs.value.get(tab.tabId)
+        if (cardsListEl) {
+          const cardSortable = Sortable.create(cardsListEl, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            dragClass: 'sortable-drag',
+            chosenClass: 'sortable-chosen',
+            onEnd: (evt) => {
+              const { oldIndex, newIndex } = evt
+              if (oldIndex !== undefined && newIndex !== undefined && oldIndex !== newIndex) {
+                const cards = tab.cards
+                const [movedCard] = cards.splice(oldIndex, 1)
+                cards.splice(newIndex, 0, movedCard)
+              }
+            }
+          })
+          sortableInstances.value.push(cardSortable)
+        }
+      })
+    }
+  })
+}
+
+// 销毁拖动排序实例
+const destroyDragSort = () => {
+  sortableInstances.value.forEach(instance => {
+    if (instance && instance.destroy) {
+      instance.destroy()
+    }
+  })
+  sortableInstances.value = []
+}
+
+// 监听年份详情弹窗的显示状态
+watch(showYearDetailDialog, (val) => {
+  if (val) {
+    // 弹窗打开后初始化拖动排序
+    nextTick(() => {
+      initDragSort()
+    })
+  } else {
+    // 弹窗关闭时销毁
+    destroyDragSort()
+  }
+})
+
+// 监听 tabs 的变化，重新初始化拖动排序
+const reinitDragSortDebounced = () => {
+  destroyDragSort()
+  nextTick(() => {
+    initDragSort()
+  })
 }
 </script>
 
@@ -1527,6 +1633,42 @@ $text-placeholder: #9ca3af;
   .add-icon {
     font-size: 28px;
     color: $text-placeholder;
+  }
+}
+
+// 拖动排序样式
+.sortable-ghost {
+  opacity: 0.4;
+  background: #c8ebfb !important;
+}
+
+.sortable-drag {
+  opacity: 0.8;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
+  z-index: 1000;
+}
+
+.sortable-chosen {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+// TAB 卡片头部添加可拖动的视觉提示
+.tab-card-header {
+  cursor: grab;
+  user-select: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.mini-card {
+  cursor: grab;
+  user-select: none;
+
+  &:active {
+    cursor: grabbing;
   }
 }
 
