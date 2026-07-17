@@ -88,3 +88,10 @@ export const createEsgConfig = (data: CreateEsgConfigRequest) => {
     data
   });
 };
+
+// 更新ESG配置
+export const updateEsgConfig = (data: CreateEsgConfigRequest) => {
+  return http.request("post", debugBaseUrlApi("/esg/config/update"), {
+    data
+  });
+};

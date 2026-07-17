@@ -298,7 +298,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
-import { getEsgConfigList, createEsgConfig } from '@/api/esgConfig'
+import { getEsgConfigList, updateEsgConfig } from '@/api/esgConfig'
 
 // 配置数据
 const formConfig = ref([])
@@ -338,10 +338,10 @@ const init = async () => {
       pageSize: 100
     })
 
-    if (res && res.records) {
-      allConfigRecords.value = res.records
+    if (res && res.data && res.data.records) {
+      allConfigRecords.value = res.data.records
       // 解析 config 字段为我们需要的格式
-      formConfig.value = res.records.map(record => {
+      formConfig.value = res.data.records.map(record => {
         try {
           if (record.config) {
             const parsed = JSON.parse(record.config)
@@ -586,21 +586,39 @@ const saveConfig = async () => {
   })
 
   try {
-    // 逐个保存年份配置
-    for (const yearConfig of formConfig.value) {
-      // 准备保存数据，去掉 id 字段（如果有的话，因为 id 是后端返回的）
+    // 收集所有年份配置到数组
+    const saveList = formConfig.value.map(yearConfig => {
       const { id, ...configToSave } = yearConfig
-      await createEsgConfig({
+      const saveData = {
         year: parseInt(yearConfig.year),
         config: JSON.stringify(configToSave)
-      })
+      }
+      // 如果有 id，一并传递
+      if (id) {
+        saveData.id = id
+      }
+      return saveData
+    })
+
+    // 一次性保存
+    const result = await updateEsgConfig(saveList)
+
+    // 检查返回结果
+    if (result && result.code !== 200) {
+      ElMessage.error(result.msg || '保存配置失败')
+      return
     }
+
     ElMessage.success('配置已保存')
     // 重新加载配置，获取最新的 id
     await init()
   } catch (error) {
     console.error('保存配置失败', error)
-    ElMessage.error('保存配置失败')
+    if (error && error.msg) {
+      ElMessage.error(error.msg)
+    } else {
+      ElMessage.error('保存配置失败')
+    }
   } finally {
     loading.close()
   }
@@ -825,10 +843,10 @@ $text-placeholder: #9ca3af;
 
   .year-card-gradient {
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 100px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 140px;
     background: linear-gradient(135deg, $primary-color 0%, #7c3aed 100%);
     transition: transform 0.5s ease;
   }
@@ -1080,6 +1098,8 @@ $text-placeholder: #9ca3af;
     flex-direction: column;
     gap: 12px;
     padding: 12px;
+    max-height: 400px;
+    overflow-y: auto;
   }
 
   .mini-card {
