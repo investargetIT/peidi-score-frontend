@@ -71,9 +71,9 @@
           </div>
 
           <!-- TAB 栏 -->
-          <el-tabs v-if="currentYearConfig" v-model="activeTab" class="survey-tabs">
+          <el-tabs v-if="currentYearConfig && visibleTabs.length" v-model="activeTab" class="survey-tabs">
             <el-tab-pane
-              v-for="tab in currentYearConfig.tabs"
+              v-for="tab in visibleTabs"
               :key="tab.tabId"
               :label="tab.tabName"
               :name="tab.tabId"
@@ -159,7 +159,10 @@
               </div>
             </el-tab-pane>
           </el-tabs>
-          <el-empty v-else description="暂无数据，请先选择年份" />
+          <el-empty
+            v-else
+            :description="emptyDescription"
+          />
         </div>
 
         <!-- 右侧：参考区 -->
@@ -249,6 +252,16 @@ const username = computed(() => {
   }
 });
 
+// 当前登录用户 userId（用于按填写人过滤可填报模块）
+const currentUserId = computed(() => {
+  try {
+    const info = JSON.parse(localStorage.getItem("dataSource") || "{}");
+    return info.id != null ? String(info.id) : "";
+  } catch {
+    return "";
+  }
+});
+
 // 配置数据
 const formConfig = ref([]);
 // 当前选中的填报年份
@@ -273,11 +286,29 @@ const currentYearConfig = computed(() => {
   return formConfig.value.find(y => y.year === currentYear.value);
 });
 
+// 当前用户可填报的 TAB（只展示 writers 中包含当前 userId 的模块）
+const visibleTabs = computed(() => {
+  if (!currentYearConfig.value) return [];
+  const uid = currentUserId.value;
+  // 无法识别用户时，安全起见不展示任何模块
+  if (!uid) return [];
+  return currentYearConfig.value.tabs.filter(
+    tab => Array.isArray(tab.writers) && tab.writers.map(String).includes(uid)
+  );
+});
+
 // 当前 TAB 的卡片列表
 const currentTabCards = computed(() => {
   if (!currentYearConfig.value || !activeTab.value) return [];
-  const tab = currentYearConfig.value.tabs.find(t => t.tabId === activeTab.value);
+  const tab = visibleTabs.value.find(t => t.tabId === activeTab.value);
   return tab ? tab.cards : [];
+});
+
+// 空状态文案（区分：未选年份 / 无分配模块）
+const emptyDescription = computed(() => {
+  if (!currentYearConfig.value) return "暂无数据，请先选择年份";
+  if (!currentUserId.value) return "未获取到用户信息，请重新登录后再试";
+  return "当前账号暂无可填报的模块，请联系管理员分配填写人";
 });
 
 // 参考年份配置
@@ -395,6 +426,20 @@ const init = async () => {
             tabs: []
           };
         });
+
+      // 默认选中最新年份，并定位到第一个可填报的 TAB
+      if (formConfig.value.length && !currentYear.value) {
+        const latest = [...formConfig.value].sort(
+          (a, b) => Number(b.year) - Number(a.year)
+        )[0];
+        currentYear.value = latest.year;
+        // visibleTabs 依赖 currentYear，此处 nextTick 后取值
+        nextTick(() => {
+          activeTab.value = visibleTabs.value.length
+            ? visibleTabs.value[0].tabId
+            : "";
+        });
+      }
     }
   } catch (error) {
     console.error("加载配置失败", error);
@@ -410,9 +455,12 @@ onMounted(() => {
 
 // 年份变化处理
 const handleYearChange = (year) => {
-  if (currentYearConfig.value && currentYearConfig.value.tabs.length > 0) {
-    activeTab.value = currentYearConfig.value.tabs[0].tabId;
+  // 只在可填报的 TAB 中选中第一个
+  if (visibleTabs.value.length > 0) {
+    activeTab.value = visibleTabs.value[0].tabId;
     activeCardIndex.value = 0;
+  } else {
+    activeTab.value = "";
   }
   // 若参考年份与新选的填报年份相同，重新选一个不同的年份
   if (referenceYear.value === currentYear.value) {

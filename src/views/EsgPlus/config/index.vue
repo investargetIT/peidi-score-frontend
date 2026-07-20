@@ -196,6 +196,29 @@
               </div>
             </div>
 
+            <!-- 填写人（TAB 级别，公司概况/公司治理等）：点击打开公用单例弹窗选择 -->
+            <div class="tab-writers-row">
+              <span class="writers-label">
+                <el-icon><UserFilled /></el-icon>填写人
+              </span>
+              <div class="writers-display" @click="openWriterDialog(tab)">
+                <template v-if="tab.writers && tab.writers.length">
+                  <el-tag
+                    v-for="id in tab.writers.slice(0, 4)"
+                    :key="id"
+                    size="small"
+                    type="info"
+                    class="writer-tag"
+                  >{{ getUserName(id) }}</el-tag>
+                  <span v-if="tab.writers.length > 4" class="writers-more">+{{ tab.writers.length - 4 }}</span>
+                </template>
+                <span v-else class="writers-placeholder">未设置，点击选择</span>
+              </div>
+              <el-button size="small" type="primary" :icon="Edit" @click="openWriterDialog(tab)">
+                选择
+              </el-button>
+            </div>
+
             <!-- 卡片列表 -->
             <div :ref="el => setCardsListRef(tab.tabId, el)" class="cards-list" :data-tab-id="tab.tabId">
               <div
@@ -351,14 +374,91 @@
         </div>
       </div>
     </el-dialog>
+
+    <!-- 公用填写人选择弹窗（单例：整个页面只挂载一个） -->
+    <el-dialog
+      v-model="showWriterDialog"
+      title="选择填写人"
+      width="820px"
+      class="writer-select-dialog"
+      append-to-body
+      @closed="handleWriterDialogClosed"
+    >
+      <div class="writer-dialog-columns">
+        <!-- 左栏：搜索 + 勾选 -->
+        <div class="writer-col writer-col-left">
+          <div class="writer-col-header">
+            <span class="writer-col-title">可选用户</span>
+            <el-button size="small" type="primary" plain @click="selectAllCurrent">全选当前</el-button>
+          </div>
+          <el-input
+            v-model="writerKeyword"
+            placeholder="搜索姓名 / 公司"
+            clearable
+            :prefix-icon="Search"
+            class="writer-search"
+          />
+          <el-checkbox-group v-model="tempWriters" class="writer-list">
+            <el-scrollbar height="360px">
+              <el-checkbox
+                v-for="user in displayedWriterOptions"
+                :key="user.userId"
+                :value="user.userId"
+                class="writer-item"
+              >
+                <span class="writer-item-name">{{ user.fullName }}</span>
+                <span v-if="user.site" class="writer-item-site">{{ user.site }}</span>
+              </el-checkbox>
+              <el-empty v-if="!filteredWriterOptions.length" description="无匹配用户" :image-size="80" />
+              <div v-else-if="filteredWriterOptions.length > displayLimit" class="writer-list-more-tip">
+                仅显示前 {{ displayLimit }} 条，共 {{ filteredWriterOptions.length }} 条，请输入关键字缩小范围
+              </div>
+            </el-scrollbar>
+          </el-checkbox-group>
+        </div>
+
+        <!-- 右栏：已选列表 + 删除 -->
+        <div class="writer-col writer-col-right">
+          <div class="writer-col-header">
+            <span class="writer-col-title">已选 {{ tempWriters.length }} 人</span>
+            <el-button size="small" type="danger" plain :disabled="!tempWriters.length" @click="tempWriters = []">清空</el-button>
+          </div>
+          <el-scrollbar height="404px" class="writer-selected-list">
+            <div
+              v-for="id in tempWriters"
+              :key="id"
+              class="selected-item"
+            >
+              <div class="selected-item-info">
+                <span class="selected-item-name">{{ getUserName(id) }}</span>
+                <span v-if="getUserSite(id)" class="selected-item-site">{{ getUserSite(id) }}</span>
+              </div>
+              <el-button
+                size="small"
+                text
+                :icon="Close"
+                class="selected-item-remove"
+                @click="removeWriter(id)"
+              />
+            </div>
+            <el-empty v-if="!tempWriters.length" description="暂未选择" :image-size="80" />
+          </el-scrollbar>
+        </div>
+      </div>
+      <template #footer>
+        <el-button @click="showWriterDialog = false">取消</el-button>
+        <el-button type="primary" @click="confirmWriterSelect">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed, nextTick, watch } from 'vue'
-import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight, Download, Upload, UploadFilled, Back } from '@element-plus/icons-vue'
+import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight, Download, Upload, UploadFilled, Back, UserFilled, Edit, Search, Close } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
 import { getEsgConfigList, updateEsgConfig } from '@/api/esgConfig'
+import { getEsgUserList } from '@/api/esg'
 import Sortable from 'sortablejs'
 import { useRouter } from 'vue-router'
 
@@ -410,6 +510,129 @@ const newYearValue = ref('')
 // 要复制的年份
 const copyFromYear = ref('')
 
+// 用户列表（用于填写人下拉选择）
+const userList = ref([])
+// 用户映射：userId -> { fullName, site, userId }
+const userMap = ref(new Map())
+// 用户列表加载状态
+const userLoading = ref(false)
+
+// 获取用户列表并建立映射
+const fetchUserList = async () => {
+  userLoading.value = true
+  try {
+    const res = await getEsgUserList()
+    const records = res?.data?.records || []
+    // 用 userId 去重，做 fullName + userId + site 的精简映射
+    const map = new Map()
+    records.forEach(item => {
+      if (item.userId && !map.has(item.userId)) {
+        map.set(item.userId, {
+          userId: item.userId,
+          fullName: item.fullName || '',
+          site: item.site || ''
+        })
+      }
+    })
+    userMap.value = map
+    userList.value = Array.from(map.values())
+  } catch (error) {
+    console.error('加载用户列表失败', error)
+    ElMessage.error('加载用户列表失败')
+  } finally {
+    userLoading.value = false
+  }
+}
+
+// 根据 userId 获取展示名称
+const getUserLabel = (userId) => {
+  const u = userMap.value.get(userId)
+  if (!u) return userId
+  return u.site ? `${u.fullName}（${u.site}）` : u.fullName
+}
+
+// 根据 userId 获取姓名（仅姓名，用于标签展示）
+const getUserName = (userId) => {
+  const u = userMap.value.get(userId)
+  return u ? u.fullName : userId
+}
+
+// 根据 userId 获取公司/站点
+const getUserSite = (userId) => {
+  const u = userMap.value.get(userId)
+  return u ? u.site : ''
+}
+
+// ==================== 公用填写人选择弹窗（单例） ====================
+// 弹窗显隐
+const showWriterDialog = ref(false)
+// 搜索关键字
+const writerKeyword = ref('')
+// 弹窗内临时选中的 userId 集合（确定后才写回 tab）
+const tempWriters = ref([])
+// 当前正在编辑填写人的 TAB 引用
+const writerTargetTab = ref(null)
+
+// 打开弹窗，载入目标 tab 已有的 writers
+const openWriterDialog = (tab) => {
+  writerTargetTab.value = tab
+  tempWriters.value = Array.isArray(tab.writers) ? [...tab.writers] : []
+  writerKeyword.value = ''
+  showWriterDialog.value = true
+}
+
+// 按关键字过滤后的用户选项（弹窗内使用）
+const filteredWriterOptions = computed(() => {
+  const kw = writerKeyword.value.trim().toLowerCase()
+  if (!kw) return userList.value
+  return userList.value.filter(
+    u =>
+      u.fullName.toLowerCase().includes(kw) ||
+      (u.site && u.site.toLowerCase().includes(kw))
+  )
+})
+
+// 限量渲染上限，避免一次性挂载上万个 checkbox 卡顿
+const displayLimit = 200
+// 实际渲染的选项：过滤结果 + 已选中的（保证已选项始终可见/可取消）
+const displayedWriterOptions = computed(() => {
+  const list = filteredWriterOptions.value
+  if (list.length <= displayLimit) return list
+  const head = list.slice(0, displayLimit)
+  // 把不在前 displayLimit 内、但已被选中的补进来
+  const headIds = new Set(head.map(u => u.userId))
+  const selectedExtra = list.filter(
+    u => tempWriters.value.includes(u.userId) && !headIds.has(u.userId)
+  )
+  return [...head, ...selectedExtra]
+})
+
+// 确定：把临时选择写回目标 tab
+const confirmWriterSelect = () => {
+  if (writerTargetTab.value) {
+    writerTargetTab.value.writers = [...tempWriters.value]
+  }
+  showWriterDialog.value = false
+}
+
+// 从已选列表中移除某人
+const removeWriter = (userId) => {
+  tempWriters.value = tempWriters.value.filter(id => id !== userId)
+}
+
+// 全选当前过滤结果（合并进已选，去重）
+const selectAllCurrent = () => {
+  const ids = filteredWriterOptions.value.map(u => u.userId)
+  tempWriters.value = Array.from(new Set([...tempWriters.value, ...ids]))
+}
+
+// 弹窗关闭动画结束后清理引用，释放内存
+const handleWriterDialogClosed = () => {
+  writerTargetTab.value = null
+  tempWriters.value = []
+  writerKeyword.value = ''
+}
+
 // 初始化
 const init = async () => {
   const loading = ElLoading.service({
@@ -433,6 +656,12 @@ const init = async () => {
           try {
             if (record.config) {
               const parsed = JSON.parse(record.config)
+              // 兼容旧数据：确保每个 TAB 都有 writers 数组，保证下拉框可正常双向绑定
+              parsed.tabs?.forEach(tab => {
+                if (!Array.isArray(tab.writers)) {
+                  tab.writers = []
+                }
+              })
               return {
                 ...parsed,
                 id: record.id,
@@ -465,6 +694,7 @@ const init = async () => {
 
 onMounted(() => {
   init()
+  fetchUserList()
 })
 
 // 统计卡片数量
@@ -632,6 +862,7 @@ const addTab = (yearConfig) => {
   yearConfig.tabs.push({
     tabId: newTabId,
     tabName: `新TAB ${yearConfig.tabs.length + 1}`,
+    writers: [],
     cards: []
   })
   ElMessage.success('已添加 TAB')
@@ -1006,6 +1237,14 @@ $text-placeholder: #9ca3af;
 
 .esg-config {
   min-height: 100vh;
+  // 统一 Element Plus 主题色变量，让 primary/plain 按钮文字、边框、hover 都跟随 #4268F9
+  --el-color-primary: #{$primary-color};
+  --el-color-primary-light-3: #6b87fb;
+  --el-color-primary-light-5: #a0b3fc;
+  --el-color-primary-light-7: #c6d1fd;
+  --el-color-primary-light-8: #d9e0fe;
+  --el-color-primary-light-9: #ecf0fe;
+  --el-color-primary-dark-2: #354fc7;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                "Helvetica Neue", Arial,
@@ -1501,6 +1740,66 @@ $text-placeholder: #9ca3af;
     white-space: nowrap;
   }
 
+  // TAB 级别的填写人选择行（公司概况/公司治理等）
+  .tab-writers-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba($primary-color, 0.04);
+    border-bottom: 1px solid $border-color;
+
+    .writers-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+      font-size: 12px;
+      color: $text-secondary;
+      white-space: nowrap;
+
+      .el-icon {
+        font-size: 13px;
+        color: $primary-color;
+      }
+    }
+
+    // 已选填写人展示区（点击可打开弹窗）
+    .writers-display {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 28px;
+      padding: 2px 10px;
+      background: #fff;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+
+      &:hover {
+        border-color: $primary-color;
+      }
+
+      .writer-tag {
+        margin: 0;
+      }
+
+      .writers-more {
+        font-size: 12px;
+        color: $text-secondary;
+      }
+
+      .writers-placeholder {
+        font-size: 13px;
+        color: $text-placeholder;
+      }
+    }
+  }
+
   .mini-card-right {
     display: flex;
     align-items: center;
@@ -1683,7 +1982,7 @@ $text-placeholder: #9ca3af;
 }
 
 // Element Plus 主题色覆盖
-:deep(.el-button--primary) {
+:deep(.el-button--primary:not(.is-plain):not(.is-text):not(.is-link)) {
   background-color: $primary-color;
   border-color: $primary-color;
 }
@@ -1707,5 +2006,144 @@ $text-placeholder: #9ca3af;
 
 :deep(.el-select .el-input__wrapper.is-focus) {
   box-shadow: 0 0 0 1px $primary-color inset;
+}
+</style>
+
+<!-- 填写人选择弹窗样式（弹窗 append-to-body，需非 scoped） -->
+<style lang="scss">
+// 被 teleport 到 body 的弹窗，需在此统一主题色变量（scoped 的 .esg-config 管不到）
+.writer-select-dialog,
+.year-detail-dialog,
+.card-detail-dialog {
+  --el-color-primary: #4268f9;
+  --el-color-primary-light-3: #6b87fb;
+  --el-color-primary-light-5: #a0b3fc;
+  --el-color-primary-light-7: #c6d1fd;
+  --el-color-primary-light-8: #d9e0fe;
+  --el-color-primary-light-9: #ecf0fe;
+  --el-color-primary-dark-2: #354fc7;
+}
+
+.writer-select-dialog {
+  // 双栏布局
+  .writer-dialog-columns {
+    display: flex;
+    gap: 16px;
+
+    .writer-col {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid #e4e7ed;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .writer-col-right {
+      flex: 0 0 300px;
+      background: #fafbfc;
+    }
+
+    .writer-col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      .writer-col-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f2937;
+      }
+    }
+  }
+
+  .writer-search {
+    margin-bottom: 10px;
+  }
+
+  .writer-list {
+    display: block;
+
+    .writer-item {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin: 0;
+      padding: 8px 12px;
+      height: auto;
+      border-radius: 6px;
+
+      &:hover {
+        background: #f5f7fa;
+      }
+
+      .writer-item-name {
+        font-weight: 500;
+        color: #1f2937;
+      }
+
+      .writer-item-site {
+        margin-left: 10px;
+        font-size: 12px;
+        color: #9aa4c0;
+      }
+    }
+
+    .writer-list-more-tip {
+      padding: 10px 16px;
+      font-size: 12px;
+      color: #9aa4c0;
+      text-align: center;
+    }
+  }
+
+  // 右栏已选列表
+  .writer-selected-list {
+    .selected-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #eef1f6;
+      }
+
+      .selected-item-info {
+        min-width: 0;
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+
+        .selected-item-name {
+          font-weight: 500;
+          color: #1f2937;
+          white-space: nowrap;
+        }
+
+        .selected-item-site {
+          font-size: 12px;
+          color: #9aa4c0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      .selected-item-remove {
+        flex-shrink: 0;
+        color: #9aa4c0;
+
+        &:hover {
+          color: #f56c6c;
+        }
+      }
+    }
+  }
 }
 </style>

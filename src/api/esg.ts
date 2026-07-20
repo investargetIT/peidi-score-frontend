@@ -45,6 +45,27 @@ export const getEsgRuleDetail = params => {
   });
 };
 
+// 获取用户列表（用于配置填写人下拉选择）
+export const getEsgUserList = (params?: object) => {
+  // 默认拉取全部数据源的用户，一次性取完做本地映射
+  const searchStr = JSON.stringify([
+    {
+      searchName: "data_source",
+      searchType: "equals",
+      searchValue:
+        "1&#&10&#&11&#&12&#&14&#&15&#&16&#&17&#&2&#&3&#&4&#&5&#&6&#&7&#&8&#&9"
+    }
+  ]);
+  return http.request("get", baseUrlApi("/user/page"), {
+    params: {
+      pageNo: 1,
+      pageSize: 10000,
+      searchStr,
+      ...params
+    }
+  });
+};
+
 // 更新esg
 export const updateEsgConfig = data => {
   return http.request("post", baseUrlApi("/esg/info"), {
