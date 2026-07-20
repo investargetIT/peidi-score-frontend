@@ -49,7 +49,7 @@ export default [
       {
         path: "/pdesg/home",
         name: "PdesgHome",
-        component: () => import("@/views/Esg/index.vue")
+        component: () => import("@/views/EsgPlus/home/index.vue")
       },
       {
         path: "/pdesg/fillIn",
@@ -64,7 +64,7 @@ export default [
       {
         path: "/pdesg/survey",
         name: "PdesgSurvey",
-        component: () => import("@/views/EsgPlus/survey.vue")
+        component: () => import("@/views/EsgPlus/survey/index.vue")
       }
     ]
   }

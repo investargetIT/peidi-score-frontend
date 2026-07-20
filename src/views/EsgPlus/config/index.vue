@@ -13,6 +13,9 @@
           </div>
         </div>
         <div class="action-buttons">
+          <el-button :icon="Back" @click="handleBack">
+            <span>返回</span>
+          </el-button>
           <el-button type="primary" :icon="Plus" @click="showAddYearDialog = true">
             <span>添加年份</span>
           </el-button>
@@ -353,10 +356,17 @@
 
 <script setup>
 import { ref, onMounted, computed, nextTick, watch } from 'vue'
-import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight, Download, Upload, UploadFilled } from '@element-plus/icons-vue'
+import { Plus, Delete, Check, Tickets, Document, List, FullScreen, Aim, ArrowRight, Download, Upload, UploadFilled, Back } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
 import { getEsgConfigList, updateEsgConfig } from '@/api/esgConfig'
 import Sortable from 'sortablejs'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+// 返回首页
+const handleBack = () => {
+  router.push('/pdesg/home')
+}
 
 // 配置数据
 const formConfig = ref([])
@@ -978,7 +988,7 @@ const reinitDragSortDebounced = () => {
 
 <style lang="scss" scoped>
 // 主题色变量
-$primary-color: #4065F7;
+$primary-color: #4268F9;
 $success-color: #36D399;
 $warning-color: #F59E0B;
 $danger-color: #f56c6c;
@@ -1042,7 +1052,7 @@ $text-placeholder: #9ca3af;
     align-items: center;
     justify-content: center;
     color: #fff;
-    box-shadow: 0 8px 16px -4px rgba(64, 101, 247, 0.3);
+    box-shadow: 0 8px 16px -4px rgba(66, 104, 249, 0.3);
   }
 
   .title-text {
@@ -1112,7 +1122,7 @@ $text-placeholder: #9ca3af;
     font-size: 24px;
 
     &.stat-icon-primary {
-      background: linear-gradient(135deg, rgba(64, 101, 247, 0.1) 0%, rgba(64, 101, 247, 0.05) 100%);
+      background: linear-gradient(135deg, rgba(66, 104, 249, 0.1) 0%, rgba(66, 104, 249, 0.05) 100%);
       color: $primary-color;
     }
 

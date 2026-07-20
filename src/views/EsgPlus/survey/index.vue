@@ -13,6 +13,18 @@
           </div>
         </div>
         <div class="year-selector">
+          <el-button plain @click="handleBack">
+            <el-icon style="margin-right: 4px"><Back /></el-icon>
+            返回
+          </el-button>
+          <el-button
+            :type="showReference ? 'primary' : 'default'"
+            :plain="!showReference"
+            @click="toggleReference"
+          >
+            <el-icon style="margin-right: 4px"><DataAnalysis /></el-icon>
+            {{ showReference ? '关闭参考' : '参考数据' }}
+          </el-button>
           <span class="label">填报年份</span>
           <el-select v-model="currentYear" placeholder="请选择年份" @change="handleYearChange" style="width: 140px">
             <el-option
@@ -22,13 +34,20 @@
               :value="yearConfig.year"
             />
           </el-select>
+          <span v-if="username" class="user-info">
+            <span class="user-avatar">{{ username.charAt(0) }}</span>
+            <span class="user-detail">
+              <span class="user-role">填报人</span>
+              <span class="user-name">{{ username }}</span>
+            </span>
+          </span>
         </div>
       </div>
     </div>
 
     <!-- 主内容区 -->
     <div class="main-content">
-      <div class="content-wrapper">
+      <div class="content-wrapper" :style="{ gridTemplateColumns: gridColumns }">
         <!-- 左侧：进度条 -->
         <div v-if="currentYearConfig && activeTab" class="progress-section">
           <div class="progress-bar-wrapper">
@@ -144,7 +163,7 @@
         </div>
 
         <!-- 右侧：参考区 -->
-        <div class="reference-section">
+        <div v-if="showReference" class="reference-section">
           <div class="section-header">
             <h3>参考数据</h3>
             <el-select v-model="referenceYear" placeholder="选择参考年份" clearable style="width: 140px">
@@ -209,9 +228,26 @@
 
 <script setup>
 import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from "vue";
-import { Tickets, QuestionFilled, Document } from "@element-plus/icons-vue";
+import { Tickets, QuestionFilled, Document, DataAnalysis, Back } from "@element-plus/icons-vue";
 import { getEsgConfigList } from "@/api/esgConfig";
 import { ElMessage, ElLoading } from "element-plus";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+// 返回首页
+const handleBack = () => {
+  router.push("/pdesg/home");
+};
+
+// 当前登录用户名
+const username = computed(() => {
+  try {
+    const info = JSON.parse(localStorage.getItem("dataSource") || "{}");
+    return info.username || "";
+  } catch {
+    return "";
+  }
+});
 
 // 配置数据
 const formConfig = ref([]);
@@ -219,6 +255,8 @@ const formConfig = ref([]);
 const currentYear = ref("");
 // 参考年份
 const referenceYear = ref("");
+// 是否显示参考数据栏（默认关闭，用的时候再打开）
+const showReference = ref(false);
 // 当前激活的 TAB
 const activeTab = ref("");
 // 当前激活的卡片索引
@@ -245,6 +283,18 @@ const currentTabCards = computed(() => {
 // 参考年份配置
 const referenceYearConfig = computed(() => {
   return formConfig.value.find(y => y.year === referenceYear.value);
+});
+
+// 是否显示左侧进度条（与模板 v-if 条件一致）
+const showProgress = computed(() => !!(currentYearConfig.value && activeTab.value));
+
+// 动态计算主内容区的网格列
+const gridColumns = computed(() => {
+  const cols = [];
+  if (showProgress.value) cols.push("200px");
+  cols.push("1fr");
+  if (showReference.value) cols.push("480px");
+  return cols.join(" ");
 });
 
 // 获取当前激活的 tab-pane 的滚动容器
@@ -364,6 +414,16 @@ const handleYearChange = (year) => {
     activeTab.value = currentYearConfig.value.tabs[0].tabId;
     activeCardIndex.value = 0;
   }
+  // 若参考年份与新选的填报年份相同，重新选一个不同的年份
+  if (referenceYear.value === currentYear.value) {
+    const other = formConfig.value.find(y => y.year !== currentYear.value);
+    referenceYear.value = other ? other.year : "";
+  }
+};
+
+// 切换参考数据栏的显示/隐藏
+const toggleReference = () => {
+  showReference.value = !showReference.value;
 };
 
 // 监听 activeTab 变化，重置 activeCardIndex 并重新绑定滚动事件
@@ -400,7 +460,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 // 主题色变量（与 config 页面保持一致）
-$primary-color: #4065F7;
+$primary-color: #4268F9;
 $success-color: #36D399;
 $warning-color: #F59E0B;
 $danger-color: #f56c6c;
@@ -464,7 +524,7 @@ $text-placeholder: #9ca3af;
     align-items: center;
     justify-content: center;
     color: #fff;
-    box-shadow: 0 8px 16px -4px rgba(64, 101, 247, 0.3);
+    box-shadow: 0 8px 16px -4px rgba(66, 104, 249, 0.3);
   }
 
   .title-text {
@@ -493,6 +553,46 @@ $text-placeholder: #9ca3af;
       color: $text-color;
       font-weight: 500;
     }
+
+    .user-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 14px 4px 4px;
+      background: rgba(66, 104, 249, 0.08);
+      border: 1px solid rgba(66, 104, 249, 0.2);
+      border-radius: 20px;
+
+      .user-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #4268f9, #2d49c9);
+        border-radius: 50%;
+      }
+
+      .user-detail {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.25;
+
+        .user-role {
+          font-size: 11px;
+          color: #9aa4c0;
+        }
+
+        .user-name {
+          font-size: 13px;
+          font-weight: 600;
+          color: $text-color;
+        }
+      }
+    }
   }
 
   // 主内容区
@@ -504,12 +604,12 @@ $text-placeholder: #9ca3af;
 
   .content-wrapper {
     display: grid;
-    grid-template-columns: 200px 1fr 480px;
     gap: 24px;
     height: calc(100vh - 200px);
     width: 100%;
     box-sizing: border-box;
     overflow-x: hidden;
+    transition: grid-template-columns 0.3s ease;
   }
 
   // 进度条区域
@@ -571,7 +671,7 @@ $text-placeholder: #9ca3af;
         .progress-dot {
           background: $primary-color;
           transform: scale(1.2);
-          box-shadow: 0 0 0 4px rgba(64, 101, 247, 0.15);
+          box-shadow: 0 0 0 4px rgba(66, 104, 249, 0.15);
         }
 
         .progress-label {
