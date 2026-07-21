@@ -16,7 +16,9 @@
         <div class="pd-esg-topbar-tag">Environmental · Social · Governance</div>
         <div v-if="username" class="pd-esg-welcome">
           <el-icon><UserFilled /></el-icon>
-          <span>欢迎回来，<b>{{ username }}</b></span>
+          <span
+            >欢迎回来，<b>{{ username }}</b></span
+          >
         </div>
       </div>
     </header>
@@ -42,6 +44,17 @@
             <span class="btn-text">
               <span class="btn-main">开始填报</span>
               <span class="btn-sub">录入年度 ESG 数据</span>
+            </span>
+            <el-icon class="btn-arrow"><Right /></el-icon>
+          </button>
+
+          <button class="pd-esg-button ghost" @click="handleClickView">
+            <span class="btn-icon">
+              <el-icon><Document /></el-icon>
+            </span>
+            <span class="btn-text">
+              <span class="btn-main">查看填报</span>
+              <span class="btn-sub">浏览所有用户填报内容</span>
             </span>
             <el-icon class="btn-arrow"><Right /></el-icon>
           </button>
@@ -141,9 +154,43 @@ const handleClickReport = () => {
 const handleClickConfig = () => {
   router.push("/pdesg/config");
 };
+const handleClickView = () => {
+  router.push("/pdesg/view");
+};
 </script>
 
 <style lang="scss" scoped>
+
+
+/* 响应式 */
+@media (width <= 1200px) {
+  .pd-esg-pillars {
+    display: none;
+  }
+}
+
+@media (width <= 768px) {
+  .pd-esg-topbar {
+    padding: 20px 24px;
+  }
+
+  .pd-esg-topbar-tag {
+    display: none;
+  }
+
+  .pd-esg-main {
+    padding: 0 24px;
+  }
+
+  .pd-esg-title {
+    font-size: 40px;
+  }
+
+  .pd-esg-subtitle {
+    font-size: 16px;
+  }
+}
+
 .pd-esg-container {
   position: relative;
   display: flex;
@@ -171,8 +218,7 @@ const handleClickConfig = () => {
   z-index: 0;
 
   // 深色渐变 + 品牌蓝点缀，更显正式沉稳
-  background:
-    linear-gradient(
+  background: linear-gradient(
       120deg,
       rgb(10 18 40 / 82%) 0%,
       rgb(14 26 58 / 62%) 42%,
@@ -197,8 +243,8 @@ const handleClickConfig = () => {
 
 .pd-esg-brand {
   display: flex;
-  align-items: center;
   gap: 14px;
+  align-items: center;
 }
 
 .pd-esg-brand-mark {
@@ -236,22 +282,22 @@ const handleClickConfig = () => {
 
 .pd-esg-topbar-right {
   display: flex;
-  align-items: center;
   gap: 16px;
+  align-items: center;
 }
 
 .pd-esg-welcome {
   display: flex;
-  align-items: center;
   gap: 8px;
+  align-items: center;
   padding: 8px 18px;
   font-size: 14px;
   color: rgb(255 255 255 / 88%);
   letter-spacing: 0.5px;
   background: rgb(66 104 249 / 22%);
+  backdrop-filter: blur(6px);
   border: 1px solid rgb(66 104 249 / 42%);
   border-radius: 20px;
-  backdrop-filter: blur(6px);
 
   b {
     font-weight: 600;
@@ -265,9 +311,9 @@ const handleClickConfig = () => {
   color: rgb(255 255 255 / 82%);
   letter-spacing: 1px;
   background: rgb(255 255 255 / 8%);
+  backdrop-filter: blur(6px);
   border: 1px solid rgb(255 255 255 / 18%);
   border-radius: 20px;
-  backdrop-filter: blur(6px);
 }
 
 /* 主体 */
@@ -287,8 +333,8 @@ const handleClickConfig = () => {
 
 .pd-esg-badge {
   display: inline-flex;
-  align-items: center;
   gap: 8px;
+  align-items: center;
   padding: 7px 16px;
   margin-bottom: 28px;
   font-size: 14px;
@@ -313,8 +359,8 @@ const handleClickConfig = () => {
   font-weight: 700;
   line-height: 1.15;
   color: #fff;
-  letter-spacing: 1px;
   text-shadow: 0 4px 20px rgb(0 0 0 / 45%);
+  letter-spacing: 1px;
 }
 
 .pd-esg-subtitle {
@@ -330,8 +376,8 @@ const handleClickConfig = () => {
   margin: 0 0 48px;
   font-size: 15px;
   color: rgb(255 255 255 / 55%);
-  letter-spacing: 3px;
   text-transform: uppercase;
+  letter-spacing: 3px;
 }
 
 .pd-esg-button-container {
@@ -386,8 +432,8 @@ const handleClickConfig = () => {
   }
 
   &:hover .btn-arrow {
-    transform: translateX(4px);
     opacity: 1;
+    transform: translateX(4px);
   }
 }
 
@@ -411,8 +457,8 @@ const handleClickConfig = () => {
 .pd-esg-button.ghost {
   color: #fff;
   background: rgb(255 255 255 / 8%);
-  border: 1px solid rgb(255 255 255 / 22%);
   backdrop-filter: blur(8px);
+  border: 1px solid rgb(255 255 255 / 22%);
 
   .btn-icon {
     color: #dbe3ff;
@@ -439,9 +485,9 @@ const handleClickConfig = () => {
   padding: 24px 18px;
   text-align: center;
   background: rgb(255 255 255 / 8%);
+  backdrop-filter: blur(8px);
   border: 1px solid rgb(255 255 255 / 16%);
   border-radius: 16px;
-  backdrop-filter: blur(8px);
   transition: all 0.28s ease;
 
   .pillar-letter {
@@ -479,34 +525,5 @@ const handleClickConfig = () => {
   font-size: 13px;
   color: rgb(255 255 255 / 50%);
   letter-spacing: 1px;
-}
-
-/* 响应式 */
-@media (width <= 1200px) {
-  .pd-esg-pillars {
-    display: none;
-  }
-}
-
-@media (width <= 768px) {
-  .pd-esg-topbar {
-    padding: 20px 24px;
-  }
-
-  .pd-esg-topbar-tag {
-    display: none;
-  }
-
-  .pd-esg-main {
-    padding: 0 24px;
-  }
-
-  .pd-esg-title {
-    font-size: 40px;
-  }
-
-  .pd-esg-subtitle {
-    font-size: 16px;
-  }
 }
 </style>

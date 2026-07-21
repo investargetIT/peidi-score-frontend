@@ -65,6 +65,11 @@ export default [
         path: "/pdesg/survey",
         name: "PdesgSurvey",
         component: () => import("@/views/EsgPlus/survey/index.vue")
+      },
+      {
+        path: "/pdesg/view",
+        name: "PdesgView",
+        component: () => import("@/views/EsgPlus/view/index.vue")
       }
     ]
   }
