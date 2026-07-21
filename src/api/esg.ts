@@ -73,8 +73,25 @@ export const updateEsgConfig = data => {
   });
 };
 
+// 获取已保存的esg信息
+export const getEsgInfo = params => {
+  return http.request("get", baseUrlApi("/esg/info"), {
+    params
+  });
+};
+
 export const getFileDownLoadPath = params => {
   return http.request("get", baseUrlApi("/common/download-url"), {
     params
+  });
+};
+
+// 上传ESG附件
+export const uploadEsgFile = (formData: FormData) => {
+  return http.request("post", baseUrlApi("/esg/upload"), {
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   });
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="esg-survey">
+  <div class="esg-survey" ref="rootRef">
     <!-- 页面头部 -->
     <div class="page-header">
       <div class="header-content">
@@ -26,7 +26,7 @@
             {{ showReference ? '关闭参考' : '参考数据' }}
           </el-button>
           <span class="label">填报年份</span>
-          <el-select v-model="currentYear" placeholder="请选择年份" @change="handleYearChange" style="width: 140px">
+          <el-select :model-value="currentYear" placeholder="请选择年份" @change="handleYearChange" style="width: 140px">
             <el-option
               v-for="yearConfig in formConfig"
               :key="yearConfig.year"
@@ -34,10 +34,37 @@
               :value="yearConfig.year"
             />
           </el-select>
+          <el-button
+            type="primary"
+            @click="handleSaveData"
+            title="点击保存，会把当前填报年份的所有数据都上传"
+          >
+            <el-icon style="margin-right: 4px"><Upload /></el-icon>
+            保存填报
+          </el-button>
+          <!-- 开发者切换用户 -->
+          <div class="user-switcher">
+            <span class="label">切换用户</span>
+            <el-select
+              v-model="selectedUserId"
+              placeholder="选择用户（开发者功能）"
+              clearable
+              filterable
+              @change="handleUserChange"
+              style="width: 260px"
+            >
+              <el-option
+                v-for="user in userList"
+                :key="user.userId"
+                :label="user.fullName ? `${String(user.userId)} - ${user.fullName}` : String(user.userId)"
+                :value="String(user.userId)"
+              />
+            </el-select>
+          </div>
           <span v-if="username" class="user-info">
             <span class="user-avatar">{{ username.charAt(0) }}</span>
             <span class="user-detail">
-              <span class="user-role">填报人</span>
+              <span class="user-role">{{ selectedUserId ? '代填报人' : '填报人' }}</span>
               <span class="user-name">{{ username }}</span>
             </span>
           </span>
@@ -114,14 +141,39 @@
                           v-else-if="field.type === 'file'"
                           v-model:file-list="field.fileList"
                           action="#"
-                          :auto-upload="false"
+                          :auto-upload="true"
+                          :show-file-list="false"
                           multiple
+                          :before-upload="beforeUpload"
+                          :http-request="(options) => handleFileUpload(options, field)"
                         >
                           <el-button type="primary">选择文件</el-button>
                           <template #tip>
                             <div class="el-upload__tip">支持多个文件上传</div>
                           </template>
                         </el-upload>
+
+                        <!-- 已上传文件列表 -->
+                        <div v-if="field.fileList && field.fileList.length > 0" class="uploaded-files">
+                          <div
+                            v-for="(file, index) in field.fileList"
+                            :key="index"
+                            class="uploaded-file-item"
+                          >
+                            <el-icon><Document /></el-icon>
+                            <a @click="handleFilePreview(file)" class="file-link">{{ file.name }}</a>
+                            <el-icon
+                              class="download-icon"
+                              @click="handleFileDownload(file)"
+                              title="下载"
+                            ><Download /></el-icon>
+                            <el-icon
+                              class="delete-icon"
+                              @click="removeFile(field, index)"
+                              title="删除"
+                            ><Delete /></el-icon>
+                          </div>
+                        </div>
                         <!-- 混合类型 -->
                         <div v-else-if="field.type === 'mixed'" class="mixed-controls">
                           <div v-for="control in (field.controls || [])" :key="control.controlId" class="control-item">
@@ -227,13 +279,69 @@
       </div>
     </div>
   </div>
+
+  <!-- 图片预览弹窗 -->
+  <el-dialog
+    v-model="previewDialogVisible"
+    title="图片预览"
+    width="90vw"
+    :close-on-click-modal="true"
+    :close-on-press-escape="true"
+    :modal-append-to-body="false"
+    custom-class="image-preview-dialog"
+  >
+    <div class="preview-container">
+      <img v-if="previewImageUrl" :src="previewImageUrl" class="preview-image" />
+    </div>
+  </el-dialog>
 </template>
 
 <script setup>
+/**
+ * 开发者切换用户功能 说明文档
+ *
+ * 功能说明：
+ * 允许开发者/管理员在页面上切换任意用户，代替该用户完成 ESG 数据填报，
+ * 所有保存和加载逻辑都会以选中用户身份进行。
+ *
+ * 核心逻辑流程：
+ * 1. 初始化顺序：页面加载 → 先拉取全部用户列表 → 再加载填报配置 → 用户列表加载完自动设置默认选中
+ * 2. 默认选中规则：默认选中从 localStorage.dataSource 中获取当前登录用户的 id，自动匹配用户列表中 userId 等于该 id 的用户，显示格式 `${userId} - ${fullName}`
+ * 3. 切换用户后行为：
+ *    - 先调用 resetCurrentYearConfig() → 清空当前年份所有字段内容，避免残留上一个用户的数据
+ *    - 再调用 loadSavedData() → 根据 currentUserId 拉取并回填该用户已保存的数据
+ *    - 自动切回第一个可填报 TAB，重置卡片索引
+ * 4. 保存填报规则：保存时始终使用 currentUserId（选中用户ID）和 username（选中用户姓名）
+ *
+ * 关键变量说明：
+ * | 变量            | 作用                                                                 |
+ * |----------------|----------------------------------------------------------------------|
+ * | defaultUserId  | 从 localStorage 获取的当前登录用户ID（字符串）                       |
+ * | defaultUsername| 从 localStorage 获取的当前登录用户名                                 |
+ * | userList       | getEsgUserList 接口返回的全部用户列表数据                            |
+ * | selectedUserId | 当前开发者选中的切换用户ID（空表示不切换，使用默认）                 |
+ * | currentUserId  | 计算属性：实际使用的 userId → selectedUserId.value || defaultUserId.value |
+ * | username       | 计算属性：实际显示的用户名 → 优先取选中用户的 fullName               |
+ *
+ * 接口对应关系：
+ * | 来源                | 字段名   | 对应关系                     |
+ * |--------------------|---------|------------------------------|
+ * | localStorage       | id      | 等于 用户接口返回的 userId   |
+ * | getEsgUserList     | userId  | 等于 localStorage 的 id      |
+ * | getEsgUserList     | fullName| 用户中文名，用于下拉框显示   |
+ *
+ * 交互特性：
+ * - 下拉框支持 filterable 搜索，可以输入用户名/ID快速定位用户
+ * - 支持 clearable 清空选择，清空后自动切回当前登录用户
+ * - 右上角显示角色：selectedUserId 不为空时显示「代填报人」，否则显示「填报人」
+ * - 所有ID统一转字符串匹配，避免数字/字符串类型不匹配问题
+ */
+
 import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from "vue";
-import { Tickets, QuestionFilled, Document, DataAnalysis, Back } from "@element-plus/icons-vue";
+import { Tickets, QuestionFilled, Document, DataAnalysis, Back, Upload, Delete, Download } from "@element-plus/icons-vue";
 import { getEsgConfigList } from "@/api/esgConfig";
-import { ElMessage, ElLoading } from "element-plus";
+import { updateEsgConfig, getEsgInfo, uploadEsgFile, getFileDownLoadPath, getEsgUserList } from "@/api/esg";
+import { ElMessage, ElLoading, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -242,8 +350,11 @@ const handleBack = () => {
   router.push("/pdesg/home");
 };
 
-// 当前登录用户名
-const username = computed(() => {
+// 用户列表
+const userList = ref([]);
+
+// 当前登录用户名（默认）
+const defaultUsername = computed(() => {
   try {
     const info = JSON.parse(localStorage.getItem("dataSource") || "{}");
     return info.username || "";
@@ -252,8 +363,8 @@ const username = computed(() => {
   }
 });
 
-// 当前登录用户 userId（用于按填写人过滤可填报模块）
-const currentUserId = computed(() => {
+// 默认登录用户 userId
+const defaultUserId = computed(() => {
   try {
     const info = JSON.parse(localStorage.getItem("dataSource") || "{}");
     return info.id != null ? String(info.id) : "";
@@ -261,6 +372,36 @@ const currentUserId = computed(() => {
     return "";
   }
 });
+
+// 当前选中的用户（默认选中当前登录用户，开发者可切换）
+const selectedUserId = ref("");
+
+// 当前用户名：优先使用选中的切换用户，否则用默认登录用户
+const username = computed(() => {
+  if (selectedUserId.value && userList.value.length > 0) {
+    const user = userList.value.find(u => String(u.userId) === selectedUserId.value);
+    return user?.fullName || defaultUsername.value;
+  }
+  return defaultUsername.value;
+});
+
+// 当前用户 userId：优先使用选中的切换用户，否则用默认登录用户
+const currentUserId = computed(() => {
+  return selectedUserId.value || defaultUserId.value;
+});
+
+// 加载用户列表
+const loadUserList = async () => {
+  try {
+    const res = await getEsgUserList();
+    if (res.success && res.data && res.data.records) {
+      // 直接使用接口返回，userId就是正确的用户ID，统一转为字符串
+      userList.value = res.data.records;
+    }
+  } catch (error) {
+    console.error("加载用户列表失败", error);
+  }
+};
 
 // 配置数据
 const formConfig = ref([]);
@@ -280,6 +421,13 @@ const cardRefs = ref(new Map());
 const scrollHandlerRef = ref(null);
 // 获取组件实例
 const instance = getCurrentInstance();
+
+// 根元素引用
+const rootRef = ref<HTMLElement | null>(null);
+
+// 图片预览相关
+const previewDialogVisible = ref(false);
+const previewImageUrl = ref('');
 
 // 当前年份配置
 const currentYearConfig = computed(() => {
@@ -330,10 +478,28 @@ const gridColumns = computed(() => {
 
 // 获取当前激活的 tab-pane 的滚动容器
 const getScrollContainer = () => {
-  if (!instance?.proxy?.$el) return null;
-  const surveyTabs = instance.proxy.$el.querySelector(".survey-tabs");
+  // document 查找最稳妥
+  const surveyTabs = document.querySelector(".survey-tabs");
   if (!surveyTabs) return null;
-  return surveyTabs.querySelector(".el-tab-pane:not(.is-hidden)");
+
+  // 获取所有 tab-pane，找到第一个可见的（就是当前激活的）
+  const tabPanes = surveyTabs.querySelectorAll(".el-tab-pane");
+  if (tabPanes.length === 0) return null;
+
+  // 优先找 is-active，找不到就找第一个可见的
+  for (let pane of tabPanes) {
+    if (pane.classList.contains('is-active')) {
+      return pane;
+    }
+    // 检查display是否不是none
+    const style = window.getComputedStyle(pane);
+    if (style.display !== 'none') {
+      return pane;
+    }
+  }
+
+  // 兜底：返回第一个tabPane
+  return tabPanes[0];
 };
 
 // 设置卡片 DOM 引用
@@ -387,6 +553,12 @@ const init = async () => {
   });
 
   try {
+    // 先加载用户列表，确保默认选中能正确显示label
+    await loadUserList();
+
+    // 等用户列表渲染完成，确保选中项正确显示
+    await nextTick();
+
     const res = await getEsgConfigList({
       pageNo: 1,
       pageSize: 100
@@ -440,6 +612,11 @@ const init = async () => {
             : "";
         });
       }
+
+      // 加载当前年份已保存的数据
+      nextTick(async () => {
+        await loadSavedData();
+      });
     }
   } catch (error) {
     console.error("加载配置失败", error);
@@ -449,12 +626,436 @@ const init = async () => {
   }
 };
 
+// 重置当前年份配置为初始空值（切换用户时清空老用户数据）
+const resetCurrentYearConfig = () => {
+  if (!currentYearConfig.value || !currentYearConfig.value.tabs) return;
+
+  currentYearConfig.value.tabs.forEach((configTab) => {
+    if (!configTab.cards) return;
+
+    configTab.cards.forEach((configCard) => {
+      if (!configCard.fields) return;
+
+      configCard.fields.forEach((configField) => {
+        // 重置value为空
+        configField.value = "";
+        // 重置文件列表为空
+        if (configField.type === "file") {
+          configField.fileList = [];
+        }
+        // 重置mixed类型控件值为空
+        if (configField.type === "mixed" && Array.isArray(configField.controls)) {
+          configField.controls.forEach(control => {
+            control.value = "";
+          });
+        }
+      });
+    });
+  });
+
+  console.log("已重置当前年份所有字段为空");
+};
+
+// 加载已保存的数据并回填
+const loadSavedData = async () => {
+  if (!currentYear.value || !currentUserId.value) return;
+
+  try {
+    // 按照要求构造请求参数
+    const params = {
+      type: currentYear.value,
+      userId: currentUserId.value,
+      year: currentYear.value
+    };
+
+    const res = await getEsgInfo(params);
+    if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+      // 找到当前用户当前年份的数据（取第一个匹配项）
+      const savedItem = res.data.find(item =>
+        item.userId === currentUserId.value &&
+        String(item.type) === currentYear.value
+      ) || res.data[0];
+
+      if (!savedItem.content) {
+        console.log("未找到保存的内容");
+        return;
+      }
+
+      // 解析已保存的内容
+      let savedContent;
+      try {
+        savedContent = typeof savedItem.content === 'string'
+          ? JSON.parse(savedItem.content)
+          : savedItem.content;
+      } catch (e) {
+        console.error("解析已保存内容失败", e);
+        return;
+      }
+
+      // 如果没有保存的tabs，直接返回
+      if (!savedContent || !savedContent.tabs) return;
+
+      // 优先根据配置渲染，再用已保存的数据填充，匹配不到就不修改
+      currentYearConfig.value.tabs.forEach((configTab) => {
+        // 匹配tab
+        const savedTab = savedContent.tabs.find(t => t.tabId === configTab.tabId);
+        if (!savedTab || !savedTab.cards) return;
+
+        savedTab.cards.forEach((savedCard) => {
+          // 匹配card
+          const configCard = configTab.cards.find(c => c.cardId === savedCard.cardId);
+          if (!configCard || !savedCard.fields) return;
+
+          savedCard.fields.forEach((savedField) => {
+            // 匹配field
+            const configField = configCard.fields.find(f => f.fieldId === savedField.fieldId);
+            if (!configField) return;
+
+            // 回填value
+            if (savedField.value !== undefined) {
+              configField.value = savedField.value;
+            }
+            // 回填fileList
+            if (savedField.type === 'file' && savedField.fileList) {
+              configField.fileList = savedField.fileList;
+            }
+            // 回填mixed类型的controls
+            if (savedField.type === 'mixed' && savedField.controls && Array.isArray(configField.controls)) {
+              savedField.controls.forEach((savedControl) => {
+                const configControl = configField.controls.find(c => c.controlId === savedControl.controlId);
+                if (configControl && savedControl.value !== undefined) {
+                  configControl.value = savedControl.value;
+                }
+              });
+            }
+          });
+        });
+      });
+
+      console.log("已加载并回填保存的数据");
+      ElMessage.success("已加载历史填报数据");
+    }
+  } catch (error) {
+    console.error("加载已保存数据失败", error);
+    // 加载失败不影响正常使用，只打印日志不提示错误
+  }
+};
+
 onMounted(() => {
   init();
 });
 
-// 年份变化处理
-const handleYearChange = (year) => {
+
+// 切换参考数据栏的显示/隐藏
+const toggleReference = () => {
+  showReference.value = !showReference.value;
+};
+
+// 保存填报数据（目前仅输出到控制台，后续对接接口）
+const handleSaveData = async () => {
+  if (!currentYearConfig.value) {
+    ElMessage.warning("请先选择填报年份");
+    return;
+  }
+
+  try {
+    await ElMessageBox.confirm(
+      `确认要保存 ${currentYear.value} 年的所有填报数据吗？`,
+      "保存确认",
+      {
+        confirmButtonText: "确认保存",
+        cancelButtonText: "取消",
+        type: "warning"
+      }
+    );
+  } catch {
+    return;
+  }
+
+  // 按用户 id 分组整理数据
+  const userDataMap = new Map();
+
+  // 遍历当前年份所有 TAB
+  currentYearConfig.value.tabs.forEach(tab => {
+    // 每个 TAB 的填写人列表
+    const writers = Array.isArray(tab.writers) ? tab.writers.map(String) : [];
+    if (writers.length === 0) return;
+
+    // 收集当前 TAB 的数据
+    const tabData = {
+      tabId: tab.tabId,
+      tabName: tab.tabName,
+      cards: tab.cards.map(card => ({
+        cardId: card.cardId,
+        cardName: card.cardName,
+        fields: card.fields.map(field => {
+          const fieldData = {
+            fieldId: field.fieldId,
+            label: field.label,
+            type: field.type,
+            value: field.value
+          };
+          if (field.type === "file") {
+            fieldData.fileList = field.fileList || [];
+          }
+          if (field.type === "mixed" && Array.isArray(field.controls)) {
+            fieldData.controls = field.controls.map(control => ({
+              controlId: control.controlId,
+              label: control.label,
+              value: control.value
+            }));
+          }
+          return fieldData;
+        })
+      }))
+    };
+
+    // 将当前 TAB 数据添加到每个填写人
+    writers.forEach(userId => {
+      if (!userDataMap.has(userId)) {
+        userDataMap.set(userId, {
+          userid: userId,
+          year: currentYear.value,
+          data: []
+        });
+      }
+      userDataMap.get(userId).data.push(tabData);
+    });
+  });
+
+  // 转为要求的数组格式
+  const result = Array.from(userDataMap.values());
+
+  // 输出到控制台
+  console.log("当前填报年份所有数据（按填写人分组）：", result);
+  console.log(JSON.stringify(result, null, 2));
+
+  // 调用接口保存ESG信息
+  const loading = ElLoading.service({
+    lock: true,
+    text: "保存中...",
+    background: "rgba(255, 255, 255, 0.8)"
+  });
+
+  try {
+    // 按照要求构造请求参数
+    const requestData = {
+      content: JSON.stringify(currentYearConfig.value), // 表单所有内容，包含填写的值
+      type: currentYear.value, // type传年份
+      userId: currentUserId.value, // 当前填写人userId
+      userName: username.value, // 当前填写人userName
+      year: currentYear.value // year传年份字符串
+    };
+
+    console.log("提交的参数：", requestData);
+    const response = await updateEsgConfig(requestData);
+
+    if (response.success) {
+      ElMessage.success(`保存成功！${currentYear.value} 年ESG填报数据已更新`);
+    } else {
+      ElMessage.error(response.message || "保存失败，请重试");
+    }
+  } catch (error) {
+    console.error("保存失败", error);
+    ElMessage.error("保存失败，请检查网络连接后重试");
+  } finally {
+    loading.close();
+  }
+};
+
+// 文件上传前检查
+const beforeUpload = (file) => {
+  // 可以在这里添加文件大小和类型限制
+  const isLt10M = file.size / 1024 / 1024 < 10;
+  if (!isLt10M) {
+    ElMessage.error('文件大小不能超过 10MB');
+    return false;
+  }
+  return true;
+};
+
+// 文件选择变化处理
+const handleFileChange = (fileList) => {
+  // 文件选择变化时不需要额外处理，v-model:file-list已经自动更新
+};
+
+// 处理文件上传
+const handleFileUpload = async (options, field) => {
+  const { file } = options;
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const loading = ElLoading.service({
+    lock: true,
+    text: '上传中...',
+    background: 'rgba(255, 255, 255, 0.8)'
+  });
+
+  try {
+    const res = await uploadEsgFile(formData);
+    if (res.success && res.data) {
+      // 移除el-upload自动添加的原始文件（因为我们已经自定义列表，避免重复）
+      const rawIndex = field.fileList.findIndex(item =>
+        item.name === file.name && item.status === 'ready'
+      );
+      if (rawIndex !== -1) {
+        field.fileList.splice(rawIndex, 1);
+      }
+
+      // 保存相对路径和文件名
+      const fileInfo = {
+        name: file.name,
+        url: res.data, // 保存返回的相对路径
+        status: 'success'
+      };
+      // 添加处理后的文件信息
+      field.fileList.push(fileInfo);
+      ElMessage.success(`${file.name} 上传成功`);
+    } else {
+      // 上传失败也要移除自动添加的文件
+      const rawIndex = field.fileList.findIndex(item =>
+        item.name === file.name && item.status === 'ready'
+      );
+      if (rawIndex !== -1) {
+        field.fileList.splice(rawIndex, 1);
+      }
+      ElMessage.error(res.msg || '上传失败，请重试');
+    }
+  } catch (error) {
+    console.error('上传文件失败', error);
+    // 上传失败也要移除自动添加的文件
+    const rawIndex = field.fileList.findIndex(item =>
+      item.name === file.name && item.status === 'ready'
+    );
+    if (rawIndex !== -1) {
+      field.fileList.splice(rawIndex, 1);
+    }
+    ElMessage.error('上传失败，请检查网络连接后重试');
+  } finally {
+    loading.close();
+  }
+};
+
+// 处理文件预览
+const handleFilePreview = async (file) => {
+  if (!file.url) {
+    ElMessage.error('文件路径不存在');
+    return;
+  }
+
+  // 判断是否是图片格式
+  const imageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+  const isImage = imageExts.some(ext =>
+    file.name.toLowerCase().endsWith(ext)
+  );
+
+  if (!isImage) {
+    ElMessage.info('该文件类型不支持预览，请点击下载按钮下载查看');
+    return;
+  }
+
+  try {
+    const res = await getFileDownLoadPath({
+      objectName: file.url
+    });
+    if (res.success && res.data) {
+      previewImageUrl.value = res.data;
+      previewDialogVisible.value = true;
+    } else {
+      ElMessage.error(res.msg || '获取预览链接失败');
+    }
+  } catch (error) {
+    console.error('获取预览链接失败', error);
+    ElMessage.error('获取预览链接失败，请重试');
+  }
+};
+
+// 处理文件下载
+const handleFileDownload = async (file) => {
+  if (!file.url) {
+    ElMessage.error('文件路径不存在');
+    return;
+  }
+
+  try {
+    const res = await getFileDownLoadPath({
+      objectName: file.url
+    });
+    if (res.success && res.data) {
+      // 新窗口打开下载链接
+      window.open(res.data, '_blank');
+    } else {
+      ElMessage.error(res.msg || '获取下载链接失败');
+    }
+  } catch (error) {
+    console.error('获取下载链接失败', error);
+    ElMessage.error('获取下载链接失败，请重试');
+  }
+};
+
+// 删除文件
+const removeFile = async (field, index) => {
+  try {
+    await ElMessageBox.confirm(
+      '确定要删除该文件吗？删除后无法恢复',
+      '删除确认',
+      {
+        confirmButtonText: '确定删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    );
+    field.fileList.splice(index, 1);
+    ElMessage.success('文件已删除');
+  } catch {
+    // 用户取消删除，不操作
+  }
+};
+
+// 切换用户处理
+const handleUserChange = async () => {
+  // 切换用户后，先重置清空所有内容，再加载新用户数据
+  nextTick(async () => {
+    if (currentYear.value && currentYearConfig.value) {
+      // 重置当前年份所有字段为初始空值
+      resetCurrentYearConfig();
+      // 加载新用户已保存数据
+      await loadSavedData();
+    }
+    // 重新选中第一个可填报TAB
+    if (visibleTabs.value.length > 0) {
+      activeTab.value = visibleTabs.value[0].tabId;
+      activeCardIndex.value = 0;
+    } else {
+      activeTab.value = "";
+    }
+  });
+};
+
+// 年份变化处理（切换前确认：已有选中年份时提示未保存数据会丢失）
+const handleYearChange = async (newYear) => {
+  const oldYear = currentYear.value;
+  // 如果已经选中了年份，切换时提醒用户
+  if (currentYear.value) {
+    try {
+      await ElMessageBox.confirm(
+        "切换年份将导致当前未保存的数据丢失，是否继续？",
+        "提示",
+        {
+          confirmButtonText: "确定切换",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      );
+    } catch {
+      // 用户取消，恢复为原来的年份
+      currentYear.value = oldYear;
+      return;
+    }
+  }
+
+  // 用户确认或初次选择，执行切换
+  currentYear.value = newYear;
   // 只在可填报的 TAB 中选中第一个
   if (visibleTabs.value.length > 0) {
     activeTab.value = visibleTabs.value[0].tabId;
@@ -467,42 +1068,56 @@ const handleYearChange = (year) => {
     const other = formConfig.value.find(y => y.year !== currentYear.value);
     referenceYear.value = other ? other.year : "";
   }
-};
 
-// 切换参考数据栏的显示/隐藏
-const toggleReference = () => {
-  showReference.value = !showReference.value;
+  // 加载新选年份的已保存数据
+  nextTick(async () => {
+    await loadSavedData();
+  });
 };
 
 // 监听 activeTab 变化，重置 activeCardIndex 并重新绑定滚动事件
 watch(activeTab, () => {
   activeCardIndex.value = 0;
+  // 清空旧卡片引用，重新绑定新TAB卡片引用
+  cardRefs.value.clear();
   // 先移除之前的滚动监听
   const oldScrollContainer = getScrollContainer();
   if (oldScrollContainer && scrollHandlerRef.value) {
     oldScrollContainer.removeEventListener("scroll", scrollHandlerRef.value);
   }
-  // 等待 DOM 更新
-  nextTick(() => {
-    const newScrollContainer = getScrollContainer();
-    if (newScrollContainer) {
-      newScrollContainer.scrollTop = 0;
-      // 保存处理函数的引用
-      scrollHandlerRef.value = handleScroll;
-      newScrollContainer.addEventListener("scroll", scrollHandlerRef.value);
-    }
-  });
+  // 等待足够时间让 DOM 完全更新，新卡片ref全部绑定完成
+  setTimeout(() => {
+    nextTick(() => {
+      const newScrollContainer = getScrollContainer();
+      if (newScrollContainer) {
+        newScrollContainer.scrollTop = 0;
+        // 保存处理函数的引用
+        scrollHandlerRef.value = handleScroll;
+        newScrollContainer.addEventListener("scroll", scrollHandlerRef.value);
+      }
+    });
+  }, 300);
+});
+
+// 用户列表加载完成后设置默认选中，确保匹配label
+watch(userList, () => {
+  if (defaultUserId.value && userList.value.length > 0) {
+    nextTick(() => {
+      selectedUserId.value = defaultUserId.value;
+    });
+  }
 });
 
 // 当组件挂载后，绑定滚动事件
 onMounted(() => {
-  nextTick(() => {
+  // 延迟绑定，等待所有数据和DOM都渲染完成
+  setTimeout(() => {
     const scrollContainer = getScrollContainer();
     if (scrollContainer) {
       scrollHandlerRef.value = handleScroll;
       scrollContainer.addEventListener("scroll", scrollHandlerRef.value);
     }
-  });
+  }, 500);
 });
 </script>
 
@@ -600,6 +1215,18 @@ $text-placeholder: #9ca3af;
       font-size: 14px;
       color: $text-color;
       font-weight: 500;
+    }
+
+    .user-switcher {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .label {
+        font-size: 14px;
+        color: $text-color;
+        font-weight: 500;
+      }
     }
 
     .user-info {
@@ -875,6 +1502,81 @@ $text-placeholder: #9ca3af;
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+
+    .uploaded-files {
+      margin-top: 12px;
+
+      .uploaded-file-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        background: $bg-color;
+        border-radius: 4px;
+
+        .el-icon {
+          color: $text-secondary;
+          margin-right: 6px;
+        }
+
+        .file-link {
+          flex: 1;
+          color: $primary-color;
+          cursor: pointer;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .download-icon {
+          cursor: pointer;
+          color: $primary-color;
+          margin-right: 8px;
+
+          &:hover {
+            color: darken($primary-color, 10%);
+          }
+        }
+
+        .delete-icon {
+          cursor: pointer;
+          color: $danger-color;
+
+          &:hover {
+            color: darken($danger-color, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  .image-preview-dialog {
+    max-width: 90vw;
+
+    :deep(.el-dialog__body) {
+      padding: 10px 20px 20px;
+      text-align: center;
+    }
+  }
+
+  .preview-container {
+    text-align: center;
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-image {
+    max-width: 100%;
+    max-height: 75vh;
+    display: block;
+    margin: 0 auto;
   }
 
   .field-label {
@@ -1003,5 +1705,11 @@ $text-placeholder: #9ca3af;
 
 :deep(.el-select .el-input__wrapper.is-focus) {
   box-shadow: 0 0 0 1px $primary-color inset;
+}
+
+// MessageBox 确认按钮主题色覆盖
+:deep(.el-message-box .el-button--primary) {
+  background-color: $primary-color;
+  border-color: $primary-color;
 }
 </style>
