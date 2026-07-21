@@ -321,7 +321,7 @@
         </div>
 
         <div class="fields-editor">
-          <div v-for="(field, index) in currentCard.fields" :key="index" class="field-editor">
+          <div v-for="field in currentCard.fields" :key="field.fieldId" class="field-editor">
             <div class="field-editor-header">
               <el-input v-model="field.label" placeholder="字段标签" size="small" class="field-label-input" />
               <el-select v-model="field.type" size="small" style="width: 120px;">
@@ -478,6 +478,8 @@ const tabsGridRef = ref(null)
 const cardsListRefs = ref(new Map())
 // 存储 Sortable 实例
 const sortableInstances = ref([])
+// 字段编辑器的 Sortable 实例
+let fieldsSortableInstance = null
 
 // 添加年份对话框显示状态
 const showAddYearDialog = ref(false)
@@ -908,12 +910,16 @@ const addField = (card) => {
     example: ''
   })
   ElMessage.success('已添加字段')
+  // 重新初始化拖动排序
+  reinitDragSortDebounced()
 }
 
 // 删除字段
 const deleteField = (card, fieldId) => {
   card.fields = card.fields.filter(f => f.fieldId !== fieldId)
   ElMessage.success('已删除字段')
+  // 重新初始化拖动排序
+  reinitDragSortDebounced()
 }
 
 // 保存配置到后端
@@ -1153,6 +1159,10 @@ const initDragSort = () => {
             const tabs = currentYearConfig.value.tabs
             const [movedTab] = tabs.splice(oldIndex, 1)
             tabs.splice(newIndex, 0, movedTab)
+            // Vue重新渲染DOM后，需要重新初始化Sortable
+            nextTick(() => {
+              reinitDragSortDebounced()
+            })
           }
         }
       })
@@ -1175,12 +1185,42 @@ const initDragSort = () => {
                 const cards = tab.cards
                 const [movedCard] = cards.splice(oldIndex, 1)
                 cards.splice(newIndex, 0, movedCard)
+                // Vue重新渲染DOM后，需要重新初始化Sortable
+                nextTick(() => {
+                  reinitDragSortDebounced()
+                })
               }
             }
           })
           sortableInstances.value.push(cardSortable)
         }
       })
+    }
+
+    // 3. 初始化卡片编辑弹窗内字段拖动排序
+    if (showCardDetailDialog.value && currentCard.value && currentCard.value.fields) {
+      const fieldsEditorEl = document.querySelector('.fields-editor')
+      if (fieldsEditorEl) {
+        fieldsSortableInstance = Sortable.create(fieldsEditorEl, {
+          animation: 150,
+          handle: '.field-editor-header',
+          ghostClass: 'sortable-ghost',
+          dragClass: 'sortable-drag',
+          chosenClass: 'sortable-chosen',
+          onEnd: (evt) => {
+            const { oldIndex, newIndex } = evt
+            if (oldIndex !== undefined && newIndex !== undefined && oldIndex !== newIndex && currentCard.value) {
+              const fields = currentCard.value.fields
+              const [movedField] = fields.splice(oldIndex, 1)
+              fields.splice(newIndex, 0, movedField)
+              // Vue重新渲染DOM后，需要重新初始化Sortable，保证实例和新DOM一致
+              nextTick(() => {
+                reinitDragSortDebounced()
+              })
+            }
+          }
+        })
+      }
     }
   })
 }
@@ -1193,6 +1233,11 @@ const destroyDragSort = () => {
     }
   })
   sortableInstances.value = []
+  // 销毁字段拖动排序实例
+  if (fieldsSortableInstance) {
+    fieldsSortableInstance.destroy()
+    fieldsSortableInstance = null
+  }
 }
 
 // 监听年份详情弹窗的显示状态
@@ -1205,6 +1250,16 @@ watch(showYearDetailDialog, (val) => {
   } else {
     // 弹窗关闭时销毁
     destroyDragSort()
+  }
+})
+
+// 监听卡片详情弹窗的显示状态，打开时重新初始化拖动排序（包含字段拖拽）
+watch(showCardDetailDialog, (val) => {
+  if (val) {
+    // 弹窗打开后，DOM渲染完成再初始化字段拖动排序
+    nextTick(() => {
+      initDragSort()
+    })
   }
 })
 
@@ -1973,6 +2028,16 @@ $text-placeholder: #9ca3af;
 }
 
 .mini-card {
+  cursor: grab;
+  user-select: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+// 字段编辑器头部添加可拖动的视觉提示
+.field-editor-header {
   cursor: grab;
   user-select: none;
 

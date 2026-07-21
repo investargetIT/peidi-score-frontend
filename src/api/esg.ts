@@ -90,6 +90,7 @@ export const getFileDownLoadPath = params => {
 export const uploadEsgFile = (formData: FormData) => {
   return http.request("post", baseUrlApi("/esg/upload"), {
     data: formData,
+    timeout: 600000, // 超时设置10分钟，支持大文件上传
     headers: {
       'Content-Type': 'multipart/form-data'
     }

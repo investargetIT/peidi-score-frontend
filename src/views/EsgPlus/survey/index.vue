@@ -865,10 +865,10 @@ const handleSaveData = async () => {
 
 // 文件上传前检查
 const beforeUpload = (file) => {
-  // 可以在这里添加文件大小和类型限制
-  const isLt10M = file.size / 1024 / 1024 < 10;
-  if (!isLt10M) {
-    ElMessage.error('文件大小不能超过 10MB');
+  // 限制文件大小不能超过 100MB
+  const isLt100M = file.size / 1024 / 1024 < 100;
+  if (!isLt100M) {
+    ElMessage.error('文件大小不能超过 100MB');
     return false;
   }
   return true;
@@ -883,7 +883,26 @@ const handleFileChange = (fileList) => {
 const handleFileUpload = async (options, field) => {
   const { file } = options;
   const formData = new FormData();
-  formData.append('file', file);
+
+  // 自定义文件名：填写人姓名_原文件名_唯一标识符.后缀
+  // 拆分原文件名和扩展名
+  const lastDotIndex = file.name.lastIndexOf('.');
+  const originalName = lastDotIndex > 0
+    ? file.name.slice(0, lastDotIndex)
+    : file.name;
+  const ext = lastDotIndex > 0
+    ? file.name.slice(lastDotIndex)
+    : '';
+  // 唯一标识符：时间戳后6位 + 2位随机数，兼顾简短和唯一性
+  const timestamp = Date.now().toString().slice(-6);
+  const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+  const uniqueId = `${timestamp}_${randomNum}`;
+  // 构造新文件名
+  const newFileName = `${username.value}_${originalName}_${uniqueId}${ext}`;
+
+  // 使用新文件名创建新的 File 对象
+  const renamedFile = new File([file], newFileName, { type: file.type });
+  formData.append('file', renamedFile);
 
   const loading = ElLoading.service({
     lock: true,
@@ -902,9 +921,9 @@ const handleFileUpload = async (options, field) => {
         field.fileList.splice(rawIndex, 1);
       }
 
-      // 保存相对路径和文件名
+      // 保存相对路径和文件名（显示自定义文件名）
       const fileInfo = {
-        name: file.name,
+        name: newFileName,
         url: res.data, // 保存返回的相对路径
         status: 'success'
       };
