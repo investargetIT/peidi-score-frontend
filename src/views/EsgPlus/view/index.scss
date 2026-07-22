@@ -323,7 +323,7 @@ $text-placeholder: #9ca3af;
       word-break: break-word;
 
       .label-text {
-        font-weight: 600;
+        font-weight: normal;
       }
 
       .field-unit {
@@ -423,7 +423,7 @@ $text-placeholder: #9ca3af;
               color: $primary-color;
 
               &:hover {
-                color: darken($primary-color, 10%);
+                color: #2d49c9;
               }
             }
           }
