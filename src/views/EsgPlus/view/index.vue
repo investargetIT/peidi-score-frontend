@@ -33,6 +33,9 @@
           <el-button type="primary" :icon="Refresh" @click="loadUserData">
             <span>刷新数据</span>
           </el-button>
+          <el-button style="background-color: #217346; border-color: #217346; color: #fff" :icon="Download" @click="handleExportExcel" :loading="exporting">
+            <span>导出 Excel</span>
+          </el-button>
         </div>
       </div>
     </div>
@@ -210,11 +213,17 @@ import type { UiEsgConfig } from "@/api/esgConfig";
 import type { Response as EsgInfoResponse } from "./types";
 
 // 预解析用户数据结构：缓存解析后的字段值
-interface CachedUserData {
+export interface CachedFieldInfo {
+  value: string;
+  hasFile: boolean;
+  fileList: any[];
+}
+
+export interface CachedUserData {
   user: EsgInfoResponse;
   parsedContent: any;
   // 缓存 fieldKey -> value
-  valueCache: Map<string, string>;
+  valueCache: Map<string, CachedFieldInfo>;
 }
 
 const router = useRouter();
@@ -232,6 +241,13 @@ const cardsContainerRef = ref<HTMLElement | null>(null);
 // 图片预览
 const previewDialogVisible = ref(false);
 const previewImageUrl = ref("");
+
+// 导出状态
+const exporting = ref(false);
+
+// 导入导出函数
+import { exportEsgToExcel } from './export';
+import type { CachedUserData, CachedFieldInfo } from './export';
 
 // 预解析并缓存用户数据（只在数据变化时解析一次）
 const cachedUserDataList = computed(() => {
@@ -648,6 +664,21 @@ onMounted(() => {
     }
   }, 500);
 });
+
+// 导出 Excel
+const handleExportExcel = async () => {
+  exporting.value = true;
+  try {
+    await exportEsgToExcel(
+      selectedYear.value,
+      currentYearConfig.value,
+      cachedUserDataList.value,
+      getCachedFieldInfo
+    );
+  } finally {
+    exporting.value = false;
+  }
+};
 </script>
 
 <style lang="scss" scoped>
