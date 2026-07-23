@@ -116,7 +116,12 @@ export async function exportEsgToExcel(
         if (!card.fields) continue;
         for (const field of card.fields) {
           cachedUserDataList.forEach((cachedUser, idx) => {
-            const info = getCachedFieldInfo(cachedUser, tab.tabId, card.cardId, field.fieldId);
+            const info = getCachedFieldInfo(
+              cachedUser,
+              tab.tabId,
+              card.cardId,
+              field.fieldId
+            );
             if (info.value || (info.hasFile && info.fileList.length > 0)) {
               userHasData[idx] = true;
             }
@@ -125,16 +130,20 @@ export async function exportEsgToExcel(
       }
 
       // 过滤出有数据的用户
-      const filteredUsers = cachedUserDataList.filter((_, idx) => userHasData[idx]);
+      const filteredUsers = cachedUserDataList.filter(
+        (_, idx) => userHasData[idx]
+      );
       if (filteredUsers.length === 0) continue; // 整个 sheet 都没数据跳过
 
       // 添加 sheet
-      const worksheet = workbook.addWorksheet((tab.tabName || "Sheet" + tab.tabId).slice(0, 31));
+      const worksheet = workbook.addWorksheet(
+        (tab.tabName || "Sheet" + tab.tabId).slice(0, 31)
+      );
 
       // 设置列宽
       const columnWidths = [
-        { width: 22 },  // 卡片名称
-        { width: 32 },  // 字段名称
+        { width: 22 }, // 卡片名称
+        { width: 32 }, // 字段名称
         ...filteredUsers.map(() => ({ width: 38 })) // 每个用户一列
       ];
       worksheet.columns = columnWidths;
@@ -143,7 +152,9 @@ export async function exportEsgToExcel(
       const headerRow = worksheet.addRow([]);
       const headerCells = ["卡片名称", "字段名称"];
       filteredUsers.forEach(cachedUser => {
-        headerCells.push(cachedUser.user.userName || "用户 " + cachedUser.user.userId);
+        headerCells.push(
+          cachedUser.user.userName || "用户 " + cachedUser.user.userId
+        );
       });
       headerCells.forEach((cell, idx) => {
         headerRow.getCell(idx + 1).value = cell;
@@ -153,84 +164,135 @@ export async function exportEsgToExcel(
 
       // 遍历每个卡片，记录卡片起始行，用于后续合并单元格
       let currentRowNum = 2; // 从第2行开始（表头是第1行）
-      const cardMergeRanges: Array<{startRow: number, endRow: number}> = [];
+      const cardMergeRanges: Array<{ startRow: number; endRow: number }> = [];
+      const fieldMergeRanges: Array<{
+        startRow: number;
+        endRow: number;
+        col: number;
+      }> = [];
 
       for (const card of tab.cards) {
         if (!card.fields || card.fields.length === 0) continue;
 
         const cardStartRow = currentRowNum;
-        const fieldCount = card.fields.length;
+        let totalFieldRows = 0;
 
         // 遍历每个字段
         for (const field of card.fields) {
-          const row = worksheet.addRow([]);
-          // 第一列：卡片名称
-          row.getCell(1).value = card.cardName;
-          row.getCell(1).style = cellStyle;
-          // 第二列：字段名称
-          row.getCell(2).value = field.label;
-          row.getCell(2).style = cellStyle;
+          const fieldStartRow = currentRowNum;
+          let fileCount = 0;
 
-          // 每个用户一列
-          let colNum = 3;
+          // 计算这个字段需要多少行：检查所有用户中最大附件数量
+          let maxFiles = 1;
           for (const cachedUser of filteredUsers) {
-            const info = getCachedFieldInfo(cachedUser, tab.tabId, card.cardId, field.fieldId);
-            const cell = row.getCell(colNum);
-
+            const info = getCachedFieldInfo(
+              cachedUser,
+              tab.tabId,
+              card.cardId,
+              field.fieldId
+            );
             if (info.hasFile && info.fileList.length > 0) {
-              // 多个文件，每个都是超链接公式，exceljs正确标记为公式类型
-              let hasLink = false;
-              let cellValue = "";
-              for (const file of info.fileList) {
-                try {
-                  // 请求获取真实下载地址
-                  const res = await getFileDownLoadPath({ objectName: file.url });
-                  if (res.success && res.data) {
-                    let fullUrl = res.data;
-                    if (!fullUrl.startsWith("http")) {
-                      fullUrl = baseUrl.replace(/\/$/, "") + "/" + fullUrl.replace(/^\//, "");
-                    }
-                    // Excel HYPERLINK 公式
-                    const safeUrl = fullUrl.replace(/"/g, '""');
-                    const safeName = file.name.replace(/"/g, '""');
-                    const formula = `=HYPERLINK("${safeUrl}","${safeName}")`;
+              maxFiles = Math.max(maxFiles, info.fileList.length);
+            }
+          }
 
-                    if (cellValue) cellValue += '\n';
-                    cell.value = formula;
-                    // 标记这是公式，exceljs 才会识别
-                    cell.type = 'f';
-                    // 超链接蓝色下划线样式
-                    cell.style = linkCellStyle;
-                    hasLink = true;
+          // 为每个附件创建单独一行
+          for (let fileIndex = 0; fileIndex < maxFiles; fileIndex++) {
+            const row = worksheet.addRow([]);
+            // 第一列：卡片名称（只在第一行写，后续合并）
+            if (fileIndex === 0) {
+              row.getCell(1).value = card.cardName;
+              row.getCell(1).style = cellStyle;
+            } else {
+              row.getCell(1).style = cellStyle;
+            }
+            // 第二列：字段名称（只在第一行写，后续合并）
+            if (fileIndex === 0) {
+              row.getCell(2).value = field.label;
+              row.getCell(2).style = cellStyle;
+            } else {
+              row.getCell(2).style = cellStyle;
+            }
+
+            // 每个用户一列
+            let colNum = 3;
+            for (const cachedUser of filteredUsers) {
+              const info = getCachedFieldInfo(
+                cachedUser,
+                tab.tabId,
+                card.cardId,
+                field.fieldId
+              );
+              const cell = row.getCell(colNum);
+
+              if (
+                info.hasFile &&
+                info.fileList.length > 0 &&
+                fileIndex < info.fileList.length
+              ) {
+                // 单个文件放一个单元格
+                const file = info.fileList[fileIndex];
+                try {
+                  // 跟预览逻辑完全一致：请求获取阿里OSS真实下载地址
+                  const res = await getFileDownLoadPath({
+                    objectName: file.url
+                  });
+
+                  // 接口返回结构就是 res.data = "https://..."，直接取
+                  let fullUrl: string;
+                  if (res && res.data) {
+                    fullUrl = String(res.data);
+                  } else if (typeof res === "string") {
+                    fullUrl = res;
                   } else {
-                    if (cellValue) cellValue += '\n';
-                    cellValue += file.name;
-                    cell.value = cellValue;
+                    fullUrl = file.url;
+                  }
+
+                  // 直接放完整URL文本
+                  cell.value = fullUrl;
+                  // 如果是绝对路径，使用蓝色超链接样式
+                  if (fullUrl.startsWith("http")) {
+                    cell.style = linkCellStyle;
+                  } else {
                     cell.style = cellStyle;
                   }
                 } catch (e) {
-                  if (cellValue) cellValue += '\n';
-                  cellValue += file.name;
-                  cell.value = cellValue;
+                  // 出错 fallback，直接显示URL文本
+                  cell.value = file.url;
                   cell.style = cellStyle;
                 }
+              } else if (fileIndex === 0 && info.value) {
+                // 普通文本只放在第一行
+                cell.value = info.value;
+                cell.style = cellStyle;
+              } else {
+                cell.value = "";
+                cell.style = cellStyle;
               }
-            } else if (info.value) {
-              // 普通文本
-              cell.value = info.value;
-              cell.style = cellStyle;
-            } else {
-              cell.value = "";
-              cell.style = cellStyle;
+              colNum++;
             }
-            colNum++;
+
+            currentRowNum++;
+            fileCount++;
           }
 
-          currentRowNum++;
+          totalFieldRows += fileCount;
+
+          // 如果一个字段分成了多行，需要合并B列（字段名称）
+          if (fileCount > 1) {
+            fieldMergeRanges.push({
+              startRow: fieldStartRow,
+              endRow: currentRowNum - 1,
+              col: 2 // 第二列是字段名称
+            });
+          }
+
+          // 也记录需要合并的用户列（如果该用户有多个附件）
+          // 实际上用户列每个附件已经单独一行了，不需要合并
         }
 
-        // 如果卡片有多个字段，合并A列（卡片名称）
-        if (fieldCount > 1) {
+        // 如果卡片有多个字段行，合并A列（卡片名称）
+        if (totalFieldRows > 1) {
           cardMergeRanges.push({
             startRow: cardStartRow,
             endRow: currentRowNum - 1
@@ -239,11 +301,28 @@ export async function exportEsgToExcel(
         }
       }
 
-      // 执行合并单元格（A列）
+      // 执行合并单元格
+
+      // 合并A列（卡片名称）
       for (const merge of cardMergeRanges) {
         worksheet.mergeCells("A" + merge.startRow + ":A" + merge.endRow);
         // 重新设置样式（合并后保持样式）
         const mergedCell = worksheet.getCell("A" + merge.startRow);
+        mergedCell.style = cellStyle;
+        mergedCell.alignment = {
+          vertical: "middle",
+          horizontal: "center"
+        };
+      }
+
+      // 合并B列（字段名称）- 一个字段多个附件时
+      for (const merge of fieldMergeRanges) {
+        const colLetter = String.fromCharCode(64 + merge.col); // B列 = 65+1=66 = 'B'
+        worksheet.mergeCells(
+          colLetter + merge.startRow + ":" + colLetter + merge.endRow
+        );
+        // 重新设置样式（合并后保持样式）
+        const mergedCell = worksheet.getCell(colLetter + merge.startRow);
         mergedCell.style = cellStyle;
         mergedCell.alignment = {
           vertical: "middle",
@@ -263,7 +342,9 @@ export async function exportEsgToExcel(
 
     // 生成并下载
     const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    });
     const fileName = selectedYear + "年 ESG 填报总览.xlsx";
     saveAs(blob, fileName);
 

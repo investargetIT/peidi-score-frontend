@@ -23,10 +23,15 @@
             @click="toggleReference"
           >
             <el-icon style="margin-right: 4px"><DataAnalysis /></el-icon>
-            {{ showReference ? '关闭参考' : '参考数据' }}
+            {{ showReference ? "关闭参考" : "参考数据" }}
           </el-button>
           <span class="label">填报年份</span>
-          <el-select :model-value="currentYear" placeholder="请选择年份" @change="handleYearChange" style="width: 140px">
+          <el-select
+            :model-value="currentYear"
+            placeholder="请选择年份"
+            @change="handleYearChange"
+            style="width: 140px"
+          >
             <el-option
               v-for="yearConfig in formConfig"
               :key="yearConfig.year"
@@ -56,7 +61,11 @@
               <el-option
                 v-for="user in userList"
                 :key="user.userId"
-                :label="user.fullName ? `${String(user.userId)} - ${user.fullName}` : String(user.userId)"
+                :label="
+                  user.fullName
+                    ? `${String(user.userId)} - ${user.fullName}`
+                    : String(user.userId)
+                "
                 :value="String(user.userId)"
               />
             </el-select>
@@ -64,7 +73,9 @@
           <span v-if="username" class="user-info">
             <span class="user-avatar">{{ username.charAt(0) }}</span>
             <span class="user-detail">
-              <span class="user-role">{{ selectedUserId ? '代填报人' : '填报人' }}</span>
+              <span class="user-role">{{
+                selectedUserId ? "代填报人" : "填报人"
+              }}</span>
               <span class="user-name">{{ username }}</span>
             </span>
           </span>
@@ -74,7 +85,10 @@
 
     <!-- 主内容区 -->
     <div class="main-content">
-      <div class="content-wrapper" :style="{ gridTemplateColumns: gridColumns }">
+      <div
+        class="content-wrapper"
+        :style="{ gridTemplateColumns: gridColumns }"
+      >
         <!-- 左侧：进度条 -->
         <div v-if="currentYearConfig && activeTab" class="progress-section">
           <div class="progress-bar-wrapper">
@@ -86,7 +100,10 @@
               @click="jumpToCard(card.cardId, index)"
             >
               <div class="progress-dot"></div>
-              <div class="progress-line" v-if="index < currentTabCards.length - 1"></div>
+              <div
+                class="progress-line"
+                v-if="index < currentTabCards.length - 1"
+              ></div>
               <div class="progress-label">{{ card.cardName }}</div>
             </div>
           </div>
@@ -98,7 +115,11 @@
           </div>
 
           <!-- TAB 栏 -->
-          <el-tabs v-if="currentYearConfig && visibleTabs.length" v-model="activeTab" class="survey-tabs">
+          <el-tabs
+            v-if="currentYearConfig && visibleTabs.length"
+            v-model="activeTab"
+            class="survey-tabs"
+          >
             <el-tab-pane
               v-for="tab in visibleTabs"
               :key="tab.tabId"
@@ -116,15 +137,27 @@
                 >
                   <div class="card-title">
                     <h4>{{ card.cardName }}</h4>
-                    <p v-if="card.cardDescription">{{ card.cardDescription }}</p>
+                    <p v-if="card.cardDescription">
+                      {{ card.cardDescription }}
+                    </p>
                   </div>
                   <div class="card-fields">
                     <!-- 字段列表 -->
-                    <div v-for="field in card.fields" :key="field.fieldId" class="field-item">
+                    <div
+                      v-for="field in card.fields"
+                      :key="field.fieldId"
+                      class="field-item"
+                    >
                       <div class="field-label">
                         <span>{{ field.label }}</span>
-                        <el-tooltip v-if="field.description" :content="field.description" placement="top">
-                          <el-icon class="desc-icon"><QuestionFilled /></el-icon>
+                        <el-tooltip
+                          v-if="field.description"
+                          :content="field.description"
+                          placement="top"
+                        >
+                          <el-icon class="desc-icon"
+                            ><QuestionFilled
+                          /></el-icon>
                         </el-tooltip>
                       </div>
                       <div class="field-input">
@@ -145,7 +178,9 @@
                           :show-file-list="false"
                           multiple
                           :before-upload="beforeUpload"
-                          :http-request="(options) => handleFileUpload(options, field)"
+                          :http-request="
+                            options => handleFileUpload(options, field)
+                          "
                         >
                           <el-button type="primary">选择文件</el-button>
                           <template #tip>
@@ -154,37 +189,57 @@
                         </el-upload>
 
                         <!-- 已上传文件列表 -->
-                        <div v-if="field.fileList && field.fileList.length > 0" class="uploaded-files">
+                        <div
+                          v-if="field.fileList && field.fileList.length > 0"
+                          class="uploaded-files"
+                        >
                           <div
                             v-for="(file, index) in field.fileList"
                             :key="index"
                             class="uploaded-file-item"
                           >
                             <el-icon><Document /></el-icon>
-                            <a @click="handleFilePreview(file)" class="file-link">{{ file.name }}</a>
+                            <a
+                              @click="handleFilePreview(file)"
+                              class="file-link"
+                              >{{ file.name }}</a
+                            >
                             <el-icon
                               class="download-icon"
                               @click="handleFileDownload(file)"
                               title="下载"
-                            ><Download /></el-icon>
+                              ><Download
+                            /></el-icon>
                             <el-icon
                               class="delete-icon"
                               @click="removeFile(field, index)"
                               title="删除"
-                            ><Delete /></el-icon>
+                              ><Delete
+                            /></el-icon>
                           </div>
                         </div>
                         <!-- 混合类型 -->
-                        <div v-else-if="field.type === 'mixed'" class="mixed-controls">
-                          <div v-for="control in (field.controls || [])" :key="control.controlId" class="control-item">
-                            <span class="control-label">{{ control.label }}</span>
+                        <div
+                          v-else-if="field.type === 'mixed'"
+                          class="mixed-controls"
+                        >
+                          <div
+                            v-for="control in field.controls || []"
+                            :key="control.controlId"
+                            class="control-item"
+                          >
+                            <span class="control-label">{{
+                              control.label
+                            }}</span>
                             <el-input
                               v-if="control.controlType === 'input'"
                               v-model="control.value"
                               :placeholder="control.placeholder"
                               style="flex: 1"
                             >
-                              <template #suffix v-if="control.suffix">{{ control.suffix }}</template>
+                              <template #suffix v-if="control.suffix">{{
+                                control.suffix
+                              }}</template>
                             </el-input>
                             <el-select
                               v-else-if="control.controlType === 'select'"
@@ -193,7 +248,7 @@
                               style="flex: 1"
                             >
                               <el-option
-                                v-for="(option, idx) in (control.options || [])"
+                                v-for="(option, idx) in control.options || []"
                                 :key="idx"
                                 :label="option"
                                 :value="option"
@@ -203,7 +258,9 @@
                         </div>
                       </div>
                       <div v-if="field.example" class="field-example">
-                        <el-tag type="info" size="small">示例：{{ field.example }}</el-tag>
+                        <el-tag type="info" size="small"
+                          >示例：{{ field.example }}</el-tag
+                        >
                       </div>
                     </div>
                   </div>
@@ -211,31 +268,45 @@
               </div>
             </el-tab-pane>
           </el-tabs>
-          <el-empty
-            v-else
-            :description="emptyDescription"
-          />
+          <el-empty v-else :description="emptyDescription" />
         </div>
 
         <!-- 右侧：参考区 -->
         <div v-if="showReference" class="reference-section">
           <div class="section-header">
             <h3>参考数据</h3>
-            <el-select v-model="referenceYear" placeholder="选择参考年份" clearable style="width: 140px">
+            <el-select
+              v-model="referenceYear"
+              placeholder="选择参考年份"
+              clearable
+              style="width: 140px"
+            >
               <el-option
-                v-for="yearConfig in formConfig.filter(y => y.year !== currentYear)"
+                v-for="yearConfig in formConfig.filter(
+                  y => y.year !== currentYear
+                )"
                 :key="yearConfig.year"
                 :label="yearConfig.year + ' 年'"
                 :value="yearConfig.year"
               />
             </el-select>
           </div>
-          
-          <div v-if="referenceYearConfig && activeTab" class="reference-content">
-            <h4 class="reference-tab-name">{{ referenceYearConfig.tabs.find(t => t.tabId === activeTab)?.tabName }}</h4>
+
+          <div
+            v-if="referenceYearConfig && activeTab"
+            class="reference-content"
+          >
+            <h4 class="reference-tab-name">
+              {{
+                referenceYearConfig.tabs.find(t => t.tabId === activeTab)
+                  ?.tabName
+              }}
+            </h4>
             <div class="cards-container">
               <div
-                v-for="card in (referenceYearConfig.tabs.find(t => t.tabId === activeTab)?.cards || [])"
+                v-for="card in referenceYearConfig.tabs.find(
+                  t => t.tabId === activeTab
+                )?.cards || []"
                 :key="card.cardId"
                 class="survey-card reference-card"
               >
@@ -244,17 +315,27 @@
                   <p v-if="card.cardDescription">{{ card.cardDescription }}</p>
                 </div>
                 <div class="card-fields">
-                  <div v-for="field in card.fields" :key="field.fieldId" class="field-item">
+                  <div
+                    v-for="field in card.fields"
+                    :key="field.fieldId"
+                    class="field-item"
+                  >
                     <div class="field-label">
                       <span>{{ field.label }}</span>
                     </div>
                     <div class="field-value reference-value">
                       <!-- 文本类型 -->
-                      <div v-if="field.type === 'text'" class="text-value">{{ field.value || '-' }}</div>
+                      <div v-if="field.type === 'text'" class="text-value">
+                        {{ field.value || "-" }}
+                      </div>
                       <!-- 文件类型 -->
                       <div v-else-if="field.type === 'file'" class="file-value">
                         <div v-if="field.fileList && field.fileList.length > 0">
-                          <div v-for="(file, idx) in field.fileList" :key="idx" class="file-item">
+                          <div
+                            v-for="(file, idx) in field.fileList"
+                            :key="idx"
+                            class="file-item"
+                          >
                             <el-icon><Document /></el-icon>
                             <span>{{ file.name }}</span>
                           </div>
@@ -262,10 +343,19 @@
                         <span v-else>-</span>
                       </div>
                       <!-- 混合类型 -->
-                      <div v-else-if="field.type === 'mixed'" class="mixed-controls">
-                        <div v-for="control in (field.controls || [])" :key="control.controlId" class="control-item">
+                      <div
+                        v-else-if="field.type === 'mixed'"
+                        class="mixed-controls"
+                      >
+                        <div
+                          v-for="control in field.controls || []"
+                          :key="control.controlId"
+                          class="control-item"
+                        >
                           <span class="control-label">{{ control.label }}</span>
-                          <span class="control-value">{{ control.value || '-' }}</span>
+                          <span class="control-value">{{
+                            control.value || "-"
+                          }}</span>
                         </div>
                       </div>
                     </div>
@@ -291,7 +381,11 @@
     custom-class="image-preview-dialog"
   >
     <div class="preview-container">
-      <img v-if="previewImageUrl" :src="previewImageUrl" class="preview-image" />
+      <img
+        v-if="previewImageUrl"
+        :src="previewImageUrl"
+        class="preview-image"
+      />
     </div>
   </el-dialog>
 </template>
@@ -337,10 +431,32 @@
  * - 所有ID统一转字符串匹配，避免数字/字符串类型不匹配问题
  */
 
-import { ref, computed, onMounted, watch, nextTick, getCurrentInstance } from "vue";
-import { Tickets, QuestionFilled, Document, DataAnalysis, Back, Upload, Delete, Download } from "@element-plus/icons-vue";
+import {
+  ref,
+  computed,
+  onMounted,
+  watch,
+  nextTick,
+  getCurrentInstance
+} from "vue";
+import {
+  Tickets,
+  QuestionFilled,
+  Document,
+  DataAnalysis,
+  Back,
+  Upload,
+  Delete,
+  Download
+} from "@element-plus/icons-vue";
 import { getEsgConfigList } from "@/api/esgConfig";
-import { updateEsgConfig, getEsgInfo, uploadEsgFile, getFileDownLoadPath, getEsgUserList } from "@/api/esg";
+import {
+  updateEsgConfig,
+  getEsgInfo,
+  uploadEsgFile,
+  getFileDownLoadPath,
+  getEsgUserList
+} from "@/api/esg";
 import { ElMessage, ElLoading, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 
@@ -379,7 +495,9 @@ const selectedUserId = ref("");
 // 当前用户名：优先使用选中的切换用户，否则用默认登录用户
 const username = computed(() => {
   if (selectedUserId.value && userList.value.length > 0) {
-    const user = userList.value.find(u => String(u.userId) === selectedUserId.value);
+    const user = userList.value.find(
+      u => String(u.userId) === selectedUserId.value
+    );
     return user?.fullName || defaultUsername.value;
   }
   return defaultUsername.value;
@@ -423,11 +541,11 @@ const scrollHandlerRef = ref(null);
 const instance = getCurrentInstance();
 
 // 根元素引用
-const rootRef = ref<HTMLElement | null>(null);
+const rootRef = (ref < HTMLElement) | (null > null);
 
 // 图片预览相关
 const previewDialogVisible = ref(false);
-const previewImageUrl = ref('');
+const previewImageUrl = ref("");
 
 // 当前年份配置
 const currentYearConfig = computed(() => {
@@ -465,7 +583,9 @@ const referenceYearConfig = computed(() => {
 });
 
 // 是否显示左侧进度条（与模板 v-if 条件一致）
-const showProgress = computed(() => !!(currentYearConfig.value && activeTab.value));
+const showProgress = computed(
+  () => !!(currentYearConfig.value && activeTab.value)
+);
 
 // 动态计算主内容区的网格列
 const gridColumns = computed(() => {
@@ -488,12 +608,12 @@ const getScrollContainer = () => {
 
   // 优先找 is-active，找不到就找第一个可见的
   for (let pane of tabPanes) {
-    if (pane.classList.contains('is-active')) {
+    if (pane.classList.contains("is-active")) {
       return pane;
     }
     // 检查display是否不是none
     const style = window.getComputedStyle(pane);
-    if (style.display !== 'none') {
+    if (style.display !== "none") {
       return pane;
     }
   }
@@ -630,13 +750,13 @@ const init = async () => {
 const resetCurrentYearConfig = () => {
   if (!currentYearConfig.value || !currentYearConfig.value.tabs) return;
 
-  currentYearConfig.value.tabs.forEach((configTab) => {
+  currentYearConfig.value.tabs.forEach(configTab => {
     if (!configTab.cards) return;
 
-    configTab.cards.forEach((configCard) => {
+    configTab.cards.forEach(configCard => {
       if (!configCard.fields) return;
 
-      configCard.fields.forEach((configField) => {
+      configCard.fields.forEach(configField => {
         // 重置value为空
         configField.value = "";
         // 重置文件列表为空
@@ -644,7 +764,10 @@ const resetCurrentYearConfig = () => {
           configField.fileList = [];
         }
         // 重置mixed类型控件值为空
-        if (configField.type === "mixed" && Array.isArray(configField.controls)) {
+        if (
+          configField.type === "mixed" &&
+          Array.isArray(configField.controls)
+        ) {
           configField.controls.forEach(control => {
             control.value = "";
           });
@@ -671,10 +794,12 @@ const loadSavedData = async () => {
     const res = await getEsgInfo(params);
     if (res.success && Array.isArray(res.data) && res.data.length > 0) {
       // 找到当前用户当前年份的数据（取第一个匹配项）
-      const savedItem = res.data.find(item =>
-        item.userId === currentUserId.value &&
-        String(item.type) === currentYear.value
-      ) || res.data[0];
+      const savedItem =
+        res.data.find(
+          item =>
+            item.userId === currentUserId.value &&
+            String(item.type) === currentYear.value
+        ) || res.data[0];
 
       if (!savedItem.content) {
         console.log("未找到保存的内容");
@@ -684,9 +809,10 @@ const loadSavedData = async () => {
       // 解析已保存的内容
       let savedContent;
       try {
-        savedContent = typeof savedItem.content === 'string'
-          ? JSON.parse(savedItem.content)
-          : savedItem.content;
+        savedContent =
+          typeof savedItem.content === "string"
+            ? JSON.parse(savedItem.content)
+            : savedItem.content;
       } catch (e) {
         console.error("解析已保存内容失败", e);
         return;
@@ -696,19 +822,25 @@ const loadSavedData = async () => {
       if (!savedContent || !savedContent.tabs) return;
 
       // 优先根据配置渲染，再用已保存的数据填充，匹配不到就不修改
-      currentYearConfig.value.tabs.forEach((configTab) => {
+      currentYearConfig.value.tabs.forEach(configTab => {
         // 匹配tab
-        const savedTab = savedContent.tabs.find(t => t.tabId === configTab.tabId);
+        const savedTab = savedContent.tabs.find(
+          t => t.tabId === configTab.tabId
+        );
         if (!savedTab || !savedTab.cards) return;
 
-        savedTab.cards.forEach((savedCard) => {
+        savedTab.cards.forEach(savedCard => {
           // 匹配card
-          const configCard = configTab.cards.find(c => c.cardId === savedCard.cardId);
+          const configCard = configTab.cards.find(
+            c => c.cardId === savedCard.cardId
+          );
           if (!configCard || !savedCard.fields) return;
 
-          savedCard.fields.forEach((savedField) => {
+          savedCard.fields.forEach(savedField => {
             // 匹配field
-            const configField = configCard.fields.find(f => f.fieldId === savedField.fieldId);
+            const configField = configCard.fields.find(
+              f => f.fieldId === savedField.fieldId
+            );
             if (!configField) return;
 
             // 回填value
@@ -716,13 +848,19 @@ const loadSavedData = async () => {
               configField.value = savedField.value;
             }
             // 回填fileList
-            if (savedField.type === 'file' && savedField.fileList) {
+            if (savedField.type === "file" && savedField.fileList) {
               configField.fileList = savedField.fileList;
             }
             // 回填mixed类型的controls
-            if (savedField.type === 'mixed' && savedField.controls && Array.isArray(configField.controls)) {
-              savedField.controls.forEach((savedControl) => {
-                const configControl = configField.controls.find(c => c.controlId === savedControl.controlId);
+            if (
+              savedField.type === "mixed" &&
+              savedField.controls &&
+              Array.isArray(configField.controls)
+            ) {
+              savedField.controls.forEach(savedControl => {
+                const configControl = configField.controls.find(
+                  c => c.controlId === savedControl.controlId
+                );
                 if (configControl && savedControl.value !== undefined) {
                   configControl.value = savedControl.value;
                 }
@@ -744,7 +882,6 @@ const loadSavedData = async () => {
 onMounted(() => {
   init();
 });
-
 
 // 切换参考数据栏的显示/隐藏
 const toggleReference = () => {
@@ -864,18 +1001,18 @@ const handleSaveData = async () => {
 };
 
 // 文件上传前检查
-const beforeUpload = (file) => {
+const beforeUpload = file => {
   // 限制文件大小不能超过 100MB
   const isLt100M = file.size / 1024 / 1024 < 100;
   if (!isLt100M) {
-    ElMessage.error('文件大小不能超过 100MB');
+    ElMessage.error("文件大小不能超过 100MB");
     return false;
   }
   return true;
 };
 
 // 文件选择变化处理
-const handleFileChange = (fileList) => {
+const handleFileChange = fileList => {
   // 文件选择变化时不需要额外处理，v-model:file-list已经自动更新
 };
 
@@ -886,36 +1023,35 @@ const handleFileUpload = async (options, field) => {
 
   // 自定义文件名：填写人姓名_原文件名_唯一标识符.后缀
   // 拆分原文件名和扩展名
-  const lastDotIndex = file.name.lastIndexOf('.');
-  const originalName = lastDotIndex > 0
-    ? file.name.slice(0, lastDotIndex)
-    : file.name;
-  const ext = lastDotIndex > 0
-    ? file.name.slice(lastDotIndex)
-    : '';
+  const lastDotIndex = file.name.lastIndexOf(".");
+  const originalName =
+    lastDotIndex > 0 ? file.name.slice(0, lastDotIndex) : file.name;
+  const ext = lastDotIndex > 0 ? file.name.slice(lastDotIndex) : "";
   // 唯一标识符：时间戳后6位 + 2位随机数，兼顾简短和唯一性
   const timestamp = Date.now().toString().slice(-6);
-  const randomNum = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+  const randomNum = Math.floor(Math.random() * 100)
+    .toString()
+    .padStart(2, "0");
   const uniqueId = `${timestamp}_${randomNum}`;
   // 构造新文件名
   const newFileName = `${username.value}_${originalName}_${uniqueId}${ext}`;
 
   // 使用新文件名创建新的 File 对象
   const renamedFile = new File([file], newFileName, { type: file.type });
-  formData.append('file', renamedFile);
+  formData.append("file", renamedFile);
 
   const loading = ElLoading.service({
     lock: true,
-    text: '上传中...',
-    background: 'rgba(255, 255, 255, 0.8)'
+    text: "上传中...",
+    background: "rgba(255, 255, 255, 0.8)"
   });
 
   try {
     const res = await uploadEsgFile(formData);
     if (res.success && res.data) {
       // 移除el-upload自动添加的原始文件（因为我们已经自定义列表，避免重复）
-      const rawIndex = field.fileList.findIndex(item =>
-        item.name === file.name && item.status === 'ready'
+      const rawIndex = field.fileList.findIndex(
+        item => item.name === file.name && item.status === "ready"
       );
       if (rawIndex !== -1) {
         field.fileList.splice(rawIndex, 1);
@@ -925,51 +1061,49 @@ const handleFileUpload = async (options, field) => {
       const fileInfo = {
         name: newFileName,
         url: res.data, // 保存返回的相对路径
-        status: 'success'
+        status: "success"
       };
       // 添加处理后的文件信息
       field.fileList.push(fileInfo);
       ElMessage.success(`${file.name} 上传成功`);
     } else {
       // 上传失败也要移除自动添加的文件
-      const rawIndex = field.fileList.findIndex(item =>
-        item.name === file.name && item.status === 'ready'
+      const rawIndex = field.fileList.findIndex(
+        item => item.name === file.name && item.status === "ready"
       );
       if (rawIndex !== -1) {
         field.fileList.splice(rawIndex, 1);
       }
-      ElMessage.error(res.msg || '上传失败，请重试');
+      ElMessage.error(res.msg || "上传失败，请重试");
     }
   } catch (error) {
-    console.error('上传文件失败', error);
+    console.error("上传文件失败", error);
     // 上传失败也要移除自动添加的文件
-    const rawIndex = field.fileList.findIndex(item =>
-      item.name === file.name && item.status === 'ready'
+    const rawIndex = field.fileList.findIndex(
+      item => item.name === file.name && item.status === "ready"
     );
     if (rawIndex !== -1) {
       field.fileList.splice(rawIndex, 1);
     }
-    ElMessage.error('上传失败，请检查网络连接后重试');
+    ElMessage.error("上传失败，请检查网络连接后重试");
   } finally {
     loading.close();
   }
 };
 
 // 处理文件预览
-const handleFilePreview = async (file) => {
+const handleFilePreview = async file => {
   if (!file.url) {
-    ElMessage.error('文件路径不存在');
+    ElMessage.error("文件路径不存在");
     return;
   }
 
   // 判断是否是图片格式
-  const imageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
-  const isImage = imageExts.some(ext =>
-    file.name.toLowerCase().endsWith(ext)
-  );
+  const imageExts = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
+  const isImage = imageExts.some(ext => file.name.toLowerCase().endsWith(ext));
 
   if (!isImage) {
-    ElMessage.info('该文件类型不支持预览，请点击下载按钮下载查看');
+    ElMessage.info("该文件类型不支持预览，请点击下载按钮下载查看");
     return;
   }
 
@@ -981,18 +1115,18 @@ const handleFilePreview = async (file) => {
       previewImageUrl.value = res.data;
       previewDialogVisible.value = true;
     } else {
-      ElMessage.error(res.msg || '获取预览链接失败');
+      ElMessage.error(res.msg || "获取预览链接失败");
     }
   } catch (error) {
-    console.error('获取预览链接失败', error);
-    ElMessage.error('获取预览链接失败，请重试');
+    console.error("获取预览链接失败", error);
+    ElMessage.error("获取预览链接失败，请重试");
   }
 };
 
 // 处理文件下载
-const handleFileDownload = async (file) => {
+const handleFileDownload = async file => {
   if (!file.url) {
-    ElMessage.error('文件路径不存在');
+    ElMessage.error("文件路径不存在");
     return;
   }
 
@@ -1002,13 +1136,13 @@ const handleFileDownload = async (file) => {
     });
     if (res.success && res.data) {
       // 新窗口打开下载链接
-      window.open(res.data, '_blank');
+      window.open(res.data, "_blank");
     } else {
-      ElMessage.error(res.msg || '获取下载链接失败');
+      ElMessage.error(res.msg || "获取下载链接失败");
     }
   } catch (error) {
-    console.error('获取下载链接失败', error);
-    ElMessage.error('获取下载链接失败，请重试');
+    console.error("获取下载链接失败", error);
+    ElMessage.error("获取下载链接失败，请重试");
   }
 };
 
@@ -1016,16 +1150,16 @@ const handleFileDownload = async (file) => {
 const removeFile = async (field, index) => {
   try {
     await ElMessageBox.confirm(
-      '确定要删除该文件吗？删除后无法恢复',
-      '删除确认',
+      "确定要删除该文件吗？删除后无法恢复",
+      "删除确认",
       {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
-        type: 'warning'
+        confirmButtonText: "确定删除",
+        cancelButtonText: "取消",
+        type: "warning"
       }
     );
     field.fileList.splice(index, 1);
-    ElMessage.success('文件已删除');
+    ElMessage.success("文件已删除");
   } catch {
     // 用户取消删除，不操作
   }
@@ -1052,7 +1186,7 @@ const handleUserChange = async () => {
 };
 
 // 年份变化处理（切换前确认：已有选中年份时提示未保存数据会丢失）
-const handleYearChange = async (newYear) => {
+const handleYearChange = async newYear => {
   const oldYear = currentYear.value;
   // 如果已经选中了年份，切换时提醒用户
   if (currentYear.value) {
@@ -1141,10 +1275,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+
 // 主题色变量（与 config 页面保持一致）
-$primary-color: #4268F9;
-$success-color: #36D399;
-$warning-color: #F59E0B;
+$primary-color: #4268f9;
+$success-color: #36d399;
+$warning-color: #f59e0b;
 $danger-color: #f56c6c;
 $border-color: #e4e7ed;
 $border-light: #ebeef5;
@@ -1153,60 +1288,66 @@ $text-color: #1f2937;
 $text-secondary: #6b7280;
 $text-placeholder: #9ca3af;
 
+@use "sass:color";
+
 .esg-survey {
+  box-sizing: border-box;
+  width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding-top: 24px;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-               "Helvetica Neue", Arial,
-               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑",
-               "Source Han Sans CN", "Noto Sans CJK SC", sans-serif;
+    "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", "Source Han Sans CN", "Noto Sans CJK SC",
+    sans-serif;
   font-size: 14px;
+  font-feature-settings:
+    "tnum" on,
+    "lnum" on;
   line-height: 1.6;
   letter-spacing: 0.01em;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: "tnum" on, "lnum" on;
-  padding-top: 24px;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
+  text-rendering: optimizelegibility;
 
   // 页面头部
   .page-header {
-    background: #fff;
-    padding: 24px 32px;
-    border-radius: 16px;
-    margin: 0 24px 24px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    width: calc(100% - 48px);
     box-sizing: border-box;
+    width: calc(100% - 48px);
+    padding: 24px 32px;
+    margin: 0 24px 24px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 5%),
+      0 2px 4px -1px rgb(0 0 0 / 3%);
   }
 
   .header-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     flex-wrap: wrap;
     gap: 16px;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .header-title {
     display: flex;
-    align-items: center;
     gap: 16px;
+    align-items: center;
   }
 
   .title-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, $primary-color 0%, #7c3aed 100%);
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 56px;
+    height: 56px;
     color: #fff;
-    box-shadow: 0 8px 16px -4px rgba(66, 104, 249, 0.3);
+    background: linear-gradient(135deg, $primary-color 0%, #7c3aed 100%);
+    border-radius: 14px;
+    box-shadow: 0 8px 16px -4px rgb(66 104 249 / 30%);
   }
 
   .title-text {
@@ -1214,12 +1355,12 @@ $text-placeholder: #9ca3af;
       margin: 0;
       font-size: 26px;
       font-weight: 700;
-      color: $text-color;
       line-height: 1.3;
+      color: $text-color;
     }
 
     p {
-      margin: 4px 0 0 0;
+      margin: 4px 0 0;
       font-size: 14px;
       color: $text-secondary;
     }
@@ -1227,34 +1368,34 @@ $text-placeholder: #9ca3af;
 
   .year-selector {
     display: flex;
-    align-items: center;
     gap: 12px;
+    align-items: center;
 
     .label {
       font-size: 14px;
-      color: $text-color;
       font-weight: 500;
+      color: $text-color;
     }
 
     .user-switcher {
       display: flex;
-      align-items: center;
       gap: 8px;
+      align-items: center;
 
       .label {
         font-size: 14px;
-        color: $text-color;
         font-weight: 500;
+        color: $text-color;
       }
     }
 
     .user-info {
       display: inline-flex;
-      align-items: center;
       gap: 8px;
+      align-items: center;
       padding: 4px 14px 4px 4px;
-      background: rgba(66, 104, 249, 0.08);
-      border: 1px solid rgba(66, 104, 249, 0.2);
+      background: rgb(66 104 249 / 8%);
+      border: 1px solid rgb(66 104 249 / 20%);
       border-radius: 20px;
 
       .user-avatar {
@@ -1291,29 +1432,29 @@ $text-placeholder: #9ca3af;
 
   // 主内容区
   .main-content {
-    padding: 0 24px 24px;
-    width: 100%;
     box-sizing: border-box;
+    width: 100%;
+    padding: 0 24px 24px;
   }
 
   .content-wrapper {
+    box-sizing: border-box;
     display: grid;
     gap: 24px;
-    height: calc(100vh - 200px);
     width: 100%;
-    box-sizing: border-box;
+    height: calc(100vh - 200px);
     overflow-x: hidden;
     transition: grid-template-columns 0.3s ease;
   }
 
   // 进度条区域
   .progress-section {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
     padding: 24px 16px;
     overflow-y: auto;
-    flex-shrink: 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 5%);
 
     .progress-bar-wrapper {
       display: flex;
@@ -1326,51 +1467,51 @@ $text-placeholder: #9ca3af;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      cursor: pointer;
       padding: 8px 0 8px 24px;
+      cursor: pointer;
       transition: all 0.2s;
 
       .progress-dot {
         position: absolute;
-        left: 0;
         top: 12px;
+        left: 0;
+        z-index: 1;
         width: 12px;
         height: 12px;
-        border-radius: 50%;
         background: $border-color;
+        border-radius: 50%;
         transition: all 0.2s;
-        z-index: 1;
       }
 
       .progress-line {
         position: absolute;
-        left: 5px;
         top: 24px;
+        left: 5px;
+        z-index: 0;
         width: 2px;
         height: calc(100% - 16px);
         background: $border-color;
-        z-index: 0;
       }
 
       .progress-label {
         font-size: 13px;
-        color: $text-secondary;
         line-height: 1.5;
-        transition: all 0.2s;
-        overflow-wrap: break-word;
+        color: $text-secondary;
         word-break: break-word;
+        overflow-wrap: break-word;
+        transition: all 0.2s;
       }
 
       &.active {
         .progress-dot {
           background: $primary-color;
+          box-shadow: 0 0 0 4px rgb(66 104 249 / 15%);
           transform: scale(1.2);
-          box-shadow: 0 0 0 4px rgba(66, 104, 249, 0.15);
         }
 
         .progress-label {
-          color: $primary-color;
           font-weight: 600;
+          color: $primary-color;
         }
       }
 
@@ -1387,31 +1528,32 @@ $text-placeholder: #9ca3af;
   }
 
   // 通用区域样式
-  .fill-section, .reference-section {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    padding: 24px;
+  .fill-section,
+  .reference-section {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     width: 100%;
-    box-sizing: border-box;
+    padding: 24px;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 5%);
   }
 
   .section-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
     flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
 
     h3 {
+      padding-left: 12px;
       margin: 0;
       font-size: 18px;
       font-weight: 600;
       color: $text-color;
-      padding-left: 12px;
       border-left: 4px solid $primary-color;
     }
   }
@@ -1419,8 +1561,8 @@ $text-placeholder: #9ca3af;
   // 填报区样式
   .fill-section {
     .survey-tabs {
-      flex: 1;
       display: flex;
+      flex: 1;
       flex-direction: column;
       overflow: hidden;
 
@@ -1431,8 +1573,8 @@ $text-placeholder: #9ca3af;
 
       :deep(.el-tab-pane) {
         height: 100%;
-        overflow-y: auto;
         padding-right: 8px;
+        overflow-y: auto;
       }
     }
   }
@@ -1440,18 +1582,18 @@ $text-placeholder: #9ca3af;
   // 参考区样式
   .reference-section {
     .reference-tab-name {
+      padding-bottom: 12px;
+      margin-bottom: 16px;
       font-size: 16px;
       font-weight: 600;
       color: $text-color;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
       border-bottom: 1px solid $border-light;
     }
 
     .reference-content {
       flex: 1;
-      overflow-y: auto;
       padding-right: 8px;
+      overflow-y: auto;
     }
   }
 
@@ -1464,40 +1606,40 @@ $text-placeholder: #9ca3af;
 
   // 卡片样式
   .survey-card {
+    padding: 20px;
     background: #fff;
     border: 1px solid $border-light;
     border-radius: 12px;
-    padding: 20px;
     transition: all 0.2s;
 
     &:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 12px rgb(0 0 0 / 5%);
     }
 
     .card-title {
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid $border-light;
-      width: 100%;
       box-sizing: border-box;
+      width: 100%;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
       overflow: hidden;
+      border-bottom: 1px solid $border-light;
 
       h4 {
         margin: 0;
+        margin-bottom: 6px;
         font-size: 16px;
         font-weight: 600;
         color: $text-color;
-        margin-bottom: 6px;
-        overflow-wrap: break-word;
         word-break: break-word;
+        overflow-wrap: break-word;
       }
 
       p {
         margin: 0;
         font-size: 13px;
         color: $text-secondary;
-        overflow-wrap: break-word;
         word-break: break-word;
+        overflow-wrap: break-word;
       }
     }
 
@@ -1515,11 +1657,11 @@ $text-placeholder: #9ca3af;
 
   // 字段项
   .field-item {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    box-sizing: border-box;
     overflow: hidden;
 
     .uploaded-files {
@@ -1534,15 +1676,15 @@ $text-placeholder: #9ca3af;
         border-radius: 4px;
 
         .el-icon {
-          color: $text-secondary;
           margin-right: 6px;
+          color: $text-secondary;
         }
 
         .file-link {
           flex: 1;
           color: $primary-color;
-          cursor: pointer;
           text-decoration: none;
+          cursor: pointer;
 
           &:hover {
             text-decoration: underline;
@@ -1550,21 +1692,21 @@ $text-placeholder: #9ca3af;
         }
 
         .download-icon {
-          cursor: pointer;
-          color: $primary-color;
           margin-right: 8px;
+          color: $primary-color;
+          cursor: pointer;
 
           &:hover {
-            color: darken($primary-color, 10%);
+            color: color.adjust($primary-color, $lightness: -10%);
           }
         }
 
         .delete-icon {
-          cursor: pointer;
           color: $danger-color;
+          cursor: pointer;
 
           &:hover {
-            color: darken($danger-color, 10%);
+            color: color.adjust($danger-color, $lightness: -10%);
           }
         }
       }
@@ -1581,57 +1723,57 @@ $text-placeholder: #9ca3af;
   }
 
   .preview-container {
-    text-align: center;
-    background: #1a1a1a;
-    border-radius: 8px;
-    padding: 10px;
-    min-height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 100px;
+    padding: 10px;
+    text-align: center;
+    background: #1a1a1a;
+    border-radius: 8px;
   }
 
   .preview-image {
+    display: block;
     max-width: 100%;
     max-height: 75vh;
-    display: block;
     margin: 0 auto;
   }
 
   .field-label {
+    box-sizing: border-box;
     display: flex;
-    align-items: center;
     gap: 6px;
+    align-items: center;
+    width: 100%;
     font-size: 14px;
     font-weight: 500;
     color: $text-color;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
     word-break: break-word;
+    overflow-wrap: break-word;
 
     .desc-icon {
-      color: $text-placeholder;
-      font-size: 14px;
-      cursor: help;
       flex-shrink: 0;
+      font-size: 14px;
+      color: $text-placeholder;
+      cursor: help;
     }
   }
 
   .field-example {
-    font-size: 12px;
-    width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
+    width: 100%;
     padding-top: 4px;
+    overflow: hidden;
+    font-size: 12px;
 
     :deep(.el-tag) {
       max-width: 100%;
-      white-space: normal;
-      word-break: break-word;
-      line-height: 1.6;
-      padding: 6px 10px;
       height: auto;
+      padding: 6px 10px;
+      line-height: 1.6;
+      word-break: break-word;
+      white-space: normal;
     }
   }
 
@@ -1645,8 +1787,8 @@ $text-placeholder: #9ca3af;
 
   .control-item {
     display: flex;
-    align-items: center;
     gap: 12px;
+    align-items: center;
     width: 100%;
 
     .control-label {
@@ -1658,43 +1800,43 @@ $text-placeholder: #9ca3af;
 
   // 参考值样式
   .reference-value {
-    width: 100%;
     box-sizing: border-box;
+    width: 100%;
 
     .text-value {
-      padding: 10px 12px;
-      background: #fff;
-      border-radius: 8px;
-      border: 1px solid $border-light;
-      color: $text-color;
+      box-sizing: border-box;
+      width: 100%;
       min-height: 60px;
+      padding: 10px 12px;
+      color: $text-color;
       word-break: break-word;
       overflow-wrap: break-word;
-      width: 100%;
-      box-sizing: border-box;
+      background: #fff;
+      border: 1px solid $border-light;
+      border-radius: 8px;
     }
 
     .file-value {
       .file-item {
         display: flex;
-        align-items: center;
         gap: 8px;
+        align-items: center;
         padding: 8px 12px;
+        margin-bottom: 8px;
+        font-size: 13px;
+        color: $text-secondary;
         background: #fff;
         border-radius: 6px;
-        margin-bottom: 8px;
-        color: $text-secondary;
-        font-size: 13px;
       }
     }
 
     .control-value {
       flex: 1;
       padding: 8px 12px;
+      font-size: 14px;
+      color: $text-color;
       background: #fff;
       border-radius: 6px;
-      color: $text-color;
-      font-size: 14px;
     }
   }
 }
