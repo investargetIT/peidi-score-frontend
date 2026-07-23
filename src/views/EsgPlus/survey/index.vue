@@ -292,77 +292,86 @@
             </el-select>
           </div>
 
-          <div
-            v-if="referenceYearConfig && activeTab"
-            class="reference-content"
-          >
-            <h4 class="reference-tab-name">
-              {{
-                referenceYearConfig.tabs.find(t => t.tabId === activeTab)
-                  ?.tabName
-              }}
-            </h4>
-            <div class="cards-container">
-              <div
-                v-for="card in referenceYearConfig.tabs.find(
-                  t => t.tabId === activeTab
-                )?.cards || []"
-                :key="card.cardId"
-                class="survey-card reference-card"
+          <div v-if="referenceYearConfig" class="reference-content">
+            <!-- 参考区自己的TAB切换，和填报区无关，用户自由切换想看的TAB -->
+            <el-tabs v-model="referenceActiveTab" class="survey-tabs">
+              <el-tab-pane
+                v-for="tab in referenceYearConfig.tabs"
+                :key="tab.tabId"
+                :label="tab.tabName"
+                :name="tab.tabId"
               >
-                <div class="card-title">
-                  <h4>{{ card.cardName }}</h4>
-                  <p v-if="card.cardDescription">{{ card.cardDescription }}</p>
-                </div>
-                <div class="card-fields">
+                <!-- 卡片列表 -->
+                <div class="cards-container">
                   <div
-                    v-for="field in card.fields"
-                    :key="field.fieldId"
-                    class="field-item"
+                    v-for="card in tab.cards"
+                    :key="card.cardId"
+                    class="survey-card reference-card"
                   >
-                    <div class="field-label">
-                      <span>{{ field.label }}</span>
+                    <div class="card-title">
+                      <h4>{{ card.cardName }}</h4>
+                      <p v-if="card.cardDescription">
+                        {{ card.cardDescription }}
+                      </p>
                     </div>
-                    <div class="field-value reference-value">
-                      <!-- 文本类型 -->
-                      <div v-if="field.type === 'text'" class="text-value">
-                        {{ field.value || "-" }}
-                      </div>
-                      <!-- 文件类型 -->
-                      <div v-else-if="field.type === 'file'" class="file-value">
-                        <div v-if="field.fileList && field.fileList.length > 0">
-                          <div
-                            v-for="(file, idx) in field.fileList"
-                            :key="idx"
-                            class="file-item"
-                          >
-                            <el-icon><Document /></el-icon>
-                            <span>{{ file.name }}</span>
-                          </div>
-                        </div>
-                        <span v-else>-</span>
-                      </div>
-                      <!-- 混合类型 -->
+                    <div class="card-fields">
                       <div
-                        v-else-if="field.type === 'mixed'"
-                        class="mixed-controls"
+                        v-for="field in card.fields"
+                        :key="field.fieldId"
+                        class="field-item"
                       >
-                        <div
-                          v-for="control in field.controls || []"
-                          :key="control.controlId"
-                          class="control-item"
-                        >
-                          <span class="control-label">{{ control.label }}</span>
-                          <span class="control-value">{{
-                            control.value || "-"
-                          }}</span>
+                        <div class="field-label">
+                          <span>{{ field.label }}</span>
+                        </div>
+                        <div class="field-value reference-value">
+                          <!-- 文本类型 -->
+                          <div v-if="field.type === 'text'" class="text-value">
+                            {{ field.value || "-" }}
+                          </div>
+                          <!-- 文件类型 -->
+                          <div
+                            v-else-if="field.type === 'file'"
+                            class="file-value"
+                          >
+                            <div
+                              v-if="field.fileList && field.fileList.length > 0"
+                            >
+                              <div
+                                v-for="(file, idx) in field.fileList"
+                                :key="idx"
+                                class="file-item"
+                              >
+                                <el-icon><Document /></el-icon>
+                                <span>{{ file.name }}</span>
+                              </div>
+                            </div>
+                            <span v-else>-</span>
+                          </div>
+                          <!-- 混合类型 -->
+                          <div
+                            v-else-if="field.type === 'mixed'"
+                            class="mixed-controls"
+                          >
+                            <div
+                              v-for="control in field.controls || []"
+                              :key="control.controlId"
+                              class="control-item"
+                            >
+                              <span class="control-label">{{
+                                control.label
+                              }}</span>
+                              <span class="control-value">{{
+                                control.value || "-"
+                              }}</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </el-tab-pane>
+            </el-tabs>
           </div>
           <el-empty v-else description="请选择参考年份" />
         </div>
@@ -527,6 +536,8 @@ const formConfig = ref([]);
 const currentYear = ref("");
 // 参考年份
 const referenceYear = ref("");
+// 参考区域当前激活的TAB（参考区自己独立切换）
+const referenceActiveTab = ref("");
 // 是否显示参考数据栏（默认关闭，用的时候再打开）
 const showReference = ref(false);
 // 当前激活的 TAB
@@ -577,10 +588,221 @@ const emptyDescription = computed(() => {
   return "当前账号暂无可填报的模块，请联系管理员分配填写人";
 });
 
-// 参考年份配置
-const referenceYearConfig = computed(() => {
-  return formConfig.value.find(y => y.year === referenceYear.value);
+// 参考年份配置（存储深度克隆后的配置，回填已保存数据）
+const referenceYearConfig = ref(null);
+
+// 监听参考年份变化，加载对应数据
+watch(referenceYear, async () => {
+  if (referenceYear.value) {
+    await loadReferenceData();
+  } else {
+    referenceYearConfig.value = null;
+    referenceActiveTab.value = "";
+  }
 });
+
+// activeTab变化时，不需要重新加载，但确保模板能正确渲染
+// 因为参考数据依赖当前激活的TAB显示对应内容
+watch(activeTab, () => {
+  console.log(
+    `参考数据：activeTab 变化为 ${activeTab.value}，当前referenceYearConfig存在=${!!referenceYearConfig.value}`
+  );
+});
+
+// 深度克隆配置对象（避免污染原配置）
+function deepCloneConfig(sourceConfig) {
+  if (!sourceConfig) return null;
+  return JSON.parse(JSON.stringify(sourceConfig));
+}
+
+// 加载参考年份的已保存数据
+const loadReferenceData = async () => {
+  if (!referenceYear.value || !currentUserId.value) {
+    referenceYearConfig.value = null;
+    console.log("参考数据：年份或userId为空，跳过加载");
+    return;
+  }
+
+  console.log(
+    `参考数据：开始加载 ${referenceYear.value} 年，用户ID: ${currentUserId.value}`
+  );
+
+  try {
+    // 先克隆原始配置结构
+    const sourceConfig = formConfig.value.find(
+      y => y.year === referenceYear.value
+    );
+    if (!sourceConfig) {
+      referenceYearConfig.value = null;
+      console.log("参考数据：formConfig中未找到该年份配置");
+      return;
+    }
+    // 克隆到临时变量，填充完成后一次性赋值（确保响应式一次触发）
+    const clonedConfig = deepCloneConfig(sourceConfig);
+    console.log(
+      `参考数据：克隆配置完成，共有 ${clonedConfig.tabs.length} 个TAB`
+    );
+
+    // 从后端加载已保存数据
+    const params = {
+      type: referenceYear.value,
+      userId: currentUserId.value,
+      year: referenceYear.value
+    };
+    console.log("参考数据：请求参数", params);
+
+    const res = await getEsgInfo(params);
+    console.log("参考数据：接口返回", res);
+
+    if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+      console.log(`参考数据：接口返回共 ${res.data.length} 条记录`);
+
+      // 找到对应用户对应年份的数据
+      const savedItem =
+        res.data.find(
+          item =>
+            item.userId === currentUserId.value &&
+            String(item.type) === referenceYear.value
+        ) || res.data[0];
+
+      console.log("参考数据：找到的保存项", savedItem);
+
+      if (!savedItem.content) {
+        console.log("参考数据：未找到保存的内容（content为空）");
+        referenceYearConfig.value = clonedConfig;
+        return;
+      }
+
+      // 解析已保存的内容
+      let savedContent;
+      try {
+        savedContent =
+          typeof savedItem.content === "string"
+            ? JSON.parse(savedItem.content)
+            : savedItem.content;
+      } catch (e) {
+        console.error("解析参考年份内容失败", e);
+        referenceYearConfig.value = clonedConfig;
+        return;
+      }
+
+      console.log("参考数据：解析后内容", savedContent);
+
+      if (!savedContent || !savedContent.tabs) {
+        console.log("参考数据：解析后无tabs数据");
+        referenceYearConfig.value = clonedConfig;
+        return;
+      }
+
+      console.log(
+        `参考数据：解析后共有 ${savedContent.tabs.length} 个保存的TAB`
+      );
+
+      // 用已保存的数据填充克隆的配置
+      let filledTabs = 0;
+      let filledCards = 0;
+      let filledFields = 0;
+
+      clonedConfig.tabs.forEach(configTab => {
+        const savedTab = savedContent.tabs.find(
+          t => t.tabId === configTab.tabId
+        );
+        if (!savedTab || !savedTab.cards) {
+          console.log(
+            `参考数据：TAB ${configTab.tabId}(${configTab.tabName}) 在保存数据中未找到，跳过`
+          );
+          return;
+        }
+
+        filledTabs++;
+        console.log(
+          `参考数据：填充TAB ${configTab.tabId}(${configTab.tabName})，共有 ${savedTab.cards.length} 个卡片`
+        );
+
+        savedTab.cards.forEach(savedCard => {
+          const configCard = configTab.cards.find(
+            c => c.cardId === savedCard.cardId
+          );
+          if (!configCard || !savedCard.fields) return;
+
+          filledCards++;
+          console.log(
+            `参考数据：填充卡片 ${savedCard.cardId}(${savedCard.cardName})，共有 ${savedCard.fields.length} 个字段`
+          );
+
+          savedCard.fields.forEach(savedField => {
+            const configField = configCard.fields.find(
+              f => f.fieldId === savedField.fieldId
+            );
+            if (!configField) return;
+
+            filledFields++;
+            // 回填value
+            if (savedField.value !== undefined) {
+              configField.value = savedField.value;
+              console.log(
+                `  字段 ${savedField.fieldId}(${savedField.label}): 回填值="${savedField.value}"`
+              );
+            }
+            // 回填fileList
+            if (savedField.type === "file" && savedField.fileList) {
+              configField.fileList = savedField.fileList;
+              console.log(
+                `  字段 ${savedField.fieldId}(${savedField.label}): 回填文件列表，共${savedField.fileList.length}个文件`
+              );
+            }
+            // 回填mixed类型的controls
+            if (
+              savedField.type === "mixed" &&
+              savedField.controls &&
+              Array.isArray(configField.controls)
+            ) {
+              savedField.controls.forEach(savedControl => {
+                const configControl = configField.controls.find(
+                  c => c.controlId === savedControl.controlId
+                );
+                if (configControl && savedControl.value !== undefined) {
+                  configControl.value = savedControl.value;
+                  console.log(
+                    `    mixed控件 ${savedControl.controlId}(${savedControl.label}): 回填值="${savedControl.value}"`
+                  );
+                }
+              });
+            }
+          });
+        });
+      });
+
+      console.log(
+        `参考数据 ${referenceYear.value} 加载完成，共填充 ${filledTabs} TAB / ${filledCards} 卡片 / ${filledFields} 字段`
+      );
+      console.log("最终赋值给referenceYearConfig:", clonedConfig);
+
+      // 填充完成后一次性赋值，触发响应式更新
+      referenceYearConfig.value = clonedConfig;
+      // 默认选中第一个TAB
+      if (clonedConfig.tabs && clonedConfig.tabs.length > 0) {
+        referenceActiveTab.value = clonedConfig.tabs[0].tabId;
+      }
+      console.log(
+        "赋值后referenceYearConfig.value:",
+        referenceYearConfig.value
+      );
+      console.log("默认选中参考TAB:", referenceActiveTab.value);
+    } else {
+      console.log("参考数据：接口返回数据为空或格式不正确", res);
+      referenceYearConfig.value = clonedConfig;
+      console.log("使用空克隆配置赋值");
+    }
+  } catch (error) {
+    console.error("加载参考数据失败", error);
+    const fallbackConfig = deepCloneConfig(
+      formConfig.value.find(y => y.year === referenceYear.value)
+    );
+    referenceYearConfig.value = fallbackConfig;
+    console.log("加载失败，使用回退配置赋值");
+  }
+};
 
 // 是否显示左侧进度条（与模板 v-if 条件一致）
 const showProgress = computed(
@@ -1174,6 +1396,10 @@ const handleUserChange = async () => {
       resetCurrentYearConfig();
       // 加载新用户已保存数据
       await loadSavedData();
+      // 重新加载参考数据（用户变了，参考数据也要变）
+      if (referenceYear.value) {
+        await loadReferenceData();
+      }
     }
     // 重新选中第一个可填报TAB
     if (visibleTabs.value.length > 0) {
@@ -1216,11 +1442,10 @@ const handleYearChange = async newYear => {
   } else {
     activeTab.value = "";
   }
-  // 若参考年份与新选的填报年份相同，重新选一个不同的年份
-  if (referenceYear.value === currentYear.value) {
-    const other = formConfig.value.find(y => y.year !== currentYear.value);
-    referenceYear.value = other ? other.year : "";
-  }
+  // 切换填报年份后，清空参考年份
+  referenceYear.value = "";
+  referenceYearConfig.value = null;
+  referenceActiveTab.value = "";
 
   // 加载新选年份的已保存数据
   nextTick(async () => {
@@ -1275,7 +1500,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-
 // 主题色变量（与 config 页面保持一致）
 $primary-color: #4268f9;
 $success-color: #36d399;
@@ -1579,21 +1803,32 @@ $text-placeholder: #9ca3af;
     }
   }
 
-  // 参考区样式
+  // 参考区样式（和填报区保持一致）
   .reference-section {
-    .reference-tab-name {
-      padding-bottom: 12px;
-      margin-bottom: 16px;
-      font-size: 16px;
-      font-weight: 600;
-      color: $text-color;
-      border-bottom: 1px solid $border-light;
-    }
-
     .reference-content {
       flex: 1;
-      padding-right: 8px;
-      overflow-y: auto;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .survey-tabs {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+
+      :deep(.el-tabs__content) {
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      :deep(.el-tab-pane) {
+        height: 100%;
+        padding-right: 8px;
+        overflow-y: auto;
+      }
     }
   }
 
