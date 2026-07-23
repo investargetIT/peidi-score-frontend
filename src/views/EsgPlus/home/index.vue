@@ -14,12 +14,22 @@
       </div>
       <div class="pd-esg-topbar-right">
         <div class="pd-esg-topbar-tag">Environmental · Social · Governance</div>
-        <div v-if="username" class="pd-esg-welcome">
-          <el-icon><UserFilled /></el-icon>
-          <span
-            >欢迎回来，<b>{{ username }}</b></span
-          >
-        </div>
+        <el-dropdown v-if="username" trigger="click">
+          <div class="pd-esg-welcome">
+            <el-icon><UserFilled /></el-icon>
+            <span
+              >欢迎回来，<b>{{ username }}</b></span
+            >
+            <el-icon class="dropdown-arrow"><ArrowDown /></el-icon>
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="handleExit">
+                <span class="text-[14px] py-[5px]">退出登录</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </header>
 
@@ -114,14 +124,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import { ElMessage, ElMessageBox } from "element-plus";
 import {
   EditPen,
   Document,
   Setting,
   Right,
-  UserFilled
+  UserFilled,
+  ArrowDown
 } from "@element-plus/icons-vue";
 const router = useRouter();
 
@@ -134,6 +146,30 @@ const username = computed(() => {
     return "";
   }
 });
+
+// 退出登录
+const handleExit = async () => {
+  try {
+    await ElMessageBox.confirm("确定要退出登录吗？", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    });
+
+    // 暴力退出 清空cookie
+    localStorage.setItem("pridi-unLoginUrl", "/pdesg/home");
+    document.cookie.split(";").forEach(cookie => {
+      document.cookie = cookie
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    // 跳转到登录页
+    window.location.href = window.location.origin + "/#/login_";
+  } catch {
+    // 用户取消，不做任何操作
+  }
+};
 
 // 仅指定 userid 可看到配置入口
 const showConfig = computed(() => {
@@ -160,8 +196,6 @@ const handleClickView = () => {
 </script>
 
 <style lang="scss" scoped>
-
-
 /* 响应式 */
 @media (width <= 1200px) {
   .pd-esg-pillars {
@@ -294,10 +328,21 @@ const handleClickView = () => {
   font-size: 14px;
   color: rgb(255 255 255 / 88%);
   letter-spacing: 0.5px;
+  cursor: pointer;
   background: rgb(66 104 249 / 22%);
   backdrop-filter: blur(6px);
   border: 1px solid rgb(66 104 249 / 42%);
   border-radius: 20px;
+  transition: all 0.25s ease;
+
+  &:hover {
+    background: rgb(66 104 249 / 35%);
+  }
+
+  .dropdown-arrow {
+    font-size: 12px;
+    opacity: 0.7;
+  }
 
   b {
     font-weight: 600;

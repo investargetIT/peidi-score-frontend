@@ -47,8 +47,8 @@
             <el-icon style="margin-right: 4px"><Upload /></el-icon>
             保存填报
           </el-button>
-          <!-- 开发者切换用户 -->
-          <div class="user-switcher">
+          <!-- 开发者切换用户（仅特定用户有权限） -->
+          <div v-if="canSwitchUser" class="user-switcher">
             <span class="label">切换用户</span>
             <el-select
               v-model="selectedUserId"
@@ -515,6 +515,11 @@ const username = computed(() => {
 // 当前用户 userId：优先使用选中的切换用户，否则用默认登录用户
 const currentUserId = computed(() => {
   return selectedUserId.value || defaultUserId.value;
+});
+
+// 是否允许切换用户（仅特定用户有权限）
+const canSwitchUser = computed(() => {
+  return defaultUserId.value === "1926449443739600965";
 });
 
 // 加载用户列表
