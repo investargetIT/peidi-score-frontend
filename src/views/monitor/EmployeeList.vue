@@ -2,7 +2,25 @@
   <el-card class="employee-list">
     <div class="employee-title">
       <div class="flex items-center justify-between">
-        <p>{{ t("employee.title") }}</p>
+        <div class="flex items-center gap-[10px]">
+          <p class="m-0">{{ t("employee.title") }}</p>
+          <div class="fund-toggle flex items-center gap-[5px]">
+            <span class="fund-toggle-label">{{
+              t("employee.fundToggle")
+            }}</span>
+            <el-tooltip
+              :content="t('employee.fundToggleTip')"
+              placement="top"
+              effect="dark"
+              :show-after="300"
+            >
+              <el-icon class="fund-toggle-icon" :size="14"
+                ><QuestionFilled
+              /></el-icon>
+            </el-tooltip>
+            <el-switch v-model="showFundSquares" size="small" />
+          </div>
+        </div>
         <el-button
           type="danger"
           size="small"
@@ -68,39 +86,65 @@
         node-key="id"
         :default-checked-keys="checkedIds"
         check-on-click-leaf
-        :default-expanded-keys="expandedCompanyIds"
+        :default-expanded-keys="expandedOrgIds"
         @node-expand="treeHandleExpand"
         @node-collapse="treeHandleCollapse"
       >
         <template #default="{ node, data }">
-          <el-tooltip
-            :content="`${node.label} (${data.lifeTimePoints} / ${data.redeemablePoints})`"
-            placement="top-start"
-            effect="dark"
-            :disabled="data.id.startsWith('company_')"
-            :show-after="800"
-          >
-            <div class="custom-tree-node">
-              <img
-                v-if="data.id && !data.id.startsWith('company_')"
-                :src="data.avatarUrl || Avatar"
-                style="width: 20px; height: 20px; margin-right: 5px"
-              />
-              <span>{{ node.label }}</span>
-              <p
-                v-if="data.id && !data.id.startsWith('company_')"
-                class="ml-[5px] text-[#9b9a9a] text-[12px] flex"
-              >
-                {{ `(${data.lifeTimePoints} / ${data.redeemablePoints})` }}
-              </p>
+          <div class="employee-tree-node">
+            <el-tooltip
+              :content="`${node.label} (${data.lifeTimePoints} / ${data.redeemablePoints})`"
+              placement="top-start"
+              effect="dark"
+              :disabled="!isEmployeeNode(data.id)"
+              :show-after="800"
+            >
+              <div class="custom-tree-node">
+                <img
+                  v-if="isEmployeeNode(data.id)"
+                  :src="data.avatarUrl || Avatar"
+                  style="width: 20px; height: 20px; margin-right: 5px"
+                />
+                <span>{{ node.label }}</span>
+                <p
+                  v-if="isEmployeeNode(data.id)"
+                  class="ml-[5px] text-[#9b9a9a] text-[12px] flex"
+                >
+                  {{ `(${data.lifeTimePoints} / ${data.redeemablePoints})` }}
+                </p>
 
-              <ScoreHistoryExport
-                v-if="data.id.startsWith('company_')"
-                @click="handleExport(data)"
-                ref="scoreHistoryExportRef"
-              />
+                <ScoreHistoryExport
+                  v-if="isCompanyNode(data.id)"
+                  @click="handleExport(data)"
+                  ref="scoreHistoryExportRef"
+                />
+              </div>
+            </el-tooltip>
+
+            <!-- 月度经费方块：仅杭州基地员工显示，绿色=未用，浅灰=已用；由“团建经费”开关控制 -->
+            <div
+              v-if="showFundSquares && isHangzhouEmployee(data)"
+              class="fund-squares"
+              @click.stop
+            >
+              <el-tooltip
+                v-for="month in 12"
+                :key="month"
+                :content="`${month}月 经费：${
+                  (data.monthsUsed || [])[month - 1] ? '已用' : '未用'
+                }`"
+                placement="top"
+                effect="dark"
+                :show-after="300"
+              >
+                <span
+                  class="fund-square"
+                  :class="{ used: (data.monthsUsed || [])[month - 1] }"
+                  >{{ month }}</span
+                >
+              </el-tooltip>
             </div>
-          </el-tooltip>
+          </div>
         </template>
       </el-tree>
     </div>
@@ -111,7 +155,7 @@
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
-import { Delete, Upload } from "@element-plus/icons-vue";
+import { Delete, Upload, QuestionFilled } from "@element-plus/icons-vue";
 import ScoreHistoryExport from "./components/scoreHistoryExport/index.vue";
 const { t } = useI18n();
 const props = defineProps({
@@ -130,6 +174,9 @@ const emit = defineEmits([
 const searchValue = ref(props.search || "");
 const checkedIds = ref(props.modelValue || []);
 
+// 团建经费方块显示开关，默认不显示
+const showFundSquares = ref(false);
+
 //#region 新列表逻辑
 const treeRef = ref(null);
 
@@ -137,6 +184,36 @@ const treeDefaultProps = {
   children: "children",
   label: "label"
 };
+
+// 节点类型判断：员工树 = 基地(company_) → 员工(无前缀)
+const isCompanyNode = id => !!id && String(id).startsWith("company_");
+const isEmployeeNode = id => !!id && !isCompanyNode(id);
+
+// 是否杭州基地员工：只有该基地的员工显示月度经费方块
+const isHangzhouEmployee = data =>
+  !!data && isEmployeeNode(data.id) && data.site === HANGZHOU_SITE;
+
+// 基地缺失时的兜底分组名称
+const DEFAULT_SITE_LABEL = "未设置基地";
+
+// 按拼音首字母排序，label 为空时放最后
+const compareByLabelPinyin = (a, b) => {
+  if (!a.label) return 1;
+  if (!b.label) return -1;
+  const nameA = a.label.normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const nameB = b.label.normalize("NFD").replace(/[̀-ͯ]/g, "");
+  return nameA.localeCompare(nameB);
+};
+
+// 基地排序：佩蒂智创（杭州）宠物科技有限公司 固定放首个，其余按拼音排序
+const HANGZHOU_SITE = "佩蒂智创（杭州）宠物科技有限公司";
+const compareBySitePriority = (a, b) => {
+  const aFirst = a.label === HANGZHOU_SITE ? 0 : 1;
+  const bFirst = b.label === HANGZHOU_SITE ? 0 : 1;
+  if (aFirst !== bFirst) return aFirst - bFirst;
+  return compareByLabelPinyin(a, b);
+};
+
 const treeData = [
   {
     label: "基地",
@@ -151,59 +228,40 @@ const treeData = [
   }
 ];
 
-// 记录已经展开的公司节点
-const expandedCompanyIds = ref([]);
+// 记录已经展开的基地节点
+const expandedOrgIds = ref([]);
 
-// 监听 props.employees 变化，遍历源数据，转换成 treeData 格式
+// 监听 props.employees 变化，遍历源数据，构造成 基地→员工 的员工树
 const treeEmployees = ref([]);
 watch(
   () => props.employees,
-  (newVal, oldVal) => {
+  newVal => {
     if (newVal) {
-      // newVal.push({
-      //   avatarUrl: "",
-      //   name: "测试Name",
-      //   site: "测试Site",
-      //   userId: "1926449443739598852"
-      // });
-
-      const siteEmployees = newVal.reduce((acc, emp) => {
-        acc[emp.site] = acc[emp.site] || [];
-        acc[emp.site].push({
+      const siteMap = {};
+      newVal.forEach(emp => {
+        const site = emp.site || DEFAULT_SITE_LABEL;
+        if (!siteMap[site]) siteMap[site] = [];
+        siteMap[site].push({
           label: emp.name,
           avatarUrl: emp.avatarUrl,
           userId: emp.userId,
           id: emp.id,
           empdata: emp,
+          site: emp.site,
+          monthsUsed: emp.monthsUsed || [],
           redeemablePoints: emp.redeemablePoints,
           lifeTimePoints: emp.lifeTimePoints
         });
-        return acc;
-      }, {});
-      //{佩蒂智创（杭州）宠物科技有限公司: Array(118), 测试Site: Array(1)} 转换成 [{label: "佩蒂智创（杭州）宠物科技有限公司", children: Array(118)}, {label: "测试Site", children: Array(1)}]
-      let temTreeEmployees = Object.entries(siteEmployees).map(
-        ([site, children]) => ({
-          label: site,
-          children
-        })
-      );
-      // 对 temTreeEmployees 里的每个对象children 按 label 拼音首字母排序, 若label是空则放最后面
-      temTreeEmployees.forEach(item => {
-        if (item.children && item.children.length > 0) {
-          item.children.sort((a, b) => {
-            // 若label是空则放最后面
-            if (!a.label) return 1;
-            if (!b.label) return -1;
-            const nameA = a.label
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "");
-            const nameB = b.label
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "");
-            return nameA.localeCompare(nameB);
-          });
-        }
       });
+      //{佩蒂智创（杭州）宠物科技有限公司: Array(118)} 转换成 [{label: "佩蒂智创（杭州）宠物科技有限公司", id:"company_...", children: Array(118)}]
+      const temTreeEmployees = Object.entries(siteMap)
+        .map(([site, children]) => ({
+          label: site,
+          // 基地节点 id 带 company_ 前缀，用于标识节点类型
+          id: "company_" + site,
+          children: [...children].sort(compareByLabelPinyin)
+        }))
+        .sort(compareBySitePriority);
       treeEmployees.value = temTreeEmployees;
     }
   },
@@ -211,41 +269,33 @@ watch(
 );
 
 const treeFilteredEmployees = computed(() => {
-  const searchTerm = searchValue.value?.toLowerCase() || "";
-  // 若搜索内容为空, 也要处理一遍公司id
-  if (!searchTerm)
-    return (
-      treeEmployees.value.map(item => ({
-        ...item,
-        id: "company_" + item.label
-      })) || []
-    );
-  // 筛选 treeEmployees.value 中每个对象children数字里是否有label匹配到搜索内容, 如果有, 则留下
+  // 支持中英文逗号分割多人模糊搜索，如 "张三,李四"
+  const terms = (searchValue.value || "")
+    .split(/[,，;；]/)
+    .map(s => s.trim().toLowerCase())
+    .filter(Boolean);
+  // 搜索内容为空时返回完整员工树（基地→员工，节点 id 在构建时已生成）
+  if (terms.length === 0) return treeEmployees.value || [];
+  // 搜索时保留命中的员工及其所属基地（任一关键词命中即保留）
   const tem = [];
-  treeEmployees.value.forEach(item => {
-    if (item.children && item.children.length > 0) {
-      const tem2 = item.children.filter(
-        child => child.label && child.label.toLowerCase().includes(searchTerm)
-      );
-      if (tem2.length > 0) {
-        // 前端为每个公司加入id，用于后续判断是否选中，但是需要一个标识判断是否是公司id，因为名称后面要展示积分括号，之前是用是否有id判断显隐的
-        tem.push({ ...item, children: tem2, id: "company_" + item.label });
-      }
+  treeEmployees.value.forEach(siteNode => {
+    const matchedEmployees = (siteNode.children || []).filter(child =>
+      terms.some(
+        term => child.label && child.label.toLowerCase().includes(term)
+      )
+    );
+    if (matchedEmployees.length > 0) {
+      tem.push({ ...siteNode, children: matchedEmployees });
     }
   });
-  // console.log("人员列表数据:", tem);
   return tem;
 });
 
 const treeAllChecked = computed({
   get() {
-    return (
-      // 遍历 treeFilteredEmployees 判断 checkedIds.value 里是否包含 treeFilteredEmployees 里的每个 children 里的每个对象的 userId
-      // treeFilteredEmployees.value =  [{label: "佩蒂智创（杭州）宠物科技有限公司", children: Array(118)}, {label: "测试Site", children: Array(1)}]
-      treeFilteredEmployees.value.every(
-        item =>
-          item.children &&
-          item.children.every(child => checkedIds.value.includes(child.userId))
+    return treeFilteredEmployees.value.every(siteNode =>
+      (siteNode.children || []).every(child =>
+        checkedIds.value.includes(child.userId)
       )
     );
   },
@@ -256,7 +306,7 @@ const treeAllChecked = computed({
       // true
       const checkedKeys = treeRef.value
         .getCheckedKeys()
-        .filter(element => element !== undefined);
+        .filter(element => element !== undefined && !isCompanyNode(element));
       checkedIds.value = checkedKeys;
     } else {
       // checkedIds.value = checkedIds.value.filter(
@@ -272,40 +322,26 @@ function treeHandleCheckAll(val) {
   treeAllChecked.value = val;
 }
 
-function treeHandleClick(emp) {
-  // 加入了公司id，所以需要对公司id进行特殊处理，排除掉公司id
+function treeHandleClick() {
+  // 加入了公司id，需要对这些节点id做特殊处理，排除掉后只保留员工id
   // console.log("treeHandleClick:", emp, treeRef.value.getCheckedKeys());
   const checkedKeys = treeRef.value
     .getCheckedKeys()
-    .filter(
-      element => element !== undefined && !element.startsWith("company_")
-    );
+    .filter(element => element !== undefined && !isCompanyNode(element));
   // console.log("===========================================");
   // console.log("checkedKeys:", checkedKeys);
 
-  // 会有问题，如果筛选后选了人，则不符合筛选条件的人但是已经选择的人也会被取消选择
-  // 遍历当前 checkedIds.value，如果在 treeFilteredEmployees.value 里的每个对象的children里都匹配不到，说明当前id是需要被保留的
-  // console.log("checkedIds.value:", checkedIds.value);
-
+  // 遍历当前 checkedIds.value，如果在当前筛选结果里匹配不到，说明是先前选中但被筛选掉的人，需要保留
+  const currentFilteredIds = treeFilteredEmployees.value.flatMap(siteNode =>
+    (siteNode.children || []).map(emp => emp.id)
+  );
   const keepIds = checkedIds.value.filter(
-    id =>
-      !treeFilteredEmployees.value.some(
-        item => item.children && item.children.some(child => child.id === id)
-      )
+    id => !currentFilteredIds.includes(id)
   );
   // console.log("keepIds:", keepIds);
 
   checkedIds.value = [...checkedKeys, ...keepIds];
 
-  // return;
-  // emit("select", emp);
-  // 如果未勾选则勾选，如果已勾选则取消勾选
-  // const index = checkedIds.value.indexOf(emp.id);
-  // if (index === -1) {
-  //   checkedIds.value = [...checkedIds.value, emp.id];
-  // } else {
-  //   checkedIds.value = checkedIds.value.filter(id => id !== emp.id);
-  // }
   // 通知父组件更新
   emit("update:modelValue", checkedIds.value);
   // console.log("checkedIds.value:", checkedIds.value);
@@ -341,10 +377,14 @@ watch(
 //#endregion
 
 const filteredEmployees = computed(() => {
-  const searchTerm = searchValue.value?.toLowerCase() || "";
-  if (!searchTerm) return props.employees || [];
+  // 支持中英文逗号分割多人模糊搜索
+  const terms = (searchValue.value || "")
+    .split(/[,，;；]/)
+    .map(s => s.trim().toLowerCase())
+    .filter(Boolean);
+  if (terms.length === 0) return props.employees || [];
   return (props.employees || []).filter(
-    emp => emp.name && emp.name.toLowerCase().includes(searchTerm)
+    emp => emp.name && terms.some(term => emp.name.toLowerCase().includes(term))
   );
 });
 
@@ -431,21 +471,19 @@ function handleResign() {
 // treeHandleExpand 处理展开事件
 function treeHandleExpand(node) {
   // console.log("展开节点:", node);
-  if (node.id && node.id.startsWith("company_")) {
-    // 记录展开的公司节点
-    expandedCompanyIds.value = [...expandedCompanyIds.value, node.id];
-    // console.log("已经展开的公司节点:", expandedCompanyIds.value);
+  if (node.id && isCompanyNode(node.id)) {
+    // 记录展开的基地节点
+    expandedOrgIds.value = [...expandedOrgIds.value, node.id];
+    // console.log("已经展开的基地节点:", expandedOrgIds.value);
   }
 }
 
 // treeHandleCollapse 处理折叠事件
 function treeHandleCollapse(node) {
-  if (node.id && node.id.startsWith("company_")) {
-    // 从展开的公司节点列表中移除
-    expandedCompanyIds.value = expandedCompanyIds.value.filter(
-      id => id !== node.id
-    );
-    console.log("已经折叠的公司节点:", expandedCompanyIds.value);
+  if (node.id && isCompanyNode(node.id)) {
+    // 从展开的基地节点列表中移除
+    expandedOrgIds.value = expandedOrgIds.value.filter(id => id !== node.id);
+    console.log("已经折叠的基地节点:", expandedOrgIds.value);
   }
 }
 
@@ -492,6 +530,20 @@ const handleExport = data => {
   margin-bottom: 18px;
   font-size: 24px;
   font-weight: bold;
+}
+
+/* 标题栏“团建经费”开关 */
+.fund-toggle-label {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  color: #666;
+  white-space: nowrap;
+}
+
+.fund-toggle-icon {
+  color: #b6b6bd;
+  cursor: help;
 }
 
 .employee-toolbar {
@@ -545,5 +597,51 @@ const handleExport = data => {
   align-items: center;
   padding-right: 8px;
   font-size: 14px;
+}
+
+/* 员工节点整体：姓名行 + 月度经费方块行 */
+.employee-tree-node {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* 让树节点根据内容自动撑高（有方块的行更高） */
+:deep(.el-tree-node__content) {
+  height: auto;
+  min-height: 26px;
+}
+
+/* 12 个月度经费方块 */
+.fund-squares {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 0 8px 1px 0;
+  margin-top: 3px;
+}
+
+.fund-square {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  font-size: 8px;
+  line-height: 1;
+  color: #fff;
+  cursor: default;
+  background: #67c23a;
+  border: 1px solid #67c23a;
+  border-radius: 2px;
+}
+
+/* 浅灰色 = 该月经费已用（数字用深色，与未用的绿色区分开） */
+.fund-square.used {
+  color: #303133;
+  background: #e4e7ed;
+  border-color: #cfd3d9;
 }
 </style>

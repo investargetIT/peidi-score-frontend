@@ -89,7 +89,8 @@ import {
   getUserList,
   getFileDownLoadPath,
   getEnumTypeList,
-  deleteUser
+  deleteUser,
+  getMonthlyFundUsage
 } from "@/api/pmApi.ts";
 import { storageLocal } from "@pureadmin/utils";
 import OperationHistory from "./OperationHistory.vue";
@@ -206,9 +207,16 @@ const fetchUserListData = async () => {
     });
 
     if (res?.code === 200) {
-      employees.value = res?.data?.records?.map(item => ({
+      const records = res?.data?.records || [];
+      // 获取月度经费使用情况（接口暂为临时实现，接入后自动替换）
+      const monthsUsedMap = await getMonthlyFundUsage(
+        records.map(item => item.userId)
+      );
+      employees.value = records.map(item => ({
         ...item,
-        name: item.fullName
+        name: item.fullName,
+        monthsUsed:
+          monthsUsedMap[item.userId] || Array.from({ length: 12 }, () => false)
       }));
 
       // 根据当前选中的员工ID更新选中状态

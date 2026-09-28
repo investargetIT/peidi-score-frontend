@@ -56,8 +56,10 @@
   },
   "employee": {
     "title": "Employees",
-    "searchPlaceholder": "Search employees...",
-    "department": "Department"
+    "searchPlaceholder": "Search employees (comma-separated for multiple)",
+    "department": "Department",
+    "fundToggle": "Team Building Funds",
+    "fundToggleTip": "Only available for Peidi Innovation (Hangzhou) Pet Technology Co., Ltd."
   },
   "monitor": {
     "manage": "Manage Points",
