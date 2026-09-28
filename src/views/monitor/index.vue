@@ -40,6 +40,7 @@
           :t="t"
           :activeTab="activeTab"
           :selectedEmployeeIds="selectedEmployeeIds"
+          :avatarUrls="avatarUrls"
         />
       </el-tab-pane>
       <el-tab-pane :label="t('monitor.operationHistory')" name="operation">
@@ -132,12 +133,18 @@ function resignEmployee() {
   //   })
   // );
   ElMessageBox.confirm(
-    `${t("monitor.confirmLeave")} ${t("monitor.selectedCount")}：${selectedEmployeeIds.value.length}`,
+    `<div>
+      <div>${t("monitor.confirmLeave")}<br/>${t("monitor.selectedCount")}：${selectedEmployeeIds.value.length}</div>
+      <div style="margin-top:10px;color:#e6a23c;font-weight:600;line-height:1.6">⚠️ ${t("monitor.confirmLeaveCaution")}</div>
+    </div>`,
     `❗${t("monitor.confirmLeaveTitle")} `,
     {
       type: "warning",
-      showCancelButton: false,
-      confirmButtonClass: "el-button--danger"
+      showCancelButton: true,
+      confirmButtonText: t("monitor.confirm"),
+      cancelButtonText: t("monitor.cancel"),
+      confirmButtonClass: "el-button--danger",
+      dangerouslyUseHTMLString: true
     }
   ).then(() => {
     // const temp = selectedEmployeeIds.value.map(id => {

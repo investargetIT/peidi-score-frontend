@@ -1,6 +1,23 @@
 <template>
   <el-card class="exchange-history-card">
     <div class="exchange-title">{{ t("monitor.history") }}</div>
+    <div class="history-sub-bar">
+      <template
+        v-if="
+          props?.selected?.userId && props?.selectedEmployeeIds?.length === 1
+        "
+      >
+        <el-avatar :size="40" :src="avatarUrls[props.selected.id] || Avatar" />
+        <div class="bar-main">
+          <div class="bar-name">{{ props.selected.name }}</div>
+          <div class="bar-tip">{{ t("monitor.historyFollowTip") }}</div>
+        </div>
+      </template>
+      <div v-else-if="props?.selectedEmployeeIds?.length > 1" class="bar-empty">
+        {{ t("monitor.selectSingleEmployeeForHistory") }}
+      </div>
+      <div v-else class="bar-empty">{{ t("monitor.selectEmployeeFirst") }}</div>
+    </div>
     <el-table
       :data="scoreHistoryList"
       class="exchange-table no-border-table"
@@ -22,7 +39,9 @@
               props?.selected?.userId &&
               props?.selectedEmployeeIds?.length === 1
             )
-              ? t("monitor.selectEmployeeFirst")
+              ? props?.selectedEmployeeIds?.length > 1
+                ? t("monitor.selectSingleEmployeeForHistory")
+                : t("monitor.selectEmployeeFirst")
               : t("table.emptyText")
           }}
         </div>
@@ -67,6 +86,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { getScoreHistoryList } from "@/api/pmApi.ts";
+import Avatar from "@/assets/user.jpg";
 const scoreHistoryList = ref([]);
 import dayjs from "dayjs";
 const pagination = ref({
@@ -90,6 +110,10 @@ const props = defineProps({
   selectedEmployeeIds: {
     type: Array,
     default: () => []
+  },
+  avatarUrls: {
+    type: Object,
+    default: () => ({})
   }
 });
 
@@ -150,9 +174,42 @@ fetchHistoryList();
 }
 
 .exchange-title {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   font-size: 28px;
   font-weight: bold;
+}
+
+/* 所选员工信息条：头像 + 姓名 + 联动说明 */
+.history-sub-bar {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  background: #f7f8fa;
+  border-radius: 10px;
+}
+
+.bar-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bar-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+}
+
+.bar-tip {
+  font-size: 13px;
+  color: #909399;
+}
+
+.bar-empty {
+  font-size: 15px;
+  color: #b6b6bd;
 }
 
 .exchange-table {

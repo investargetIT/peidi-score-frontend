@@ -21,14 +21,33 @@
             <el-switch v-model="showFundSquares" size="small" />
           </div>
         </div>
-        <el-button
-          type="danger"
-          size="small"
-          :icon="Delete"
-          @click="handleResign"
+        <el-tooltip
+          :content="t('monitor.leave')"
+          placement="top"
           :disabled="checkedIds.length === 0"
-          >{{ t("monitor.leave") }}</el-button
+          :show-after="400"
         >
+          <span
+            class="btn-resign"
+            :class="{ disabled: checkedIds.length === 0 }"
+            @click="handleResign"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="13"
+              height="13"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </span>
+        </el-tooltip>
       </div>
     </div>
     <div class="employee-toolbar">
@@ -155,7 +174,7 @@
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
-import { Delete, Upload, QuestionFilled } from "@element-plus/icons-vue";
+import { QuestionFilled } from "@element-plus/icons-vue";
 import ScoreHistoryExport from "./components/scoreHistoryExport/index.vue";
 const { t } = useI18n();
 const props = defineProps({
@@ -371,7 +390,12 @@ watch(
       console.warn("modelValue should be an array");
       return;
     }
-    checkedIds.value = val || [];
+    const ids = val || [];
+    checkedIds.value = ids;
+    // 与左侧树勾选状态联动（例如从右侧卡片点“移除”时同步取消勾选）
+    if (treeRef.value) {
+      treeRef.value.setCheckedKeys([...ids]);
+    }
   }
 );
 //#endregion
@@ -465,6 +489,7 @@ function handleClick(emp) {
 
 // 处理离职逻辑
 function handleResign() {
+  if (checkedIds.value.length === 0) return;
   emit("resign");
 }
 
@@ -544,6 +569,47 @@ const handleExport = data => {
 .fund-toggle-icon {
   color: #b6b6bd;
   cursor: help;
+}
+
+/* 离职图标按钮（右上角） */
+.btn-resign {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  color: #d94a4a;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #f0c1c1;
+  border-radius: 50%;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s,
+    transform 0.15s;
+}
+
+.btn-resign:hover {
+  color: #fff;
+  background: #f56c6c;
+  border-color: #f56c6c;
+  transform: scale(1.08);
+}
+
+.btn-resign.disabled {
+  color: #c0c4cc;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  border-color: #e4e7ed;
+  transform: none;
+}
+
+.btn-resign.disabled:hover {
+  color: #c0c4cc;
+  background: #f5f5f5;
+  border-color: #e4e7ed;
+  transform: none;
 }
 
 .employee-toolbar {

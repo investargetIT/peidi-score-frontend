@@ -1,6 +1,9 @@
 <template>
   <el-card class="exchange-history-card">
     <div class="exchange-title">{{ t("monitor.operationHistory") }}</div>
+    <div class="history-sub-bar">
+      <div class="bar-tip">{{ t("monitor.operationHistoryTip") }}</div>
+    </div>
     <el-table
       :data="scoreHistoryList"
       class="exchange-table no-border-table"
@@ -208,9 +211,25 @@ const handleRollback = row => {
 }
 
 .exchange-title {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   font-size: 28px;
   font-weight: bold;
+}
+
+/* 说明条 */
+.history-sub-bar {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  background: #f7f8fa;
+  border-radius: 10px;
+}
+
+.bar-tip {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #606266;
 }
 
 .exchange-table {
