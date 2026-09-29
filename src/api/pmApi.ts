@@ -48,7 +48,7 @@ const baseUrlApiDev = (url: string, hasUi = true) => {
   // return `http://12.18.1.12:8090/${hasUi ? "ui" : ""}${url}`;
 };
 
-const commonUrlApi = (url: string) => `${"https://user.peidigroup.cn"}${url}`;
+const commonUrlApi = (url: string) => `https://user.peidigroup.cn${url}`;
 
 // 部门组织架构树（user.peidigroup.cn 域名）
 export const getDeptTree = () => {

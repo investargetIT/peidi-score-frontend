@@ -426,6 +426,21 @@ function buildSiteNode(siteLabel, empNodes, deptTree) {
   };
 }
 
+// 安全地重放展开状态：
+// el-tree-v2 内部 `setData` 经 `nextTick(() => tree.value = createTree(data))` 异步建树，
+// 数据更新后 treeNodeMap 尚未就绪时直接 setExpandedKeys 会抛
+// "Cannot read properties of undefined (reading 'treeNodeMap')"。
+// 因此先用 getNode（内部带 ?. 保护，不抛错）探测树就绪，未就绪则延迟重试。
+const applyExpandedKeys = (keys = []) => {
+  const tree = treeRef.value;
+  if (!tree || !keys.length) return;
+  if (!tree.getNode(keys[0])) {
+    setTimeout(() => applyExpandedKeys(keys), 50);
+    return;
+  }
+  tree.setExpandedKeys(keys);
+};
+
 // 监听 props.employees 与部门树变化，构造成 基地 → 部门 → 员工 的员工树
 const treeEmployees = ref([]);
 watch(
@@ -466,10 +481,12 @@ watch(
             .forEach(dept2 => needExpand.push(dept2.id));
         });
       });
-      expandedOrgIds.value = Array.from(
-        new Set([...expandedOrgIds.value, ...needExpand])
-      );
-      treeRef.value?.setExpandedKeys(expandedOrgIds.value);
+      if (needExpand.length) {
+        expandedOrgIds.value = Array.from(
+          new Set([...expandedOrgIds.value, ...needExpand])
+        );
+        applyExpandedKeys(expandedOrgIds.value);
+      }
     });
   },
   { immediate: true }
@@ -1017,8 +1034,6 @@ const handleExport = data => {
 </style>
 
 <style scoped>
-
-
 /* 移动端：员工列表占满整宽，去掉固定高度约束 */
 @media screen and (width <= 768px) {
   .employee-list {

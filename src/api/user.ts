@@ -38,7 +38,10 @@ export const baseUrlApi = (url: string) => {
   return `https://srm.peidigroup.cn${url}`;
 };
 
-const commonUrlApi = (url: string) => `${"https://user.peidigroup.cn"}${url}`;
+// user 域接口（登录/钉钉/部门/团建经费等）：统一直连线上域名。
+const userHostApi = (url: string) => `https://user.peidigroup.cn${url}`;
+
+const commonUrlApi = (url: string) => userHostApi(url);
 
 /** 登录 */
 export const getLogin = (data?: object) => {
@@ -62,52 +65,40 @@ export const getJsApi = params => {
 };
 // 根据code拿到个人信息
 export const getUserInfo = code => {
-  return http.request(
-    "get",
-    `https://user.peidigroup.cn/ding/userInfo?code=${code}`,
-    {}
-  );
+  return http.request("get", userHostApi(`/ding/userInfo?code=${code}`), {});
 };
 // 根据token拿到userId
 export const getUserCheck = token => {
   return http.request(
     "get",
-    `https://user.peidigroup.cn/user/user-check?token=${token}`,
+    userHostApi(`/user/user-check?token=${token}`),
     {}
   );
 };
 
 // 获取基地信息
 export const getUserSite = () => {
-  return http.request("get", `https://user.peidigroup.cn/user/site`, {});
+  return http.request("get", userHostApi(`/user/site`), {});
 };
 
 // 注册
 export const register = data => {
-  return http.request(
-    "post",
-    `https://user.peidigroup.cn/user/email-register`,
-    {
-      data
-    }
-  );
+  return http.request("post", userHostApi(`/user/email-register`), {
+    data
+  });
 };
 
 export const registerMobile = data => {
-  return http.request("post", `https://user.peidigroup.cn/user/sms-register`, {
+  return http.request("post", userHostApi(`/user/sms-register`), {
     data
   });
 };
 
 // 修改用户密码
 export const updateUserPassword = data => {
-  return http.request(
-    "post",
-    `https://user.peidigroup.cn/user/update-password`,
-    {
-      data
-    }
-  );
+  return http.request("post", userHostApi(`/user/update-password`), {
+    data
+  });
 };
 
 /** 刷新`token` */
@@ -168,21 +159,21 @@ export const getPagePd = params => {
 
 // 获取用户dataSource字段
 export const getUserDataSourceApi = params => {
-  return http.request("get", `https://user.peidigroup.cn/user/user-check`, {
+  return http.request("get", userHostApi(`/user/user-check`), {
     params
   });
 };
 
 // 根据用户钉钉id获取上级部门列表
 export const getParentDepartmentByUser = (params: { userId: string }) => {
-  return http.request("get", "https://user.peidigroup.cn/ding/parentbyuser", {
+  return http.request("get", userHostApi(`/ding/parentbyuser`), {
     params
   });
 };
 
 // 获取部门详情
 export const getDepartmentDetail = (params: { deptId: string }) => {
-  return http.request("get", "https://user.peidigroup.cn/ding/department", {
+  return http.request("get", userHostApi(`/ding/department`), {
     params
   });
 };
@@ -192,11 +183,10 @@ export const getDepartmentDetail = (params: { deptId: string }) => {
 // 请求参数: { year?: number }
 // 响应示例: [{ userName: "string", userId: 0, filingDates: ["yyyy-MM", ...] }]
 // 前端转成 { userId: boolean[12] }，下标 0~11 对应 1~12 月，true=该月经费已用
-// 团建费接口：生产域 user.peidigroup.cn 路径不带 /attendance 前缀，测试环境 12.18.1.36:8080 带前缀
-const teamBuildingUrlApi = (path: string) => {
-  return `${"https://user.peidigroup.cn"}${path}`;
-  // return `http://12.18.1.36:8080/attendance${path}`;
-};
+// 团建费接口（公开，无需登录）：线上与测试站路径均为 /attendance/teamBuilding/expenses（带前缀），
+// 全环境直连线上 user.peidigroup.cn。
+const teamBuildingUrlApi = (path: string) =>
+  `https://user.peidigroup.cn/attendance${path}`;
 
 export const getMonthlyFundUsage = async (
   _userIds: string[],

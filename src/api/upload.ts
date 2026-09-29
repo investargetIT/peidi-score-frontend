@@ -37,7 +37,10 @@ export type RefreshTokenResult = {
 export const baseUrlApi = (url: string) => {
   return `https://srm.peidigroup.cn${url}`;
 };
-const commonUrlApi = (url: string) => `${"https://user.peidigroup.cn"}${url}`;
+// user 域接口（登录/钉钉/注册等）：统一直连线上域名。
+const userHostApi = (url: string) => `https://user.peidigroup.cn${url}`;
+
+const commonUrlApi = (url: string) => userHostApi(url);
 
 /** 登录 */
 export const getLogin = (data?: object) => {
@@ -72,20 +75,16 @@ export const getUserInfo = code => {
 export const getDeptInfo = code => {
   return http.request(
     "get",
-    `https://user.peidigroup.cn/ding/department?deptId=${code}`,
+    userHostApi(`/ding/department?deptId=${code}`),
     {}
   );
 };
 
 // 注册
 export const register = data => {
-  return http.request(
-    "post",
-    `https://user.peidigroup.cn/user/email-register`,
-    {
-      data
-    }
-  );
+  return http.request("post", userHostApi(`/user/email-register`), {
+    data
+  });
 };
 
 /** 刷新`token` */
