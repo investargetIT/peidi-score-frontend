@@ -278,35 +278,3 @@ export const updateRecord = (data: any) => {
     data
   });
 };
-
-// ============ 月度经费：接口待定，以下是临时实现 ============
-// TODO: 真实接口待定，接入后替换下面的函数体
-// 期望返回：每个用户 1-12 月经费是否已使用，前端收到后转成 { userId: boolean[12] }
-// 示例后端返回格式: [{ userId, monthsUsed: [true, false, ...12项] }]
-export const getMonthlyFundUsage = async (
-  userIds: string[]
-): Promise<Record<string, boolean[]>> => {
-  // ===== 临时演示数据（仅用于界面预览，真实接口接入后删除）=====
-  // 根据 userId 生成稳定的伪随机 1-12 月使用情况
-  const result: Record<string, boolean[]> = {};
-  userIds.forEach(userId => {
-    const seed = parseInt(String(userId || "0").slice(-4), 10) || 0;
-    result[userId] = Array.from(
-      { length: 12 },
-      (_, i) => (seed * (i + 3)) % 7 < 3
-    );
-  });
-  return result;
-
-  // ===== 真实接口示例（待接口文档确认后启用）=====
-  // const res = await http.request("get", baseUrlApiDev("/point/month-fund"), {
-  //   params: { userIds: userIds.join(",") }
-  // });
-  // const map: Record<string, boolean[]> = {};
-  // if (res?.data) {
-  //   (res.data as { userId: string; monthsUsed: boolean[] }[]).forEach(
-  //     item => (map[item.userId] = item.monthsUsed)
-  //   );
-  // }
-  // return map;
-};

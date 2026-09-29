@@ -1,15 +1,17 @@
 <template>
   <el-card class="employee-list">
     <div class="employee-title">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-[10px]">
-          <p class="m-0">{{ t("employee.title") }}</p>
-          <div class="fund-toggle flex items-center gap-[5px]">
+      <div class="title-row">
+        <div class="title-left">
+          <p class="title-text">{{ t("employee.title") }}</p>
+          <div class="fund-toggle">
             <span class="fund-toggle-label">{{
               t("employee.fundToggle")
             }}</span>
             <el-tooltip
-              :content="t('employee.fundToggleTip')"
+              :content="`${t('employee.fundToggleTip')} ${t(
+                'employee.fundLegend'
+              )}`"
               placement="top"
               effect="dark"
               :show-after="300"
@@ -65,7 +67,7 @@
       />
     </div>
 
-    <div class="employee-items">
+    <div ref="treeContainerRef" class="employee-items">
       <!-- <div
         v-for="(emp, idx) in filteredEmployees"
         :key="idx"
@@ -95,19 +97,19 @@
         </div>
       </div> -->
 
-      <el-tree
-        style="max-width: 600px"
+      <el-tree-v2
+        :height="treeHeight"
+        :item-size="nodeHeight"
         :data="treeFilteredEmployees"
         :props="treeDefaultProps"
         show-checkbox
         @check="treeHandleClick"
         ref="treeRef"
-        node-key="id"
         :default-checked-keys="checkedIds"
-        check-on-click-leaf
         :default-expanded-keys="expandedOrgIds"
         @node-expand="treeHandleExpand"
         @node-collapse="treeHandleCollapse"
+        class="employee-tree-v2"
       >
         <template #default="{ node, data }">
           <div class="employee-tree-node">
@@ -141,41 +143,26 @@
             </el-tooltip>
 
             <!-- 月度经费方块：仅杭州基地员工显示，绿色=未用，浅灰=已用；由“团建经费”开关控制 -->
-            <div
+            <FundSquares
               v-if="showFundSquares && isHangzhouEmployee(data)"
-              class="fund-squares"
+              class="fund-squares-wrap"
+              :monthsUsed="data.monthsUsed"
               @click.stop
-            >
-              <el-tooltip
-                v-for="month in 12"
-                :key="month"
-                :content="`${month}月 经费：${
-                  (data.monthsUsed || [])[month - 1] ? '已用' : '未用'
-                }`"
-                placement="top"
-                effect="dark"
-                :show-after="300"
-              >
-                <span
-                  class="fund-square"
-                  :class="{ used: (data.monthsUsed || [])[month - 1] }"
-                  >{{ month }}</span
-                >
-              </el-tooltip>
-            </div>
+            />
           </div>
         </template>
-      </el-tree>
+      </el-tree-v2>
     </div>
   </el-card>
 </template>
 
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
 import { QuestionFilled } from "@element-plus/icons-vue";
 import ScoreHistoryExport from "./components/scoreHistoryExport/index.vue";
+import FundSquares from "./components/fundSquares/index.vue";
 const { t } = useI18n();
 const props = defineProps({
   employees: Array,
@@ -188,21 +175,45 @@ const emit = defineEmits([
   "update:search",
   "select",
   "update:modelValue",
-  "resign"
+  "resign",
+  "update:showFundSquares"
 ]);
 const searchValue = ref(props.search || "");
 const checkedIds = ref(props.modelValue || []);
 
-// 团建经费方块显示开关，默认不显示
+// 团建经费方块显示开关，默认不显示；状态同步给父组件（联动右侧管理积分卡片）
 const showFundSquares = ref(false);
+watch(showFundSquares, val => {
+  emit("update:showFundSquares", val);
+});
 
 //#region 新列表逻辑
 const treeRef = ref(null);
 
 const treeDefaultProps = {
   children: "children",
-  label: "label"
+  label: "label",
+  value: "id"
 };
+
+// 虚拟滚动容器：测量可用高度，只渲染视口内节点
+const treeContainerRef = ref(null);
+const treeHeight = ref(300);
+const nodeHeight = computed(() => (showFundSquares.value ? 48 : 30));
+let treeResizeObserver = null;
+onMounted(() => {
+  const el = treeContainerRef.value;
+  if (!el) return;
+  const update = () => {
+    treeHeight.value = Math.max(150, el.clientHeight);
+  };
+  update();
+  treeResizeObserver = new ResizeObserver(update);
+  treeResizeObserver.observe(el);
+});
+onBeforeUnmount(() => {
+  treeResizeObserver?.disconnect();
+});
 
 // 节点类型判断：员工树 = 基地(company_) → 员工(无前缀)
 const isCompanyNode = id => !!id && String(id).startsWith("company_");
@@ -493,21 +504,23 @@ function handleResign() {
   emit("resign");
 }
 
-// treeHandleExpand 处理展开事件
-function treeHandleExpand(node) {
-  // console.log("展开节点:", node);
-  if (node.id && isCompanyNode(node.id)) {
+// treeHandleExpand 处理展开事件（tree-v2 事件参数为 data, node）
+function treeHandleExpand(dataNode) {
+  // console.log("展开节点:", dataNode);
+  if (dataNode?.id && isCompanyNode(dataNode.id)) {
     // 记录展开的基地节点
-    expandedOrgIds.value = [...expandedOrgIds.value, node.id];
+    expandedOrgIds.value = [...expandedOrgIds.value, dataNode.id];
     // console.log("已经展开的基地节点:", expandedOrgIds.value);
   }
 }
 
 // treeHandleCollapse 处理折叠事件
-function treeHandleCollapse(node) {
-  if (node.id && isCompanyNode(node.id)) {
+function treeHandleCollapse(dataNode) {
+  if (dataNode?.id && isCompanyNode(dataNode.id)) {
     // 从展开的基地节点列表中移除
-    expandedOrgIds.value = expandedOrgIds.value.filter(id => id !== node.id);
+    expandedOrgIds.value = expandedOrgIds.value.filter(
+      id => id !== dataNode.id
+    );
     console.log("已经折叠的基地节点:", expandedOrgIds.value);
   }
 }
@@ -555,6 +568,43 @@ const handleExport = data => {
   margin-bottom: 18px;
   font-size: 24px;
   font-weight: bold;
+}
+
+/* 标题行：英文等长文案放不下时自动换行，离职按钮始终右上角 */
+.title-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.title-row :deep(.el-tooltip__trigger) {
+  flex-shrink: 0;
+}
+
+.title-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  min-width: 0;
+}
+
+.title-text {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* 团建经费开关组：整体作为一个单元，空间不足时整块换行，不拆行 */
+.fund-toggle {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  white-space: nowrap;
 }
 
 /* 标题栏“团建经费”开关 */
@@ -624,11 +674,15 @@ const handleExport = data => {
 }
 
 .employee-items {
-  flex: 1;
+  position: relative;
+  flex: 1 1 calc(100vh - 210px);
   min-height: 0;
-  max-height: calc(100vh - 210px);
-  padding-bottom: 60px;
-  overflow-y: auto;
+  overflow: hidden;
+}
+
+/* 虚拟滚动树：宽度撑满，内部滚动 */
+.employee-tree-v2 {
+  width: 100%;
 }
 
 .employee-item {
@@ -659,55 +713,26 @@ const handleExport = data => {
 <style scoped>
 .custom-tree-node {
   display: flex;
-  flex: 1;
+  flex: 1 0 auto;
   align-items: center;
+  height: 26px;
   padding-right: 8px;
   font-size: 14px;
 }
 
-/* 员工节点整体：姓名行 + 月度经费方块行 */
+/* 员工节点整体：姓名行 + 月度经费方块行，垂直居中于固定行高内 */
 .employee-tree-node {
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-width: 0;
-}
-
-/* 让树节点根据内容自动撑高（有方块的行更高） */
-:deep(.el-tree-node__content) {
-  height: auto;
-  min-height: 26px;
-}
-
-/* 12 个月度经费方块 */
-.fund-squares {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 0 8px 1px 0;
-  margin-top: 3px;
-}
-
-.fund-square {
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
+  gap: 3px;
   justify-content: center;
-  width: 12px;
-  height: 12px;
-  font-size: 8px;
-  line-height: 1;
-  color: #fff;
-  cursor: default;
-  background: #67c23a;
-  border: 1px solid #67c23a;
-  border-radius: 2px;
+  min-width: 0;
+  height: 100%;
 }
 
-/* 浅灰色 = 该月经费已用（数字用深色，与未用的绿色区分开） */
-.fund-square.used {
-  color: #303133;
-  background: #e4e7ed;
-  border-color: #cfd3d9;
+/* 经费方块样式统一由 fundSquares 子组件维护，这里只留树内间距 */
+.fund-squares-wrap {
+  margin-top: 3px;
 }
 </style>

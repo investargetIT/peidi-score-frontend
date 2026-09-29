@@ -59,7 +59,14 @@
     "searchPlaceholder": "Search employees (comma-separated for multiple)",
     "department": "Department",
     "fundToggle": "Team Building Funds",
-    "fundToggleTip": "Only available for Peidi Innovation (Hangzhou) Pet Technology Co., Ltd."
+    "fundToggleTip": "Only available for Peidi Innovation (Hangzhou) Pet Technology Co., Ltd.",
+    "fundLegend": "Gray = fund used for that month, Green = not used; hover a square to see monthly details."
+  },
+  "fund": {
+    "monthSuffix": "",
+    "expense": "Fund",
+    "used": "used",
+    "unused": "unused"
   },
   "monitor": {
     "manage": "Manage Points",

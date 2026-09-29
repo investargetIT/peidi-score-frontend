@@ -186,3 +186,45 @@ export const getDepartmentDetail = (params: { deptId: string }) => {
     params
   });
 };
+
+// ============ 月度经费：团建费归属查询（按人聚合） ============
+// GET /attendance/teamBuilding/expenses
+// 请求参数: { year?: number }
+// 响应示例: [{ userName: "string", userId: 0, filingDates: ["yyyy-MM", ...] }]
+// 前端转成 { userId: boolean[12] }，下标 0~11 对应 1~12 月，true=该月经费已用
+// 团建费接口域名：生产走 user.peidigroup.cn，测试环境走 http://12.18.1.36:8080
+const teamBuildingUrlApi = (url: string) => {
+  return commonUrlApi(url);
+  // return `http://12.18.1.36:8080${url}`;
+};
+
+export const getMonthlyFundUsage = async (
+  _userIds: string[],
+  year?: number
+): Promise<Record<string, boolean[]>> => {
+  const targetYear = year || new Date().getFullYear();
+  const res = await http.request(
+    "get",
+    teamBuildingUrlApi("/attendance/teamBuilding/expenses"),
+    { params: { year: targetYear } }
+  );
+  const result: Record<string, boolean[]> = {};
+  if (res?.code === 200 && Array.isArray(res?.data)) {
+    (
+      res.data as {
+        userId?: number | string;
+        userName?: string;
+        filingDates?: string[];
+      }[]
+    ).forEach(item => {
+      if (item.userId == null) return;
+      const months = Array.from({ length: 12 }, () => false);
+      (item.filingDates || []).forEach(dateStr => {
+        const [y, m] = String(dateStr).split("-").map(Number);
+        if (y === targetYear && m >= 1 && m <= 12) months[m - 1] = true;
+      });
+      result[String(item.userId)] = months;
+    });
+  }
+  return result;
+};

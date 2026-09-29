@@ -73,6 +73,12 @@
                     <div class="score-value">{{ emp.hireDate }}</div>
                   </div>
                 </div>
+                <!-- 月度经费方块：随左侧“团建经费”开关联动，仅杭州基地员工显示 -->
+                <FundSquares
+                  v-if="showFundSquares && isHangzhouEmployee(emp)"
+                  class="card-fund-squares"
+                  :monthsUsed="emp.monthsUsed"
+                />
               </div>
               <div class="self-baseline multi-card-actions">
                 <el-tooltip
@@ -356,6 +362,7 @@ import { ElMessage } from "element-plus";
 import Avatar from "@/assets/user.jpg";
 import { storageLocal } from "@pureadmin/utils";
 import dayjs from "dayjs";
+import FundSquares from "./components/fundSquares/index.vue";
 
 const { t } = useI18n();
 const pointRuleList = ref([]);
@@ -370,7 +377,8 @@ const props = defineProps({
   fetchUserListData: Function,
   setSelectedEmployee: Function,
   modelValue: Array,
-  backEmployees: Array
+  backEmployees: Array,
+  showFundSquares: Boolean // 左侧“团建经费”开关状态
 });
 const checkedIds = ref(props.modelValue ? [...props.modelValue] : []);
 
@@ -644,6 +652,9 @@ const dialogTargetNames = computed(() => {
 //#region 员工卡片排序（与左侧员工树一致：杭州基地优先 → 基地拼音 → 员工拼音）
 const HANGZHOU_SITE = "佩蒂智创（杭州）宠物科技有限公司";
 const DEFAULT_SITE_LABEL = "未设置基地";
+// 是否杭州基地员工（月度经费方块仅该基地展示）
+const isHangzhouEmployee = emp =>
+  !!emp && (emp.site || DEFAULT_SITE_LABEL) === HANGZHOU_SITE;
 const pinyinKey = label =>
   ((label || "") + "").normalize("NFD").replace(/[̀-ͯ]/g, "");
 const compareEmployeeCards = (a, b) => {
@@ -949,21 +960,42 @@ fetchEducationEnum();
 }
 
 .info-card .employee-scores {
-  gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 12px;
+  width: 100%;
   margin-top: 6px;
+}
+
+.info-card .score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
 }
 
 .info-card .score-label {
   margin-bottom: 0;
   font-size: 11px;
+  line-height: 1.4;
+  color: #888;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .info-card .score-value {
   font-size: 15px;
+  white-space: nowrap;
 }
 
 .info-card .employee-avatar {
   flex-shrink: 0;
+}
+
+/* 信息卡内的月度经费方块：顶开一行直排，随左侧开关联动 */
+.info-card .card-fund-squares {
+  padding: 0;
+  margin-top: 8px;
 }
 
 /* 信息卡右下操作区：编辑 + 加分（移除已独立到右上角） */

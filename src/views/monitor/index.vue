@@ -20,6 +20,7 @@
                 v-model="selectedEmployeeIds"
                 @select="selectEmployee"
                 @resign="resignEmployee"
+                @update:showFundSquares="showFundSquares = $event"
               />
               <ManageScore
                 :employee="selectedEmployee"
@@ -28,6 +29,7 @@
                 @setSelectedEmployee="selectEmployee"
                 v-model="selectedEmployeeIds"
                 :backEmployees="backEmployees"
+                :showFundSquares="showFundSquares"
               />
             </div>
           </div>
@@ -90,9 +92,9 @@ import {
   getUserList,
   getFileDownLoadPath,
   getEnumTypeList,
-  deleteUser,
-  getMonthlyFundUsage
+  deleteUser
 } from "@/api/pmApi.ts";
+import { getMonthlyFundUsage } from "@/api/user.ts";
 import { storageLocal } from "@pureadmin/utils";
 import OperationHistory from "./OperationHistory.vue";
 import { isSiteHangzhou } from "@/router/index";
@@ -110,6 +112,8 @@ const employees = ref([]);
 const backEmployees = ref([]);
 const avatarUrls = ref({});
 const selectValue = ref("");
+// 左侧"团建经费"开关状态，联动右侧管理积分卡片是否展示经费方块
+const showFundSquares = ref(false);
 // 移除重复的过滤逻辑，让子组件自己处理过滤
 function selectEmployee(emp) {
   // 只高亮，不影响多选

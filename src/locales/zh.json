@@ -58,7 +58,14 @@
     "searchPlaceholder": "搜索员工（逗号分隔，支持多人）",
     "department": "部门",
     "fundToggle": "团建经费",
-    "fundToggleTip": "仅佩蒂智创（杭州）宠物科技有限公司有该功能"
+    "fundToggleTip": "仅佩蒂智创（杭州）宠物科技有限公司有该功能。",
+    "fundLegend": "灰色=该月团建经费已使用，绿色=未使用；鼠标悬停可查看每月明细"
+  },
+  "fund": {
+    "monthSuffix": "月",
+    "expense": "经费",
+    "used": "已用",
+    "unused": "未用"
   },
   "monitor": {
     "manage": "管理积分",

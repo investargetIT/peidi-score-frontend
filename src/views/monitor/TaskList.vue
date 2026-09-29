@@ -1,46 +1,56 @@
 <template>
   <el-card class="exchange-history-card">
     <div class="exchange-title">员工任务</div>
-    <el-form :model="searchForm" inline>
-      <el-form-item label="员工" prop="fullName">
-        <el-select
-          style="width: 240px"
-          v-model="searchForm.fullName"
-          clearable
-          placeholder="请选择员工"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="状态" prop="hasReview">
-        <el-select
-          style="width: 240px"
-          v-model="searchForm.hasReview"
-          clearable
-          placeholder="请选择状态"
-        >
-          <el-option
-            v-for="item in statusList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleSearch">查询</el-button>
-        <el-button @click="handleReset">重置</el-button>
-      </el-form-item>
-    </el-form>
+
+    <!-- 说明条 -->
+    <div class="history-sub-bar">
+      <div class="bar-tip">{{ taskTip }}</div>
+    </div>
+
+    <!-- 筛选工具栏 -->
+    <div class="filter-bar">
+      <el-form :model="searchForm" inline>
+        <el-form-item label="员工" prop="fullName">
+          <el-select
+            style="width: 240px"
+            v-model="searchForm.fullName"
+            clearable
+            placeholder="请选择员工"
+          >
+            <el-option
+              v-for="item in userList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态" prop="hasReview">
+          <el-select
+            style="width: 240px"
+            v-model="searchForm.hasReview"
+            clearable
+            placeholder="请选择状态"
+          >
+            <el-option
+              v-for="item in statusList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch">查询</el-button>
+          <el-button @click="handleReset">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
     <el-table
       :data="filteredExchangeList"
       class="exchange-table no-border-table"
       header-row-class-name="exchange-header"
+      stripe
     >
       <template #empty>
         <div
@@ -54,32 +64,28 @@
           暂无数据
         </div>
       </template>
-      <el-table-column prop="fullName" label="员工">
+      <el-table-column prop="fullName" label="员工" min-width="140">
         <template #default="scope">
-          <div class="flex gap-2 items-center">
-            <el-avatar
-              :size="32"
-              :src="scope.row.avatarUrl || Avatar"
-              style="margin-right: 12px"
-            />
-            <span>{{ scope.row.fullName }}</span>
+          <div class="item-cell">
+            <el-avatar :size="28" :src="scope.row.avatarUrl || Avatar" />
+            <span class="emp-name">{{ scope.row.fullName }}</span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="截止时间">
+      <el-table-column label="截止时间" align="center" width="180">
         <template #default="scope">
-          <div class="flex items-center gap-1">
+          <div class="due-cell">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              width="14"
+              height="14"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="text-gray-500"
+              class="due-icon"
             >
               <path d="M8 2v4"></path>
               <path d="M16 2v4"></path>
@@ -90,77 +96,71 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="状态" align="center" width="130">
         <template #default="scope">
           <!-- 已归档状态 -->
-          <div
+          <span
             v-if="scope.row.hasArchiving"
-            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-gray-100 text-gray-800"
+            class="status-pill status-archived"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              stroke-width="2.5"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="h-4 w-4"
             >
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
-            <span class="ml-1">已归档</span>
-          </div>
+            <span>已归档</span>
+          </span>
           <!-- 已审核状态 -->
-          <div
+          <span
             v-else-if="scope.row.hasReview"
-            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-green-100 text-green-800"
+            class="status-pill status-approved"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              stroke-width="2.5"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="h-4 w-4"
             >
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
-            <span class="ml-1">已审核</span>
-          </div>
+            <span>已审核</span>
+          </span>
           <!-- 待审核状态 -->
-          <div
-            v-else
-            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-orange-100 text-orange-800"
-          >
+          <span v-else class="status-pill status-pending">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              stroke-width="2.5"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="h-4 w-4"
             >
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
-            <span class="ml-1">待审核</span>
-          </div>
+            <span>待审核</span>
+          </span>
         </template>
       </el-table-column>
-      <el-table-column label="进度">
+      <el-table-column label="进度" align="center" width="220">
         <template #default="scope">
           <div class="progress-container">
             <el-progress
@@ -175,46 +175,45 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="500">
+      <el-table-column label="操作" width="300" align="center">
         <template #default="scope">
-          <div class="flex items-center gap-2">
+          <div class="op-actions">
             <button
               v-if="!scope.row.hasReview && !scope.row.hasArchiving"
               @click="handleArchive(scope.row)"
-              class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-gray-600 hover:bg-gray-700"
+              class="btn-action btn-archive"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="#fff"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 4.222v15.556C4 21.005 5.023 22 6.286 22h11.428C18.977 22 20 21.005 20 19.778V8.444a2 2 0 0 0-2-2H6.286C5.023 6.444 4 5.45 4 4.222m0 0C4 2.995 5.023 2 6.286 2h9.143c1.262 0 2.285.995 2.285 2.222v2.222"
-                />
-              </svg>
-              归档
-            </button>
-            <button
-              @click="handleShowDetails(scope.row)"
-              class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-input hover:bg-accent hover:text-accent-foreground border h-9 rounded-md px-3"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
+                width="13"
+                height="13"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-eye h-4 w-4"
+              >
+                <path d="M21 8V21H3V8"></path>
+                <rect width="18" height="4" x="3" y="3" rx="1"></rect>
+                <path d="M10 12h4"></path>
+              </svg>
+              归档
+            </button>
+            <button
+              @click="handleShowDetails(scope.row)"
+              class="btn-action btn-view"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
@@ -224,19 +223,18 @@
             <button
               v-if="canApproveTask(scope.row)"
               @click="handleApprove(scope.row)"
-              class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-9 rounded-md px-3 bg-green-600 hover:bg-green-700"
+              class="btn-action btn-pass"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
+                width="13"
+                height="13"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="2.5"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-check h-4 w-4"
               >
                 <path d="M20 6 9 17 4 12"></path>
               </svg>
@@ -416,25 +414,18 @@
       </div>
 
       <!-- 整体审核按钮 -->
-      <div
-        class="flex justify-center pt-4 border-t"
-        v-if="canApproveTask(selectedTask)"
-      >
-        <button
-          @click="handleTaskApproval"
-          class="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground h-11 rounded-md px-8 bg-green-600 hover:bg-green-700"
-        >
+      <div class="approval-footer" v-if="canApproveTask(selectedTask)">
+        <button @click="handleTaskApproval" class="btn-approve-footer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
+            stroke-width="2.5"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="lucide lucide-check h-5 w-5 mr-2"
           >
             <path d="M20 6 9 17l-5-5"></path>
           </svg>
@@ -459,6 +450,8 @@ import Avatar from "@/assets/user.jpg";
 
 const exchangeList = ref([]);
 const filteredExchangeList = ref([]);
+const taskTip =
+  "管理员工学习任务的进度与审核：可按员工、状态筛选；员工答题全部完成后可查看详情、审核通过或归档。";
 const isTaskDialogOpen = ref(false);
 const selectedTask = ref(null);
 const dialogImageUrl = ref("");
@@ -741,11 +734,21 @@ const handleApprove = async row => {
 const handleArchive = async row => {
   if (!row) return;
 
-  ElMessageBox.confirm("确认归档该任务吗？", "请确认", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
-    type: "warning"
-  })
+  ElMessageBox.confirm(
+    `<div>
+      <div>确认归档该任务吗？</div>
+      <div style="margin-top:10px;color:#e6a23c;font-weight:600;line-height:1.6">⚠️ 此操作不可撤销，请勿乱点！确认无误后再操作。</div>
+    </div>`,
+    "❗归档确认",
+    {
+      confirmButtonText: "确认",
+      cancelButtonText: "取消",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonClass: "el-button--danger",
+      dangerouslyUseHTMLString: true
+    }
+  )
     .then(async () => {
       try {
         // 解析当前任务的qa数据
@@ -870,33 +873,234 @@ onMounted(() => {
 <style scoped>
 .exchange-history-card {
   padding: 32px 32px 24px;
+  background: #fff;
   border-radius: 16px;
+  box-shadow: 0 2px 8px 0 #e5e6eb;
 }
 
 .exchange-title {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   font-size: 28px;
   font-weight: bold;
 }
 
-.exchange-table {
-  width: 100%;
-  font-size: 18px;
-}
-
-.exchange-header th {
-  font-size: 18px;
-  font-weight: bold !important;
-  background: #fff !important;
-}
-
-.item-cell {
+/* 说明条 */
+.history-sub-bar {
   display: flex;
   align-items: center;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  background: #f7f8fa;
+  border-radius: 10px;
+}
+
+.bar-tip {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #606266;
+}
+
+/* 筛选工具栏 */
+.filter-bar {
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  background: #fafbfc;
+  border: 1px solid #f0f1f3;
+  border-radius: 12px;
+}
+
+.filter-bar :deep(.el-form-item) {
+  margin-bottom: 0;
 }
 
 .el-form-item__label {
   justify-content: flex-start;
+}
+
+.exchange-table {
+  width: 100%;
+  font-size: 14px;
+}
+
+/* 紧凑行高与单元格内边距 */
+.exchange-table :deep(th.el-table__cell),
+.exchange-table :deep(td.el-table__cell) {
+  padding: 7px 0;
+}
+
+.exchange-table :deep(.el-table__row) {
+  height: 52px;
+}
+
+/* 斑马纹 */
+.exchange-table :deep(.el-table__row--striped td.el-table__cell) {
+  background: #f7f8fa !important;
+}
+
+.exchange-header th {
+  font-size: 15px;
+  font-weight: bold !important;
+  background: #fff !important;
+}
+
+/* 员工列 */
+.item-cell {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.emp-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #303133;
+}
+
+/* 截止时间列 */
+.due-cell {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.due-icon {
+  color: #909399;
+}
+
+/* 状态徽章 */
+.status-pill {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  border-radius: 999px;
+}
+
+.status-approved {
+  color: #16a34a;
+  background: #dcfce7;
+}
+
+.status-pending {
+  color: #d97706;
+  background: #ffedd5;
+}
+
+.status-archived {
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+/* 操作按钮 */
+.op-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.btn-action svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+.btn-action:hover {
+  transform: translateY(-1px);
+}
+
+.btn-pass {
+  color: #fff;
+  background: #059669;
+  border-color: #059669;
+}
+
+.btn-pass:hover {
+  background: #047857;
+  border-color: #047857;
+  box-shadow: 0 2px 6px rgb(5 150 105 / 40%);
+}
+
+.btn-archive {
+  color: #4b5563;
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.btn-archive:hover {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.btn-view {
+  color: #2563eb;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.btn-view:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+/* 详情弹窗底部审核按钮 */
+.approval-footer {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 4px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-approve-footer {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 28px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #059669;
+  border: 1px solid #059669;
+  border-radius: 8px;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.btn-approve-footer:hover {
+  background: #047857;
+  border-color: #047857;
+  box-shadow: 0 2px 8px rgb(5 150 105 / 40%);
+  transform: translateY(-1px);
 }
 
 .no-border-table ::v-deep .el-table__cell,
@@ -908,126 +1112,6 @@ onMounted(() => {
 
 .no-border-table ::v-deep tr {
   background: #fff;
-}
-
-/* 自定义状态样式 */
-.inline-flex {
-  display: inline-flex;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.rounded-full {
-  border-radius: 9999px;
-}
-
-.border {
-  border-width: 1px;
-}
-
-.border-transparent {
-  border-color: transparent;
-}
-
-.px-2\.5 {
-  padding-right: 0.625rem;
-  padding-left: 0.625rem;
-}
-
-.py-0\.5 {
-  padding-top: 0.125rem;
-  padding-bottom: 0.125rem;
-}
-
-.text-xs {
-  font-size: 0.75rem;
-  line-height: 1rem;
-}
-
-.font-semibold {
-  font-weight: 600;
-}
-
-.transition-colors {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke;
-}
-
-.bg-blue-100 {
-  background-color: #dbeafe;
-}
-
-.text-blue-800 {
-  color: #1e40af;
-}
-
-.bg-yellow-100 {
-  background-color: #fef3c7;
-}
-
-.text-yellow-800 {
-  color: #92400e;
-}
-
-.bg-gray-100 {
-  background-color: #f3f4f6;
-}
-
-.text-gray-800 {
-  color: #1f2937;
-}
-
-.bg-green-100 {
-  background-color: #dcfce7;
-}
-
-.text-green-800 {
-  color: #166534;
-}
-
-.bg-orange-100 {
-  background-color: #fed7aa;
-}
-
-.text-orange-800 {
-  color: #9a3412;
-}
-
-.h-4 {
-  height: 1rem;
-}
-
-.w-4 {
-  width: 1rem;
-}
-
-.ml-1 {
-  margin-left: 0.25rem;
-}
-
-.focus\:outline-none:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.focus\:ring-2:focus {
-  box-shadow: 0 0 0 2px rgb(59 130 246 / 50%);
-}
-
-.focus\:ring-ring:focus {
-  --tw-ring-color: #3b82f6;
-}
-
-.focus\:ring-offset-2:focus {
-  --tw-ring-offset-width: 2px;
-}
-
-.hover\:bg-primary\/80:hover {
-  background-color: rgb(59 130 246 / 80%);
 }
 
 /* 进度条样式 */
@@ -1410,94 +1494,6 @@ onMounted(() => {
   font-size: 14px;
   font-style: italic;
   color: #6b7280;
-}
-
-/* 审核按钮样式 */
-.flex {
-  display: flex;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.pt-4 {
-  padding-top: 1rem;
-}
-
-.border-t {
-  border-top: 1px solid #e5e7eb;
-}
-
-.gap-2 {
-  gap: 0.5rem;
-}
-
-.whitespace-nowrap {
-  white-space: nowrap;
-}
-
-.text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-
-.font-medium {
-  font-weight: 500;
-}
-
-.h-11 {
-  height: 2.75rem;
-}
-
-.rounded-md {
-  border-radius: 0.375rem;
-}
-
-.px-8 {
-  padding-right: 2rem;
-  padding-left: 2rem;
-}
-
-.bg-green-600 {
-  background-color: #059669;
-}
-
-.hover\:bg-green-700:hover {
-  background-color: #047857;
-}
-
-.text-primary-foreground {
-  color: #fff;
-}
-
-.h-5 {
-  height: 1.25rem;
-}
-
-.w-5 {
-  width: 1.25rem;
-}
-
-.mr-2 {
-  margin-right: 0.5rem;
-}
-
-.focus-visible\:outline-hidden:focus-visible {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.focus-visible\:ring-2:focus-visible {
-  box-shadow: 0 0 0 2px rgb(59 130 246 / 50%);
-}
-
-.disabled\:pointer-events-none:disabled {
-  pointer-events: none;
-}
-
-.disabled\:opacity-50:disabled {
-  opacity: 0.5;
 }
 
 /* 图片预览弹窗样式 */
