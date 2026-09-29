@@ -42,7 +42,7 @@ import suplierIcon from "../assets/png/suplierIcon.png";
  * 如何排除文件请看：https://cn.vitejs.dev/guide/features.html#negative-patterns
  */
 const modules: Record<string, any> = import.meta.glob(
-  ["./modules/**/*.ts", "!./modules/**/error.ts", "!./modules/**/remaining.ts"],
+  ["./modules/**/*.ts", "!./modules/**/remaining.ts"],
   {
     eager: true
   }
@@ -136,7 +136,7 @@ const routes = [
         }
       }
     ]
-  },
+  }
   // {
   //   path: "/redeem",
   //   name: "RedeemLayout",
@@ -209,59 +209,7 @@ const routes = [
   //     }
   //   ]
   // },
-  {
-    path: "/esg",
-    name: "EsgLayout",
-    redirect: "/esg/index",
-    component: Layout,
-    meta: {
-      icon: "ep:data-analysis",
-      title: t("menu.esg"),
-      rank: 99,
-      // showLink: isEsgAdmin()
-      showLink: false
-    },
-    children: [
-      {
-        path: "/esg/index",
-        name: "esg",
-        component: () => import("@/views/esg/index.vue"),
-        meta: {
-          title: t("menu.esg"),
-          showParent: false,
-          icon: "ep:data-analysis"
-        }
-      }
-    ]
-  }
 ];
-
-// ESG 管理员路由
-// if (isEsgAdmin()) {
-//   routes.push({
-//     path: "/esg",
-//     name: "EsgLayout",
-//     redirect: "/esg/index",
-//     component: Layout,
-//     meta: {
-//       icon: "ep:data-analysis",
-//       title: t("menu.esg"),
-//       rank: 0
-//     },
-//     children: [
-//       {
-//         path: "/esg/index",
-//         name: "esg",
-//         component: () => import("@/views/esg/index.vue"),
-//         meta: {
-//           title: t("menu.esg"),
-//           showParent: false,
-//           icon: "ep:data-analysis"
-//         }
-//       }
-//     ]
-//   });
-// }
 
 // 系统管理员路由
 // if (isAdmin()) {

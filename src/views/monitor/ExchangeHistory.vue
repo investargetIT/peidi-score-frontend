@@ -518,6 +518,92 @@ const handleBatchPass = () => {
 </script>
 
 <style scoped>
+
+
+/* ===== 移动端适配 ===== */
+@media screen and (width <= 768px) {
+  .exchange-history-card {
+    padding: 16px 12px 12px;
+  }
+
+  .exchange-title {
+    margin-bottom: 16px;
+    font-size: 20px;
+  }
+
+  .history-sub-bar {
+    padding: 12px 14px;
+  }
+
+  /* 筛选表单纵向堆叠 */
+  .filter-bar {
+    align-items: stretch;
+    padding: 12px;
+  }
+
+  .filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-form :deep(.el-form-item) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .filter-form :deep(.el-form-item__content) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .filter-form :deep(.el-input),
+  .filter-form :deep(.el-select) {
+    width: 100% !important;
+  }
+
+  .filter-form :deep(.el-button) {
+    flex: 1;
+    margin-left: 0;
+  }
+
+  /* 右侧批量操作区换行适配 */
+  .filter-actions {
+    width: 100%;
+  }
+
+  .filter-actions :deep(.el-space) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-actions :deep(.el-space__item) {
+    flex: 1;
+  }
+
+  /* 分页区域换行居中，避免横向撑破 */
+  .flex.justify-end {
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    overflow-x: auto;
+  }
+
+  .flex.justify-end :deep(.el-pagination) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 .exchange-history-card {
   padding: 32px 32px 24px;
   background: #fff;

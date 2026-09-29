@@ -175,7 +175,7 @@
   <el-dialog
     v-model="dialogVisible"
     :title="t('monitor.confirmChangeTitle')"
-    width="420px"
+    width="min(420px, 92vw)"
     :close-on-click-modal="false"
   >
     <div>
@@ -233,7 +233,7 @@
   <el-dialog
     v-model="singleDialogVisible"
     :title="t('monitor.singleAddPoints')"
-    width="440px"
+    width="min(440px, 92vw)"
     :close-on-click-modal="false"
   >
     <div class="single-target-line">
@@ -301,7 +301,7 @@
   <el-dialog
     v-model="infoDialogVisible"
     :title="t('monitor.adjustInfo')"
-    width="420px"
+    width="min(420px, 92vw)"
     :close-on-click-modal="false"
   >
     <el-form
@@ -771,6 +771,57 @@ fetchEducationEnum();
 </script>
 
 <style scoped>
+
+
+/* 移动端：管理积分卡片收窄 */
+@media screen and (width <= 768px) {
+  .manage-score {
+    padding: 16px 12px 20px;
+  }
+
+  .manage-title {
+    font-size: 20px;
+  }
+
+  .score-employee-box {
+    padding: 24px 0 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 单人信息卡：收紧间距，防止横向溢出 */
+  .employee-info-card {
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .employee-name {
+    font-size: 22px;
+  }
+
+  .employee-email {
+    font-size: 14px;
+  }
+
+  /* 分数四宫格换行，不再一排挤爆 */
+  .employee-scores {
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+
+  .score-value {
+    font-size: 20px;
+  }
+
+  .selected-count {
+    font-size: 16px;
+  }
+}
+
 .manage-score {
   display: flex;
   flex: 1 1 0;

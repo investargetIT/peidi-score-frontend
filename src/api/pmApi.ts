@@ -50,6 +50,11 @@ const baseUrlApiDev = (url: string, hasUi = true) => {
 
 const commonUrlApi = (url: string) => `${"https://user.peidigroup.cn"}${url}`;
 
+// 部门组织架构树（user.peidigroup.cn 域名）
+export const getDeptTree = () => {
+  return http.request("get", commonUrlApi("/attendance/dept/tree"));
+};
+
 // 获取业务单元
 
 export const omsGetShops = params => {

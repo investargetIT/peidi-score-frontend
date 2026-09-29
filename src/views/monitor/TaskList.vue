@@ -871,6 +871,64 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+
+/* ===== 移动端适配 ===== */
+@media screen and (width <= 768px) {
+  .exchange-history-card {
+    padding: 16px 12px 12px;
+  }
+
+  .exchange-title {
+    margin-bottom: 16px;
+    font-size: 20px;
+  }
+
+  .history-sub-bar {
+    padding: 12px 14px;
+  }
+
+  /* 筛选表单纵向堆叠，控件全宽 */
+  .filter-bar {
+    padding: 12px;
+  }
+
+  .filter-bar :deep(.el-form-item) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .filter-bar :deep(.el-form-item__content) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .filter-bar :deep(.el-select) {
+    width: 100% !important;
+  }
+
+  .filter-bar :deep(.el-button) {
+    flex: 1;
+    margin-left: 0;
+  }
+
+  /* 操作按钮允许换行 */
+  .op-actions {
+    flex-wrap: wrap;
+  }
+
+  /* 详情弹窗贴近屏幕 */
+  .task-detail-dialog {
+    width: 92vw !important;
+  }
+}
+
 .exchange-history-card {
   padding: 32px 32px 24px;
   background: #fff;

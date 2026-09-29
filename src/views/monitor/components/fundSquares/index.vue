@@ -37,12 +37,17 @@ const props = defineProps({
 </script>
 
 <style scoped>
-/* 12 个月度经费方块（el-tag 去除默认边距，压成小方块） */
+/* 12 个月度经费方块：width:100% 保证容器宽度确定；
+   宽度够 → 14px×12 单行；缩进过深放不下 → flex-wrap 按实际可用宽度自动换行，不会横向挤出
+   （el-tag 去除默认边距，压成 14px 小方块） */
 .fund-squares {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
-  padding: 0 8px 1px 0;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0 4px 0 0;
 }
 
 /* 未使用：绿色方块 */
@@ -50,16 +55,16 @@ const props = defineProps({
   --el-tag-bg-color: #67c23a;
   --el-tag-border-color: #67c23a;
   --el-tag-text-color: #fff;
-  --el-tag-height: 16px;
+  --el-tag-height: 14px;
 
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 2px;
+  width: 14px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 1px;
   margin: 0;
   font-size: 10px;
   line-height: 1;

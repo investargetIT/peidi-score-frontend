@@ -4,7 +4,12 @@
       <!-- 页面头部 -->
       <div class="task-header">
         <h1 class="task-title">
-          {{ `员工任务 - ${employeeName || employeeNameFromDataSource}` }}
+          <span class="task-title-icon">
+            <el-icon><Trophy /></el-icon>
+          </span>
+          <span>{{
+            `员工任务 - ${employeeName || employeeNameFromDataSource}`
+          }}</span>
         </h1>
         <div class="task-meta" v-if="!shouldShowEmptyState">
           <div class="meta-item">
@@ -16,6 +21,13 @@
               {{ getStatusText(computedTaskStatus) }}
             </el-tag>
           </div>
+        </div>
+      </div>
+
+      <!-- 说明条 -->
+      <div class="task-sub-bar">
+        <div class="bar-tip">
+          完成任务提交后等待审核，即可获得对应难度积分；教育信息完善后可获得学历积分。
         </div>
       </div>
 
@@ -40,7 +52,7 @@
         class="overdue-alert"
       />
 
-      <div style="margin-bottom: 25px" v-if="!shouldShowEmptyState">
+      <div class="task-education-wrap" v-if="!shouldShowEmptyState">
         <div class="question-card">
           <el-card
             :class="{
@@ -80,7 +92,7 @@
                     <el-select
                       v-model="educationAnswer"
                       placeholder="请选择您的学历"
-                      style="max-width: 240px"
+                      class="education-select"
                       :disabled="isTaskOverdue || curQaInfo?.hasReview"
                       @change="handleEducationChange"
                     >
@@ -127,8 +139,9 @@
             <div class="stats-progress">
               <el-progress
                 :percentage="beginnerStats.percentage"
-                :stroke-width="6"
-                :show-text="false"
+                :stroke-width="8"
+                :show-text="true"
+                :format="p => p + '%'"
                 color="#67C23A"
               />
             </div>
@@ -180,8 +193,9 @@
             <div class="stats-progress">
               <el-progress
                 :percentage="intermediateStats.percentage"
-                :stroke-width="6"
-                :show-text="false"
+                :stroke-width="8"
+                :show-text="true"
+                :format="p => p + '%'"
                 color="#E6A23C"
               />
             </div>
@@ -233,8 +247,9 @@
             <div class="stats-progress">
               <el-progress
                 :percentage="advancedStats.percentage"
-                :stroke-width="6"
-                :show-text="false"
+                :stroke-width="8"
+                :show-text="true"
+                :format="p => p + '%'"
                 color="#F56C6C"
               />
             </div>
@@ -282,8 +297,7 @@
             v-if="isNeedFill16PF"
             :src="getRecruitmentUrl()"
             frameborder="0"
-            width="100%"
-            height="700px"
+            class="recruitment-frame"
           ></iframe>
         </div>
 
@@ -450,7 +464,7 @@
         </div>
       </div>
     </div>
-    <el-dialog v-model="dialogVisible">
+    <el-dialog v-model="dialogVisible" width="min(92vw, 500px)">
       <img w-full :src="dialogImageUrl" alt="Preview Image" />
     </el-dialog>
   </div>
@@ -1250,7 +1264,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 移动端适配 */
+
 @media screen and (width <= 768px) {
   .employee-task-container {
     padding: 20px 20px 0;
@@ -1396,6 +1410,86 @@ onMounted(() => {
   .question-title-short {
     font-size: 12px;
   }
+
+  /* ===== 追加移动端优化 ===== */
+
+  /* 收窄根元素外边距（.main-content 即本页根）。注意：布局里同名的
+     .main-content { margin: 24px } 特异性相同，级联顺序不稳定，
+     必须用 !important 才能保证覆盖生效，且仅作用于本页根元素 */
+  .main-content {
+    margin: 10px 4px 14px !important;
+  }
+
+  .employee-task-container {
+    padding: 0;
+  }
+
+  .task-header {
+    margin-bottom: 20px;
+  }
+
+  .task-title {
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
+
+  .task-meta {
+    gap: 10px;
+  }
+
+  .meta-item {
+    font-size: 13px;
+  }
+
+  .task-meta :deep(.el-tag) {
+    height: 22px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .completion-alert,
+  .overdue-alert {
+    margin-bottom: 20px;
+  }
+
+  /* 学历下拉在移动端改为整宽 */
+  .education-select {
+    width: 100%;
+    max-width: none;
+  }
+
+  .answer-section {
+    margin-top: 14px;
+  }
+
+  .answer-input-container,
+  .attachments-section {
+    margin-bottom: 14px;
+  }
+
+  .submit-section {
+    padding-top: 12px;
+  }
+
+  /* 保存按钮整宽，便于拇指操作 */
+  .save-answer-btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* 16PF 表单 iframe 高度按屏幕自适应 */
+  .recruitment-frame {
+    height: calc(100vh - 220px);
+    min-height: 420px;
+  }
+
+  .question-card .el-card {
+    border-radius: 10px;
+  }
+
+  .question-title {
+    font-size: 13px;
+  }
 }
 
 /* 额外的移动端适配 - 平板和小屏幕 */
@@ -1409,6 +1503,75 @@ onMounted(() => {
   .stats-card {
     flex: none !important;
     width: 100% !important;
+  }
+}
+
+/* —— 移动端美化覆盖 —— */
+@media screen and (width <= 768px) {
+  .employee-task-container {
+    padding: 18px 14px 20px !important;
+    border-radius: 12px;
+  }
+
+  .task-header {
+    margin-bottom: 16px;
+  }
+
+  .task-title {
+    font-size: 20px;
+  }
+
+  .task-title-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .task-sub-bar {
+    padding: 10px 12px;
+    margin-bottom: 14px;
+  }
+
+  .bar-tip {
+    font-size: 13px;
+  }
+
+  .task-meta {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .meta-item {
+    justify-content: flex-start;
+  }
+
+  .question-info {
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .question-header .completed-icon {
+    margin-top: 2px;
+  }
+
+  .education-select {
+    max-width: none;
+  }
+
+  .question-card .el-card__header {
+    padding: 14px 16px;
+  }
+
+  .question-card .el-card__body {
+    padding: 14px 16px;
+  }
+
+  .stats-card {
+    padding: 16px 20px;
   }
 }
 
@@ -2062,6 +2225,371 @@ onMounted(() => {
 .date-info strong {
   color: #1f2937;
 }
+
+/* 学历下拉：桌面限宽，移动端整宽 */
+.education-select {
+  max-width: 240px;
+}
+
+/* 16PF 表单 iframe：桌面固定 700px，移动端按屏高自适应 */
+.recruitment-frame {
+  display: block;
+  width: 100%;
+  height: 700px;
+  border: 0;
+}
+
+/* =========================================================
+   任务页整体美化（追加覆盖，位于末尾以保证级联优先级）
+   ========================================================= */
+.employee-task-container {
+  box-sizing: border-box;
+  width: auto;
+  padding: 32px 40px 40px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px 0 #e5e6eb;
+}
+
+/* —— 页面头部 —— */
+.task-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.task-title {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.task-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: #fff;
+  background: linear-gradient(135deg, #4facfe, #00c6fb);
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgb(79 172 254 / 35%);
+}
+
+.task-sub-bar {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  background: #f7f8fa;
+  border-radius: 10px;
+}
+
+.bar-tip {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #606266;
+}
+
+/* 头部 meta 胶囊 */
+.task-meta {
+  gap: 12px;
+}
+
+.meta-item {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  background: #f3f4f6;
+  border-radius: 999px;
+}
+
+.meta-item .el-icon {
+  color: #6b7280;
+}
+
+/* —— 教育信息卡片 —— */
+.task-education-wrap {
+  margin-bottom: 20px;
+}
+
+.task-education-wrap .question-card .el-card {
+  background: #f8fbff;
+}
+
+/* —— 难度统计卡片 —— */
+.difficulty-stats-cards {
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.stats-card {
+  padding: 22px 24px;
+  background: #fff;
+  border: 1px solid #f0f1f3;
+  border-top: 4px solid transparent;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 5%);
+}
+
+.beginner-card {
+  border-top-color: #67c23a;
+}
+
+.intermediate-card {
+  border-top-color: #e6a23c;
+}
+
+.advanced-card {
+  border-top-color: #f56c6c;
+}
+
+.stats-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgb(0 0 0 / 8%);
+}
+
+.stats-number {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.beginner-card .stats-number {
+  color: #16a34a;
+}
+
+.intermediate-card .stats-number {
+  color: #d97706;
+}
+
+.advanced-card .stats-number {
+  color: #dc2626;
+}
+
+.stats-progress {
+  margin-top: 14px;
+}
+
+.stats-progress :deep(.el-progress__text) {
+  font-size: 13px !important;
+  font-weight: 600;
+}
+
+/* 统计卡内题目列表 */
+.question-list {
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+.question-item {
+  min-height: 40px;
+  padding: 9px 12px;
+  margin-bottom: 8px;
+  background: #f9fafb;
+  border: 1px solid #f0f1f3;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.question-item:hover {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  transform: translateX(2px);
+}
+
+/* —— 题目主卡片 —— */
+.question-card .el-card {
+  background-color: #fff;
+  border: 1px solid #f0f1f3;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 4%);
+  transition: all 0.25s ease;
+}
+
+.question-card .el-card:hover {
+  box-shadow: 0 6px 20px rgb(0 0 0 / 8%);
+}
+
+.question-card .el-card__header {
+  padding: 18px 24px;
+  background: #fafbfc;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.question-card .el-card__body {
+  padding: 20px 24px;
+  background: transparent;
+}
+
+.answered-card .el-card {
+  background-color: #f6fef9;
+  border-color: #10b981;
+  border-width: 1.5px;
+  box-shadow: 0 2px 12px rgb(16 185 129 / 12%);
+}
+
+.current-card .el-card {
+  background-color: #f5f9ff;
+  border-color: #3b82f6;
+  border-width: 1.5px;
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 12%);
+}
+
+.question-header {
+  margin-bottom: 8px;
+}
+
+.question-info {
+  gap: 10px;
+}
+
+.question-number {
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  background: #eef0f3;
+  border-radius: 6px;
+}
+
+.difficulty-tag,
+.status-tag {
+  font-weight: 600;
+}
+
+.question-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* —— 表单 —— */
+.answer-section {
+  margin-top: 18px;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.education-select {
+  width: 100%;
+  max-width: 240px;
+}
+
+.answer-textarea :deep(.el-textarea__inner) {
+  min-height: 130px;
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #fafbfc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.answer-textarea :deep(.el-textarea__inner):focus {
+  background: #fff;
+  border-color: #4facfe;
+  box-shadow: 0 0 0 3px rgb(79 172 254 / 12%);
+}
+
+/* —— 附件上传 —— */
+.upload-demo :deep(.el-upload-dragger) {
+  padding: 28px 24px;
+  background: #fafbfc;
+  border: 1.5px dashed #d1d5db;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.upload-demo :deep(.el-upload-dragger):hover {
+  background: #f4f9ff;
+  border-color: #4facfe;
+}
+
+.upload-text p {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.select-files-btn {
+  padding: 7px 18px;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.select-files-btn:hover {
+  color: #3b82f6;
+  background: #fff;
+  border-color: #3b82f6;
+}
+
+/* —— 保存按钮 —— */
+.submit-section {
+  padding-top: 16px;
+}
+
+.save-answer-btn {
+  min-width: 140px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #4facfe, #00c6fb);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgb(79 172 254 / 32%);
+  transition: all 0.25s ease;
+}
+
+.save-answer-btn:hover {
+  box-shadow: 0 8px 20px rgb(79 172 254 / 40%);
+  transform: translateY(-1px);
+}
+
+/* —— 提交信息卡 / 空状态 / 提示条 —— */
+.submission-info-card {
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: #f9fafb;
+  border: 1px solid #eef0f3;
+  border-radius: 10px;
+}
+
+.empty-state {
+  background: #fafbfc;
+  border: 1px dashed #e5e7eb;
+  border-radius: 14px;
+}
+
+.completion-alert,
+.overdue-alert {
+  border-radius: 10px;
+}
+
+/* 移动端适配 */
 
 /* 页面容器样式 */
 </style>

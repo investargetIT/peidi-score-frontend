@@ -69,35 +69,7 @@
     </div>
 
     <div ref="treeContainerRef" class="employee-items">
-      <!-- <div
-        v-for="(emp, idx) in filteredEmployees"
-        :key="idx"
-        :class="[
-          'employee-item',
-          checkedIds.includes(emp.id) ? 'selected' : ''
-        ]"
-        @click="handleClick(emp)"
-      >
-        <el-checkbox
-          v-model="checkedIds"
-          :label="emp.id"
-          @change="handleCheck(emp.id)"
-          style="margin-right: 8px"
-          :show-label="false"
-        />
-        <el-avatar
-          :size="40"
-          :src="avatarUrls[emp.id] || Avatar"
-          style="margin-right: 12px"
-        />
-        <div>
-          <div class="employee-name">{{ emp.name }}</div>
-          <div class="employee-dept">
-            {{ t("employee.department") }}: {{ emp.dept }}
-          </div>
-        </div>
-      </div> -->
-
+      <!-- 虚拟滚动树 el-tree-v2：行高全区一致（经费开关时 58px），性能优先 -->
       <el-tree-v2
         :height="treeHeight"
         :item-size="nodeHeight"
@@ -108,6 +80,7 @@
         ref="treeRef"
         :default-checked-keys="checkedIds"
         :default-expanded-keys="expandedOrgIds"
+        :empty-text="emptyTreeText"
         @node-expand="treeHandleExpand"
         @node-collapse="treeHandleCollapse"
         class="employee-tree-v2"
@@ -127,7 +100,26 @@
                   :src="data.avatarUrl || Avatar"
                   style="width: 20px; height: 20px; margin-right: 5px"
                 />
-                <span>{{ node.label }}</span>
+                <el-icon
+                  v-else-if="isCompanyNode(data.id)"
+                  class="company-node-icon"
+                  :size="16"
+                  ><OfficeBuilding
+                /></el-icon>
+                <el-icon
+                  v-else-if="isDeptNode(data.id)"
+                  class="dept-node-icon"
+                  :size="14"
+                  ><Folder
+                /></el-icon>
+                <span
+                  class="tree-node-label"
+                  :class="{
+                    'dept-label': isDeptNode(data.id),
+                    'company-label': isCompanyNode(data.id)
+                  }"
+                  >{{ node.label }}</span
+                >
                 <p
                   v-if="isEmployeeNode(data.id)"
                   class="ml-[5px] text-[#9b9a9a] text-[12px] flex"
@@ -194,10 +186,22 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
+import {
+  ref,
+  watch,
+  computed,
+  nextTick,
+  onMounted,
+  onBeforeUnmount
+} from "vue";
 import { useI18n } from "vue-i18n";
 import Avatar from "@/assets/user.jpg";
-import { QuestionFilled } from "@element-plus/icons-vue";
+import { getDeptTree } from "@/api/pmApi";
+import {
+  QuestionFilled,
+  OfficeBuilding,
+  Folder
+} from "@element-plus/icons-vue";
 import ScoreHistoryExport from "./components/scoreHistoryExport/index.vue";
 import FundSquares from "./components/fundSquares/index.vue";
 const { t } = useI18n();
@@ -206,8 +210,14 @@ const props = defineProps({
   selected: Object,
   avatarUrls: Object,
   search: String,
+  loading: Boolean, // 员工列表正在加载（空态显示加载中文案而非“暂无数据”）
   modelValue: Array // 选中id数组
 });
+
+// 树空态文案：加载中提示加载，加载完成且确实无人才提示“暂无数据”
+const emptyTreeText = computed(() =>
+  props.loading ? t("monitor.dataLoading") : t("table.emptyText")
+);
 const emit = defineEmits([
   "update:search",
   "select",
@@ -239,15 +249,23 @@ const treeRef = ref(null);
 const treeDefaultProps = {
   children: "children",
   label: "label",
-  value: "id"
+  value: "id",
+  // 缩进收窄（16→12→8）：佩蒂深部门少吃横向宽度，14px 经费方块在更深层级仍能单行放下
+  indent: 8
 };
 
 // 虚拟滚动容器：测量可用高度，只渲染视口内节点
+// 经费方块开关开启时：姓名行 24 + 间距 4 + 方块行高（单行 14 / 深缩进换行后两行 30）= 58，取 60 留缓冲，
+// 保证包裹后两行方块不被裁切（el-tree-v2 行高全区一致）。
+// 缩进已收到 8（见 treeDefaultProps.indent），佩蒂深部门少占宽度，
+// 员工叶子行箭头也不再占位（expand-icon.is-leaf display:none），
+// 换行仅在 8 层以上部门才会出现；若实测确认不会换行，后续可将此处回落到 44。
 const treeContainerRef = ref(null);
 const treeHeight = ref(300);
-const nodeHeight = computed(() => (showFundSquares.value ? 48 : 30));
+const nodeHeight = computed(() => (showFundSquares.value ? 60 : 30));
 let treeResizeObserver = null;
 onMounted(() => {
+  loadDeptTree();
   const el = treeContainerRef.value;
   if (!el) return;
   const update = () => {
@@ -261,9 +279,10 @@ onBeforeUnmount(() => {
   treeResizeObserver?.disconnect();
 });
 
-// 节点类型判断：员工树 = 基地(company_) → 员工(无前缀)
+// 节点类型判断：员工树 = 基地(company_) → 部门(dept_) → 员工(无前缀)
 const isCompanyNode = id => !!id && String(id).startsWith("company_");
-const isEmployeeNode = id => !!id && !isCompanyNode(id);
+const isDeptNode = id => !!id && String(id).startsWith("dept_");
+const isEmployeeNode = id => !!id && !isCompanyNode(id) && !isDeptNode(id);
 
 // 是否杭州基地员工：只有该基地的员工显示月度经费方块
 const isHangzhouEmployee = data =>
@@ -304,45 +323,173 @@ const treeData = [
   }
 ];
 
-// 记录已经展开的基地节点
+// 记录已经展开的基地/部门节点
 const expandedOrgIds = ref([]);
 
-// 监听 props.employees 变化，遍历源数据，构造成 基地→员工 的员工树
+// 部门组织架构树（来自 user.peidigroup.cn/attendance/dept/tree）
+// 加载成功 → 基地 → 部门 → 员工 三层结构；失败/为空 → 回退 基地 → 员工 两层结构
+const deptTreeData = ref(null);
+
+// 未分配部门员工的兜底节点名
+const UNASSIGNED_DEPT_LABEL = "未分配部门";
+
+// 部门组织架构树仅挂载到佩蒂智创基地，其他基地保持「基地→员工」平铺展示
+const deptTreeForSite = siteLabel =>
+  siteLabel === HANGZHOU_SITE ? deptTreeData.value : null;
+
+// 收集部门树（或子树）中所有部门 id
+function collectDeptIds(nodes, set = new Set()) {
+  (nodes || []).forEach(node => {
+    if (node && node.deptId !== undefined && node.deptId !== null) {
+      set.add(String(node.deptId));
+    }
+    collectDeptIds(node && node.children, set);
+  });
+  return set;
+}
+
+// 收集一棵子树内全部员工节点（跳过基地/部门节点，递归下钻）
+function collectEmployeeNodes(treeNodes, list = []) {
+  (treeNodes || []).forEach(node => {
+    if (isEmployeeNode(node.id)) {
+      list.push(node);
+    } else if (node && Array.isArray(node.children)) {
+      collectEmployeeNodes(node.children, list);
+    }
+  });
+  return list;
+}
+
+// 构建单个基地节点：基地 → 已裁剪的部门树 → 员工；部门树不可用时直接放员工
+function buildSiteNode(siteLabel, empNodes, deptTree) {
+  const empTree = empNodes || [];
+  const children = [];
+  if (deptTree && deptTree.length > 0) {
+    // 按部门分组：命中部门树的员工挂到对应部门，其余进"未分配部门"
+    const deptIds = collectDeptIds(deptTree);
+    const empByDept = new Map();
+    const unassigned = [];
+    empTree.forEach(empNode => {
+      const dId =
+        empNode.deptId !== undefined && empNode.deptId !== null
+          ? String(empNode.deptId)
+          : "";
+      if (dId && deptIds.has(dId)) {
+        if (!empByDept.has(dId)) empByDept.set(dId, []);
+        empByDept.get(dId).push(empNode);
+      } else {
+        unassigned.push(empNode);
+      }
+    });
+    // 递归裁剪部门树：只保留「本部门」或「后代部门」有员工的节点
+    const pruneDept = node => {
+      const deptKey = String(node.deptId);
+      const hasHere = empByDept.has(deptKey);
+      const prunedChildren = (node.children || [])
+        .map(pruneDept)
+        .filter(Boolean);
+      if (!hasHere && prunedChildren.length === 0) return null;
+      const deptNode = {
+        label: node.deptName || deptKey,
+        // 部门节点 id 带基地前缀，避免多基地下相同 deptId 在新树内 key 冲突
+        id: "dept_" + siteLabel + "_" + deptKey,
+        deptId: node.deptId,
+        children: prunedChildren
+      };
+      if (hasHere) {
+        // 员工挂在部门节点末尾，部门子节点保持部门树的原有顺序
+        deptNode.children = [
+          ...prunedChildren,
+          ...[...empByDept.get(deptKey)].sort(compareByLabelPinyin)
+        ];
+      }
+      return deptNode;
+    };
+    deptTree.forEach(top => {
+      const pruned = pruneDept(top);
+      if (pruned) children.push(pruned);
+    });
+    if (unassigned.length > 0) {
+      children.push({
+        label: UNASSIGNED_DEPT_LABEL,
+        id: "dept_unassigned_" + siteLabel,
+        children: [...unassigned].sort(compareByLabelPinyin)
+      });
+    }
+  } else {
+    children.push(...[...empTree].sort(compareByLabelPinyin));
+  }
+  return {
+    label: siteLabel,
+    id: "company_" + siteLabel,
+    children
+  };
+}
+
+// 监听 props.employees 与部门树变化，构造成 基地 → 部门 → 员工 的员工树
 const treeEmployees = ref([]);
 watch(
-  () => props.employees,
-  newVal => {
-    if (newVal) {
-      const siteMap = {};
-      newVal.forEach(emp => {
-        const site = emp.site || DEFAULT_SITE_LABEL;
-        if (!siteMap[site]) siteMap[site] = [];
-        siteMap[site].push({
-          label: emp.name,
-          avatarUrl: emp.avatarUrl,
-          userId: emp.userId,
-          id: emp.id,
-          empdata: emp,
-          site: emp.site,
-          monthsUsed: emp.monthsUsed || [],
-          redeemablePoints: emp.redeemablePoints,
-          lifeTimePoints: emp.lifeTimePoints
+  [() => props.employees, deptTreeData],
+  ([newVal]) => {
+    if (!Array.isArray(newVal)) return;
+    const siteMap = {};
+    newVal.forEach(emp => {
+      const site = emp.site || DEFAULT_SITE_LABEL;
+      if (!siteMap[site]) siteMap[site] = [];
+      siteMap[site].push({
+        label: emp.name,
+        avatarUrl: emp.avatarUrl,
+        userId: emp.userId,
+        id: emp.id,
+        empdata: emp,
+        site: emp.site,
+        deptId: emp.deptId,
+        monthsUsed: emp.monthsUsed || [],
+        redeemablePoints: emp.redeemablePoints,
+        lifeTimePoints: emp.lifeTimePoints
+      });
+    });
+    // 基地 → 员工 数组构造成员工树（佩蒂智创挂部门树，其他基地平铺员工）
+    treeEmployees.value = Object.entries(siteMap)
+      .map(([site, emps]) => buildSiteNode(site, emps, deptTreeForSite(site)))
+      .sort(compareBySitePriority);
+    // 默认展开：基地节点 + 一级部门节点 + 一级部门的直接子部门（两级部门结构一眼可见）
+    // setExpandedKeys 会补全祖先链；el-tree-v2 在数据重建后需手动重放展开
+    nextTick(() => {
+      const needExpand = [];
+      treeEmployees.value.forEach(siteNode => {
+        needExpand.push(siteNode.id);
+        (siteNode.children || []).forEach(dept1 => {
+          needExpand.push(dept1.id);
+          (dept1.children || [])
+            .filter(child => isDeptNode(child.id))
+            .forEach(dept2 => needExpand.push(dept2.id));
         });
       });
-      //{佩蒂智创（杭州）宠物科技有限公司: Array(118)} 转换成 [{label: "佩蒂智创（杭州）宠物科技有限公司", id:"company_...", children: Array(118)}]
-      const temTreeEmployees = Object.entries(siteMap)
-        .map(([site, children]) => ({
-          label: site,
-          // 基地节点 id 带 company_ 前缀，用于标识节点类型
-          id: "company_" + site,
-          children: [...children].sort(compareByLabelPinyin)
-        }))
-        .sort(compareBySitePriority);
-      treeEmployees.value = temTreeEmployees;
-    }
+      expandedOrgIds.value = Array.from(
+        new Set([...expandedOrgIds.value, ...needExpand])
+      );
+      treeRef.value?.setExpandedKeys(expandedOrgIds.value);
+    });
   },
   { immediate: true }
 );
+
+// 部门组织架构树：加载成功存入 deptTreeData，失败置空触发回退两层结构
+const loadDeptTree = async () => {
+  try {
+    const res = await getDeptTree();
+    // 兼容 {code,data:[...]} 与直接返回数组两种响应形态
+    deptTreeData.value = Array.isArray(res?.data)
+      ? res.data
+      : Array.isArray(res)
+        ? res
+        : [];
+  } catch (error) {
+    console.error("加载部门组织架构失败，已回退为「基地→员工」结构:", error);
+    deptTreeData.value = [];
+  }
+};
 
 const treeFilteredEmployees = computed(() => {
   // 支持中英文逗号分割多人模糊搜索，如 "张三,李四"
@@ -350,18 +497,24 @@ const treeFilteredEmployees = computed(() => {
     .split(/[,，;；]/)
     .map(s => s.trim().toLowerCase())
     .filter(Boolean);
-  // 搜索内容为空时返回完整员工树（基地→员工，节点 id 在构建时已生成）
+  // 搜索内容为空时返回完整员工树（基地→部门→员工，节点 id 在构建时已生成）
   if (terms.length === 0) return treeEmployees.value || [];
-  // 搜索时保留命中的员工及其所属基地（任一关键词命中即保留）
+  // 搜索时保留命中的员工及其所属基地/部门（任一关键词命中即保留）
   const tem = [];
   treeEmployees.value.forEach(siteNode => {
-    const matchedEmployees = (siteNode.children || []).filter(child =>
+    const matchedEmployees = collectEmployeeNodes([siteNode]).filter(child =>
       terms.some(
         term => child.label && child.label.toLowerCase().includes(term)
       )
     );
     if (matchedEmployees.length > 0) {
-      tem.push({ ...siteNode, children: matchedEmployees });
+      tem.push(
+        buildSiteNode(
+          siteNode.label,
+          matchedEmployees,
+          deptTreeForSite(siteNode.label)
+        )
+      );
     }
   });
   return tem;
@@ -370,7 +523,7 @@ const treeFilteredEmployees = computed(() => {
 const treeAllChecked = computed({
   get() {
     return treeFilteredEmployees.value.every(siteNode =>
-      (siteNode.children || []).every(child =>
+      collectEmployeeNodes([siteNode]).every(child =>
         checkedIds.value.includes(child.userId)
       )
     );
@@ -382,7 +535,12 @@ const treeAllChecked = computed({
       // true
       const checkedKeys = treeRef.value
         .getCheckedKeys()
-        .filter(element => element !== undefined && !isCompanyNode(element));
+        .filter(
+          element =>
+            element !== undefined &&
+            !isCompanyNode(element) &&
+            !isDeptNode(element)
+        );
       checkedIds.value = checkedKeys;
     } else {
       // checkedIds.value = checkedIds.value.filter(
@@ -399,18 +557,21 @@ function treeHandleCheckAll(val) {
 }
 
 function treeHandleClick() {
-  // 加入了公司id，需要对这些节点id做特殊处理，排除掉后只保留员工id
+  // 加入了公司id、部门id，需要对这些节点id做特殊处理，排除掉后只保留员工id
   // console.log("treeHandleClick:", emp, treeRef.value.getCheckedKeys());
   const checkedKeys = treeRef.value
     .getCheckedKeys()
-    .filter(element => element !== undefined && !isCompanyNode(element));
+    .filter(
+      element =>
+        element !== undefined && !isCompanyNode(element) && !isDeptNode(element)
+    );
   // console.log("===========================================");
   // console.log("checkedKeys:", checkedKeys);
 
   // 遍历当前 checkedIds.value，如果在当前筛选结果里匹配不到，说明是先前选中但被筛选掉的人，需要保留
-  const currentFilteredIds = treeFilteredEmployees.value.flatMap(siteNode =>
-    (siteNode.children || []).map(emp => emp.id)
-  );
+  const currentFilteredIds = collectEmployeeNodes(
+    treeFilteredEmployees.value
+  ).map(emp => emp.id);
   const keepIds = checkedIds.value.filter(
     id => !currentFilteredIds.includes(id)
   );
@@ -550,24 +711,24 @@ function handleResign() {
   emit("resign");
 }
 
-// treeHandleExpand 处理展开事件（tree-v2 事件参数为 data, node）
+// treeHandleExpand 处理展开事件（el-tree 事件参数为 data, node）
 function treeHandleExpand(dataNode) {
   // console.log("展开节点:", dataNode);
-  if (dataNode?.id && isCompanyNode(dataNode.id)) {
-    // 记录展开的基地节点
-    expandedOrgIds.value = [...expandedOrgIds.value, dataNode.id];
-    // console.log("已经展开的基地节点:", expandedOrgIds.value);
+  // 基地、部门节点都要记录展开状态（部门树重建时需要补全用户的展开偏好）
+  if (dataNode?.id && !isEmployeeNode(dataNode.id)) {
+    if (!expandedOrgIds.value.includes(dataNode.id)) {
+      expandedOrgIds.value = [...expandedOrgIds.value, dataNode.id];
+    }
   }
 }
 
 // treeHandleCollapse 处理折叠事件
 function treeHandleCollapse(dataNode) {
-  if (dataNode?.id && isCompanyNode(dataNode.id)) {
-    // 从展开的基地节点列表中移除
+  if (dataNode?.id && !isEmployeeNode(dataNode.id)) {
+    // 从展开节点列表中移除
     expandedOrgIds.value = expandedOrgIds.value.filter(
       id => id !== dataNode.id
     );
-    console.log("已经折叠的基地节点:", expandedOrgIds.value);
   }
 }
 
@@ -814,6 +975,22 @@ const handleExport = data => {
   width: 100%;
 }
 
+/* 树自身横向占用压缩，把宽度尽量让给经费方块：
+   1) 员工叶子行的展开箭头 `visibility:hidden` 仍占位，直接 display:none 收回 ~20px；
+   2) 展开箭头内边距 6px→3px，省 ~6px；
+   3) 勾选框右边距 8px→4px，省 4px。 */
+.employee-tree-v2 :deep(.el-tree-node__expand-icon.is-leaf) {
+  display: none;
+}
+
+.employee-tree-v2 :deep(.el-tree-node__expand-icon) {
+  padding: 3px;
+}
+
+.employee-tree-v2 :deep(.el-tree-node__content > label.el-checkbox) {
+  margin-right: 4px;
+}
+
 .employee-item {
   display: flex;
   align-items: center;
@@ -840,13 +1017,86 @@ const handleExport = data => {
 </style>
 
 <style scoped>
+
+
+/* 移动端：员工列表占满整宽，去掉固定高度约束 */
+@media screen and (width <= 768px) {
+  .employee-list {
+    width: 100%;
+    height: auto;
+    min-height: 420px;
+    max-height: none;
+  }
+
+  .employee-list :deep(.el-card__body) {
+    padding: 16px 12px;
+  }
+}
+
 .custom-tree-node {
   display: flex;
   flex: 1 0 auto;
   align-items: center;
-  height: 26px;
+  height: 24px;
   padding-right: 8px;
   font-size: 14px;
+}
+
+/* 基地（公司）节点图标：主色深蓝，突出顶层公司节点 */
+.company-node-icon {
+  flex-shrink: 0;
+  margin-right: 5px;
+  color: #2563eb;
+}
+
+/* 部门节点图标：弱化处理，与员工头像区分开 */
+.dept-node-icon {
+  flex-shrink: 0;
+  margin-right: 3px;
+  color: #7b8aa0;
+}
+
+/* 节点文字：统一防溢出截断 */
+.tree-node-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 部门节点：浅灰蓝胶囊底，紧凑区分于员工行，不撑高 */
+.dept-label {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 190px;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  color: #4a5a74;
+  background: #f4f6fa;
+  border: 1px solid #e6eaf2;
+  border-radius: 8px;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+/* 部门胶囊悬停反馈：整行 hover 时胶囊高亮为主色系，传达“可点击展开/折叠” */
+.employee-tree-v2 :deep(.el-tree-node__content:hover) .dept-label {
+  color: #2563eb;
+  background: #e3ebfb;
+  border-color: #b9cdea;
+}
+
+/* 基地（公司）节点：加粗深色，与部门/员工区分 */
+.company-label {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #1f2d3d;
 }
 
 /* 员工节点整体：姓名行 + 月度经费方块行，垂直居中于固定行高内 */
@@ -854,7 +1104,7 @@ const handleExport = data => {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   justify-content: center;
   min-width: 0;
   height: 100%;
@@ -862,6 +1112,6 @@ const handleExport = data => {
 
 /* 经费方块样式统一由 fundSquares 子组件维护，这里只留树内间距 */
 .fund-squares-wrap {
-  margin-top: 3px;
+  margin-top: 2px;
 }
 </style>

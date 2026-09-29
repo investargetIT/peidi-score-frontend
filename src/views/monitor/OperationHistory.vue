@@ -203,6 +203,32 @@ const handleRollback = row => {
 </script>
 
 <style scoped>
+
+
+/* ===== 移动端适配 ===== */
+@media screen and (width <= 768px) {
+  .exchange-history-card {
+    padding: 16px 12px 12px;
+  }
+
+  .exchange-title {
+    margin-bottom: 16px;
+    font-size: 20px;
+  }
+
+  .history-sub-bar {
+    padding: 12px 14px;
+  }
+
+  .exchange-table {
+    font-size: 13px;
+  }
+
+  .exchange-header th {
+    font-size: 13px;
+  }
+}
+
 .exchange-history-card {
   padding: 32px 32px 24px;
   background: #fff;

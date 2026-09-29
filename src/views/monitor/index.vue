@@ -1,9 +1,25 @@
 <template>
-  <div class="monitor-container">
+  <div
+    class="monitor-container"
+    @touchstart.passive="onTouchStart"
+    @touchend.passive="onTouchEnd"
+  >
+    <!-- 移动端自绘 Tab 栏：原生滚动、粘顶、可左右滑动切换 -->
+    <nav ref="mobileTabsRef" class="mobile-tab-nav" aria-label="tabs">
+      <button
+        v-for="tab in mobileTabs"
+        :key="tab.name"
+        type="button"
+        class="mobile-tab-item"
+        :class="{ 'is-active': activeTab === tab.name }"
+        @click="switchMobileTab(tab.name)"
+      >
+        {{ tab.label }}
+      </button>
+    </nav>
     <el-tabs
       v-model="activeTab"
       class="monitor-tabs"
-      type="card"
       @tab-click="handleTabClick"
     >
       <el-tab-pane :label="t('monitor.manage')" name="manage">
@@ -12,6 +28,7 @@
             <div class="main-content">
               <EmployeeList
                 v-loading="loading"
+                :loading="loading"
                 :element-loading-text="t('monitor.dataLoading')"
                 :employees="employees"
                 :avatarUrls="avatarUrls"
@@ -80,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import EmployeeList from "./EmployeeList.vue";
 import ManageScore from "./ManageScore.vue";
@@ -114,6 +131,66 @@ const avatarUrls = ref({});
 const selectValue = ref("");
 // 左侧"团建经费"开关状态，联动右侧管理积分卡片是否展示经费方块
 const showFundSquares = ref(false);
+
+//#region 移动端自绘 Tab 栏
+const mobileTabsRef = ref(null);
+const mobileTabs = computed(() => {
+  const list = [
+    { name: "manage", label: t("monitor.manage") },
+    { name: "history", label: t("monitor.history") },
+    { name: "operation", label: t("monitor.operationHistory") }
+  ];
+  if (isSiteHangzhou()) {
+    list.push({ name: "task", label: t("monitor.task") });
+  }
+  list.push({ name: "exchange", label: t("redeemMonitor.title") });
+  return list;
+});
+
+// 点击移动端 Tab：切换并把当前胶囊滚到可视区中间
+const switchMobileTab = name => {
+  activeTab.value = name;
+  nextTick(() => {
+    const nav = mobileTabsRef.value;
+    const el = nav?.querySelector(".mobile-tab-item.is-active");
+    if (nav && el) {
+      const left = el.offsetLeft - (nav.clientWidth - el.clientWidth) / 2;
+      nav.scrollTo({ left: Math.max(left, 0), behavior: "smooth" });
+    }
+  });
+};
+
+// 移动端内容区左右滑动切换 Tab（表格/下拉/自绘 Tab 栏内不劫持）
+const touchX = ref(0);
+const touchY = ref(0);
+const onTouchStart = e => {
+  if (window.matchMedia("(max-width: 768px)").matches === false) return;
+  const t = e.changedTouches?.[0] || e.touches?.[0];
+  if (!t) return;
+  if (e.target?.closest?.(".el-scrollbar, .mobile-tab-nav")) {
+    touchX.value = 0;
+    return;
+  }
+  touchX.value = t.clientX;
+  touchY.value = t.clientY;
+};
+const onTouchEnd = e => {
+  if (!touchX.value) return;
+  const t = e.changedTouches?.[0];
+  if (!t) return;
+  const dx = t.clientX - touchX.value;
+  const dy = t.clientY - touchY.value;
+  touchX.value = 0;
+  // 横向滑动距离足够，且明显比纵向滑动大
+  if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+  const order = mobileTabs.value.map(x => x.name);
+  const cur = order.indexOf(activeTab.value);
+  const next = dx < 0 ? cur + 1 : cur - 1;
+  if (next < 0 || next >= order.length) return;
+  switchMobileTab(order[next]);
+};
+//#endregion
+
 // 移除重复的过滤逻辑，让子组件自己处理过滤
 function selectEmployee(emp) {
   // 只高亮，不影响多选
@@ -328,6 +405,107 @@ defineExpose({
 </script>
 
 <style scoped>
+
+
+/* 移动端：原生滚动胶囊 Tab 栏，隐藏 el-tabs 自带头部 */
+@media screen and (width <= 768px) {
+  .monitor-container {
+    min-width: 0;
+    padding: 12px;
+    overflow-x: hidden;
+  }
+
+  .monitor-tabs {
+    padding: 0;
+    margin-bottom: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  /* el-tabs 自带头部（translateX 模拟滚动）在移动端隐藏，改用自定义胶囊栏 */
+  .monitor-tabs :deep(.el-tabs__header) {
+    display: none;
+  }
+
+  .monitor-tabs :deep(.el-tabs__content) {
+    padding-top: 6px;
+  }
+
+  /* 自定义移动端 Tab 栏：粘顶 + 原生横向滚动 + 隐藏滚动条 */
+  .mobile-tab-nav {
+    position: sticky;
+    top: 8px;
+    z-index: 40;
+    display: flex;
+    flex-shrink: 0;
+    gap: 6px;
+    padding: 4px;
+    margin-bottom: 0;
+    overflow-x: auto;
+    background: #f1f5f9;
+    border: 1px solid #eef0f3;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgb(15 23 42 / 4%);
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .mobile-tab-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-tab-item {
+    flex: 1 0 auto;
+    min-width: max-content;
+    height: 38px;
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 38px;
+    color: #64748b;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    transition:
+      color 0.25s,
+      background-color 0.25s,
+      box-shadow 0.25s;
+    scroll-snap-align: start;
+  }
+
+  .mobile-tab-item.is-active {
+    color: #2563eb;
+    background: #fff;
+    box-shadow: 0 2px 10px rgb(37 99 235 / 12%);
+  }
+
+  .main-content {
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .employee-list {
+    max-width: none;
+  }
+
+  /* 各 Tab 下的卡片统一收窄内边距 + 防止子元素把卡片撑破 */
+  .exchange-history-card {
+    width: 100%;
+    min-width: 0;
+    padding: 16px 12px 12px;
+  }
+
+  .exchange-title {
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+}
+
 .monitor-container {
   box-sizing: border-box;
   display: flex;
@@ -339,76 +517,77 @@ defineExpose({
 
 .monitor-tabs {
   flex-shrink: 0;
-  padding: 0;
-  margin-bottom: 32px;
-  background: #f5f6f7;
-  border-radius: 12px;
+  padding: 6px;
+  margin-bottom: 24px;
+  background: #f1f5f9;
+  border: 1px solid #eef0f3;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgb(15 23 42 / 4%);
 }
 
-.el-tabs--card > .el-tabs__header {
-  display: flex;
-  align-items: center;
-  height: 72px;
+/* 分段式 tab：浅灰底座 + 白色圆角胶囊高亮（:deep 需平铺，不能嵌在 .monitor-tabs 内） */
+.monitor-tabs :deep(.el-tabs__header) {
+  height: auto;
+  padding: 0;
   margin: 0;
   background: transparent;
   border: none;
 }
 
-.el-tabs__nav {
+.monitor-tabs :deep(.el-tabs__nav) {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
-  height: 56px;
+  height: 44px;
   background: transparent;
 }
 
-.el-tabs__item {
-  position: relative;
-  z-index: 1;
+.monitor-tabs :deep(.el-tabs__item) {
   flex: 1 1 0;
   min-width: 0;
-  height: 56px;
-  margin: 0 8px;
-  font-size: 26px;
+  height: 44px;
+  margin: 0 4px;
+  font-size: 15px;
   font-weight: 500;
-  line-height: 56px;
-  color: #888;
+  line-height: 44px;
+  color: #64748b;
   text-align: center;
   background: transparent;
   border: none !important;
-  border-radius: 12px 12px 0 0;
+  border-radius: 10px;
   transition:
-    background 0.2s,
-    color 0.2s,
-    box-shadow 0.2s;
+    color 0.25s,
+    background-color 0.25s,
+    box-shadow 0.25s;
 }
 
-.el-tabs__item.is-active {
-  z-index: 2;
-  color: #222;
+.monitor-tabs :deep(.el-tabs__item:hover) {
+  color: #2563eb;
+  background: rgb(255 255 255 / 70%);
+}
+
+.monitor-tabs :deep(.el-tabs__item.is-active) {
+  color: #2563eb;
   background: #fff;
-  border-radius: 12px 12px 0 0;
-  box-shadow: 0 2px 8px 0 #e5e6eb;
+  box-shadow: 0 2px 10px rgb(37 99 235 / 12%);
 }
 
-.el-tabs__item:not(.is-active):hover {
-  color: #222;
-  background: #f0f1f2;
-}
-
-.el-tabs__active-bar,
-.el-tabs__nav-wrap::after {
+.monitor-tabs :deep(.el-tabs__active-bar),
+.monitor-tabs :deep(.el-tabs__nav-wrap::after) {
   display: none !important;
 }
 
-/* 确保tabs内容区域能够正常显示 */
-.el-tabs__content {
+.monitor-tabs :deep(.el-tabs__content) {
+  padding-top: 24px;
   overflow: visible !important;
 }
 
-.el-tab-pane {
+.monitor-tabs :deep(.el-tab-pane) {
   overflow: visible !important;
+}
+
+/* 移动端自绘 Tab 栏：桌面端隐藏，仅移动端显示 */
+.mobile-tab-nav {
+  display: none;
 }
 
 .main-content {
