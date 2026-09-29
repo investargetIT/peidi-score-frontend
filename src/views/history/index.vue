@@ -1,29 +1,20 @@
 <template>
-  <div>
-    <!-- 新增产品按钮 -->
-    <div class="flex justify-between items-center">
-      <div class="container">
-        <h2 class="text-2xl font-bold">{{ t("history.pointshistory") }}</h2>
-        <!-- <el-select
-          style="width: 240px"
-          v-model="searchInfo.recordTypeId"
-          :placeholder="t('history.pointplaceholder')"
-          clearable
-        >
-          <el-option
-            v-for="item in enumTypeList"
-            :label="getLocalizedLabel(item.label)"
-            :value="item.value"
-          />
-        </el-select> -->
+  <div class="history-page">
+    <el-card class="history-card">
+      <div class="history-title">{{ t("history.pointshistory") }}</div>
+
+      <!-- 说明条：说明本页用途 -->
+      <div class="history-sub-bar">
+        <div class="bar-tip">{{ t("history.titleTip") }}</div>
       </div>
-    </div>
-    <!-- 产品列表 -->
-    <productList
-      ref="listRef"
-      :searchInfo="searchInfo"
-      :statusList="statusList"
-    />
+
+      <!-- 积分历史列表 -->
+      <productList
+        ref="listRef"
+        :searchInfo="searchInfo"
+        :statusList="statusList"
+      />
+    </el-card>
   </div>
 </template>
 
@@ -71,16 +62,66 @@ fetchEnumTypeList();
 </script>
 
 <style scoped>
-.dialog-footer {
-  text-align: right;
+
+
+/* ===== 移动端适配 ===== */
+@media (width <= 768px) {
+  .history-card {
+    padding: 18px 14px 16px;
+    border-radius: 12px;
+  }
+
+  .history-title {
+    margin-bottom: 16px;
+    font-size: 22px;
+  }
+
+  .history-sub-bar {
+    padding: 10px 12px;
+    margin-bottom: 14px;
+  }
+
+  .bar-tip {
+    font-size: 13px;
+  }
 }
 
-.container {
-  display: flex;
-  gap: 20px;
+.history-page {
+  box-sizing: border-box;
+  width: auto;
+}
 
-  .el-select {
-    margin-left: 10px;
-  }
+.history-card {
+  width: 100%;
+  padding: 32px 32px 24px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px 0 #e5e6eb;
+}
+
+.history-title {
+  margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* 说明条 */
+.history-sub-bar {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  background: #f7f8fa;
+  border-radius: 10px;
+}
+
+.bar-tip {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #606266;
+}
+
+.dialog-footer {
+  text-align: right;
 }
 </style>

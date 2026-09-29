@@ -26,13 +26,15 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "rollbackSuccess": "Points rollback successfully",
-    "rollbackFailed": "Points rollback failed"
+    "rollbackFailed": "Points rollback failed",
+    "titleTip": "This shows your own points activity - when and why points were added or deducted, so you can always review where your points came from."
   },
   "leaderboard": {
     "pointsrank": "Points Leaderboard",
     "rank": "Rank",
     "user": "User",
-    "totalpoints": "Total Points"
+    "totalpoints": "Total Points",
+    "titleTip": "Live ranking of all employees by points. Switch the ranking basis between Long Term Points and Exchangeable Points."
   },
   "dashboard": {
     "welcome": "Welcome",
@@ -59,14 +61,24 @@
     "searchPlaceholder": "Search employees (comma-separated for multiple)",
     "department": "Department",
     "fundToggle": "Team Building Funds",
-    "fundToggleTip": "Only available for Peidi Innovation (Hangzhou) Pet Technology Co., Ltd.",
-    "fundLegend": "Gray = fund used for that month, Green = not used; hover a square to see monthly details."
+    "fundToggleTip": "Only available for Peidi Innovation (Hangzhou) Pet Technology Co., Ltd."
   },
   "fund": {
     "monthSuffix": "",
     "expense": "Fund",
     "used": "used",
     "unused": "unused"
+  },
+  "fundDialog": {
+    "title": "Team Building Fund Rules",
+    "confirm": "Got it",
+    "toggleTip": "Click for details",
+    "legendGreen": "Green: fund not used for that month",
+    "legendGray": "Gray: fund used (or not eligible before hiring)",
+    "ruleHireBefore15": "Hired on or before the 15th: fund applies from the hire month;",
+    "ruleHireAfter15": "Hired after the 15th: fund starts the next month; hire month is gray;",
+    "ruleSameYear": "Hired this year: months before joining are shown gray;",
+    "rulePrevYear": "Hired in previous years: all 12 months are shown normally."
   },
   "monitor": {
     "manage": "Manage Points",

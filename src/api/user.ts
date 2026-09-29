@@ -192,10 +192,10 @@ export const getDepartmentDetail = (params: { deptId: string }) => {
 // 请求参数: { year?: number }
 // 响应示例: [{ userName: "string", userId: 0, filingDates: ["yyyy-MM", ...] }]
 // 前端转成 { userId: boolean[12] }，下标 0~11 对应 1~12 月，true=该月经费已用
-// 团建费接口域名：生产走 user.peidigroup.cn，测试环境走 http://12.18.1.36:8080
-const teamBuildingUrlApi = (url: string) => {
-  return commonUrlApi(url);
-  // return `http://12.18.1.36:8080${url}`;
+// 团建费接口：生产域 user.peidigroup.cn 路径不带 /attendance 前缀，测试环境 12.18.1.36:8080 带前缀
+const teamBuildingUrlApi = (path: string) => {
+  return `http://12.18.1.36:8080/attendance${path}`;
+  // return `${"https://user.peidigroup.cn"}${path}`;
 };
 
 export const getMonthlyFundUsage = async (
@@ -205,7 +205,7 @@ export const getMonthlyFundUsage = async (
   const targetYear = year || new Date().getFullYear();
   const res = await http.request(
     "get",
-    teamBuildingUrlApi("/attendance/teamBuilding/expenses"),
+    teamBuildingUrlApi("/teamBuilding/expenses"),
     { params: { year: targetYear } }
   );
   const result: Record<string, boolean[]> = {};

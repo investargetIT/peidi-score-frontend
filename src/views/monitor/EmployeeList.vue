@@ -9,14 +9,15 @@
               t("employee.fundToggle")
             }}</span>
             <el-tooltip
-              :content="`${t('employee.fundToggleTip')} ${t(
-                'employee.fundLegend'
-              )}`"
+              :content="t('fundDialog.toggleTip')"
               placement="top"
               effect="dark"
               :show-after="300"
             >
-              <el-icon class="fund-toggle-icon" :size="14"
+              <el-icon
+                class="fund-toggle-icon"
+                :size="14"
+                @click.stop="fundDialogVisible = true"
                 ><QuestionFilled
               /></el-icon>
             </el-tooltip>
@@ -154,6 +155,42 @@
       </el-tree-v2>
     </div>
   </el-card>
+
+  <!-- 团建经费规则弹窗 -->
+  <el-dialog
+    v-model="fundDialogVisible"
+    :title="t('fundDialog.title')"
+    width="min(560px, 92vw)"
+    :append-to-body="true"
+    class="fund-dialog"
+  >
+    <div class="fund-scope-note">{{ t("employee.fundToggleTip") }}</div>
+    <div class="fund-legend-row">
+      <span class="fund-legend-item">
+        <span class="fund-legend-square fund-legend-green"></span>
+        <span>{{ t("fundDialog.legendGreen") }}</span>
+      </span>
+      <span class="fund-legend-item">
+        <span class="fund-legend-square fund-legend-gray"></span>
+        <span>{{ t("fundDialog.legendGray") }}</span>
+      </span>
+    </div>
+
+    <div class="fund-rule-list">
+      <div v-for="(rule, i) in fundRules" :key="i" class="fund-rule">
+        <span class="fund-rule-index">{{ i + 1 }}</span>
+        <span class="fund-rule-text">{{ rule }}</span>
+      </div>
+    </div>
+
+    <template #footer>
+      <div class="fund-dialog-footer">
+        <el-button type="primary" @click="fundDialogVisible = false">
+          {{ t("fundDialog.confirm") }}
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -186,6 +223,15 @@ const showFundSquares = ref(false);
 watch(showFundSquares, val => {
   emit("update:showFundSquares", val);
 });
+
+// 团建经费规则弹窗
+const fundDialogVisible = ref(false);
+const fundRules = computed(() => [
+  t("fundDialog.ruleHireBefore15"),
+  t("fundDialog.ruleHireAfter15"),
+  t("fundDialog.ruleSameYear"),
+  t("fundDialog.rulePrevYear")
+]);
 
 //#region 新列表逻辑
 const treeRef = ref(null);
@@ -618,7 +664,90 @@ const handleExport = data => {
 
 .fund-toggle-icon {
   color: #b6b6bd;
-  cursor: help;
+  cursor: pointer;
+}
+
+/* ===== 团建经费规则弹窗 ===== */
+.fund-legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.fund-legend-item {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  color: #606266;
+}
+
+.fund-legend-square {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.fund-legend-green {
+  background: #67c23a;
+}
+
+.fund-legend-gray {
+  background: #e4e7ed;
+  box-shadow: inset 0 0 0 1px #dcdfe6;
+}
+
+.fund-rule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fund-rule {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #303133;
+}
+
+.fund-rule-index {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #409eff;
+  background: #ecf5ff;
+  border-radius: 50%;
+}
+
+.fund-rule-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.fund-dialog-footer {
+  text-align: right;
+}
+
+/* 弹窗顶部适用范围提示 */
+.fund-scope-note {
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #606266;
+  background: #f7f8fa;
+  border-radius: 8px;
 }
 
 /* 离职图标按钮（右上角） */

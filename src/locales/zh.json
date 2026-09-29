@@ -26,13 +26,15 @@
     "confirm": "确认",
     "cancel": "取消",
     "rollbackSuccess": "积分回退成功",
-    "rollbackFailed": "积分回退失败"
+    "rollbackFailed": "积分回退失败",
+    "titleTip": "这里展示你自己的积分变动记录：什么时候、因为什么原因加分或扣分，方便你随时核对积分来源。"
   },
   "leaderboard": {
     "pointsrank": "积分排行榜",
     "rank": "排名",
     "user": "用户",
-    "totalpoints": "总积分"
+    "totalpoints": "总积分",
+    "titleTip": "实时展示全体员工的积分排行，可按「长期积分」或「可兑换积分」切换排名口径。"
   },
   "dashboard": {
     "welcome": "欢迎",
@@ -58,14 +60,24 @@
     "searchPlaceholder": "搜索员工（逗号分隔，支持多人）",
     "department": "部门",
     "fundToggle": "团建经费",
-    "fundToggleTip": "仅佩蒂智创（杭州）宠物科技有限公司有该功能。",
-    "fundLegend": "灰色=该月团建经费已使用，绿色=未使用；鼠标悬停可查看每月明细"
+    "fundToggleTip": "仅佩蒂智创（杭州）宠物科技有限公司有该功能。"
   },
   "fund": {
     "monthSuffix": "月",
     "expense": "经费",
     "used": "已用",
     "unused": "未用"
+  },
+  "fundDialog": {
+    "title": "团建经费说明",
+    "confirm": "我知道了",
+    "toggleTip": "点击查看详情",
+    "legendGreen": "绿色：该月经费未使用",
+    "legendGray": "灰色：该月经费已使用（入职前则不享受）",
+    "ruleHireBefore15": "当月15号及以前入职：从入职当月开始享受团建经费；",
+    "ruleHireAfter15": "当月15号以后入职：从次月开始享受，入职当月显示灰色；",
+    "ruleSameYear": "今年入职：入职之前的月份一律显示灰色；",
+    "rulePrevYear": "以前年度入职：全年12个月正常显示。"
   },
   "monitor": {
     "manage": "管理积分",

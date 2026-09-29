@@ -203,6 +203,23 @@ watch(selectedEmployeeIds, ids => {
   }
 });
 
+// 团建经费按入职日期限定可用月份：
+// 今年入职 — 15号及之前入职当月可用，15号之后入职次月才可用，未入职月份一律灰色；
+// 以前年份入职 — 全年可用；未来入职 — 全部灰色。
+const getFundMonthsWithHireDate = (hireDate, realMonths) => {
+  const months = [...realMonths];
+  if (!hireDate) return months;
+  // 兼容 "YYYY-MM-DD" / "YYYY-MM-DD HH:mm:ss" / "YYYY-MM-DDTHH:mm:ss" 等格式，统一取前10位
+  const [y, m, d] = String(hireDate).slice(0, 10).split("-").map(Number);
+  if (!y || !m) return months;
+  const curYear = new Date().getFullYear();
+  if (y > curYear) return months.map(() => true);
+  if (y < curYear) return months;
+  const startMonth = d >= 1 && d <= 15 ? m : m + 1; // 15号之后从次月起算
+  for (let i = 1; i < startMonth; i++) months[i - 1] = true; // 未入职月份置灰
+  return months;
+};
+
 const fetchUserListData = async () => {
   try {
     const res = await getUserList({
@@ -226,8 +243,10 @@ const fetchUserListData = async () => {
       employees.value = records.map(item => ({
         ...item,
         name: item.fullName,
-        monthsUsed:
+        monthsUsed: getFundMonthsWithHireDate(
+          item.hireDate,
           monthsUsedMap[item.userId] || Array.from({ length: 12 }, () => false)
+        )
       }));
 
       // 根据当前选中的员工ID更新选中状态
