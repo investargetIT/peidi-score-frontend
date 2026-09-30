@@ -111,7 +111,8 @@ import {
   getEnumTypeList,
   deleteUser
 } from "@/api/pmApi.ts";
-import { getMonthlyFundUsage } from "@/api/user.ts";
+import { getTeamBuildingExpenses } from "@/api/user.ts";
+import { getFundMonthsWithHireDate } from "@/utils/fund";
 import { storageLocal } from "@pureadmin/utils";
 import OperationHistory from "./OperationHistory.vue";
 import { isSiteHangzhou } from "@/router/index";
@@ -280,22 +281,11 @@ watch(selectedEmployeeIds, ids => {
   }
 });
 
-// 团建经费按入职日期限定可用月份：
-// 今年入职 — 15号及之前入职当月可用，15号之后入职次月才可用，未入职月份一律灰色；
-// 以前年份入职 — 全年可用；未来入职 — 全部灰色。
-const getFundMonthsWithHireDate = (hireDate, realMonths) => {
-  const months = [...realMonths];
-  if (!hireDate) return months;
-  // 兼容 "YYYY-MM-DD" / "YYYY-MM-DD HH:mm:ss" / "YYYY-MM-DDTHH:mm:ss" 等格式，统一取前10位
-  const [y, m, d] = String(hireDate).slice(0, 10).split("-").map(Number);
-  if (!y || !m) return months;
-  const curYear = new Date().getFullYear();
-  if (y > curYear) return months.map(() => true);
-  if (y < curYear) return months;
-  const startMonth = d >= 1 && d <= 15 ? m : m + 1; // 15号之后从次月起算
-  for (let i = 1; i < startMonth; i++) months[i - 1] = true; // 未入职月份置灰
-  return months;
-};
+// 团建经费（月度经费方块）仅智创（杭州）基地员工可享，未注册员工也归入该基地
+const HANGZHOU_SITE = "佩蒂智创（杭州）宠物科技有限公司";
+
+// 是否把「未注册员工」（经费接口返回但无系统账号）展示进员工树；置 true 恢复展示
+const SHOW_UNREGISTERED = false;
 
 const fetchUserListData = async () => {
   try {
@@ -313,18 +303,60 @@ const fetchUserListData = async () => {
 
     if (res?.code === 200) {
       const records = res?.data?.records || [];
-      // 获取月度经费使用情况（接口暂为临时实现，接入后自动替换）
-      const monthsUsedMap = await getMonthlyFundUsage(
-        records.map(item => item.userId)
-      );
-      employees.value = records.map(item => ({
+      // 团建经费接口失败不阻塞员工列表，未注册员工与经费方块暂不展示
+      let fundList = [];
+      try {
+        fundList = await getTeamBuildingExpenses();
+      } catch (error) {
+        console.warn("获取团建经费列表失败，未注册员工暂不展示:", error);
+      }
+      const monthsUsedMap = {};
+      fundList.forEach(item => {
+        if (item.userId != null) monthsUsedMap[item.userId] = item.months;
+      });
+      const defaultMonths = Array.from({ length: 12 }, () => false);
+
+      // 已注册员工：照常映射
+      const registeredEmps = records.map(item => ({
         ...item,
         name: item.fullName,
         monthsUsed: getFundMonthsWithHireDate(
           item.hireDate,
-          monthsUsedMap[item.userId] || Array.from({ length: 12 }, () => false)
+          monthsUsedMap[String(item.userId)] || defaultMonths
         )
       }));
+
+      // 未注册员工：经费接口返回但员工列表查不到（或直接没有 userId）→ 补进智创基地树，
+      // 按接口 deptId 归入真实部门，只展示不可勾选
+      const registeredIds = new Set(records.map(item => String(item.userId)));
+      let unregIdx = 0;
+      const unregisteredEmps = fundList
+        .filter(item => item.userId == null || !registeredIds.has(item.userId))
+        .map(item => {
+          unregIdx++;
+          const hasUserId = item.userId != null;
+          return {
+            // 有 userId 用 unreg_ 前缀、无 userId（未注册）用序号，均保证节点 id 唯一
+            id: hasUserId ? `unreg_${item.userId}` : `unreg_null_${unregIdx}`,
+            userId: item.userId,
+            fullName: item.userName || "未注册员工",
+            name: item.userName || "未注册员工",
+            site: HANGZHOU_SITE,
+            deptId: item.deptId != null ? String(item.deptId) : null,
+            avatarUrl: "",
+            email: "",
+            education: "",
+            lifeTimePoints: null,
+            redeemablePoints: null,
+            monthsUsed: getFundMonthsWithHireDate(null, item.months),
+            isRegistered: false
+          };
+        });
+
+      // 合并员工列表：未注册员工仅在开关打开时追加
+      employees.value = SHOW_UNREGISTERED
+        ? [...registeredEmps, ...unregisteredEmps]
+        : registeredEmps;
 
       // 根据当前选中的员工ID更新选中状态
       selectedEmployee.value = employees.value.find(
@@ -332,7 +364,7 @@ const fetchUserListData = async () => {
       );
 
       backEmployees.value = employees.value;
-      // 并行预加载所有头像
+      // 并行预加载所有头像（未注册员工无头像，自动跳过）
       const avatarPromises = res.data.records
         .filter(record => record.avatarUrl)
         .map(record => getPreviewUrl(record.avatarUrl, record.id));
@@ -405,8 +437,6 @@ defineExpose({
 </script>
 
 <style scoped>
-
-
 /* 移动端：原生滚动胶囊 Tab 栏，隐藏 el-tabs 自带头部 */
 @media screen and (width <= 768px) {
   .monitor-container {

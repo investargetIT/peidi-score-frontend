@@ -185,36 +185,69 @@ export const getDepartmentDetail = (params: { deptId: string }) => {
 // 前端转成 { userId: boolean[12] }，下标 0~11 对应 1~12 月，true=该月经费已用
 // 团建费接口（公开，无需登录）：线上与测试站路径均为 /attendance/teamBuilding/expenses（带前缀），
 // 全环境直连线上 user.peidigroup.cn。
+// 注意：该接口会返回【尚未注册系统账号】的员工（目前仅有智创基地），调用方需自行与员工列表比对。
 const teamBuildingUrlApi = (path: string) =>
   `https://user.peidigroup.cn/attendance${path}`;
 
-export const getMonthlyFundUsage = async (
-  _userIds: string[],
+export interface TeamBuildingExpenseItem {
+  userId?: number | string;
+  userName?: string;
+  deptId?: number | string;
+  filingDates?: string[];
+}
+
+/** 拉取团建经费原始列表（含未注册员工），months 下标 0~11 对应 1~12 月，true=该月经费已用 */
+export const getTeamBuildingExpenses = async (
   year?: number
-): Promise<Record<string, boolean[]>> => {
+): Promise<
+  {
+    userId: string | null;
+    userName: string;
+    deptId?: string;
+    months: boolean[];
+  }[]
+> => {
   const targetYear = year || new Date().getFullYear();
-  const res = await http.request(
+  const res = (await http.request(
     "get",
     teamBuildingUrlApi("/teamBuilding/expenses"),
     { params: { year: targetYear } }
-  );
-  const result: Record<string, boolean[]> = {};
+  )) as { code?: number; data?: TeamBuildingExpenseItem[] };
+  const list: {
+    userId: string | null;
+    userName: string;
+    deptId?: string;
+    months: boolean[];
+  }[] = [];
   if (res?.code === 200 && Array.isArray(res?.data)) {
-    (
-      res.data as {
-        userId?: number | string;
-        userName?: string;
-        filingDates?: string[];
-      }[]
-    ).forEach(item => {
-      if (item.userId == null) return;
+    res.data.forEach(item => {
       const months = Array.from({ length: 12 }, () => false);
       (item.filingDates || []).forEach(dateStr => {
         const [y, m] = String(dateStr).split("-").map(Number);
         if (y === targetYear && m >= 1 && m <= 12) months[m - 1] = true;
       });
-      result[String(item.userId)] = months;
+      list.push({
+        // userId 为 null 表示该员工尚未注册系统账号（无 userId 可关联），调用方据此识别未注册员工
+        userId: item.userId != null ? String(item.userId) : null,
+        userName: item.userName || "",
+        deptId: item.deptId != null ? String(item.deptId) : undefined,
+        months
+      });
     });
   }
+  return list;
+};
+
+/** 按人聚合的月度经费使用情况（保留原接口返回形态，内部复用 getTeamBuildingExpenses） */
+export const getMonthlyFundUsage = async (
+  _userIds: string[],
+  year?: number
+): Promise<Record<string, boolean[]>> => {
+  const list = await getTeamBuildingExpenses(year);
+  const result: Record<string, boolean[]> = {};
+  list.forEach(item => {
+    // 未注册员工无 userId，跳过，避免污染 result 的 "null" 键
+    if (item.userId != null) result[item.userId] = item.months;
+  });
   return result;
 };

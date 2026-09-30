@@ -40,7 +40,8 @@
     "welcome": "欢迎",
     "recentActivity": "最近活动",
     "exchangeablePoints": "可兑换积分",
-    "longTermPoints": "长期积分"
+    "longTermPoints": "长期积分",
+    "fundTitle": "个人团建经费"
   },
   "table": {
     "emptyText": "暂无数据",
@@ -124,6 +125,7 @@
     "confirmLeaveCaution": "此操作不可撤销，请勿乱点！确认无误后再操作。",
     "leaveSuccess": "离职成功",
     "leaveFailed": "离职失败",
+    "notRegistered": "未注册",
     "selectedCount": "当前选中人数",
     "updateUserInfoSuccess": "更新用户信息成功",
     "updateUserInfoFailed": "更新用户信息失败",

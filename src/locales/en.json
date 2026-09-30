@@ -40,7 +40,8 @@
     "welcome": "Welcome",
     "exchangeablePoints": "Exchangeable Points",
     "longTermPoints": "Long Term Points",
-    "recentActivity": "Recent Activity"
+    "recentActivity": "Recent Activity",
+    "fundTitle": "Team Building Funds"
   },
   "table": {
     "emptyText": "No Data",
@@ -124,6 +125,7 @@
     "confirmLeaveCaution": "This action cannot be undone. Please do not click casually! Confirm carefully.",
     "leaveSuccess": "Leave successful",
     "leaveFailed": "Leave failed",
+    "notRegistered": "Not registered",
     "selectedCount": "Current selected employees",
     "updateUserInfoSuccess": "User information updated successfully",
     "updateUserInfoFailed": "User information update failed",

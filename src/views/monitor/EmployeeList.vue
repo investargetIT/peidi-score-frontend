@@ -88,7 +88,11 @@
         <template #default="{ node, data }">
           <div class="employee-tree-node">
             <el-tooltip
-              :content="`${node.label} (${data.lifeTimePoints} / ${data.redeemablePoints})`"
+              :content="
+                isEmployeeNode(data.id)
+                  ? `${node.label} ${employeePointsText(data)}`
+                  : ''
+              "
               placement="top-start"
               effect="dark"
               :disabled="!isEmployeeNode(data.id)"
@@ -124,7 +128,7 @@
                   v-if="isEmployeeNode(data.id)"
                   class="ml-[5px] text-[#9b9a9a] text-[12px] flex"
                 >
-                  {{ `(${data.lifeTimePoints} / ${data.redeemablePoints})` }}
+                  {{ employeePointsText(data) }}
                 </p>
 
                 <ScoreHistoryExport
@@ -250,6 +254,8 @@ const treeDefaultProps = {
   children: "children",
   label: "label",
   value: "id",
+  // 未注册员工节点 disabled:true → 复选框禁用（不会出现在勾选结果中）
+  disabled: "disabled",
   // 缩进收窄（16→12→8）：佩蒂深部门少吃横向宽度，14px 经费方块在更深层级仍能单行放下
   indent: 8
 };
@@ -287,6 +293,12 @@ const isEmployeeNode = id => !!id && !isCompanyNode(id) && !isDeptNode(id);
 // 是否杭州基地员工：只有该基地的员工显示月度经费方块
 const isHangzhouEmployee = data =>
   !!data && isEmployeeNode(data.id) && data.site === HANGZHOU_SITE;
+
+// 员工节点右侧积分括号文案：未注册员工固定显示“没有注册”
+const employeePointsText = data => {
+  if (data?.isRegistered === false) return `（${t("monitor.notRegistered")}）`;
+  return `(${data.lifeTimePoints ?? "-"} / ${data.redeemablePoints ?? "-"})`;
+};
 
 // 基地缺失时的兜底分组名称
 const DEFAULT_SITE_LABEL = "未设置基地";
@@ -461,26 +473,22 @@ watch(
         deptId: emp.deptId,
         monthsUsed: emp.monthsUsed || [],
         redeemablePoints: emp.redeemablePoints,
-        lifeTimePoints: emp.lifeTimePoints
+        lifeTimePoints: emp.lifeTimePoints,
+        isRegistered: emp.isRegistered !== false,
+        disabled: emp.isRegistered === false
       });
     });
     // 基地 → 员工 数组构造成员工树（佩蒂智创挂部门树，其他基地平铺员工）
     treeEmployees.value = Object.entries(siteMap)
       .map(([site, emps]) => buildSiteNode(site, emps, deptTreeForSite(site)))
       .sort(compareBySitePriority);
-    // 默认展开：基地节点 + 一级部门节点 + 一级部门的直接子部门（两级部门结构一眼可见）
+    // 默认展开：仅展开“挂了部门树的基地”，部门/员工保持折叠。
+    // 没有部门树（回退「基地→员工」扁平结构）的基地保持完全折叠，避免一进来全员平铺。
     // setExpandedKeys 会补全祖先链；el-tree-v2 在数据重建后需手动重放展开
     nextTick(() => {
-      const needExpand = [];
-      treeEmployees.value.forEach(siteNode => {
-        needExpand.push(siteNode.id);
-        (siteNode.children || []).forEach(dept1 => {
-          needExpand.push(dept1.id);
-          (dept1.children || [])
-            .filter(child => isDeptNode(child.id))
-            .forEach(dept2 => needExpand.push(dept2.id));
-        });
-      });
+      const needExpand = treeEmployees.value
+        .filter(siteNode => deptTreeForSite(siteNode.label)?.length)
+        .map(siteNode => siteNode.id);
       if (needExpand.length) {
         expandedOrgIds.value = Array.from(
           new Set([...expandedOrgIds.value, ...needExpand])
