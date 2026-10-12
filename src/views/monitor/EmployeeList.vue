@@ -6,6 +6,22 @@
           <p class="title-text">{{ t("employee.title") }}</p>
           <div class="fund-toggle">
             <span class="fund-toggle-label">{{
+              t("employee.deptToggle")
+            }}</span>
+            <el-tooltip
+              :content="t('employee.deptToggleTip')"
+              placement="top"
+              effect="dark"
+              :show-after="300"
+            >
+              <el-icon class="fund-toggle-icon" :size="14"
+                ><QuestionFilled
+              /></el-icon>
+            </el-tooltip>
+            <el-switch v-model="showDeptTree" size="small" />
+          </div>
+          <div class="fund-toggle">
+            <span class="fund-toggle-label">{{
               t("employee.fundToggle")
             }}</span>
             <el-tooltip
@@ -199,6 +215,7 @@ import {
   onBeforeUnmount
 } from "vue";
 import { useI18n } from "vue-i18n";
+import { match } from "pinyin-pro";
 import Avatar from "@/assets/user.jpg";
 import { getDeptTree } from "@/api/pmApi";
 import {
@@ -232,11 +249,24 @@ const emit = defineEmits([
 const searchValue = ref(props.search || "");
 const checkedIds = ref(props.modelValue || []);
 
+// 姓名匹配：支持中文原名包含、拼音全拼、拼音首字母（如 张三 / zhangsan / zs）
+const matchName = (label, term) => {
+  if (!label || !term) return false;
+  const name = String(label).toLowerCase();
+  if (name.includes(term)) return true;
+  const result = match(name, term);
+  return !!(result && result.length);
+};
+
 // 团建经费方块显示开关，默认不显示；状态同步给父组件（联动右侧管理积分卡片）
 const showFundSquares = ref(false);
 watch(showFundSquares, val => {
   emit("update:showFundSquares", val);
 });
+
+// 部门架构树展示开关：默认开启（保持原有行为）。
+// 关闭后，佩蒂智创与其他基地一样「基地→员工」平铺展示。
+const showDeptTree = ref(true);
 
 // 团建经费规则弹窗
 const fundDialogVisible = ref(false);
@@ -345,9 +375,10 @@ const deptTreeData = ref(null);
 // 未分配部门员工的兜底节点名
 const UNASSIGNED_DEPT_LABEL = "未分配部门";
 
-// 部门组织架构树仅挂载到佩蒂智创基地，其他基地保持「基地→员工」平铺展示
+// 部门组织架构树仅挂载到佩蒂智创基地，其他基地保持「基地→员工」平铺展示；
+// 当「按部门展示」开关关闭时，佩蒂智创同样平铺展示员工
 const deptTreeForSite = siteLabel =>
-  siteLabel === HANGZHOU_SITE ? deptTreeData.value : null;
+  showDeptTree.value && siteLabel === HANGZHOU_SITE ? deptTreeData.value : null;
 
 // 收集部门树（或子树）中所有部门 id
 function collectDeptIds(nodes, set = new Set()) {
@@ -453,10 +484,10 @@ const applyExpandedKeys = (keys = []) => {
   tree.setExpandedKeys(keys);
 };
 
-// 监听 props.employees 与部门树变化，构造成 基地 → 部门 → 员工 的员工树
+// 监听 props.employees、部门树与「按部门展示」开关变化，构造成 基地 → 部门 → 员工 的员工树
 const treeEmployees = ref([]);
 watch(
-  [() => props.employees, deptTreeData],
+  [() => props.employees, deptTreeData, showDeptTree],
   ([newVal]) => {
     if (!Array.isArray(newVal)) return;
     const siteMap = {};
@@ -528,9 +559,7 @@ const treeFilteredEmployees = computed(() => {
   const tem = [];
   treeEmployees.value.forEach(siteNode => {
     const matchedEmployees = collectEmployeeNodes([siteNode]).filter(child =>
-      terms.some(
-        term => child.label && child.label.toLowerCase().includes(term)
-      )
+      terms.some(term => matchName(child.label, term))
     );
     if (matchedEmployees.length > 0) {
       tem.push(
@@ -650,8 +679,8 @@ const filteredEmployees = computed(() => {
     .map(s => s.trim().toLowerCase())
     .filter(Boolean);
   if (terms.length === 0) return props.employees || [];
-  return (props.employees || []).filter(
-    emp => emp.name && terms.some(term => emp.name.toLowerCase().includes(term))
+  return (props.employees || []).filter(emp =>
+    terms.some(term => matchName(emp.name, term))
   );
 });
 

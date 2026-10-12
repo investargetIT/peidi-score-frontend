@@ -58,10 +58,12 @@
   },
   "employee": {
     "title": "员工",
-    "searchPlaceholder": "搜索员工（逗号分隔，支持多人）",
+    "searchPlaceholder": "搜索员工（姓名/拼音，逗号分隔，支持多人）",
     "department": "部门",
     "fundToggle": "团建经费",
-    "fundToggleTip": "仅佩蒂智创（杭州）宠物科技有限公司有该功能。"
+    "fundToggleTip": "仅佩蒂智创（杭州）宠物科技有限公司有该功能。",
+    "deptToggle": "按部门展示",
+    "deptToggleTip": "开启后，佩蒂智创（杭州）宠物科技有限公司按部门架构树展示；关闭后与其他基地一样平铺展示员工。"
   },
   "fund": {
     "monthSuffix": "月",

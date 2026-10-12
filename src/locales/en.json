@@ -59,10 +59,12 @@
   },
   "employee": {
     "title": "Employees",
-    "searchPlaceholder": "Search employees (comma-separated for multiple)",
+    "searchPlaceholder": "Search employees (name/pinyin, comma-separated for multiple)",
     "department": "Department",
     "fundToggle": "Team Building Funds",
-    "fundToggleTip": "Only available for Peidi Innovation (Hangzhou) Pet Technology Co., Ltd."
+    "fundToggleTip": "Only available for Peidi Innovation (Hangzhou) Pet Technology Co., Ltd.",
+    "deptToggle": "Group by department",
+    "deptToggleTip": "When on, Peidi Innovation (Hangzhou) Pet Technology Co., Ltd. is shown as a department tree; when off, employees are listed flat like other sites."
   },
   "fund": {
     "monthSuffix": "",
