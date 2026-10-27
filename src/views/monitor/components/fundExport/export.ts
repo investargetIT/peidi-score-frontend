@@ -7,16 +7,18 @@ import { getTeamBuildingExpenses } from "@/api/user";
 const MONTHLY_FUND = 60;
 const FONT_NAME = "宋体";
 
-/** 员工信息（只需用到 userId / hireDate，兼容员工列表原始记录） */
+/** 员工信息（只需用到 userId / hireDate / deptId，兼容员工列表原始记录） */
 export interface FundExportEmployee {
   userId?: string | number | null;
   hireDate?: string;
+  /** 员工档案部门 id（/user/page 返回，与列表树同源，通常比经费接口的钉钉部门 id 新） */
+  deptId?: string | number | null;
 }
 
 export interface FundLedgerExportOptions {
   /** 导出年度，默认当前年 */
   year?: number;
-  /** 员工列表：用于按 userId 补入职日期（未注册员工补不到，留空） */
+  /** 员工列表：用于按 userId 补入职日期、补部门（经费接口部门失效时） */
   employees?: FundExportEmployee[];
 }
 
@@ -96,7 +98,11 @@ const resolveDeptPath = (
     return { path: deptId ? `部门${deptId}` : "部门信息缺失", known: false };
   }
   const path =
-    chain[0] && TOP_GROUPS.has(chain[0]) ? chain.slice(1) : chain.slice();
+    chain[0] && TOP_GROUPS.has(chain[0])
+      ? chain.slice(1).length
+        ? chain.slice(1)
+        : chain // 员工直接挂在顶层口径节点上时，保留该节点名称，避免部门列空白
+      : chain.slice();
   return { path: path.join(" / "), known: true };
 };
 
@@ -149,6 +155,36 @@ const buildHireDateMap = (
   return map;
 };
 
+/** userId → 员工档案部门 id（列表树同源，用于经费接口部门 id 失效时兜底） */
+const buildEmployeeDeptMap = (
+  employees: FundExportEmployee[]
+): Map<string, string> => {
+  const map = new Map<string, string>();
+  (employees || []).forEach(emp => {
+    if (emp?.userId === undefined || emp?.userId === null) return;
+    if (emp?.deptId === undefined || emp?.deptId === null) return;
+    const key = String(emp.userId);
+    if (!map.has(key)) map.set(key, String(emp.deptId));
+  });
+  return map;
+};
+
+/**
+ * 选定用于反查部门名称的 deptId：
+ * 1. 员工档案 department（/user/page，列表树用它，最新）能命中部门树则优先；
+ * 2. 否则用经费接口 deptId（可能是已删除/合并的旧钉钉部门）；
+ * 3. 都命中不了，仍优先展示档案部门 id，至少与列表树口径一致。
+ */
+const pickDeptId = (
+  empDeptId: string,
+  fundDeptId: string,
+  pathMap: Map<string, string[]>
+): string => {
+  if (empDeptId && pathMap.has(empDeptId)) return empDeptId;
+  if (fundDeptId && pathMap.has(fundDeptId)) return fundDeptId;
+  return empDeptId || fundDeptId;
+};
+
 const fetchDeptTree = async (): Promise<any[]> => {
   try {
     const res: any = await getDeptTree();
@@ -168,6 +204,7 @@ const buildGroups = (
   year: number
 ): LedgerGroup[] => {
   const hireDateMap = buildHireDateMap(employees);
+  const employeeDeptMap = buildEmployeeDeptMap(employees);
   const groupMap = new Map<string, LedgerGroup>();
 
   fundList.forEach(item => {
@@ -175,7 +212,10 @@ const buildGroups = (
     if (months.length === 0) return;
 
     const userId = item.userId != null ? String(item.userId) : null;
-    const deptId = item.deptId ? String(item.deptId) : "";
+    const fundDeptId = item.deptId ? String(item.deptId) : "";
+    // 与列表树保持一致：优先用员工档案部门，经费接口的钉钉部门可能已失效（如已删除/合并）
+    const empDeptId = userId ? employeeDeptMap.get(userId) || "" : "";
+    const deptId = pickDeptId(empDeptId, fundDeptId, pathMap);
     const { path: deptPath, known } = resolveDeptPath(pathMap, deptId);
     const hireDate = userId ? hireDateMap.get(userId) || "" : "";
 
