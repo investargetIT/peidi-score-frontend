@@ -1,0 +1,9 @@
+# pnpm 11+ 的 pnpm 专属设置从 .npmrc 迁到这里（.npmrc 只保留 registry/auth）
+# 允许依赖执行构建脚本（esbuild 二进制、vue-demi 的 postinstall）
+allowBuilds:
+  esbuild: true
+  vue-demi: true
+
+# 等价于原 .npmrc 的 shamefully-hoist=true / shell-emulator=true
+shamefullyHoist: true
+shellEmulator: true
