@@ -205,6 +205,8 @@ export const getTeamBuildingExpenses = async (
     userName: string;
     deptId?: string;
     months: boolean[];
+    /** 该年度已申请的月份原文（形如 "2026-01"），供台账导出还原申请区间 */
+    filingDates: string[];
   }[]
 > => {
   const targetYear = year || new Date().getFullYear();
@@ -218,20 +220,26 @@ export const getTeamBuildingExpenses = async (
     userName: string;
     deptId?: string;
     months: boolean[];
+    filingDates: string[];
   }[] = [];
   if (res?.code === 200 && Array.isArray(res?.data)) {
     res.data.forEach(item => {
       const months = Array.from({ length: 12 }, () => false);
+      const filingDates: string[] = [];
       (item.filingDates || []).forEach(dateStr => {
         const [y, m] = String(dateStr).split("-").map(Number);
-        if (y === targetYear && m >= 1 && m <= 12) months[m - 1] = true;
+        if (y === targetYear && m >= 1 && m <= 12) {
+          months[m - 1] = true;
+          filingDates.push(String(dateStr));
+        }
       });
       list.push({
         // userId 为 null 表示该员工尚未注册系统账号（无 userId 可关联），调用方据此识别未注册员工
         userId: item.userId != null ? String(item.userId) : null,
         userName: item.userName || "",
         deptId: item.deptId != null ? String(item.deptId) : undefined,
-        months
+        months,
+        filingDates
       });
     });
   }

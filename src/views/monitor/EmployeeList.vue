@@ -1,44 +1,52 @@
 <template>
   <el-card class="employee-list">
     <div class="employee-title">
-      <div class="title-row">
-        <div class="title-left">
-          <p class="title-text">{{ t("employee.title") }}</p>
-          <div class="fund-toggle">
-            <span class="fund-toggle-label">{{
-              t("employee.deptToggle")
-            }}</span>
-            <el-tooltip
-              :content="t('employee.deptToggleTip')"
-              placement="top"
-              effect="dark"
-              :show-after="300"
+      <p class="title-text">{{ t("employee.title") }}</p>
+      <div class="control-bar">
+        <div class="control-group">
+          <span class="control-label">{{ t("employee.deptToggle") }}</span>
+          <el-tooltip
+            :content="t('employee.deptToggleTip')"
+            placement="top"
+            effect="dark"
+            :show-after="300"
+          >
+            <el-icon class="control-help" :size="14"
+              ><QuestionFilled
+            /></el-icon>
+          </el-tooltip>
+          <el-switch v-model="showDeptTree" size="small" />
+        </div>
+        <div class="control-group">
+          <span class="control-label">{{ t("employee.fundToggle") }}</span>
+          <el-tooltip
+            :content="t('fundDialog.toggleTip')"
+            placement="top"
+            effect="dark"
+            :show-after="300"
+          >
+            <el-icon
+              class="control-help"
+              :size="14"
+              @click.stop="fundDialogVisible = true"
+              ><QuestionFilled
+            /></el-icon>
+          </el-tooltip>
+          <el-switch v-model="showFundSquares" size="small" />
+          <el-tooltip
+            :content="t('fundDialog.exportTip')"
+            placement="top"
+            effect="dark"
+            :show-after="300"
+          >
+            <span
+              class="fund-export-btn"
+              :class="{ 'is-loading': fundExporting }"
+              @click.stop="handleFundExport"
             >
-              <el-icon class="fund-toggle-icon" :size="14"
-                ><QuestionFilled
-              /></el-icon>
-            </el-tooltip>
-            <el-switch v-model="showDeptTree" size="small" />
-          </div>
-          <div class="fund-toggle">
-            <span class="fund-toggle-label">{{
-              t("employee.fundToggle")
-            }}</span>
-            <el-tooltip
-              :content="t('fundDialog.toggleTip')"
-              placement="top"
-              effect="dark"
-              :show-after="300"
-            >
-              <el-icon
-                class="fund-toggle-icon"
-                :size="14"
-                @click.stop="fundDialogVisible = true"
-                ><QuestionFilled
-              /></el-icon>
-            </el-tooltip>
-            <el-switch v-model="showFundSquares" size="small" />
-          </div>
+              <el-icon :size="13"><Download /></el-icon>
+            </span>
+          </el-tooltip>
         </div>
         <el-tooltip
           :content="t('monitor.leave')"
@@ -197,6 +205,9 @@
 
     <template #footer>
       <div class="fund-dialog-footer">
+        <el-button :loading="fundExporting" @click="handleFundExport">
+          {{ t("fundDialog.export") }}
+        </el-button>
         <el-button type="primary" @click="fundDialogVisible = false">
           {{ t("fundDialog.confirm") }}
         </el-button>
@@ -215,16 +226,19 @@ import {
   onBeforeUnmount
 } from "vue";
 import { useI18n } from "vue-i18n";
+import { ElMessage } from "element-plus";
 import { match } from "pinyin-pro";
 import Avatar from "@/assets/user.jpg";
 import { getDeptTree } from "@/api/pmApi";
 import {
   QuestionFilled,
   OfficeBuilding,
-  Folder
+  Folder,
+  Download
 } from "@element-plus/icons-vue";
 import ScoreHistoryExport from "./components/scoreHistoryExport/index.vue";
 import FundSquares from "./components/fundSquares/index.vue";
+import { exportFundLedger } from "./components/fundExport/export";
 const { t } = useI18n();
 const props = defineProps({
   employees: Array,
@@ -263,6 +277,41 @@ const showFundSquares = ref(false);
 watch(showFundSquares, val => {
   emit("update:showFundSquares", val);
 });
+
+//#region 导出团建经费台账
+const fundExporting = ref(false);
+const handleFundExport = async () => {
+  if (fundExporting.value) return;
+  fundExporting.value = true;
+  const loadingMsg = ElMessage({
+    message: t("fundDialog.exporting"),
+    type: "info",
+    duration: 0
+  });
+  try {
+    const result = await exportFundLedger({
+      year: new Date().getFullYear(),
+      employees: props.employees || []
+    });
+    if (!result) {
+      ElMessage.warning(t("fundDialog.exportEmpty"));
+      return;
+    }
+    ElMessage.success(
+      t("fundDialog.exportSuccess", {
+        count: result.people,
+        amount: result.totalAmount
+      })
+    );
+  } catch (error) {
+    console.error("导出团建经费台账失败:", error);
+    ElMessage.error(t("fundDialog.exportFailed"));
+  } finally {
+    loadingMsg.close();
+    fundExporting.value = false;
+  }
+};
+//#endregion
 
 // 部门架构树展示开关：默认开启（保持原有行为）。
 // 关闭后，佩蒂智创与其他基地一样「基地→员工」平铺展示。
@@ -826,50 +875,38 @@ const handleExport = data => {
 }
 
 .employee-title {
-  margin-bottom: 18px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-/* 标题行：英文等长文案放不下时自动换行，离职按钮始终右上角 */
-.title-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 0;
-}
-
-.title-row :deep(.el-tooltip__trigger) {
-  flex-shrink: 0;
-}
-
-.title-left {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  align-items: center;
-  min-width: 0;
+  margin-bottom: 16px;
 }
 
 .title-text {
-  margin: 0;
+  margin: 0 0 10px;
   font-size: 24px;
   font-weight: bold;
   white-space: nowrap;
 }
 
-/* 团建经费开关组：整体作为一个单元，空间不足时整块换行，不拆行 */
-.fund-toggle {
+/* 控制区：所有开关/按钮统一收进一条工具条，避免散落在标题行 */
+.control-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 6px;
+  background: #f7f8fa;
+  border: 1px solid #eceff2;
+  border-radius: 8px;
+}
+
+/* 开关组：整体作为一个单元，空间不足时整块换行，不拆行 */
+.control-group {
   display: inline-flex;
-  gap: 5px;
+  flex-shrink: 0;
+  gap: 4px;
   align-items: center;
   white-space: nowrap;
 }
 
-/* 标题栏“团建经费”开关 */
-.fund-toggle-label {
+.control-label {
   font-size: 13px;
   font-weight: 400;
   line-height: 1;
@@ -877,9 +914,46 @@ const handleExport = data => {
   white-space: nowrap;
 }
 
-.fund-toggle-icon {
+.control-help {
   color: #b6b6bd;
   cursor: pointer;
+}
+
+/* 离职按钮固定到控制条右侧 */
+.control-bar .btn-resign {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* 团建经费台账导出按钮：与开关同组，避免误触开关 */
+.fund-export-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: #2563eb;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #cfdcf5;
+  border-radius: 50%;
+  transition:
+    color 0.15s,
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.15s;
+}
+
+.fund-export-btn:hover {
+  color: #fff;
+  background: #2563eb;
+  border-color: #2563eb;
+  transform: scale(1.08);
+}
+
+.fund-export-btn.is-loading {
+  pointer-events: none;
+  opacity: 0.55;
 }
 
 /* ===== 团建经费规则弹窗 ===== */
