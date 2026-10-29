@@ -183,17 +183,22 @@ export const getDepartmentDetail = (params: { deptId: string }) => {
 // 请求参数: { year?: number }
 // 响应示例: [{ userName: "string", userId: 0, filingDates: ["yyyy-MM", ...] }]
 // 前端转成 { userId: boolean[12] }，下标 0~11 对应 1~12 月，true=该月经费已用
-// 团建费接口（公开，无需登录）：线上与测试站路径均为 /attendance/teamBuilding/expenses（带前缀），
-// 全环境直连线上 user.peidigroup.cn。
+// 团建费接口（公开，无需登录）：线上与测试站路径均为 /attendance/teamBuilding/expenses（带前缀）。
+// 环境切换：true-本地/测试环境 12.18.1.36:8080，false-线上 user.peidigroup.cn
 // 注意：该接口会返回【尚未注册系统账号】的员工（目前仅有智创基地），调用方需自行与员工列表比对。
+const isTeamBuildingLocal = false;
 const teamBuildingUrlApi = (path: string) =>
-  `https://user.peidigroup.cn/attendance${path}`;
+  isTeamBuildingLocal
+    ? `http://12.18.1.36:8080/attendance${path}`
+    : `https://user.peidigroup.cn/attendance${path}`;
 
 export interface TeamBuildingExpenseItem {
   userId?: number | string;
   userName?: string;
   deptId?: number | string;
   filingDates?: string[];
+  /** 每次申请的审批时间（形如 "2026-09-02 18:46:00"），一次申请可覆盖多个月份 */
+  approvalDates?: string[];
 }
 
 /** 拉取团建经费原始列表（含未注册员工），months 下标 0~11 对应 1~12 月，true=该月经费已用 */
@@ -207,6 +212,8 @@ export const getTeamBuildingExpenses = async (
     months: boolean[];
     /** 该年度已申请的月份原文（形如 "2026-01"），供台账导出还原申请区间 */
     filingDates: string[];
+    /** 该年度每次申请的审批时间（形如 "2026-09-02 18:46:00"），升序去重，供台账导出还原申请时间 */
+    approvalDates: string[];
   }[]
 > => {
   const targetYear = year || new Date().getFullYear();
@@ -221,6 +228,7 @@ export const getTeamBuildingExpenses = async (
     deptId?: string;
     months: boolean[];
     filingDates: string[];
+    approvalDates: string[];
   }[] = [];
   if (res?.code === 200 && Array.isArray(res?.data)) {
     res.data.forEach(item => {
@@ -239,7 +247,15 @@ export const getTeamBuildingExpenses = async (
         userName: item.userName || "",
         deptId: item.deptId != null ? String(item.deptId) : undefined,
         months,
-        filingDates
+        filingDates,
+        // 每次申请的审批时间：去空、去重、升序，便于按「最早一次晚于该月 1 号的审批」归属月份
+        approvalDates: [
+          ...new Set(
+            (item.approvalDates || [])
+              .map(dateStr => String(dateStr).trim())
+              .filter(Boolean)
+          )
+        ].sort()
       });
     });
   }
