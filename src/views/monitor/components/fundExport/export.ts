@@ -25,36 +25,40 @@ export interface FundLedgerExportOptions {
 export interface FundLedgerExportResult {
   /** 员工人数（去重） */
   people: number;
-  /** 台账行数 */
+  /** 台账行数（= 人数） */
   rows: number;
-  /** 批次（合并块）数 */
+  /** 部门块（合并块）数 */
   groups: number;
   /** 申请金额合计 */
   totalAmount: number;
 }
 
-/** 台账一行：某员工某次连续月份的申请 */
+/**
+ * 台账一行：一个员工。
+ * 接口只给 filingDates（已申请月份集合）与 approvalDates（每次审批时间集合），
+ * 两者无法按索引一一对应，故不拆分、不配对，分别平铺到「申请月份」「申请时间」两列。
+ */
 interface LedgerRow {
   userName: string;
   userId: string | null;
   deptId: string;
   deptPath: string;
   hireDate: string;
-  startMonth: number;
-  endMonth: number;
+  /** 该年度已申请月份（升序） */
+  months: number[];
+  /** 已申请月份文本，如 1-9月 */
   monthText: string;
-  /** 申请（审批）时间，取自经费接口 approvalDates，形如 2026-09-02 18:46:00 */
-  applyDate: string;
+  /** 该年度每次申请的审批时间，原样平铺 */
+  applyTimes: string[];
   amount: number;
   remark: string;
 }
 
-/** 台账分组：相同「申请时间 + 部门」合并 序号/申请时间/部门 */
+/** 台账分组：同部门纵向合并 序号/部门 */
 interface LedgerGroup {
-  endMonth: number;
-  applyDate: string;
   deptId: string;
   deptPath: string;
+  firstApplyTime: string;
   rows: LedgerRow[];
 }
 
@@ -135,40 +139,6 @@ const splitMonthRuns = (months: number[]): MonthRun[] => {
   return runs;
 };
 
-/**
- * 月份（1~12）→ 该月所属那次申请的审批时间。
- * 接口的 approvalDates 只记「每次申请的时间」，一次申请可覆盖此前尚未申请的若干个月份，
- * 故按「不早于该月 1 号的最早一次审批」归属：例如 4 月申请（05-15）覆盖 4、5 月，6 月申请（07-14）覆盖 6、7 月。
- */
-const buildApplyDateByMonth = (
-  approvalDates: string[],
-  year: number
-): string[] => {
-  const sorted = [...new Set(approvalDates || [])].sort();
-  return Array.from({ length: 12 }, (_, index) => {
-    const monthStart = `${year}-${String(index + 1).padStart(2, "0")}-01`;
-    return sorted.find(date => String(date).slice(0, 10) >= monthStart) || "";
-  });
-};
-
-/** 连续月份切段，并在审批时间变化处断开：[4,5,6,7] + [05-15,05-15,07-14,07-14] → 4-5、6-7 */
-const splitMonthRunsByApplyDate = (
-  months: number[],
-  applyDateByMonth: string[]
-): (MonthRun & { applyDate: string })[] => {
-  const runs: (MonthRun & { applyDate: string })[] = [];
-  months.forEach(month => {
-    const applyDate = applyDateByMonth[month - 1] || "";
-    const last = runs[runs.length - 1];
-    if (last && month === last.end + 1 && applyDate === last.applyDate) {
-      last.end = month;
-    } else {
-      runs.push({ start: month, end: month, applyDate });
-    }
-  });
-  return runs;
-};
-
 const formatMonthRange = (start: number, end: number) =>
   start === end ? `${start}月` : `${start}-${end}月`;
 
@@ -233,7 +203,10 @@ const fetchDeptTree = async (): Promise<any[]> => {
   }
 };
 
-/** 把经费接口数据还原成台账行，并按「申请月 + 部门」分组 */
+/**
+ * 把经费接口数据还原成台账行：一个员工一行，月份与审批时间各自平铺、互不配对。
+ * 后端不提供「一次申请覆盖哪几个月」的结构，前端不做任何推断拆分。
+ */
 const buildGroups = (
   fundList: Awaited<ReturnType<typeof getTeamBuildingExpenses>>,
   employees: FundExportEmployee[],
@@ -250,60 +223,59 @@ const buildGroups = (
 
     const userId = item.userId != null ? String(item.userId) : null;
     const fundDeptId = item.deptId ? String(item.deptId) : "";
-    // 与列表树保持一致：优先用员工档案部门，经费接口的钉钉部门可能已失效（如已删除/合并）
     const empDeptId = userId ? employeeDeptMap.get(userId) || "" : "";
     const deptId = pickDeptId(empDeptId, fundDeptId, pathMap);
     const { path: deptPath, known } = resolveDeptPath(pathMap, deptId);
     const hireDate = userId ? hireDateMap.get(userId) || "" : "";
-    const applyDateByMonth = buildApplyDateByMonth(item.approvalDates, year);
+    const applyTimes = [...new Set(item.approvalDates || [])].sort();
 
-    splitMonthRunsByApplyDate(months, applyDateByMonth).forEach(run => {
-      const monthCount = run.end - run.start + 1;
-      const remarks: string[] = [];
-      if (!userId) remarks.push("未注册账号");
-      if (!known) remarks.push("部门信息缺失");
+    const remarks: string[] = [];
+    if (!userId) remarks.push("未注册账号");
+    if (!known) remarks.push("部门信息缺失");
 
-      const row: LedgerRow = {
-        userName: item.userName || "未知员工",
-        userId,
+    const row: LedgerRow = {
+      userName: item.userName || "未知员工",
+      userId,
+      deptId,
+      deptPath,
+      hireDate,
+      months,
+      monthText: formatMonthSet(new Set(months)),
+      applyTimes,
+      amount: months.length * MONTHLY_FUND,
+      remark: remarks.join("；")
+    };
+
+    if (!groupMap.has(deptId)) {
+      groupMap.set(deptId, {
         deptId,
         deptPath,
-        hireDate,
-        startMonth: run.start,
-        endMonth: run.end,
-        monthText: formatMonthRange(run.start, run.end),
-        applyDate: run.applyDate,
-        amount: monthCount * MONTHLY_FUND,
-        remark: remarks.join("；")
-      };
-
-      // 同一次申请（审批时间相同）+ 同部门 归入同一批次，纵向合并序号/申请时间/部门；
-      // 接口没返回审批时间（如线上当前版本）时，退回旧的「申请月末 + 部门」口径
-      const groupKey = `${run.applyDate || run.end}|${deptId}`;
-      if (!groupMap.has(groupKey)) {
-        groupMap.set(groupKey, {
-          endMonth: run.end,
-          applyDate: run.applyDate,
-          deptId,
-          deptPath,
-          rows: []
-        });
-      }
-      groupMap.get(groupKey)!.rows.push(row);
-    });
+        firstApplyTime: "",
+        rows: []
+      });
+    }
+    const group = groupMap.get(deptId)!;
+    const rowFirst = applyTimes[0];
+    if (
+      rowFirst &&
+      (!group.firstApplyTime || rowFirst < group.firstApplyTime)
+    ) {
+      group.firstApplyTime = rowFirst;
+    }
+    group.rows.push(row);
   });
 
   const groups = [...groupMap.values()];
   groups.forEach(group => {
-    group.rows.sort((a, b) =>
-      a.userName.localeCompare(b.userName, "zh-Hans-CN")
-    );
+    group.rows.sort((a, b) => {
+      const timeDiff = (a.applyTimes[0] || "").localeCompare(
+        b.applyTimes[0] || ""
+      );
+      return timeDiff || a.userName.localeCompare(b.userName, "zh-Hans-CN");
+    });
   });
-  // 按申请（审批）时间归集，没有审批时间时退回「年-月」
-  const groupSortKey = (group: LedgerGroup) =>
-    group.applyDate || `${year}-${String(group.endMonth).padStart(2, "0")}`;
   groups.sort((a, b) => {
-    const keyDiff = groupSortKey(a).localeCompare(groupSortKey(b));
+    const keyDiff = a.firstApplyTime.localeCompare(b.firstApplyTime);
     return keyDiff || a.deptPath.localeCompare(b.deptPath, "zh-Hans-CN");
   });
   return groups;
@@ -326,14 +298,18 @@ const setCellStyle = (
   cell.border = THIN_BORDER;
 };
 
-/** 台账 sheet：标题 + 表头 + 按批次纵向合并的数据行 */
+/**
+ * 台账 sheet：部门 → 人 → 申请月份 → 申请时间 → 经费。
+ * 一人一行；申请月份与申请时间两列各自平铺接口原值，不做配对、不做批次拆分。
+ */
 const buildLedgerSheet = (
   workbook: ExcelJS.Workbook,
   groups: LedgerGroup[],
   year: number
 ) => {
   const worksheet = workbook.addWorksheet(`${year}年`);
-  const widths = [5.7, 20, 32, 16, 13, 11, 11, 18];
+  // 列序：序号 · 部门 · 姓名 · 申请月份 · 申请时间 · 经费 · 入职日期 · 备注
+  const widths = [5.7, 30, 12, 14, 22, 11, 13, 20];
   widths.forEach((width, index) => {
     worksheet.getColumn(index + 1).width = width;
   });
@@ -345,6 +321,7 @@ const buildLedgerSheet = (
   titleCell.alignment = { vertical: "middle", horizontal: "center" };
   worksheet.getRow(1).height = 30;
 
+  // 说明文字放在表格右侧（I 列），避免与「备注」列的表头重叠
   const noteCell = worksheet.getCell("I1");
   noteCell.value =
     "备注：每人每月60元；当月15日入职为节点，15前计算当月，15后次月开始计算。";
@@ -353,12 +330,12 @@ const buildLedgerSheet = (
 
   const headers = [
     "序号",
-    "申请时间",
     "部门",
     "姓名",
-    "入职日期",
     "申请月份",
-    "申请金额",
+    "申请时间",
+    "经费",
+    "入职日期",
     "备注"
   ];
   const headerRow = worksheet.getRow(2);
@@ -375,34 +352,38 @@ const buildLedgerSheet = (
     const startRow = cursor;
     group.rows.forEach(row => {
       const excelRow = worksheet.getRow(cursor);
+      // 申请时间：按接口原值逐条平铺（不推断哪条对应哪几个月）
+      const timeLines = row.applyTimes.length ? row.applyTimes : ["—"];
       excelRow.getCell(1).value = groupIndex + 1;
-      excelRow.getCell(2).value =
-        group.applyDate || `${year}-${String(group.endMonth).padStart(2, "0")}`;
-      excelRow.getCell(3).value = group.deptPath;
-      excelRow.getCell(4).value = row.userName;
-      excelRow.getCell(5).value = row.hireDate;
-      excelRow.getCell(6).value = row.monthText;
-      excelRow.getCell(7).value = row.amount;
+      excelRow.getCell(2).value = group.deptPath;
+      excelRow.getCell(3).value = row.userName;
+      excelRow.getCell(4).value = row.monthText;
+      excelRow.getCell(5).value = timeLines.join(String.fromCharCode(10));
+      // 经费 = 该人已申请月数 × 60，数值型便于求和
+      excelRow.getCell(6).value = row.amount;
+      excelRow.getCell(7).value = row.hireDate;
       excelRow.getCell(8).value = row.remark;
       for (let col = 1; col <= 8; col++) {
         setCellStyle(excelRow.getCell(col), {
-          wrapText: col === 3 || col === 4 || col === 8
+          wrapText: col === 2 || col === 3 || col === 4 || col === 5
         });
+      }
+      if (timeLines.length > 1) {
+        excelRow.height = 16 * timeLines.length + 4;
       }
       cursor++;
     });
     const endRow = cursor - 1;
     if (endRow > startRow) {
-      // 序号 / 申请时间 / 部门 三列按批次纵向合并
-      [1, 2, 3].forEach(col => {
+      [1, 2].forEach(col => {
         worksheet.mergeCells(startRow, col, endRow, col);
         for (let rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
           worksheet.getCell(rowIndex, col).border = THIN_BORDER;
         }
       });
-      [1, 2, 3].forEach(col => {
+      [1, 2].forEach(col => {
         setCellStyle(worksheet.getCell(startRow, col), {
-          wrapText: col === 3
+          wrapText: col === 2
         });
       });
     }
@@ -463,9 +444,7 @@ const buildSummarySheet = (
     const personKey = row.userId || `${row.userName}@${row.deptId}`;
     allPeople.add(personKey);
     totalAmount += row.amount;
-    for (let month = row.startMonth; month <= row.endMonth; month++) {
-      allMonths.add(month);
-    }
+    row.months.forEach(month => allMonths.add(month));
 
     if (!deptMap.has(row.deptPath)) {
       deptMap.set(row.deptPath, {
@@ -478,9 +457,7 @@ const buildSummarySheet = (
     const dept = deptMap.get(row.deptPath)!;
     dept.people.add(personKey);
     dept.amount += row.amount;
-    for (let month = row.startMonth; month <= row.endMonth; month++) {
-      dept.months.add(month);
-    }
+    row.months.forEach(month => dept.months.add(month));
   });
 
   const depts = [...deptMap.values()].sort((a, b) =>
@@ -520,14 +497,14 @@ const buildSummarySheet = (
 };
 
 /**
- * 导出团建经费台账（方案 A）：
- * - 按「连续申请月份 + 部门」还原申请批次，纵向合并序号/申请时间/部门；
- * - 申请时间取经费接口的 approvalDates（真实审批时间），一次申请覆盖多个月份时按审批时间断开批次；
- * - 申请金额 = 月数 × 60；
- * - 另附按部门汇总 sheet。
+ * 导出团建经费台账：
+ * - 一个员工一行；申请月份与申请时间分成两列，各自平铺接口原值；
+ * - 接口只给 filingDates（月份集合）与 approvalDates（审批时间集合），两者无法按索引对应，
+ *   故前端不做批次推断、不拆行、不把月份和某次审批强行绑定；
+ * - 经费 = 已申请月数 × 60（数值型，便于求和）；
+ * - 序号 / 部门按部门纵向合并；另附按部门汇总 sheet。
  *
- * 数据限制：经费接口的申请时间精确到「秒」，但月份与审批时间的归属由前端按
- * 「不早于该月 1 号的最早一次审批」推算；未注册员工（无 userId）入职日期留空，并在备注标记。
+ * 未注册员工（无 userId）入职日期留空，并在备注标记。
  */
 export const exportFundLedger = async (
   options: FundLedgerExportOptions = {}
