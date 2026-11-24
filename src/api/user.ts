@@ -192,14 +192,64 @@ const teamBuildingUrlApi = (path: string) =>
     ? `http://12.18.1.36:8080/attendance${path}`
     : `https://user.peidigroup.cn/attendance${path}`;
 
+/**
+ * 审批时间两种形态：
+ * - 线上：扁平字符串，形如 "2026-09-02 18:46:00"
+ * - 本地/测试：对象，形如 { approvalDate: "2026-06", filingDates: ["2026-01", ...] }
+ */
+export type TeamBuildingApprovalDate =
+  | string
+  | { approvalDate?: string; filingDates?: string[] };
+
 export interface TeamBuildingExpenseItem {
   userId?: number | string;
   userName?: string;
   deptId?: number | string;
   filingDates?: string[];
-  /** 每次申请的审批时间（形如 "2026-09-02 18:46:00"），一次申请可覆盖多个月份 */
-  approvalDates?: string[];
+  /** 每次申请的审批时间，一次申请可覆盖多个月份 */
+  approvalDates?: TeamBuildingApprovalDate[];
 }
+
+/** 审批时间统一转成展示文本（兼容扁平字符串与本地对象两种形态） */
+const normalizeApprovalDate = (raw: TeamBuildingApprovalDate): string => {
+  if (raw == null) return "";
+  if (typeof raw === "string") return raw.trim();
+  return String(raw.approvalDate ?? "").trim();
+};
+
+/** 一次申请（一次审批）覆盖的批次：审批时间 + 该次申请覆盖的月份原文 */
+export interface TeamBuildingBatch {
+  /** 审批时间文本；本地接口只有年月（如 "2026-06"） */
+  approvalDate: string;
+  /** 该次申请覆盖的月份原文（形如 "2026-01"），已按年度过滤、去重升序 */
+  filingDates: string[];
+}
+
+/**
+ * 把接口的 approvalDates 还原成批次列表。
+ * - 本地/测试：对象自带 filingDates，直接就是批次，可直接按批次拆行；
+ * - 线上：只有扁平时间字符串、没有月份归属，返回空数组，调用方按「无批次」降级处理。
+ */
+const normalizeBatches = (
+  rawList: TeamBuildingApprovalDate[] | undefined,
+  year: number
+): TeamBuildingBatch[] => {
+  const batches: TeamBuildingBatch[] = [];
+  (rawList || []).forEach(raw => {
+    if (raw == null || typeof raw === "string") return; // 扁平字符串无月份归属
+    const approvalDate = normalizeApprovalDate(raw);
+    const filingDates = [
+      ...new Set(
+        (raw.filingDates || [])
+          .map(dateStr => String(dateStr))
+          .filter(dateStr => dateStr.startsWith(`${year}-`))
+      )
+    ].sort();
+    if (!approvalDate && filingDates.length === 0) return;
+    batches.push({ approvalDate, filingDates });
+  });
+  return batches.sort((a, b) => a.approvalDate.localeCompare(b.approvalDate));
+};
 
 /** 拉取团建经费原始列表（含未注册员工），months 下标 0~11 对应 1~12 月，true=该月经费已用 */
 export const getTeamBuildingExpenses = async (
@@ -214,6 +264,11 @@ export const getTeamBuildingExpenses = async (
     filingDates: string[];
     /** 该年度每次申请的审批时间（形如 "2026-09-02 18:46:00"），升序去重，供台账导出还原申请时间 */
     approvalDates: string[];
+    /**
+     * 批次明细（审批时间 → 该次申请覆盖的月份）。
+     * 本地/测试接口自带月份归属，可据此按批次拆行；线上接口为空数组，调用方需降级。
+     */
+    batches: TeamBuildingBatch[];
   }[]
 > => {
   const targetYear = year || new Date().getFullYear();
@@ -229,6 +284,7 @@ export const getTeamBuildingExpenses = async (
     months: boolean[];
     filingDates: string[];
     approvalDates: string[];
+    batches: TeamBuildingBatch[];
   }[] = [];
   if (res?.code === 200 && Array.isArray(res?.data)) {
     res.data.forEach(item => {
@@ -248,14 +304,16 @@ export const getTeamBuildingExpenses = async (
         deptId: item.deptId != null ? String(item.deptId) : undefined,
         months,
         filingDates,
-        // 每次申请的审批时间：去空、去重、升序，便于按「最早一次晚于该月 1 号的审批」归属月份
+        // 每次申请的审批时间：兼容线上字符串与本地对象两种形态，去空、去重、升序
         approvalDates: [
           ...new Set(
             (item.approvalDates || [])
-              .map(dateStr => String(dateStr).trim())
+              .map(normalizeApprovalDate)
               .filter(Boolean)
           )
-        ].sort()
+        ].sort(),
+        // 批次明细：只有本地接口（对象形态）能给出「这次审批覆盖哪几个月」
+        batches: normalizeBatches(item.approvalDates, targetYear)
       });
     });
   }

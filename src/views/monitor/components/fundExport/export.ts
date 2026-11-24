@@ -6,6 +6,24 @@ import { getTeamBuildingExpenses } from "@/api/user";
 /** 团建经费标准：每人每月 60 元（与手工台账一致） */
 const MONTHLY_FUND = 60;
 const FONT_NAME = "宋体";
+/** 中文字体 charset，与手工台账保持一致 */
+const FONT_CHARSET = 134;
+
+/**
+ * 模板复刻用的尺寸常量（均取自《团建费用台账.xlsx》2026年表）：
+ * 默认行高 23、标题行 39、列宽见 LEDGER_COL_WIDTHS。
+ */
+const DEFAULT_ROW_HEIGHT = 23;
+const TITLE_ROW_HEIGHT = 39;
+const LEDGER_COL_WIDTHS = [
+  5.66666666666667, 10.7777777777778, 13.1111111111111, 17.2222222222222,
+  17.2222222222222, 17.2222222222222, 17.2222222222222, 17.2222222222222
+];
+const NOTE_COL_WIDTH = 18.6666666666667;
+
+/** 台账标题下方右侧的说明文字（与手工台账一致） */
+const LEDGER_NOTE =
+  "备注：每人每月60元；当月15日入职为节点，15前计算当月，15后次月开始计算。";
 
 /** 员工信息（只需用到 userId / hireDate / deptId，兼容员工列表原始记录） */
 export interface FundExportEmployee {
@@ -25,40 +43,45 @@ export interface FundLedgerExportOptions {
 export interface FundLedgerExportResult {
   /** 员工人数（去重） */
   people: number;
-  /** 台账行数（= 人数） */
+  /** 台账行数（一人一次申请一行） */
   rows: number;
-  /** 部门块（合并块）数 */
+  /** 申请批次块数（合并块数） */
   groups: number;
   /** 申请金额合计 */
   totalAmount: number;
 }
 
 /**
- * 台账一行：一个员工。
- * 接口只给 filingDates（已申请月份集合）与 approvalDates（每次审批时间集合），
- * 两者无法按索引一一对应，故不拆分、不配对，分别平铺到「申请月份」「申请时间」两列。
+ * 台账一行：一名员工的一次申请。
+ * 批次 = (申请时间, 部门)，同一次申请的人归入同一块，合并 序号/申请时间/部门。
  */
 interface LedgerRow {
   userName: string;
   userId: string | null;
+  /** 人级唯一键（userId 或 姓名@部门），用于人数去重统计 */
+  personKey: string;
   deptId: string;
+  /** 部门展示文本，多层级用换行分隔（与手工台账一致） */
   deptPath: string;
   hireDate: string;
-  /** 该年度已申请月份（升序） */
+  /** 本次申请已覆盖月份（升序） */
   months: number[];
-  /** 已申请月份文本，如 1-9月 */
+  /** 本次申请月份文本，如 1-9月 */
   monthText: string;
-  /** 该年度每次申请的审批时间，原样平铺 */
-  applyTimes: string[];
+  /** 审批时间原文，如 "2026-06-01"；无则为空 */
+  approvalDate: string;
   amount: number;
   remark: string;
 }
 
-/** 台账分组：同部门纵向合并 序号/部门 */
-interface LedgerGroup {
+/** 申请批次块：同一 (申请时间, 部门) 的所有人，序号/申请时间/部门纵向合并 */
+interface LedgerBlock {
+  key: string;
   deptId: string;
   deptPath: string;
-  firstApplyTime: string;
+  approvalDate: string;
+  /** 用于排序的时间键（精确到天时就是日期本身） */
+  sortTime: string;
   rows: LedgerRow[];
 }
 
@@ -67,6 +90,7 @@ interface MonthRun {
   end: number;
 }
 
+/** 细边框：与模板一致，不指定颜色（Excel 按"自动"黑色处理） */
 const THIN_BORDER: Partial<ExcelJS.Borders> = {
   top: { style: "thin" },
   left: { style: "thin" },
@@ -95,7 +119,10 @@ const buildDeptPathMap = (tree: any[]): Map<string, string[]> => {
   return map;
 };
 
-/** deptId → "大市场部 / 内容营销CM / 营销视觉组"；查不到时回退 deptId */
+/**
+ * deptId → 部门展示文本。与手工台账一致：多层级用换行分隔（如 "大市场部\n营销视觉组"）。
+ * 查不到时回退 "部门{id}"，并标记 known=false。
+ */
 const resolveDeptPath = (
   pathMap: Map<string, string[]>,
   deptId: string
@@ -110,7 +137,7 @@ const resolveDeptPath = (
         ? chain.slice(1)
         : chain // 员工直接挂在顶层口径节点上时，保留该节点名称，避免部门列空白
       : chain.slice();
-  return { path: path.join(" / "), known: true };
+  return { path: path.join("\n"), known: true };
 };
 
 /** 从 filingDates（形如 2026-01）中提取年度月份，去重升序 */
@@ -203,91 +230,132 @@ const fetchDeptTree = async (): Promise<any[]> => {
   }
 };
 
+/** 把 "2026-06-01" / "2026-06" 统一成用于排序的键 */
+const toSortTime = (approvalDate: string): string => approvalDate || "";
+
 /**
- * 把经费接口数据还原成台账行：一个员工一行，月份与审批时间各自平铺、互不配对。
- * 后端不提供「一次申请覆盖哪几个月」的结构，前端不做任何推断拆分。
+ * 把经费接口数据还原成台账批次块。
+ *
+ * 批次口径与手工台账一致：**同一次申请 = 同一申请时间 + 同一部门**，
+ * 该次申请涉及的所有人归入同一块，块内合并 序号/申请时间/部门。
+ *
+ * 每人可能有多次申请（如 5 月一次、9 月一次），分属不同块，各占一行。
+ * 线上接口若只有扁平审批时间、无批次月份归属，则退化为「一人一块」，不做配对推断。
  */
-const buildGroups = (
+const buildBlocks = (
   fundList: Awaited<ReturnType<typeof getTeamBuildingExpenses>>,
   employees: FundExportEmployee[],
   pathMap: Map<string, string[]>,
   year: number
-): LedgerGroup[] => {
+): LedgerBlock[] => {
   const hireDateMap = buildHireDateMap(employees);
   const employeeDeptMap = buildEmployeeDeptMap(employees);
-  const groupMap = new Map<string, LedgerGroup>();
+  const blockMap = new Map<string, LedgerBlock>();
 
   fundList.forEach(item => {
-    const months = getFilingMonths(item.filingDates || [], year);
-    if (months.length === 0) return;
+    const allMonths = getFilingMonths(item.filingDates || [], year);
+    if (allMonths.length === 0) return;
 
     const userId = item.userId != null ? String(item.userId) : null;
+    const userName = item.userName || "未知员工";
     const fundDeptId = item.deptId ? String(item.deptId) : "";
     const empDeptId = userId ? employeeDeptMap.get(userId) || "" : "";
     const deptId = pickDeptId(empDeptId, fundDeptId, pathMap);
     const { path: deptPath, known } = resolveDeptPath(pathMap, deptId);
     const hireDate = userId ? hireDateMap.get(userId) || "" : "";
-    const applyTimes = [...new Set(item.approvalDates || [])].sort();
+    const personKey = userId || `${userName}@${deptId}`;
 
     const remarks: string[] = [];
     if (!userId) remarks.push("未注册账号");
     if (!known) remarks.push("部门信息缺失");
+    const remark = remarks.join("；");
 
-    const row: LedgerRow = {
-      userName: item.userName || "未知员工",
-      userId,
-      deptId,
-      deptPath,
-      hireDate,
-      months,
-      monthText: formatMonthSet(new Set(months)),
-      applyTimes,
-      amount: months.length * MONTHLY_FUND,
-      remark: remarks.join("；")
-    };
-
-    if (!groupMap.has(deptId)) {
-      groupMap.set(deptId, {
-        deptId,
-        deptPath,
-        firstApplyTime: "",
-        rows: []
+    // 拆分方案：按批次（申请时间 → 覆盖月份）拆行
+    const batches = (item.batches || []).filter(
+      batch => batch.filingDates.length > 0
+    );
+    const applies: { months: number[]; approvalDate: string }[] = [];
+    if (batches.length > 0) {
+      const claimed = new Set<number>();
+      batches.forEach(batch => {
+        const batchMonths = getFilingMonths(batch.filingDates, year);
+        if (batchMonths.length === 0) return;
+        batchMonths.forEach(month => claimed.add(month));
+        applies.push({ months: batchMonths, approvalDate: batch.approvalDate });
+      });
+      // 兜底：批次未覆盖到的月份（数据不自洽时）单独成行，避免金额丢失
+      const rest = allMonths.filter(month => !claimed.has(month));
+      if (rest.length > 0) applies.push({ months: rest, approvalDate: "" });
+    } else {
+      // 无批次明细（线上扁平审批时间）：一人一行，多个审批时间用换行平铺
+      applies.push({
+        months: allMonths,
+        approvalDate: [...new Set(item.approvalDates || [])].sort().join("\n")
       });
     }
-    const group = groupMap.get(deptId)!;
-    const rowFirst = applyTimes[0];
-    if (
-      rowFirst &&
-      (!group.firstApplyTime || rowFirst < group.firstApplyTime)
-    ) {
-      group.firstApplyTime = rowFirst;
-    }
-    group.rows.push(row);
-  });
 
-  const groups = [...groupMap.values()];
-  groups.forEach(group => {
-    group.rows.sort((a, b) => {
-      const timeDiff = (a.applyTimes[0] || "").localeCompare(
-        b.applyTimes[0] || ""
-      );
-      return timeDiff || a.userName.localeCompare(b.userName, "zh-Hans-CN");
+    applies.forEach(apply => {
+      // 批次键 = 申请时间 + 部门：同一次申请的人归到同一块
+      const blockKey = `${apply.approvalDate}@@${deptId}`;
+      if (!blockMap.has(blockKey)) {
+        blockMap.set(blockKey, {
+          key: blockKey,
+          deptId,
+          deptPath,
+          approvalDate: apply.approvalDate,
+          sortTime: toSortTime(apply.approvalDate),
+          rows: []
+        });
+      }
+      blockMap.get(blockKey)!.rows.push({
+        userName,
+        userId,
+        personKey,
+        deptId,
+        deptPath,
+        hireDate,
+        months: apply.months,
+        monthText: formatMonthSet(new Set(apply.months)),
+        approvalDate: apply.approvalDate,
+        amount: apply.months.length * MONTHLY_FUND,
+        remark
+      });
     });
   });
-  groups.sort((a, b) => {
-    const keyDiff = a.firstApplyTime.localeCompare(b.firstApplyTime);
-    return keyDiff || a.deptPath.localeCompare(b.deptPath, "zh-Hans-CN");
+
+  const blocks = [...blockMap.values()];
+  // 块内：同批次按姓名排列，便于校对
+  blocks.forEach(block => {
+    block.rows.sort((a, b) =>
+      a.userName.localeCompare(b.userName, "zh-Hans-CN")
+    );
   });
-  return groups;
+  // 块间：按申请时间升序，同一时间再按部门
+  blocks.sort((a, b) => {
+    const timeDiff = a.sortTime.localeCompare(b.sortTime);
+    return timeDiff || a.deptPath.localeCompare(b.deptPath, "zh-Hans-CN");
+  });
+  return blocks;
 };
 
+/**
+ * 单元格样式：宋体（charset 134，与模板一致）、居中、细边框。
+ */
 const setCellStyle = (
   cell: ExcelJS.Cell,
-  options: { wrapText?: boolean; bold?: boolean; size?: number } = {}
+  options: {
+    wrapText?: boolean;
+    bold?: boolean;
+    size?: number;
+  } = {}
 ) => {
   cell.font = {
     name: FONT_NAME,
     size: options.size || 11,
+    charset: FONT_CHARSET,
+    scheme: "minor",
+    // 模板字体颜色为「自动」（theme 1 = 深色文本）
+    color: { theme: 1 },
     bold: !!options.bold
   };
   cell.alignment = {
@@ -298,133 +366,212 @@ const setCellStyle = (
   cell.border = THIN_BORDER;
 };
 
+/** 标题行：合并整行，宋体 12 加粗居中，行高 39（与手工台账一致） */
+const styleTitleRow = (
+  worksheet: ExcelJS.Worksheet,
+  rowNumber: number,
+  title: string,
+  lastColumn: number
+) => {
+  const row = worksheet.getRow(rowNumber);
+  row.getCell(1).value = title;
+  if (lastColumn > 1) {
+    worksheet.mergeCells(rowNumber, 1, rowNumber, lastColumn);
+  }
+  for (let col = 1; col <= lastColumn; col++) {
+    const cell = row.getCell(col);
+    cell.border = THIN_BORDER;
+  }
+  const cell = row.getCell(1);
+  cell.font = {
+    name: FONT_NAME,
+    size: 12,
+    charset: FONT_CHARSET,
+    scheme: "minor",
+    color: { theme: 1 },
+    bold: true
+  };
+  cell.alignment = { vertical: "middle", horizontal: "center" };
+  row.height = TITLE_ROW_HEIGHT;
+};
+
+/** 表头行：宋体 11，行高与模板一致（默认 23） */
+const styleHeaderRow = (
+  worksheet: ExcelJS.Worksheet,
+  rowNumber: number,
+  headers: string[]
+) => {
+  const row = worksheet.getRow(rowNumber);
+  headers.forEach((header, index) => {
+    const cell = row.getCell(index + 1);
+    cell.value = header;
+    setCellStyle(cell);
+  });
+  row.height = DEFAULT_ROW_HEIGHT;
+};
+
+/** 日期单元格格式：与手工台账一致（mm-dd-yy） */
+const DATE_FMT = "mm-dd-yy";
+
+/** 把 "2026-06-01" 转成 Date；只有年月（"2026-06"）时保持原文本，避免凭空补日 */
+const toDateCellValue = (text: string): Date | string => {
+  if (!text) return "";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+  const [y, m, d] = text.split("-").map(Number);
+  return new Date(y, m - 1, d);
+};
+
 /**
- * 台账 sheet：部门 → 人 → 申请月份 → 申请时间 → 经费。
- * 一人一行；申请月份与申请时间两列各自平铺接口原值，不做配对、不做批次拆分。
+ * 台账 sheet：与手工台账《团建费用台账.xlsx》一致。
+ *
+ * 列序：序号 · 申请时间 · 部门 · 姓名 · 入职日期 · 申请月份 · 申请金额 · 备注
+ * 排序：按「申请时间」升序排列申请批次，同一次申请的人相邻成块。
+ * 合并：序号 / 申请时间 / 部门 三列按批次块纵向合并（姓名不合并）。
+ *
+ * 注意：合并单元格只在左上角存值，开启筛选后块内其余行会被过滤掉。
+ * 这是手工台账原有的结构，如需要可筛选的明细，请看导出的另一张汇总表或另行说明。
  */
 const buildLedgerSheet = (
   workbook: ExcelJS.Workbook,
-  groups: LedgerGroup[],
+  blocks: LedgerBlock[],
   year: number
 ) => {
   const worksheet = workbook.addWorksheet(`${year}年`);
-  // 列序：序号 · 部门 · 姓名 · 申请月份 · 申请时间 · 经费 · 入职日期 · 备注
-  const widths = [5.7, 30, 12, 14, 22, 11, 13, 20];
-  widths.forEach((width, index) => {
+  // 行高/列宽与手工台账一致（默认行高 23，说明列在 K）
+  worksheet.properties.defaultRowHeight = DEFAULT_ROW_HEIGHT;
+  LEDGER_COL_WIDTHS.forEach((width, index) => {
     worksheet.getColumn(index + 1).width = width;
   });
+  worksheet.getColumn(11).width = NOTE_COL_WIDTH;
 
-  worksheet.mergeCells("A1:H1");
-  const titleCell = worksheet.getCell("A1");
-  titleCell.value = `${year}年团建费用台帐`;
-  titleCell.font = { name: FONT_NAME, size: 14, bold: true };
-  titleCell.alignment = { vertical: "middle", horizontal: "center" };
-  worksheet.getRow(1).height = 30;
+  styleTitleRow(worksheet, 1, `${year}年团建费用台帐`, 8);
 
-  // 说明文字放在表格右侧（I 列），避免与「备注」列的表头重叠
-  const noteCell = worksheet.getCell("I1");
-  noteCell.value =
-    "备注：每人每月60元；当月15日入职为节点，15前计算当月，15后次月开始计算。";
-  noteCell.font = { name: FONT_NAME, size: 10, color: { argb: "FF888888" } };
+  // 说明文字放在 K1（与手工台账位置一致），无边框、左对齐
+  const noteCell = worksheet.getCell("K1");
+  noteCell.value = LEDGER_NOTE;
+  noteCell.font = {
+    name: FONT_NAME,
+    size: 11,
+    charset: FONT_CHARSET,
+    scheme: "minor",
+    color: { theme: 1 }
+  };
   noteCell.alignment = { vertical: "middle", horizontal: "left" };
 
-  const headers = [
+  styleHeaderRow(worksheet, 2, [
     "序号",
+    "申请时间",
     "部门",
     "姓名",
-    "申请月份",
-    "申请时间",
-    "经费",
     "入职日期",
+    "申请月份",
+    "申请金额",
     "备注"
-  ];
-  const headerRow = worksheet.getRow(2);
-  headers.forEach((header, index) => {
-    const cell = headerRow.getCell(index + 1);
-    cell.value = header;
-    setCellStyle(cell, { bold: true });
-  });
-  headerRow.height = 22;
-  worksheet.views = [{ state: "frozen", ySplit: 2 }];
+  ]);
 
   let cursor = 3;
-  groups.forEach((group, groupIndex) => {
+  blocks.forEach((block, blockIndex) => {
     const startRow = cursor;
-    group.rows.forEach(row => {
+    block.rows.forEach(row => {
       const excelRow = worksheet.getRow(cursor);
-      // 申请时间：按接口原值逐条平铺（不推断哪条对应哪几个月）
-      const timeLines = row.applyTimes.length ? row.applyTimes : ["—"];
-      excelRow.getCell(1).value = groupIndex + 1;
-      excelRow.getCell(2).value = group.deptPath;
-      excelRow.getCell(3).value = row.userName;
-      excelRow.getCell(4).value = row.monthText;
-      excelRow.getCell(5).value = timeLines.join(String.fromCharCode(10));
-      // 经费 = 该人已申请月数 × 60，数值型便于求和
-      excelRow.getCell(6).value = row.amount;
-      excelRow.getCell(7).value = row.hireDate;
+      // 姓名之后的 5 列逐行写值；序号/申请时间/部门由块合并，只写首行
+      excelRow.getCell(4).value = row.userName;
+      const hireCell = excelRow.getCell(5);
+      hireCell.value = toDateCellValue(row.hireDate);
+      excelRow.getCell(6).value = row.monthText;
+      // 申请金额：与手工台账一致写成公式 =月数*60，便于核对
+      excelRow.getCell(7).value = {
+        formula: `${row.months.length}*${MONTHLY_FUND}`,
+        result: row.amount
+      };
       excelRow.getCell(8).value = row.remark;
-      for (let col = 1; col <= 8; col++) {
-        setCellStyle(excelRow.getCell(col), {
-          wrapText: col === 2 || col === 3 || col === 4 || col === 5
-        });
-      }
-      if (timeLines.length > 1) {
-        excelRow.height = 16 * timeLines.length + 4;
-      }
+
+      [4, 5, 6, 7, 8].forEach(col => {
+        setCellStyle(excelRow.getCell(col));
+      });
+      // 备注列：模板为左对齐
+      const remarkCell = excelRow.getCell(8);
+      remarkCell.alignment = {
+        vertical: "middle",
+        horizontal: "left",
+        wrapText: false
+      };
+      // setCellStyle 会重建 font/alignment，日期格式需在样式之后再设，避免被覆盖。
+      // 入职日期列无论是否有值都套用日期格式，与模板一致。
+      hireCell.numFmt = DATE_FMT;
       cursor++;
     });
+
     const endRow = cursor - 1;
-    if (endRow > startRow) {
-      [1, 2].forEach(col => {
-        worksheet.mergeCells(startRow, col, endRow, col);
-        for (let rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
-          worksheet.getCell(rowIndex, col).border = THIN_BORDER;
-        }
-      });
-      [1, 2].forEach(col => {
-        setCellStyle(worksheet.getCell(startRow, col), {
-          wrapText: col === 2
+    const excelRow = worksheet.getRow(startRow);
+    excelRow.getCell(1).value = blockIndex + 1;
+    excelRow.getCell(3).value = block.deptPath;
+
+    // 序号 / 申请时间 / 部门：块内合并，只画外框（中间行不画上下横线）
+    [1, 2, 3].forEach(col => {
+      // 关键：用 mergeCellsWithoutStyle，否则 ExcelJS 会把块内所有格子的样式
+      // 统一成主单元格，导致逐行的外框边框全部丢失。
+      if (endRow > startRow) {
+        worksheet.mergeCellsWithoutStyle(startRow, col, endRow, col);
+      }
+      // 块内每一行都套上字体/对齐（模板中续行同样是宋体居中，
+      // 只是不画上下横线），再逐格覆盖成「块外框」边框。
+      for (let rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+        setCellStyle(worksheet.getCell(rowIndex, col), {
+          wrapText: col === 3
         });
-      });
+        const cell = worksheet.getCell(rowIndex, col);
+        cell.border = {
+          top: rowIndex === startRow ? THIN_BORDER.top : undefined,
+          bottom: rowIndex === endRow ? THIN_BORDER.bottom : undefined,
+          left: THIN_BORDER.left,
+          right: THIN_BORDER.right
+        };
+      }
+    });
+
+    // 申请时间：合并与样式都处理完再写值并设日期格式，确保不被覆盖。
+    // 块内续行（合并区内的空格）也套日期格式，与模板保持一致。
+    const timeCell = worksheet.getCell(startRow, 2);
+    timeCell.value = toDateCellValue(block.approvalDate);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(block.approvalDate)) {
+      for (let rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+        worksheet.getCell(rowIndex, 2).numFmt = DATE_FMT;
+      }
+    }
+
+    // 块内每行都显式设置行高 23（与模板一致），避免被默认行高或内容撑开
+    for (let rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
+      worksheet.getRow(rowIndex).height = DEFAULT_ROW_HEIGHT;
     }
   });
 
   return worksheet;
 };
 
-/** 部门汇总 sheet：部门 / 人数 / 已申请月份 / 金额合计 */
+/** 部门汇总 sheet：部门 / 人数 / 已申请月份 / 申请金额合计 */
 const buildSummarySheet = (
   workbook: ExcelJS.Workbook,
   rows: LedgerRow[],
   year: number
 ) => {
   const worksheet = workbook.addWorksheet(`${year}年部门汇总`);
-  [5.7, 34, 9, 22, 14, 20].forEach((width, index) => {
+  // 行高/列宽与台账表同一口径，保持两个 sheet 观感一致
+  worksheet.properties.defaultRowHeight = DEFAULT_ROW_HEIGHT;
+  [5.66666666666667, 34, 9, 22, 16, 20].forEach((width, index) => {
     worksheet.getColumn(index + 1).width = width;
   });
 
-  worksheet.mergeCells("A1:F1");
-  const titleCell = worksheet.getCell("A1");
-  titleCell.value = `${year}年团建经费申请汇总（按部门）`;
-  titleCell.font = { name: FONT_NAME, size: 14, bold: true };
-  titleCell.alignment = { vertical: "middle", horizontal: "center" };
-  worksheet.getRow(1).height = 30;
+  styleTitleRow(worksheet, 1, `${year}年团建经费申请汇总（按部门）`, 6);
 
-  const headers = [
+  styleHeaderRow(worksheet, 2, [
     "序号",
     "部门",
     "人数",
     "已申请月份",
     "申请金额（元）",
     "备注"
-  ];
-  const headerRow = worksheet.getRow(2);
-  headers.forEach((header, index) => {
-    const cell = headerRow.getCell(index + 1);
-    cell.value = header;
-    setCellStyle(cell, { bold: true });
-  });
-  headerRow.height = 22;
+  ]);
   worksheet.views = [{ state: "frozen", ySplit: 2 }];
 
   const deptMap = new Map<
@@ -441,8 +588,7 @@ const buildSummarySheet = (
   let totalAmount = 0;
 
   rows.forEach(row => {
-    const personKey = row.userId || `${row.userName}@${row.deptId}`;
-    allPeople.add(personKey);
+    allPeople.add(row.personKey);
     totalAmount += row.amount;
     row.months.forEach(month => allMonths.add(month));
 
@@ -455,7 +601,7 @@ const buildSummarySheet = (
       });
     }
     const dept = deptMap.get(row.deptPath)!;
-    dept.people.add(personKey);
+    dept.people.add(row.personKey);
     dept.amount += row.amount;
     row.months.forEach(month => dept.months.add(month));
   });
@@ -481,7 +627,7 @@ const buildSummarySheet = (
     cursor++;
   });
 
-  // 合计行
+  // 合计行：加粗，与明细区分
   const totalRow = worksheet.getRow(cursor);
   totalRow.getCell(1).value = "";
   totalRow.getCell(2).value = "合计";
@@ -493,17 +639,24 @@ const buildSummarySheet = (
     setCellStyle(totalRow.getCell(col), { bold: true, wrapText: col === 4 });
   }
 
+  // 汇总表无合并单元格，可放心筛选（范围为明细行，不含合计行）
+  worksheet.autoFilter = {
+    from: { row: 2, column: 1 },
+    to: { row: cursor - 1, column: 6 }
+  };
+
   return worksheet;
 };
 
 /**
- * 导出团建经费台账：
- * - 一个员工一行；申请月份与申请时间分成两列，各自平铺接口原值；
- * - 接口只给 filingDates（月份集合）与 approvalDates（审批时间集合），两者无法按索引对应，
- *   故前端不做批次推断、不拆行、不把月份和某次审批强行绑定；
- * - 经费 = 已申请月数 × 60（数值型，便于求和）；
- * - 序号 / 部门按部门纵向合并；另附按部门汇总 sheet。
+ * 导出团建经费台账（结构与《团建费用台账.xlsx》手工模板一致）：
+ * - 列序：序号 · 申请时间 · 部门 · 姓名 · 入职日期 · 申请月份 · 申请金额 · 备注；
+ * - 按「申请时间」升序排列申请批次，同一次申请（同时间+同部门）的人相邻成块；
+ * - 序号 / 申请时间 / 部门 三列按批次块纵向合并，姓名不合并；
+ * - 一次申请一行：申请月份取自该次申请覆盖的月份，金额为 月数 × 60；
+ * - 样式为纯白底 + 细边框，宋体，与手工台账观感一致。
  *
+ * 线上接口若只有扁平审批时间、无批次月份归属，则降级为「一人一行」，不做配对推断。
  * 未注册员工（无 userId）入职日期留空，并在备注标记。
  */
 export const exportFundLedger = async (
@@ -515,22 +668,21 @@ export const exportFundLedger = async (
     fetchDeptTree()
   ]);
 
-  const groups = buildGroups(
+  const blocks = buildBlocks(
     fundList,
     options.employees || [],
     buildDeptPathMap(deptTree),
     year
   );
-  if (groups.length === 0) return null;
+  if (blocks.length === 0) return null;
 
-  const rows = groups.flatMap(group => group.rows);
-  const people = new Set(
-    rows.map(row => row.userId || `${row.userName}@${row.deptId}`)
-  ).size;
+  const rows = blocks.flatMap(block => block.rows);
+  // 一人可能因多批次拆成多行，按 personKey 去重统计人数
+  const people = new Set(rows.map(row => row.personKey)).size;
   const totalAmount = rows.reduce((sum, row) => sum + row.amount, 0);
 
   const workbook = new ExcelJS.Workbook();
-  buildLedgerSheet(workbook, groups, year);
+  buildLedgerSheet(workbook, blocks, year);
   buildSummarySheet(workbook, rows, year);
 
   const buffer = await workbook.xlsx.writeBuffer();
@@ -542,7 +694,7 @@ export const exportFundLedger = async (
   return {
     people,
     rows: rows.length,
-    groups: groups.length,
+    groups: blocks.length,
     totalAmount
   };
 };
