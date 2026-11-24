@@ -6,6 +6,7 @@ import { updateUserPassword } from "../../api/user";
 import { useNav } from "@/layout/hooks/useNav";
 import { emitter } from "@/utils/mitt"; // 添加mitt导入
 import { useRouter } from "vue-router";
+import { clearRememberedCreds, removeToken } from "@/utils/auth";
 
 const { getLogo } = useNav();
 const router = useRouter();
@@ -15,6 +16,9 @@ const username = ref("");
 const handleExit = () => {
   // 暴力退出 清空cookie
   localStorage.setItem("pridi-unLoginUrl", "/pdesg");
+  // 清除"记住我"凭据与会话级登录态，否则守卫会立刻用凭据把你登回去，退不掉
+  clearRememberedCreds();
+  removeToken();
   document.cookie.split(";").forEach(cookie => {
     document.cookie = cookie
       .replace(/^ +/, "")

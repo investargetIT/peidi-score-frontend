@@ -13,8 +13,8 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+import { handleTokenExpired } from "@/utils/portalLogin";
 import { router, remainingPaths } from "@/router";
-import { emitter } from "@/utils/mitt.ts";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -131,7 +131,9 @@ class PureHttp {
         // 关闭进度条动画
         NProgress.done();
         if (response?.data?.code == "100100012") {
-          emitter.emit("logout");
+          // token 失效被踢：优先用「记住我」凭据静默重登（成功后 reload 重放请求），
+          // 失败再走登出流程回登录门户
+          handleTokenExpired();
           return response.data;
         }
         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调

@@ -4,8 +4,7 @@ import {
   store,
   router,
   resetRouter,
-  routerArrays,
-  storageLocal
+  routerArrays
 } from "../utils";
 import {
   type UserResult,
@@ -14,22 +13,28 @@ import {
   refreshTokenApi
 } from "@/api/user";
 import { useMultiTagsStoreHook } from "./multiTags";
-import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
+import {
+  type DataInfo,
+  setToken,
+  removeToken,
+  getUserInfo,
+  clearRememberedCreds
+} from "@/utils/auth";
+import type { LoginScope } from "@/utils/auth";
 
 export const useUserStore = defineStore({
   id: "pure-user",
   state: (): userType => ({
     // 头像
-    avatar: storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "",
+    avatar: getUserInfo<DataInfo<number>>()?.avatar ?? "",
     // 用户名
-    username: storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "",
+    username: getUserInfo<DataInfo<number>>()?.username ?? "",
     // 昵称
-    nickname: storageLocal().getItem<DataInfo<number>>(userKey)?.nickname ?? "",
+    nickname: getUserInfo<DataInfo<number>>()?.nickname ?? "",
     // 页面级别权限
-    roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
+    roles: getUserInfo<DataInfo<number>>()?.roles ?? [],
     // 按钮级别权限
-    permissions:
-      storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? [],
+    permissions: getUserInfo<DataInfo<number>>()?.permissions ?? [],
     // 是否勾选了登录页的免登录
     isRemembered: false,
     // 登录页的免登录存储几天，默认7天
@@ -64,12 +69,12 @@ export const useUserStore = defineStore({
     SET_LOGINDAY(value: number) {
       this.loginDay = Number(value);
     },
-    /** 登入 */
-    async loginByUsername(data) {
+    /** 登入：scope 按登录页「记住我」勾选态决定 token 存多久 */
+    async loginByUsername(data, scope: LoginScope = "persist") {
       return new Promise<UserResult>((resolve, reject) => {
         getLogin(data)
           .then(data => {
-            if (data?.success) setToken(data.data);
+            if (data?.success) setToken(data.data, scope);
             resolve(data);
           })
           .catch(error => {
@@ -85,17 +90,17 @@ export const useUserStore = defineStore({
       removeToken();
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
-      // 统一登录状态凭据删除
-      storageLocal().removeItem("peidi-userInfo");
+      // 清除"记住我"凭据：否则守卫会立刻用凭据把你登回去，退不掉
+      clearRememberedCreds();
       router.push("/login");
     },
     /** 刷新`token` */
-    async handRefreshToken(data) {
+    async handRefreshToken(data, scope: LoginScope = "persist") {
       return new Promise<RefreshTokenResult>((resolve, reject) => {
         refreshTokenApi(data)
           .then(data => {
             if (data) {
-              setToken(data.data);
+              setToken(data.data, scope);
               resolve(data);
             }
           })

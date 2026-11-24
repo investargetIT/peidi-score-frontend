@@ -1,6 +1,18 @@
 import Cookies from "js-cookie";
 import { useUserStoreHook } from "@/store/modules/user";
-import { storageLocal, isString, isIncludeAllChildren } from "@pureadmin/utils";
+import {
+  storageLocal,
+  storageSession,
+  isString,
+  isIncludeAllChildren
+} from "@pureadmin/utils";
+
+/**
+ * 登录态作用域：
+ * - persist：token 存 cookie（带过期时间），关掉浏览器再打开仍是登录态（勾选"记住我"）
+ * - session：token 存 sessionStorage，关掉页面即失效（未勾选"记住我"）
+ */
+export type LoginScope = "persist" | "session";
 
 export interface DataInfo<T> {
   /** token */
@@ -32,14 +44,62 @@ export const dataSourceKey = "dataSource";
  * */
 export const multipleTabsKey = "multiple-tabs";
 
-/** 获取`token` */
+/** 获取`token`：先读会话级（未勾选"记住我"），再读持久化（勾选"记住我"） */
 export function getToken(): DataInfo<number> {
   // 此处与`TokenKey`相同，此写法解决初始化时`Cookies`中不存在`TokenKey`报错
   // console.log('JSON.parse(Cookies.get(TokenKey))',JSON.parse(Cookies.get(TokenKey)));
+  const sessionToken = storageSession().getItem<DataInfo<number>>(TokenKey);
+  if (sessionToken) return sessionToken;
 
   return Cookies.get(TokenKey)
     ? JSON.parse(Cookies.get(TokenKey))
     : storageLocal().getItem(userKey);
+}
+
+/**
+ * 获取当前登录用户的`user-info`：先读会话级（未勾选"记住我"），再读持久化（勾选"记住我"）。
+ * 统一从此处读取，避免各处直接读`localStorage`导致会话级登录态取不到。
+ */
+export function getUserInfo<T = DataInfo<number>>(): T | null {
+  return (
+    storageSession().getItem<T>(userKey) ||
+    storageLocal().getItem<T>(userKey) ||
+    null
+  );
+}
+
+/**
+ * 写入`token`：两种作用域互斥，写前先清掉另一份，避免残留上一个登录态。
+ * - session：只在本标签页有效，关掉页面即失效
+ * - persist：写 cookie（带过期时间），关掉浏览器再打开仍是登录态
+ */
+export function writeAuthToken(token: string, scope: LoginScope): void {
+  const currentDate = new Date();
+  // 一天后登陆失效
+  currentDate.setDate(currentDate.getDate() + 1);
+  const expires = currentDate.getTime();
+  const cookieString = JSON.stringify({ accessToken: token, expires });
+
+  if (scope === "session") {
+    Cookies.remove(TokenKey);
+    try {
+      storageSession().setItem(TokenKey, { accessToken: token, expires });
+      return;
+    } catch {
+      /* sessionStorage 不可用（隐私模式等）时退化为持久化 */
+    }
+  }
+
+  try {
+    storageSession().removeItem(TokenKey);
+  } catch {
+    /* ignore */
+  }
+  expires > 0
+    ? Cookies.set(TokenKey, cookieString, {
+        expires: (expires - Date.now()) / 86400000
+      })
+    : Cookies.set(TokenKey, cookieString);
 }
 
 /**
@@ -48,28 +108,22 @@ export function getToken(): DataInfo<number> {
  * 将`accessToken`、`expires`、`refreshToken`这三条信息放在key值为authorized-token的cookie里（过期自动销毁）
  * 将`avatar`、`username`、`nickname`、`roles`、`permissions`、`refreshToken`、`expires`这七条信息放在key值为`user-info`的localStorage里（利用`multipleTabsKey`当浏览器完全关闭后自动销毁）
  */
-export function setToken(data: DataInfo<Date>) {
-  let expires = 0;
-  // const { accessToken, refreshToken } = data;
-  const accessToken = data;
+export function setToken(data: DataInfo<Date>, scope: LoginScope = "persist") {
+  const accessToken = data as unknown as string;
 
   const { isRemembered, loginDay } = useUserStoreHook();
   let currentDate = new Date();
   // 一天后登陆失效
   currentDate.setDate(currentDate.getDate() + 1);
-  expires = currentDate.getTime();
-  const cookieString = JSON.stringify({ accessToken, expires });
+  const expires = currentDate.getTime();
 
-  expires > 0
-    ? Cookies.set(TokenKey, cookieString, {
-        expires: (expires - Date.now()) / 86400000
-      })
-    : Cookies.set(TokenKey, cookieString);
+  // 按「记住我」区分 token 落盘作用域：session 存 sessionStorage，persist 存 cookie
+  writeAuthToken(accessToken, scope);
 
   Cookies.set(
     multipleTabsKey,
     "true",
-    isRemembered
+    scope === "persist" && isRemembered
       ? {
           expires: loginDay
         }
@@ -82,14 +136,33 @@ export function setToken(data: DataInfo<Date>) {
     useUserStoreHook().SET_NICKNAME(nickname);
     useUserStoreHook().SET_ROLES(roles);
     useUserStoreHook().SET_PERMS(permissions);
-    storageLocal().setItem(userKey, {
-      expires,
-      avatar,
-      username,
-      nickname,
-      roles,
-      permissions
-    });
+    // 与 token 同作用域落盘，否则「不记住」也会持久化用户信息；
+    // 两种作用域互斥，写前先清掉另一份，避免残留上一个登录态
+    if (scope === "session") {
+      storageLocal().removeItem(userKey);
+      storageSession().setItem(userKey, {
+        expires,
+        avatar,
+        username,
+        nickname,
+        roles,
+        permissions
+      });
+    } else {
+      try {
+        storageSession().removeItem(userKey);
+      } catch {
+        /* ignore */
+      }
+      storageLocal().setItem(userKey, {
+        expires,
+        avatar,
+        username,
+        nickname,
+        roles,
+        permissions
+      });
+    }
   }
 
   if (data.username && data.roles) {
@@ -102,16 +175,12 @@ export function setToken(data: DataInfo<Date>) {
       permissions: data?.permissions ?? []
     });
   } else {
-    const avatar =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "";
-    const username =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "";
-    const nickname =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.nickname ?? "";
-    const roles =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [];
-    const permissions =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? [];
+    const cached = getUserInfo<DataInfo<number>>();
+    const avatar = cached?.avatar ?? "";
+    const username = cached?.username ?? "";
+    const nickname = cached?.nickname ?? "";
+    const roles = cached?.roles ?? [];
+    const permissions = cached?.permissions ?? [];
     setUserKey({
       avatar,
       username,
@@ -122,10 +191,26 @@ export function setToken(data: DataInfo<Date>) {
   }
 }
 
-/** 删除`token`以及key值为`user-info`的localStorage信息 */
+/** 只删除`token`（保留`user-info`），token 过期静默重登前调用 */
+export function clearAuthToken() {
+  Cookies.remove(TokenKey);
+  try {
+    storageSession().removeItem(TokenKey);
+  } catch {
+    /* ignore */
+  }
+}
+
+/** 删除`token`以及key值为`user-info`的登录信息（两个作用域都清） */
 export function removeToken() {
   Cookies.remove(TokenKey);
   Cookies.remove(multipleTabsKey);
+  try {
+    storageSession().removeItem(TokenKey);
+    storageSession().removeItem(userKey);
+  } catch {
+    /* ignore */
+  }
   storageLocal().removeItem(userKey);
   storageLocal().removeItem(dataSourceKey);
   storageLocal().removeItem("curUserAvatar");
@@ -135,6 +220,50 @@ export function removeToken() {
 export const formatToken = (token: string): string => {
   return token;
 };
+
+/******************************** 「记住我」凭据 ********************************/
+
+// "记住我"凭据（登录门户勾选"记住我"时由回跳参数 key1/key2 落盘）
+export const REMEMBER_CREDS_KEY = "peidi-userInfo";
+
+export type RememberedCreds = { username: string; password: string };
+
+/** 读取已记住的账号密码；结构非法时视为没有 */
+export function getRememberedCreds(): RememberedCreds | null {
+  try {
+    const parsed =
+      storageLocal().getItem<Partial<RememberedCreds>>(REMEMBER_CREDS_KEY);
+    if (
+      typeof parsed?.username === "string" &&
+      typeof parsed?.password === "string" &&
+      parsed.username &&
+      parsed.password
+    ) {
+      return { username: parsed.username, password: parsed.password };
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
+/** 保存"记住我"凭据 */
+export function saveRememberedCreds(creds: RememberedCreds): void {
+  try {
+    storageLocal().setItem(REMEMBER_CREDS_KEY, creds);
+  } catch {
+    /* ignore */
+  }
+}
+
+/** 清除"记住我"凭据（退出登录、凭据失效时调用） */
+export function clearRememberedCreds(): void {
+  try {
+    storageLocal().removeItem(REMEMBER_CREDS_KEY);
+  } catch {
+    /* ignore */
+  }
+}
 
 /** 是否有按钮级别的权限（根据登录接口返回的`permissions`字段进行判断）*/
 export const hasPerms = (value: string | Array<string>): boolean => {

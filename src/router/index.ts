@@ -6,7 +6,7 @@ import { buildHierarchyTree } from "@/utils/tree";
 import remainingRouter from "./modules/remaining";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
-import { isUrl, openLink, storageLocal, isAllEmpty } from "@pureadmin/utils";
+import { isUrl, openLink, isAllEmpty } from "@pureadmin/utils";
 import {
   ascending,
   getTopMenu,
@@ -26,10 +26,11 @@ import {
 } from "vue-router";
 import {
   type DataInfo,
-  userKey,
+  getUserInfo,
   removeToken,
   multipleTabsKey
 } from "@/utils/auth";
+import { UNLOGIN_URL_KEY, loginWithRememberedCreds } from "@/utils/portalLogin";
 import i18n from "@/plugins/i18n";
 const { t } = i18n.global;
 
@@ -306,7 +307,8 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       handleAliveRoute(to);
     }
   }
-  const userInfo = storageLocal().getItem<DataInfo<number>>(userKey);
+  // 先读会话级、再读持久化的登录信息，兼容「记住我」两种作用域
+  const userInfo = getUserInfo<DataInfo<number>>();
   NProgress.start();
   const externalLink = isUrl(to?.name as string);
   if (!externalLink) {
@@ -379,22 +381,23 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       toCorrectRoute();
     }
   } else {
-    // alert("1: " + to.path);
-    if (to.path !== "/login") {
-      // alert("2: " + to.path);
-      // 记录用户访问的URL，用于登录后重定向（排除白名单路由）
-      if (!whiteList.includes(to.path)) {
-        localStorage.setItem("pridi-unLoginUrl", to.fullPath);
-      }
-      if (whiteList.indexOf(to.path) !== -1) {
-        next();
-      } else {
-        removeToken();
-        next({ path: "/login" });
-      }
-    } else {
+    // 白名单页面自行处理登录（登录门户回跳 / 钉钉免登）
+    if (whiteList.includes(to.path)) {
       next();
+      return;
     }
+    // 记录用户访问的URL，用于登录后重定向（排除白名单路由）
+    localStorage.setItem(UNLOGIN_URL_KEY, to.fullPath);
+    // 无登录态时：有「记住我」凭据则静默登录，免去跳转登录门户
+    loginWithRememberedCreds().then(ok => {
+      if (ok) {
+        // 登录成功后重新进入守卫，由上方「刷新」分支初始化动态路由
+        next();
+        return;
+      }
+      removeToken();
+      next({ path: "/login" });
+    });
   }
 });
 

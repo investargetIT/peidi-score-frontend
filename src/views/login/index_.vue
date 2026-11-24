@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { initRouter, getTopMenu } from "@/router/utils";
-import { useRoute, useRouter } from "vue-router";
+import { decryptMessage } from "./utils/cryptojs";
+import {
+  getRememberedCreds,
+  saveRememberedCreds,
+  clearRememberedCreds
+} from "@/utils/auth";
+import {
+  loginWithCreds,
+  loginWithRememberedCreds,
+  navigateAfterLogin,
+  redirectToWebLogin
+} from "@/utils/portalLogin";
 import { message } from "@/utils/message";
-import { useUserStoreHook } from "../../store/modules/user";
-import { storageLocal } from "@pureadmin/utils";
-import { getUserCheck, getUserDataSourceApi } from "../../api/user";
-import { getEnumTypeList } from "@/api/pmApi";
-import { CrossStorageClient } from "cross-storage";
-import { decryptMessage, encryptMessage } from "./utils/cryptojs";
-import { getUserInfoData } from "../../api/pmApi";
-const timestamp = new Date().getTime();
-// 重定向标识
-const unLoginUrl = localStorage.getItem("pridi-unLoginUrl");
 
-const route = useRoute();
-const router = useRouter();
-
+/** 取 url 上的 key1(账号) / key2(密码) / key3(记住我)，值均为 AES 加密后的字符串 */
 const getKeyFromUrl = () => {
   const url = window.location.href;
   const key1Match = url.match(/key1=([^&]+)/);
@@ -25,233 +23,60 @@ const getKeyFromUrl = () => {
   const key1 = key1Match ? key1Match[1] : null;
   const key2 = key2Match ? key2Match[1] : null;
   const key3 = key3Match ? key3Match[1] : null;
-  console.log("key1", key1);
-  console.log("key2", key2);
-  console.log("key3", key3);
+  console.log("🔐 登录门户回跳 key1/key2/key3", { key1, key2, key3 });
   return { key1, key2, key3 };
 };
-const queryKey = getKeyFromUrl();
 
-onMounted(() => {
-  // let userInfo = storageLocal().getItem("peidi-userInfo");
-  // console.log("userInfo", userInfo);
-  let userInfo: { username: string; password: string; site?: string } | null =
-    storageLocal().getItem("peidi-userInfo") || null;
+onMounted(async () => {
+  const keys = getKeyFromUrl();
 
-  console.log("queryKey", queryKey);
+  // key3 即门户"记住我"勾选态；缺失时为 null（老门户兼容）
+  const isRemember = keys.key3 ? decryptMessage(keys.key3) === "true" : null;
 
-  if (queryKey.key3) {
-    const isRemember = decryptMessage(queryKey.key3);
-    console.log("isRemember", isRemember);
-    if (isRemember === "true") {
-      storageLocal().setItem("peidi-userInfo", {
-        username: decryptMessage(queryKey.key1 || ""),
-        password: decryptMessage(queryKey.key2 || ""),
-        site: null
-      });
+  const username = keys.key1 ? decryptMessage(keys.key1) : "";
+  const password = keys.key2 ? decryptMessage(keys.key2) : "";
+
+  if (isRemember !== null) {
+    if (isRemember) {
+      saveRememberedCreds({ username, password });
     } else {
-      storageLocal().removeItem("peidi-userInfo");
+      clearRememberedCreds();
     }
-  }
-
-  if (queryKey.key1 && queryKey.key2) {
-    const username = decryptMessage(queryKey.key1);
-    const password = decryptMessage(queryKey.key2);
-    userInfo = { username, password };
-  }
-  console.log("userInfo", userInfo);
-
-  if (userInfo) {
-    const tempInfo = localStorage.getItem("ddUserInfo");
-
-    // 从 ddUserInfo 中获取 mobile 数据
-    let mobile = "";
-    if (tempInfo) {
-      try {
-        const ddUserInfo = JSON.parse(tempInfo);
-        mobile = ddUserInfo.mobile || "";
-        console.log("mobile from ddUserInfo:", mobile);
-      } catch (error) {
-        console.error("解析 ddUserInfo 失败:", error);
-      }
-    }
-
-    useUserStoreHook()
-      .loginByUsername({
-        username: userInfo?.username,
-        password: userInfo?.password
-        // site: userInfo?.site || null
-      })
-      .then(res => {
-        if (res.success) {
-          // 先获取用户数据源信息
-          getUserDataSourceApi({ token: res.data }).then(userRes => {
-            //#region 非钉钉端参数
-            getUserInfoData({
-              userId: userRes?.data?.id
-            }).then(res => {
-              console.log("1111", res);
-              if (res?.code === 200) {
-                // 初始化用户配置信息 ddUserInfo
-                if (res?.data) {
-                  const { hireDate, email } = res?.data;
-                  storageLocal().setItem("ddUserInfo", {
-                    ...(storageLocal().getItem("ddUserInfo") || {}),
-                    hired_date: new Date(hireDate).getTime().toString(),
-                    email: email
-                  });
-                }
-              }
-            });
-            //#endregion
-
-            console.log("res", userRes);
-            if (userRes.success) {
-              const { data } = userRes;
-              localStorage.setItem(
-                "dataSource",
-                JSON.stringify({ ...data, userEmail: userInfo?.username })
-              );
-
-              // 使用 Promise.all 并行获取多个枚举类型列表
-              Promise.all([
-                getEnumTypeList({ type: "adminUser" }),
-                getEnumTypeList({ type: "esg" }),
-                getUserCheck(res?.data)
-              ])
-                .then(([adminUserRes, esgRes, userCheckRes]) => {
-                  // 处理 adminUser 枚举结果
-                  if (adminUserRes.success) {
-                    localStorage.setItem(
-                      "adminUserEnum",
-                      JSON.stringify(adminUserRes.data)
-                    );
-                  } else {
-                    message("获取管理员列表失败" + adminUserRes.msg, {
-                      type: "error"
-                    });
-                    return;
-                  }
-
-                  // 处理 esg 枚举结果
-                  if (esgRes.success) {
-                    localStorage.setItem(
-                      "esgEnum",
-                      JSON.stringify(esgRes.data)
-                    );
-                  } else {
-                    message("获取ESG枚举列表失败" + esgRes.msg, {
-                      type: "error"
-                    });
-                    return;
-                  }
-                  // ESG权限逻辑
-                  if (userCheckRes.success) {
-                    // 动态路由已解决 因为动态路由暂时无效，先检查是否存在esgUserInfo，如果不存在则在存入后刷新一次页面，因为权限配置基本不会变
-                    // const isExist =
-                    //   localStorage.getItem("esgUserInfo") !== null;
-                    localStorage.setItem(
-                      "esgUserInfo",
-                      JSON.stringify({
-                        userid: userCheckRes?.data?.id,
-                        site: userCheckRes?.data?.dataSource,
-                        dingId: userCheckRes?.data?.dingId
-                      })
-                    );
-                    // if (!isExist && !unLoginUrl) {
-                    //   // alert("刷新页面");
-                    //   window.location.reload();
-                    // }
-                  } else {
-                    message(
-                      "user-check接口获取用户信息失败+" + userCheckRes.msg,
-                      { type: "error" }
-                    );
-                    return;
-                  }
-
-                  // 所有枚举数据获取成功后，进行路由跳转
-                  if (route.query.tabName == "worker") {
-                    return initRouter().then(() => {
-                      router.push({
-                        path: "/my/index",
-                        query: { tabName: "worker" }
-                      });
-                    });
-                  } else {
-                    return initRouter().then(() => {
-                      // alert("触发unLoginUrl");
-
-                      // 先判断是否有未登录时的路由记录
-                      if (unLoginUrl) {
-                        // localStorage.removeItem("pridi-unLoginUrl");
-                        // alert("unLoginUrl:" + unLoginUrl);
-                        router.push(unLoginUrl).then(() => {
-                          message("登录成功", { type: "success" });
-                        });
-                        return;
-                      }
-
-                      router.push(getTopMenu(true).path).then(() => {
-                        message("登录成功", { type: "success" });
-                      });
-                    });
-                  }
-                })
-                .catch(error => {
-                  console.error("获取枚举类型列表失败:", error);
-                  message("获取枚举类型列表失败" + error, { type: "error" });
-                });
-            } else {
-              message("获取用户数据失败" + userRes.msg, { type: "error" });
-            }
-          });
-
-          //#region ESG权限逻辑
-          // getUserCheck(res?.data).then(res =>
-          //   localStorage.setItem(
-          //     "esgUserInfo",
-          //     JSON.stringify({
-          //       userid: res?.data?.id,
-          //       site: res?.data?.dataSource,
-          //       dingId: res?.data?.dingId
-          //     })
-          //   )
-          // );
-          //#endregion
-        } else {
-          message("登录失败" + res.msg, { type: "error" });
-        }
-      })
-      .catch(error => {
-        console.error("登录失败:", error);
-        message("登录失败" + error, { type: "error" });
-        window.location.href = `https://login.peidigroup.cn/${timestamp}/#/login?source=${encryptMessage(window.location.href)}`;
-      });
   } else {
-    // const storage = new CrossStorageClient(
-    //   `http://login.peidigroup.cn/hub.html`
-    // );
-    // storage
-    //   .onConnect()
-    //   .then(() => {
-    //     return storage.get("peidi-userInfo");
-    //   })
-    //   .then(res => {
-    //     console.log("peidi-userInfo", res); // 输出: value
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //   });
-
-    if (process.env.NODE_ENV === "development") {
-      // window.location.href = `http://localhost:8848/#/login?source=${encryptMessage(window.location.href)}`;
-      window.location.href = `https://login.peidigroup.cn/${timestamp}/#/login?source=${encryptMessage(window.location.href)}`;
-    } else {
-      // 拼接时间戳，避免缓存问题
-      window.location.href = `https://login.peidigroup.cn/${timestamp}/#/login?source=${encryptMessage(window.location.href)}`;
+    // 门户没带 key3：若与记住的账号不是同一个，清掉旧凭据，避免静默登录成上一个用户
+    const remembered = getRememberedCreds();
+    if (remembered && remembered.username !== username) {
+      clearRememberedCreds();
     }
   }
+
+  // 带回了完整账号密码：走正常登录
+  if (username && password) {
+    // 明确不记住 → 本次登录只在会话内有效；"true" / 未携带 → 持久化（兼容老门户）
+    const scope = isRemember === false ? "session" : "persist";
+    try {
+      const ok = await loginWithCreds(username, password, scope);
+      if (!ok) {
+        clearRememberedCreds();
+        redirectToWebLogin();
+        return;
+      }
+      navigateAfterLogin();
+    } catch (error) {
+      console.error("登录失败:", error);
+      message("登录失败" + error, { type: "error" });
+      clearRememberedCreds();
+      redirectToWebLogin();
+    }
+    return;
+  }
+
+  // 没带账号密码：先尝试用「记住我」凭据静默登录，兜底走登录门户（门户自身 SSO Cookie 会把你登进去）
+  if (await loginWithRememberedCreds()) {
+    navigateAfterLogin();
+    return;
+  }
+  redirectToWebLogin();
 });
 </script>
 
