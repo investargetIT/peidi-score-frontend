@@ -427,9 +427,6 @@ const toDateCellValue = (text: string): Date | string => {
  * 列序：序号 · 申请时间 · 部门 · 姓名 · 入职日期 · 申请月份 · 申请金额 · 备注
  * 排序：按「申请时间」升序排列申请批次，同一次申请的人相邻成块。
  * 合并：序号 / 申请时间 / 部门 三列按批次块纵向合并（姓名不合并）。
- *
- * 注意：合并单元格只在左上角存值，开启筛选后块内其余行会被过滤掉。
- * 这是手工台账原有的结构，如需要可筛选的明细，请看导出的另一张汇总表或另行说明。
  */
 const buildLedgerSheet = (
   workbook: ExcelJS.Workbook,
@@ -639,7 +636,7 @@ const buildSummarySheet = (
     setCellStyle(totalRow.getCell(col), { bold: true, wrapText: col === 4 });
   }
 
-  // 汇总表无合并单元格，可放心筛选（范围为明细行，不含合计行）
+  // 汇总表筛选范围为明细行，不含合计行
   worksheet.autoFilter = {
     from: { row: 2, column: 1 },
     to: { row: cursor - 1, column: 6 }
