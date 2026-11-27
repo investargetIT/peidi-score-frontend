@@ -157,6 +157,7 @@
 
                 <ScoreHistoryExport
                   v-if="isCompanyNode(data.id)"
+                  :employees="employees"
                   @click="handleExport(data)"
                   ref="scoreHistoryExportRef"
                 />

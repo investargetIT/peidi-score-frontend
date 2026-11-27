@@ -17,6 +17,11 @@ export interface ScoreRecord {
 }
 
 /**
+ * 固定行高：表头与数据行统一 50（积分历史多行文本在其中滚动/换行显示）
+ */
+export const ROW_HEIGHT = 50;
+
+/**
  * 导出积分记录到 Excel
  * @param data 积分记录数组
  * @param fileName 文件名（可选，默认包含时间戳）
@@ -28,6 +33,9 @@ export const exportScoreHistoryToExcel = async (
   try {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("积分记录");
+
+    // 全表默认行高 50
+    worksheet.properties.defaultRowHeight = ROW_HEIGHT;
 
     // 设置列宽
     worksheet.columns = [
@@ -43,6 +51,7 @@ export const exportScoreHistoryToExcel = async (
 
     // 设置表头样式
     const headerRow = worksheet.getRow(1);
+    headerRow.height = ROW_HEIGHT;
     headerRow.eachCell(cell => {
       cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
       cell.fill = {
@@ -68,6 +77,8 @@ export const exportScoreHistoryToExcel = async (
     // 添加数据行
     data.forEach((item, index) => {
       const row = worksheet.getRow(index + 2);
+      // 固定行高 50（不受内容撑开，保证每行高度一致）
+      row.height = ROW_HEIGHT;
       row.values = {
         siteName: item.siteName,
         userName: item.userName,
@@ -102,7 +113,8 @@ export const exportScoreHistoryToExcel = async (
     });
     saveAs(blob, finalFileName);
 
-    ElMessage.success("导出成功");
+    // 提示导出人数，便于与员工列表人数核对
+    ElMessage.success(`导出成功，共 ${data.length} 人`);
   } catch (error) {
     console.error("导出失败:", error);
     ElMessage.error("导出失败：" + (error as Error).message);
